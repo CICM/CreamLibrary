@@ -9,7 +9,7 @@
 
 extern "C"
 {
-#include "../Sources/cicm_wrapper.h"
+#include "ThirdParty/PureData/Sources/cicm_wrapper.h"
 }
 
 void cream_initclass(t_eclass* c);
