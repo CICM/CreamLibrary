@@ -1,0 +1,43 @@
+# Object files
+*.o
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# xcode
+*.xcbkptlist
+*.xcuserstate
+*.xcsettings
+*.plist
+*.xcscheme
+
+#Visual Studio
+*.tlog
+*.obj
+*.log
+*.idb
+*.pdb
+*.lastbuildstate
+*.ipch
+*.opensdf
+*.sdf
+*.user
+*.suo
+*.cache
+*.unsuccessfulbuild
+*.exp
+*.ilk
+*.rc
+*.manifest
+*.res
