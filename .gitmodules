@@ -1,0 +1,3 @@
+[submodule "ThirdParty/PureData"]
+	path = ThirdParty/PureData
+	url = https://pierreguillot@github.com/CICM/CicmWrapper.git
