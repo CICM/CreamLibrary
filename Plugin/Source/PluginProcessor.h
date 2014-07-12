@@ -29,6 +29,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PdBase.hpp"
+#include "../../c.library.h"
 
 using namespace pd;
 

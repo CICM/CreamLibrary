@@ -5,6 +5,39 @@
     <Filter Include="Camomile">
       <UniqueIdentifier>{AE2AEEA8-98A7-4FFF-924A-E091915F5128}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camomile\Cream">
+      <UniqueIdentifier>{48888343-A86D-5AC4-651E-5298E0FE458E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\Cream\Caramel">
+      <UniqueIdentifier>{C9AB21B9-168F-6946-F400-9B9648BC0259}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\Cream\Chocolate">
+      <UniqueIdentifier>{B34810FE-2CC5-1109-9C99-4770E9BF7761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\Cream\Coffee">
+      <UniqueIdentifier>{C46FD815-2271-3F8E-2699-10DFDCE4710B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\CicmWrapper">
+      <UniqueIdentifier>{5CB6D6E2-25C5-9BD5-08AF-381D7EDC43CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\CicmWrapper\ebox">
+      <UniqueIdentifier>{FBD601D1-51A2-8239-A98A-17F8BE1918BB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\CicmWrapper\eclass">
+      <UniqueIdentifier>{734E35D4-3EEF-2211-1E5F-27BA947935B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\CicmWrapper\ecommon">
+      <UniqueIdentifier>{A5960374-8311-F286-A9B6-99A5B6754F7F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\CicmWrapper\egraphics">
+      <UniqueIdentifier>{E576AB16-D414-585E-089B-33FF479F1840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\CicmWrapper\eobj">
+      <UniqueIdentifier>{216E0F84-E50D-2DD3-D048-93725170CDDA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camomile\CicmWrapper\epopup">
+      <UniqueIdentifier>{6E50FAB3-8D19-0033-9E8F-B846B91083CB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Camomile\Libpd">
       <UniqueIdentifier>{83B8BF73-0F9D-367B-001C-58CCD57DB4A5}</UniqueIdentifier>
     </Filter>
@@ -346,6 +379,177 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\c.library.cpp">
+      <Filter>Camomile\Cream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Caramel\AudioFFT.cpp">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Caramel\c.convolve_tilde.cpp">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Caramel\c.freeverb_tilde.cpp">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Caramel\FFTConvolver.cpp">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Caramel\Utilities.cpp">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.bang.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.blackboard.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.breakpoints.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.colorpanel.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.gain_tilde.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.incdec.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.knob.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.menu.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.meter_tilde.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.number.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.number_tilde.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.plane.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.preset.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.radio.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.rslider.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.scope_tilde.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.slider.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.tab.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Chocolate\c.toggle.cpp">
+      <Filter>Camomile\Cream\Chocolate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.informer.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.loadmess.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.mousestate.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.pak.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.patcherargs.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.patcherinfos.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.patchermess.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.prepend.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\ebox\ebox_attr.c">
+      <Filter>Camomile\CicmWrapper\ebox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\ebox\ebox_basic.c">
+      <Filter>Camomile\CicmWrapper\ebox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\ebox\ebox_draw.c">
+      <Filter>Camomile\CicmWrapper\ebox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\ebox\ebox_handle.c">
+      <Filter>Camomile\CicmWrapper\ebox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\ebox\ebox_patcher.c">
+      <Filter>Camomile\CicmWrapper\ebox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\ebox\ebox_window.c">
+      <Filter>Camomile\CicmWrapper\ebox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eclass\eclass_attrgetter.c">
+      <Filter>Camomile\CicmWrapper\eclass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eclass\eclass_attrnew.c">
+      <Filter>Camomile\CicmWrapper\eclass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eclass\eclass_attroptions.c">
+      <Filter>Camomile\CicmWrapper\eclass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eclass\eclass_attrsetter.c">
+      <Filter>Camomile\CicmWrapper\eclass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eclass\eclass_basic.c">
+      <Filter>Camomile\CicmWrapper\eclass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eclass\eclass_widget.c">
+      <Filter>Camomile\CicmWrapper\eclass</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\ecommon\ecommon.c">
+      <Filter>Camomile\CicmWrapper\ecommon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\egraphics\egraphics.c">
+      <Filter>Camomile\CicmWrapper\egraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\egraphics\egraphics_color.c">
+      <Filter>Camomile\CicmWrapper\egraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\egraphics\egraphics_forms.c">
+      <Filter>Camomile\CicmWrapper\egraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\egraphics\egraphics_matrix.c">
+      <Filter>Camomile\CicmWrapper\egraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\egraphics\egraphics_text.c">
+      <Filter>Camomile\CicmWrapper\egraphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eobj\eobj_basic.c">
+      <Filter>Camomile\CicmWrapper\eobj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eobj\eobj_dsp.c">
+      <Filter>Camomile\CicmWrapper\eobj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eobj\eobj_handle.c">
+      <Filter>Camomile\CicmWrapper\eobj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eobj\eobj_proxy.c">
+      <Filter>Camomile\CicmWrapper\eobj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\eobj\eobj_router.c">
+      <Filter>Camomile\CicmWrapper\eobj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\epopup\epopup.c">
+      <Filter>Camomile\CicmWrapper\epopup</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\ThirdParty\LibPd\cpp\PdBase.cpp">
       <Filter>Camomile\Libpd\cpp</Filter>
     </ClCompile>
@@ -1818,6 +2022,54 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\c.library.h">
+      <Filter>Camomile\Cream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Caramel\AudioFFT.h">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Caramel\FFTConvolver.h">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Caramel\fftw3.h">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Caramel\Utilities.h">
+      <Filter>Camomile\Cream\Caramel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\cicm_wrapper.h">
+      <Filter>Camomile\CicmWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\ebox\ebox.h">
+      <Filter>Camomile\CicmWrapper\ebox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\eclass\eclass.h">
+      <Filter>Camomile\CicmWrapper\eclass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\ecommon\eboxflag.h">
+      <Filter>Camomile\CicmWrapper\ecommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\ecommon\ecommon.h">
+      <Filter>Camomile\CicmWrapper\ecommon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\egraphics\egraphics.h">
+      <Filter>Camomile\CicmWrapper\egraphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\eobj\eobj.h">
+      <Filter>Camomile\CicmWrapper\eobj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\epd.h">
+      <Filter>Camomile\CicmWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\epd_max.h">
+      <Filter>Camomile\CicmWrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\epopup\epopup.h">
+      <Filter>Camomile\CicmWrapper\epopup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\ThirdParty\PureData\Sources\estruct.h">
+      <Filter>Camomile\CicmWrapper</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\cpp\PdBase.hpp">
       <Filter>Camomile\Libpd\cpp</Filter>
     </ClInclude>

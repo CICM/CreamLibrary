@@ -14,6 +14,7 @@ extern "C"
 
 void cream_initclass(t_eclass* c);
 
+extern "C" void setup_c0x2elibrary(void);
 // Caramel
 extern "C" void setup_c0x2econvolve_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
@@ -41,6 +42,7 @@ extern "C" void setup_c0x2etoggle(void);
 extern "C" void setup_c0x2evoronoy(void);
 
 // Coffee
+extern "C" void setup_c0x2einformer(void);
 extern "C" void setup_c0x2eloadmess(void);
 extern "C" void setup_c0x2epak(void);
 extern "C" void setup_c0x2epatcherargs(void);

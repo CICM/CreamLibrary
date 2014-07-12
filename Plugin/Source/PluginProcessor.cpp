@@ -29,9 +29,12 @@
 
 AudioProcessor* JUCE_CALLTYPE createPluginFilter();
 
+
 PluginProcessor::PluginProcessor()
 {
-    ;
+    m_pd.init(2, 2, 44100);
+    m_pd.subscribe("camomile1572");
+    setup_c0x2elibrary();
 }
 
 PluginProcessor::~PluginProcessor()
@@ -71,21 +74,29 @@ const String PluginProcessor::getParameterText(int index)
 
 void PluginProcessor::prepareToPlay(double samplerate, int vectorsize)
 {
+    Patch patch = m_pd.openPatch("zaza.pd", "/Users/Pierre/Desktop");
+
+    m_pd.clear();
     m_pd.init(0, 2, samplerate);
-    Patch p1 = m_pd.openPatch("zaza.pd", "/Users/Pierre/Desktop");
-   if(p1.isValid())
-       std::cout << "yes ... p1 is opened" << std::endl;
-    else
-        std::cout << "aww ... p1 couldn't be opened" << std::endl;
+    m_pd.subscribe("camomile1572");
+    m_pd.openPatch(patch);
     
     m_juceIn = new float*[getNumInputChannels()];
     for(int i = 0; i < getNumInputChannels(); ++i)
+    {
         m_juceIn[i] = new float[vectorsize];
+        memset(m_juceIn[i], 0, vectorsize * sizeof(float));
+    }
     m_juceOut = new float*[getNumOutputChannels()];
     for(int i = 0; i < getNumOutputChannels(); ++i)
+    {
         m_juceOut[i] = new float[vectorsize];
+        memset(m_juceOut[i], 0, vectorsize * sizeof(float));
+    }
     m_pdIn = new float[getNumInputChannels() * vectorsize];
+    memset(m_pdIn, 0, getNumInputChannels() * vectorsize * sizeof(float));
     m_pdOut = new float[getNumOutputChannels() * vectorsize];
+    memset(m_pdOut, 0, getNumOutputChannels() * vectorsize * sizeof(float));
     
     m_vector_size = vectorsize;
     m_ticks = vectorsize / m_pd.blockSize();

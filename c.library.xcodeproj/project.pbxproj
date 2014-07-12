@@ -151,6 +151,8 @@
 		8FD16824196FCA1D00D5104D /* epopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F8196FCA1D00D5104D /* epopup.h */; };
 		8FD16825196FCA1D00D5104D /* estruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F9196FCA1D00D5104D /* estruct.h */; };
 		8FD16826196FCA1D00D5104D /* estruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F9196FCA1D00D5104D /* estruct.h */; };
+		8FFFCBCE1971145B006BF3B9 /* c.informer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FFFCBCD1971145B006BF3B9 /* c.informer.cpp */; };
+		8FFFCBCF1971145B006BF3B9 /* c.informer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FFFCBCD1971145B006BF3B9 /* c.informer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -228,6 +230,7 @@
 		8FD165F7196FCA1D00D5104D /* epopup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = epopup.c; sourceTree = "<group>"; };
 		8FD165F8196FCA1D00D5104D /* epopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = epopup.h; sourceTree = "<group>"; };
 		8FD165F9196FCA1D00D5104D /* estruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = estruct.h; sourceTree = "<group>"; };
+		8FFFCBCD1971145B006BF3B9 /* c.informer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.informer.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,6 +320,7 @@
 		8FB8EB69190080E9005FAF6A /* Coffee */ = {
 			isa = PBXGroup;
 			children = (
+				8FFFCBCD1971145B006BF3B9 /* c.informer.cpp */,
 				8FB8EB6A190080E9005FAF6A /* c.loadmess.cpp */,
 				8F5DB22419630E41005DE808 /* c.mousestate.cpp */,
 				8FB8EB6B190080E9005FAF6A /* c.pak.cpp */,
@@ -598,6 +602,7 @@
 				8FD167DD196FCA1D00D5104D /* ebox_patcher.c in Sources */,
 				8FD167D5196FCA1D00D5104D /* ebox_attr.c in Sources */,
 				8FB8EB4B19007B04005FAF6A /* FFTConvolver.cpp in Sources */,
+				8FFFCBCE1971145B006BF3B9 /* c.informer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,6 +666,7 @@
 				8FD167DE196FCA1D00D5104D /* ebox_patcher.c in Sources */,
 				8FD167D6196FCA1D00D5104D /* ebox_attr.c in Sources */,
 				8FAC0BE11969731800E09ACB /* FFTConvolver.cpp in Sources */,
+				8FFFCBCF1971145B006BF3B9 /* c.informer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

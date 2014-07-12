@@ -12,6 +12,123 @@
               companyWebsite="http://www.mshparisnord.fr/hoalibrary/" companyName="CICM"
               companyEmail="cicm.mshparisnord@gmail.com">
   <MAINGROUP id="j763xC" name="Camomile">
+    <GROUP id="{69DE8002-56FA-B8D5-3E74-DAA7964CD46E}" name="Cream">
+      <FILE id="I9DaFl" name="c.library.cpp" compile="1" resource="0" file="../c.library.cpp"/>
+      <FILE id="iAIvjD" name="c.library.h" compile="0" resource="0" file="../c.library.h"/>
+      <GROUP id="{44BD3119-3F2D-B59E-8551-910446C35C45}" name="Caramel">
+        <FILE id="YucXce" name="AudioFFT.cpp" compile="1" resource="0" file="../Caramel/AudioFFT.cpp"/>
+        <FILE id="dCjYe3" name="AudioFFT.h" compile="0" resource="0" file="../Caramel/AudioFFT.h"/>
+        <FILE id="nrMl1w" name="c.convolve_tilde.cpp" compile="1" resource="0"
+              file="../Caramel/c.convolve_tilde.cpp"/>
+        <FILE id="NDTYfd" name="c.freeverb_tilde.cpp" compile="1" resource="0"
+              file="../Caramel/c.freeverb_tilde.cpp"/>
+        <FILE id="m9u1l5" name="FFTConvolver.cpp" compile="1" resource="0"
+              file="../Caramel/FFTConvolver.cpp"/>
+        <FILE id="nJGTeN" name="FFTConvolver.h" compile="0" resource="0" file="../Caramel/FFTConvolver.h"/>
+        <FILE id="bA03T6" name="fftw3.h" compile="0" resource="0" file="../Caramel/fftw3.h"/>
+        <FILE id="t3nyre" name="Utilities.cpp" compile="1" resource="0" file="../Caramel/Utilities.cpp"/>
+        <FILE id="gxNM9a" name="Utilities.h" compile="0" resource="0" file="../Caramel/Utilities.h"/>
+      </GROUP>
+      <GROUP id="{10BC9551-DDE1-FF53-5F0B-9207377D34B4}" name="Chocolate">
+        <FILE id="yBV91i" name="c.bang.cpp" compile="1" resource="0" file="../Chocolate/c.bang.cpp"/>
+        <FILE id="aSRwQ6" name="c.blackboard.cpp" compile="1" resource="0"
+              file="../Chocolate/c.blackboard.cpp"/>
+        <FILE id="BkO5Mo" name="c.breakpoints.cpp" compile="1" resource="0"
+              file="../Chocolate/c.breakpoints.cpp"/>
+        <FILE id="pXjxtY" name="c.colorpanel.cpp" compile="1" resource="0"
+              file="../Chocolate/c.colorpanel.cpp"/>
+        <FILE id="mQV664" name="c.gain_tilde.cpp" compile="1" resource="0"
+              file="../Chocolate/c.gain_tilde.cpp"/>
+        <FILE id="rwRlCy" name="c.incdec.cpp" compile="1" resource="0" file="../Chocolate/c.incdec.cpp"/>
+        <FILE id="tjf1XM" name="c.knob.cpp" compile="1" resource="0" file="../Chocolate/c.knob.cpp"/>
+        <FILE id="nmZbjc" name="c.menu.cpp" compile="1" resource="0" file="../Chocolate/c.menu.cpp"/>
+        <FILE id="igBXbg" name="c.meter_tilde.cpp" compile="1" resource="0"
+              file="../Chocolate/c.meter_tilde.cpp"/>
+        <FILE id="gOhjn4" name="c.number.cpp" compile="1" resource="0" file="../Chocolate/c.number.cpp"/>
+        <FILE id="U2amP2" name="c.number_tilde.cpp" compile="1" resource="0"
+              file="../Chocolate/c.number_tilde.cpp"/>
+        <FILE id="syLyx9" name="c.plane.cpp" compile="1" resource="0" file="../Chocolate/c.plane.cpp"/>
+        <FILE id="i5aOjS" name="c.preset.cpp" compile="1" resource="0" file="../Chocolate/c.preset.cpp"/>
+        <FILE id="Y5rhWQ" name="c.radio.cpp" compile="1" resource="0" file="../Chocolate/c.radio.cpp"/>
+        <FILE id="ezm7Ng" name="c.rslider.cpp" compile="1" resource="0" file="../Chocolate/c.rslider.cpp"/>
+        <FILE id="Tr03HS" name="c.scope_tilde.cpp" compile="1" resource="0"
+              file="../Chocolate/c.scope_tilde.cpp"/>
+        <FILE id="KLKpo1" name="c.slider.cpp" compile="1" resource="0" file="../Chocolate/c.slider.cpp"/>
+        <FILE id="QvZE1x" name="c.tab.cpp" compile="1" resource="0" file="../Chocolate/c.tab.cpp"/>
+        <FILE id="E2to8t" name="c.toggle.cpp" compile="1" resource="0" file="../Chocolate/c.toggle.cpp"/>
+      </GROUP>
+      <GROUP id="{1E8A7118-437D-006A-E4D6-E00945466E76}" name="Coffee">
+        <FILE id="JPJEoY" name="c.informer.cpp" compile="1" resource="0" file="../Coffee/c.informer.cpp"/>
+        <FILE id="oXg50j" name="c.loadmess.cpp" compile="1" resource="0" file="../Coffee/c.loadmess.cpp"/>
+        <FILE id="vDIJ4f" name="c.mousestate.cpp" compile="1" resource="0"
+              file="../Coffee/c.mousestate.cpp"/>
+        <FILE id="z4WdCM" name="c.pak.cpp" compile="1" resource="0" file="../Coffee/c.pak.cpp"/>
+        <FILE id="cGsBI3" name="c.patcherargs.cpp" compile="1" resource="0"
+              file="../Coffee/c.patcherargs.cpp"/>
+        <FILE id="SoOFIv" name="c.patcherinfos.cpp" compile="1" resource="0"
+              file="../Coffee/c.patcherinfos.cpp"/>
+        <FILE id="nNIz0C" name="c.patchermess.cpp" compile="1" resource="0"
+              file="../Coffee/c.patchermess.cpp"/>
+        <FILE id="Fiqx8f" name="c.prepend.cpp" compile="1" resource="0" file="../Coffee/c.prepend.cpp"/>
+      </GROUP>
+    </GROUP>
+    <GROUP id="{793F14E0-3384-F00D-B847-47CBA0A08EB3}" name="CicmWrapper">
+      <FILE id="lvIQvu" name="cicm_wrapper.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/cicm_wrapper.h"/>
+      <GROUP id="{D5E76532-3B20-B6E0-A8AC-9E5F1F2D2546}" name="ebox">
+        <FILE id="o4db0B" name="ebox.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/ebox/ebox.h"/>
+        <FILE id="OC4EdC" name="ebox_attr.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/ebox/ebox_attr.c"/>
+        <FILE id="sTB9jY" name="ebox_basic.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/ebox/ebox_basic.c"/>
+        <FILE id="Z2Ex7t" name="ebox_draw.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/ebox/ebox_draw.c"/>
+        <FILE id="LeHHY9" name="ebox_handle.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/ebox/ebox_handle.c"/>
+        <FILE id="MF6ark" name="ebox_patcher.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/ebox/ebox_patcher.c"/>
+        <FILE id="jUFumr" name="ebox_window.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/ebox/ebox_window.c"/>
+      </GROUP>
+      <GROUP id="{890396C6-D517-2901-0803-058827178919}" name="eclass">
+        <FILE id="dQAN8c" name="eclass.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/eclass/eclass.h"/>
+        <FILE id="LrFm6G" name="eclass_attrgetter.c" compile="1" resource="0"
+              file="../ThirdParty/PureData/Sources/eclass/eclass_attrgetter.c"/>
+        <FILE id="eheE2w" name="eclass_attrnew.c" compile="1" resource="0"
+              file="../ThirdParty/PureData/Sources/eclass/eclass_attrnew.c"/>
+        <FILE id="iHlJdM" name="eclass_attroptions.c" compile="1" resource="0"
+              file="../ThirdParty/PureData/Sources/eclass/eclass_attroptions.c"/>
+        <FILE id="FX6V53" name="eclass_attrsetter.c" compile="1" resource="0"
+              file="../ThirdParty/PureData/Sources/eclass/eclass_attrsetter.c"/>
+        <FILE id="mVNznE" name="eclass_basic.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/eclass/eclass_basic.c"/>
+        <FILE id="S3qhJ8" name="eclass_widget.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/eclass/eclass_widget.c"/>
+      </GROUP>
+      <GROUP id="{4D90C2B3-BD4A-1F4A-D4FA-BBB36022D38E}" name="ecommon">
+        <FILE id="raxKwV" name="eboxflag.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/ecommon/eboxflag.h"/>
+        <FILE id="klJn2V" name="ecommon.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/ecommon/ecommon.c"/>
+        <FILE id="ixFbPJ" name="ecommon.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/ecommon/ecommon.h"/>
+      </GROUP>
+      <GROUP id="{063960B8-2DB2-1F45-CB66-6236BEDA8799}" name="egraphics">
+        <FILE id="nS4IBO" name="egraphics.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/egraphics/egraphics.c"/>
+        <FILE id="r73Gg9" name="egraphics.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/egraphics/egraphics.h"/>
+        <FILE id="a2T4Dl" name="egraphics_color.c" compile="1" resource="0"
+              file="../ThirdParty/PureData/Sources/egraphics/egraphics_color.c"/>
+        <FILE id="lRda2x" name="egraphics_forms.c" compile="1" resource="0"
+              file="../ThirdParty/PureData/Sources/egraphics/egraphics_forms.c"/>
+        <FILE id="AjQGQ3" name="egraphics_matrix.c" compile="1" resource="0"
+              file="../ThirdParty/PureData/Sources/egraphics/egraphics_matrix.c"/>
+        <FILE id="zy7O9I" name="egraphics_text.c" compile="1" resource="0"
+              file="../ThirdParty/PureData/Sources/egraphics/egraphics_text.c"/>
+      </GROUP>
+      <GROUP id="{3D97FBC0-BD82-553B-E641-4D830A4FA690}" name="eobj">
+        <FILE id="QoVsdo" name="eobj.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/eobj/eobj.h"/>
+        <FILE id="QqQboa" name="eobj_basic.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/eobj/eobj_basic.c"/>
+        <FILE id="uv9A0v" name="eobj_dsp.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/eobj/eobj_dsp.c"/>
+        <FILE id="zN0jqu" name="eobj_handle.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/eobj/eobj_handle.c"/>
+        <FILE id="Hq7X8U" name="eobj_proxy.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/eobj/eobj_proxy.c"/>
+        <FILE id="B5yv3u" name="eobj_router.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/eobj/eobj_router.c"/>
+      </GROUP>
+      <FILE id="N8yZtg" name="epd.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/epd.h"/>
+      <FILE id="qtQpJe" name="epd_max.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/epd_max.h"/>
+      <GROUP id="{61EB88E6-9B78-94F3-1B89-2C0EF6534F01}" name="epopup">
+        <FILE id="gAqWV0" name="epopup.c" compile="1" resource="0" file="../ThirdParty/PureData/Sources/epopup/epopup.c"/>
+        <FILE id="myHpwa" name="epopup.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/epopup/epopup.h"/>
+      </GROUP>
+      <FILE id="hRs6Kl" name="estruct.h" compile="0" resource="0" file="../ThirdParty/PureData/Sources/estruct.h"/>
+    </GROUP>
     <GROUP id="{A8BF8A59-D8D9-41CB-8DA7-7140CAC13824}" name="Libpd">
       <GROUP id="{4D585B83-ACCA-6BD5-F932-1772E7C4DECC}" name="cpp">
         <FILE id="UGVW0U" name="LICENSE.txt" compile="0" resource="1" file="../ThirdParty/LibPd/cpp/LICENSE.txt"/>
@@ -237,10 +354,11 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.6 SDK" osxArchitecture="64BitUniversal"
                        isDebug="1" optimisation="1" targetName="Camomile" libraryPath=""
-                       headerPath="../../../ThirdParty/LibPd/cpp&#10;../../../ThirdParty/LibPd/libpd_wrapper&#10;../../../ThirdParty/LibPd/pure-data/src"/>
+                       headerPath="../../../ThirdParty/LibPd/cpp&#10;../../../ThirdParty/LibPd/libpd_wrapper&#10;../../../ThirdParty/LibPd/pure-data/src"
+                       customXcodeFlags="OTHER_CFLAGS = &quot;-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H&quot;, WARNING_CFLAGS = &quot;-Wno-unused-variable -Wno-parentheses&quot;"/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.6 SDK" osxArchitecture="64BitUniversal"
                        isDebug="0" optimisation="3" targetName="Camomile" headerPath="../../../ThirdParty/LibPd/cpp&#10;../../../ThirdParty/LibPd/libpd_wrapper&#10;../../../ThirdParty/LibPd/pure-data/src"
-                       libraryPath=""/>
+                       libraryPath="" customXcodeFlags="OTHER_CFLAGS = &quot;-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H&quot;, WARNING_CFLAGS = &quot;-Wno-unused-variable -Wno-parentheses&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../ThirdParty/JuceModules"/>
