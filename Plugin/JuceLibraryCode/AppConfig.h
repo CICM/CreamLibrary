@@ -183,7 +183,7 @@
  #define JucePlugin_Build_VST3             1
 #endif
 #ifndef  JucePlugin_Build_AU
- #define JucePlugin_Build_AU               0
+ #define JucePlugin_Build_AU               1
 #endif
 #ifndef  JucePlugin_Build_RTAS
  #define JucePlugin_Build_RTAS             0
@@ -192,10 +192,10 @@
  #define JucePlugin_Build_AAX              0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "HoaQuadra"
+ #define JucePlugin_Name                   "Camomile"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "Quadraphonic spatializer"
+ #define JucePlugin_Desc                   "PureData Patch Loader"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "CICM"
@@ -213,10 +213,10 @@
  #define JucePlugin_PluginCode             'Camo'
 #endif
 #ifndef  JucePlugin_MaxNumInputChannels
- #define JucePlugin_MaxNumInputChannels    16
+ #define JucePlugin_MaxNumInputChannels    2
 #endif
 #ifndef  JucePlugin_MaxNumOutputChannels
- #define JucePlugin_MaxNumOutputChannels   4
+ #define JucePlugin_MaxNumOutputChannels   2
 #endif
 #ifndef  JucePlugin_PreferredChannelConfigurations
  #define JucePlugin_PreferredChannelConfigurations  {1, 4}, {2, 4}, {3, 4}, {4, 4}, {5, 4}, {6, 4}, {7, 4}, {8, 4}, {9, 4}, {10, 4}, {11, 4}, {12, 4}, {13, 4}, {14, 4}, {15, 4}, {16, 4}
@@ -258,16 +258,16 @@
  #define JucePlugin_AUSubType              JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_AUExportPrefix
- #define JucePlugin_AUExportPrefix         HoaQuadraAU
+ #define JucePlugin_AUExportPrefix         CamomileAU
 #endif
 #ifndef  JucePlugin_AUExportPrefixQuoted
- #define JucePlugin_AUExportPrefixQuoted   "HoaQuadraAU"
+ #define JucePlugin_AUExportPrefixQuoted   "CamomileAU"
 #endif
 #ifndef  JucePlugin_AUManufacturerCode
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.cicm.HoaQuadra
+ #define JucePlugin_CFBundleIdentifier     com.cicm.camomile
 #endif
 #ifndef  JucePlugin_RTASCategory
  #define JucePlugin_RTASCategory           ePlugInCategory_None
@@ -285,7 +285,7 @@
  #define JucePlugin_RTASDisableMultiMono   0
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.yourcompany.HoaQuadra
+ #define JucePlugin_AAXIdentifier          com.yourcompany.camomile
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
