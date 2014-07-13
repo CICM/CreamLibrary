@@ -42,13 +42,13 @@ PluginProcessor::PluginProcessor()
         libpd_inited = 1;
     }
     
-    sys_lock();
+    m_scope.enter();
     m_pd = pdinstance_new();
     pd_setinstance(m_pd);
     libpd_start_message(1);
     libpd_add_float(1.f);
     libpd_finish_message("pd", "dsp");
-    sys_unlock();
+    m_scope.exit();
     
     m_input_pd  = NULL;
     m_output_pd = NULL;
@@ -57,12 +57,12 @@ PluginProcessor::PluginProcessor()
 
 PluginProcessor::~PluginProcessor()
 {
-    sys_lock();
+    m_scope.enter();
     pd_setinstance(m_pd);
     if(m_patch)
         libpd_closefile(m_patch);
     pdinstance_free(m_pd);
-    sys_unlock();
+    m_scope.exit();
 }
 
 int PluginProcessor::getNumParameters()
@@ -95,6 +95,31 @@ const String PluginProcessor::getParameterText(int index)
     return String((float)0, 2);
 }
 
+int zjzjjz = 0;
+
+t_pd *glob_evalfile2(t_pd *ignore, t_symbol *name, t_symbol *dir)
+{
+    t_pd *x = 0;
+    /* even though binbuf_evalfile appears to take care of dspstate,
+     we have to do it again here, because canvas_startdsp() assumes
+     that all toplevel canvases are visible.  LATER check if this
+     is still necessary -- probably not. */
+    
+    int dspstate = canvas_suspend_dsp();
+    t_pd *boundx = s__X.s_thing;
+    s__X.s_thing = 0;       /* don't save #X; we'll need to leave it bound
+                             for the caller to grab it. */
+    binbuf_evalfile(name, dir);
+    while ((x != s__X.s_thing) && s__X.s_thing)
+    {
+        x = s__X.s_thing;
+        vmess(x, gensym("pop"), "i", 1);
+    }
+    canvas_resume_dsp(dspstate);
+    s__X.s_thing = boundx;
+    return x;
+}
+
 void PluginProcessor::prepareToPlay(double samplerate, int vectorsize)
 {
     releaseResources();
@@ -102,12 +127,20 @@ void PluginProcessor::prepareToPlay(double samplerate, int vectorsize)
     m_input_pd = new float[getNumInputChannels() * m_vector_size];
     m_output_pd = new float[getNumOutputChannels() * m_vector_size];
     
-    sys_lock();
+    m_scope.enter();
     pd_setinstance(m_pd);
     if(m_patch)
         libpd_closefile(m_patch);
-	m_patch = libpd_openfile("zaza.pd", "/Users/Pierre/Desktop");
-    sys_unlock();
+    if(!zjzjjz)
+    {
+        m_patch = libpd_openfile("zaza.pd", "/Users/Pierre/Desktop");
+    }
+    else
+    {
+       m_patch =  glob_evalfile2(NULL, gensym("zaza.pd"), gensym("/Users/Pierre/Desktop"));
+    }
+	
+    m_scope.exit();
     
     if(!libpd_audioinited)
     {
@@ -144,15 +177,17 @@ void PluginProcessor::releaseResources()
 
 void PluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-	int ticks = m_vector_size / libpd_blocksize();
     for(int i = 0; i < getNumInputChannels(); i++)
     {
         cblas_scopy(m_vector_size, buffer.getReadPointer(i), 1, m_input_pd+i, getNumInputChannels());
     }
-    //sys_lock();
+    
+    m_scope.enter();
     pd_setinstance(m_pd);
+    int ticks = m_vector_size / libpd_blocksize();
 	libpd_process_float(ticks, m_input_pd, m_output_pd);
-	//sys_unlock();
+    m_scope.exit();
+
     for(int i = 0; i < getNumOutputChannels(); i++)
     {
         cblas_scopy(m_vector_size, m_output_pd+i, getNumOutputChannels(), buffer.getWritePointer(i), 1);

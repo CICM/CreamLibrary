@@ -30,14 +30,14 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 
-class PluginEditor  : public AudioProcessorEditor, public SliderListener,  public Timer
+class PluginEditor  : public AudioProcessorEditor, public SliderListener//,  public Timer
 {
 public:
     PluginEditor (PluginProcessor* ownerFilter);
     ~PluginEditor();
 
     //==============================================================================
-    void timerCallback() override;
+   // void timerCallback() override;
     void paint (Graphics&) override;
     void resized() override;
     void sliderValueChanged (Slider*) override;

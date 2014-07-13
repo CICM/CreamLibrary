@@ -29,7 +29,7 @@
 
 PluginEditor::PluginEditor (PluginProcessor* ownerFilter): AudioProcessorEditor (ownerFilter)
 {
-    startTimer (50);
+    //startTimer (50);
 }
 
 PluginEditor::~PluginEditor()
@@ -48,11 +48,11 @@ void PluginEditor::resized()
 {
     ;
 }
-
+/*
 void PluginEditor::timerCallback()
 {
     ;
-}
+}*/
 
 void PluginEditor::sliderValueChanged (Slider* slider)
 {

@@ -90,7 +90,7 @@ private:
     int             m_vector_size;
     float*          m_input_pd;
     float*          m_output_pd;
-    
+    CriticalSection m_scope;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginProcessor)
 };
 
