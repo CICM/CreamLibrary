@@ -29,107 +29,25 @@
 
 AudioProcessor* JUCE_CALLTYPE createPluginFilter();
 
-typedef struct _pdinstance_list
-{
-    t_pdinstance* current;
-    _pdinstance_list* next;
-} t_pdinstance_list;
-
-static t_pdinstance_list* pdinstance_list = NULL;
 static int libpd_inited = 0;
 static int libpd_audioinited = 0;
 
-void pdinstance_list_add(t_pdinstance* x)
-{
-    if(!pdinstance_list)
-    {
-        pdinstance_list = (t_pdinstance_list *)malloc(sizeof(t_pdinstance_list));
-        pdinstance_list->current = x;
-        pdinstance_list->next    = NULL;
-    }
-    else
-    {
-        t_pdinstance_list* pdilist = pdinstance_list;
-        while(pdilist)
-        {
-            if(!pdilist->next)
-            {
-                pdilist->next = (t_pdinstance_list *)malloc(sizeof(t_pdinstance_list));
-                pdilist->next->current = x;
-                pdilist->next->next = NULL;
-                return;
-            }
-            pdilist = pdilist->next;
-        }
-    }
-}
-
-void pdinstance_list_remove(t_pdinstance* x)
-{
-    t_pdinstance_list* temp;
-    t_pdinstance_list* pdilist = pdinstance_list;
-    if(pdinstance_list->current == x)
-    {
-        temp = pdinstance_list->next;
-        free(pdinstance_list);
-        pdinstance_list = temp;
-        return;
-    }
-    while(pdilist)
-    {
-        if(pdilist->current == x)
-        {
-            temp = pdilist;
-            pdilist = pdilist->next;
-            free(temp);
-            return;
-        }
-        pdilist = pdilist->next;
-    }
-}
-
-void pdinstance_list_startdsp()
-{
-    t_pdinstance_list* temp;
-    t_pdinstance_list* pdilist = pdinstance_list;
-    while(pdilist)
-    {
-        pd_setinstance(pdilist->current);
-        libpd_start_message(1);
-        libpd_add_float(1.f);
-        libpd_finish_message("pd", "dsp");
-        pdilist = pdilist->next;
-    }
-}
-
-void pdinstance_list_stopdsp()
-{
-    t_pdinstance_list* temp;
-    t_pdinstance_list* pdilist = pdinstance_list;
-    while(pdilist)
-    {
-        pd_setinstance(pdilist->current);
-        libpd_start_message(1);
-        libpd_add_float(0.f);
-        libpd_finish_message("pd", "dsp");
-        pdilist = pdilist->next;
-    }
-}
 
 PluginProcessor::PluginProcessor()
 {
-    m_pd = pdinstance_new();
-    
-    pdinstance_list_stopdsp();
-    pdinstance_list_add(m_pd);
-    
-    sys_lock();
     if(!libpd_inited)
     {
         libpd_init();
         libpd_loadcream();
         libpd_inited = 1;
     }
+    
+    sys_lock();
+    m_pd = pdinstance_new();
+    pd_setinstance(m_pd);
+    libpd_start_message(1);
+    libpd_add_float(1.f);
+    libpd_finish_message("pd", "dsp");
     sys_unlock();
     
     m_input_pd  = NULL;
@@ -139,16 +57,12 @@ PluginProcessor::PluginProcessor()
 
 PluginProcessor::~PluginProcessor()
 {
-    pdinstance_list_stopdsp();
-    
     sys_lock();
     pd_setinstance(m_pd);
     if(m_patch)
         libpd_closefile(m_patch);
-    sys_unlock();
-    
-    pdinstance_list_remove(m_pd);
     pdinstance_free(m_pd);
+    sys_unlock();
 }
 
 int PluginProcessor::getNumParameters()
@@ -193,25 +107,17 @@ void PluginProcessor::prepareToPlay(double samplerate, int vectorsize)
     if(m_patch)
         libpd_closefile(m_patch);
 	m_patch = libpd_openfile("zaza.pd", "/Users/Pierre/Desktop");
+    sys_unlock();
     
     if(!libpd_audioinited)
     {
         libpd_init_audio(getNumInputChannels(), getNumOutputChannels(), samplerate);
         libpd_audioinited = 1;
     }
-    
-    libpd_start_message(1);
-    libpd_add_float(1.f);
-    libpd_finish_message("pd", "dsp");
-    
-    sys_unlock();
-    
-    //pdinstance_list_startdsp();
 }
 
 void PluginProcessor::reset()
 {
-    /*
     if(m_input_pd)
     {
         memset(m_input_pd, 0, getNumInputChannels() * m_vector_size * sizeof(float));
@@ -219,12 +125,11 @@ void PluginProcessor::reset()
     if(m_output_pd)
     {
         memset(m_output_pd, 0, getNumOutputChannels() * m_vector_size * sizeof(float));
-    }*/
+    }
 }
 
 void PluginProcessor::releaseResources()
 {
-    //pdinstance_list_stopdsp();
     if(m_input_pd)
     {
         delete [] m_input_pd;
@@ -239,15 +144,15 @@ void PluginProcessor::releaseResources()
 
 void PluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-    pd_setinstance(m_pd);
 	int ticks = m_vector_size / libpd_blocksize();
     for(int i = 0; i < getNumInputChannels(); i++)
     {
         cblas_scopy(m_vector_size, buffer.getReadPointer(i), 1, m_input_pd+i, getNumInputChannels());
     }
-    sys_lock();
+    //sys_lock();
+    pd_setinstance(m_pd);
 	libpd_process_float(ticks, m_input_pd, m_output_pd);
-	sys_unlock();
+	//sys_unlock();
     for(int i = 0; i < getNumOutputChannels(); i++)
     {
         cblas_scopy(m_vector_size, m_output_pd+i, getNumOutputChannels(), buffer.getWritePointer(i), 1);
