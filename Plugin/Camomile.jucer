@@ -12,6 +12,15 @@
               companyWebsite="http://www.mshparisnord.fr/hoalibrary/" companyName="CICM"
               companyEmail="cicm.mshparisnord@gmail.com">
   <MAINGROUP id="j763xC" name="Camomile">
+    <GROUP id="{6B4BCD60-19AD-9962-CC20-237184EA4194}" name="Source">
+      <FILE id="GVBkkm" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="YHu0ne" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="sd7Tfo" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="uRmSXo" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+    </GROUP>
     <GROUP id="{69DE8002-56FA-B8D5-3E74-DAA7964CD46E}" name="Cream">
       <FILE id="I9DaFl" name="c.library.cpp" compile="1" resource="0" file="../c.library.cpp"/>
       <FILE id="iAIvjD" name="c.library.h" compile="0" resource="0" file="../c.library.h"/>
@@ -140,182 +149,6 @@
         <FILE id="zTRG8R" name="PdTypes.cpp" compile="1" resource="0" file="../ThirdParty/LibPd/cpp/PdTypes.cpp"/>
         <FILE id="W3sydr" name="PdTypes.hpp" compile="0" resource="0" file="../ThirdParty/LibPd/cpp/PdTypes.hpp"/>
       </GROUP>
-      <GROUP id="{14FB362E-4FBB-5C9D-D2D9-4E3031BD64C9}" name="pure-data">
-        <GROUP id="{ED5724EE-427C-2E72-8D5C-F1A4CE3A4762}" name="extra">
-          <GROUP id="{412FB560-B4A2-B76E-083A-118846293DD7}" name="bonk~">
-            <FILE id="bAndwS" name="bonk~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/bonk~/bonk~-help.pd"/>
-            <FILE id="RYKryP" name="bonk~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/bonk~/bonk~.c"/>
-            <FILE id="wkwwho" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/bonk~/GNUmakefile.am"/>
-            <FILE id="lgbrzg" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/bonk~/makefile"/>
-            <FILE id="cSZkf1" name="templates.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/bonk~/templates.txt"/>
-          </GROUP>
-          <GROUP id="{A9CA5230-08EC-91EC-E081-11DE984E532D}" name="choice">
-            <FILE id="kVas1k" name="choice-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/choice/choice-help.pd"/>
-            <FILE id="kJm1Ze" name="choice.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/choice/choice.c"/>
-            <FILE id="MHu7gs" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/choice/GNUmakefile.am"/>
-            <FILE id="KSJWf6" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/choice/makefile"/>
-          </GROUP>
-          <FILE id="z6b767" name="complex-mod~-help.pd" compile="0" resource="1"
-                file="../ThirdParty/LibPd/pure-data/extra/complex-mod~-help.pd"/>
-          <FILE id="ngsz7A" name="complex-mod~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/complex-mod~.pd"/>
-          <FILE id="f8jqca" name="expr-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr-help.pd"/>
-          <GROUP id="{22820B7A-36B3-3329-9E9F-E95BD1D4BD1F}" name="expr~">
-            <FILE id="lGf7Jf" name="fts_to_pd.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/fts_to_pd.h"/>
-            <FILE id="qBy0el" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr~/GNUmakefile.am"/>
-            <FILE id="vIVUJO" name="LICENSE.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr~/LICENSE.txt"/>
-            <FILE id="ohhowN" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr~/makefile"/>
-            <FILE id="QalQAC" name="README.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr~/README.txt"/>
-            <FILE id="GcVY7U" name="vexp.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/vexp.c"/>
-            <FILE id="IadwEv" name="vexp.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/vexp.h"/>
-            <FILE id="gtPAkY" name="vexp_fun.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/vexp_fun.c"/>
-            <FILE id="vaMnib" name="vexp_if.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/vexp_if.c"/>
-          </GROUP>
-          <GROUP id="{01F44E5C-6B88-0B26-24BD-351F5B23267F}" name="fiddle~">
-            <FILE id="oq3FhY" name="fiddle~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/fiddle~/fiddle~-help.pd"/>
-            <FILE id="nhLm8n" name="fiddle~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/fiddle~/fiddle~.c"/>
-            <FILE id="Cx7IZe" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/fiddle~/GNUmakefile.am"/>
-            <FILE id="DOYZ4q" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/fiddle~/makefile"/>
-          </GROUP>
-          <FILE id="OeNbki" name="hilbert~-help.pd" compile="0" resource="1"
-                file="../ThirdParty/LibPd/pure-data/extra/hilbert~-help.pd"/>
-          <FILE id="lgfZA3" name="hilbert~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/hilbert~.pd"/>
-          <GROUP id="{A03C3EB2-C744-079E-08E1-32393DCFA9F7}" name="loop~">
-            <FILE id="L8rdol" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/loop~/GNUmakefile.am"/>
-            <FILE id="eQpOtM" name="loop~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/loop~/loop~-help.pd"/>
-            <FILE id="ODCBK8" name="loop~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/loop~/loop~.c"/>
-            <FILE id="wMwwTa" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/loop~/makefile"/>
-            <FILE id="jm9fMt" name="test-loop~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/loop~/test-loop~.pd"/>
-          </GROUP>
-          <GROUP id="{AF897938-2618-C068-D7FD-8200008ADDFB}" name="lrshift~">
-            <FILE id="bK3hS9" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/lrshift~/GNUmakefile.am"/>
-            <FILE id="L5eoOX" name="lrshift~-help.pd" compile="0" resource="1"
-                  file="../ThirdParty/LibPd/pure-data/extra/lrshift~/lrshift~-help.pd"/>
-            <FILE id="i6r2V0" name="lrshift~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/lrshift~/lrshift~.c"/>
-            <FILE id="Yix4AD" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/lrshift~/makefile"/>
-          </GROUP>
-          <FILE id="ANyZ8v" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/makefile"/>
-          <FILE id="l5jzme" name="Makefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/Makefile.am"/>
-          <FILE id="eyTV4f" name="makefile.subdir" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/makefile.subdir"/>
-          <GROUP id="{27624777-032B-DAE6-FCB9-C1735A576F57}" name="pd~">
-            <FILE id="udsEWb" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/GNUmakefile.am"/>
-            <FILE id="W3Zovd" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/makefile"/>
-            <FILE id="aPWhJh" name="notes.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/notes.txt"/>
-            <FILE id="Z12w5I" name="pd~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/pd~-help.pd"/>
-            <FILE id="yEpkLe" name="pd~-subprocess.pd" compile="0" resource="1"
-                  file="../ThirdParty/LibPd/pure-data/extra/pd~/pd~-subprocess.pd"/>
-            <FILE id="fiKvz2" name="pd~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/pd~/pd~.c"/>
-            <FILE id="ATVmnG" name="pdsched.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/pd~/pdsched.c"/>
-            <FILE id="LK9OKN" name="z.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/z.pd"/>
-          </GROUP>
-          <GROUP id="{6564FD79-991A-CA1A-5954-1C265BE9D5AB}" name="pique">
-            <FILE id="zLLKF5" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pique/GNUmakefile.am"/>
-            <FILE id="UYm2Ry" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pique/makefile"/>
-            <FILE id="NLlXfH" name="pique-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pique/pique-help.pd"/>
-            <FILE id="NCiFn3" name="pique.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/pique/pique.c"/>
-          </GROUP>
-          <FILE id="pkCP94" name="README.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/README.txt"/>
-          <FILE id="SRXa3q" name="rev1-final.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev1-final.pd"/>
-          <FILE id="DnZE6C" name="rev1-stage.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev1-stage.pd"/>
-          <FILE id="zblPTz" name="rev1~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev1~-help.pd"/>
-          <FILE id="pC8eGx" name="rev1~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev1~.pd"/>
-          <FILE id="oodJJi" name="rev2~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev2~-help.pd"/>
-          <FILE id="KoWvWO" name="rev2~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev2~.pd"/>
-          <FILE id="TLQ0BL" name="rev3~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev3~-help.pd"/>
-          <FILE id="QT91Hd" name="rev3~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev3~.pd"/>
-          <GROUP id="{9ED63430-473B-1228-D67F-287D2995D9AD}" name="sigmund~">
-            <FILE id="NU5SLr" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/sigmund~/GNUmakefile.am"/>
-            <FILE id="InvxnE" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/sigmund~/makefile"/>
-            <FILE id="uygzVI" name="sigmund~-help.pd" compile="0" resource="1"
-                  file="../ThirdParty/LibPd/pure-data/extra/sigmund~/sigmund~-help.pd"/>
-            <FILE id="KnKhSZ" name="sigmund~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/sigmund~/sigmund~.c"/>
-          </GROUP>
-          <GROUP id="{96CD1B7E-C2E6-8DA8-938E-96C9FB4C69FE}" name="stdout">
-            <FILE id="S4RPGX" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/stdout/GNUmakefile.am"/>
-            <FILE id="X9xnsI" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/stdout/makefile"/>
-            <FILE id="RmAx2V" name="stdout-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/stdout/stdout-help.pd"/>
-            <FILE id="yKZHBM" name="stdout.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/stdout/stdout.c"/>
-          </GROUP>
-        </GROUP>
-        <GROUP id="{A85BB6C8-2E98-99A6-65B1-B04F627161F3}" name="src">
-          <FILE id="EcTUce" name="CHANGELOG.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/src/CHANGELOG.txt"/>
-          <FILE id="OsOR01" name="d_arithmetic.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_arithmetic.c"/>
-          <FILE id="T1yqR8" name="d_array.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_array.c"/>
-          <FILE id="Q30AqO" name="d_ctl.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_ctl.c"/>
-          <FILE id="NZNXVt" name="d_dac.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_dac.c"/>
-          <FILE id="sNvehS" name="d_delay.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_delay.c"/>
-          <FILE id="WBHcCA" name="d_fft.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_fft.c"/>
-          <FILE id="LFRqJg" name="d_fft_mayer.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_fft_mayer.c"/>
-          <FILE id="FC1fJf" name="d_fftroutine.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_fftroutine.c"/>
-          <FILE id="uQ89LF" name="d_fftsg_h.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_fftsg_h.c"/>
-          <FILE id="DxMRPE" name="d_filter.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_filter.c"/>
-          <FILE id="NR3fjq" name="d_global.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_global.c"/>
-          <FILE id="Ra97US" name="d_math.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_math.c"/>
-          <FILE id="w8vw0J" name="d_misc.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_misc.c"/>
-          <FILE id="WWgGs8" name="d_osc.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_osc.c"/>
-          <FILE id="dmKMWn" name="d_resample.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_resample.c"/>
-          <FILE id="sjhmLj" name="d_soundfile.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_soundfile.c"/>
-          <FILE id="hRAqbe" name="d_ugen.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_ugen.c"/>
-          <FILE id="CIqF3H" name="g_all_guis.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_all_guis.c"/>
-          <FILE id="e3pffh" name="g_all_guis.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_all_guis.h"/>
-          <FILE id="EmzwK4" name="g_array.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_array.c"/>
-          <FILE id="NuQyR2" name="g_bang.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_bang.c"/>
-          <FILE id="LBvMmk" name="g_canvas.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_canvas.c"/>
-          <FILE id="GGpj1Z" name="g_canvas.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_canvas.h"/>
-          <FILE id="hGUYlb" name="g_editor.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_editor.c"/>
-          <FILE id="IvubfK" name="g_graph.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_graph.c"/>
-          <FILE id="fQvWdn" name="g_guiconnect.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_guiconnect.c"/>
-          <FILE id="Ykmtl6" name="g_hdial.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_hdial.c"/>
-          <FILE id="mmHZhC" name="g_hslider.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_hslider.c"/>
-          <FILE id="CR0MEw" name="g_io.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_io.c"/>
-          <FILE id="HVsKzw" name="g_mycanvas.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_mycanvas.c"/>
-          <FILE id="bzzKZr" name="g_numbox.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_numbox.c"/>
-          <FILE id="PTvO1X" name="g_readwrite.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_readwrite.c"/>
-          <FILE id="vVFfNG" name="g_rtext.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_rtext.c"/>
-          <FILE id="D44uZL" name="g_scalar.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_scalar.c"/>
-          <FILE id="CyNVOU" name="g_template.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_template.c"/>
-          <FILE id="KCbxkF" name="g_text.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_text.c"/>
-          <FILE id="nCpgkj" name="g_toggle.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_toggle.c"/>
-          <FILE id="B9u4yz" name="g_traversal.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_traversal.c"/>
-          <FILE id="G8lSgP" name="g_vdial.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_vdial.c"/>
-          <FILE id="I2IRpG" name="g_vslider.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_vslider.c"/>
-          <FILE id="qMWIoh" name="g_vumeter.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_vumeter.c"/>
-          <FILE id="ygh8pj" name="m_atom.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_atom.c"/>
-          <FILE id="cDqYOG" name="m_binbuf.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_binbuf.c"/>
-          <FILE id="MSn6T3" name="m_class.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_class.c"/>
-          <FILE id="PuRhN9" name="m_conf.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_conf.c"/>
-          <FILE id="pL0YIE" name="m_glob.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_glob.c"/>
-          <FILE id="qOdxfB" name="m_imp.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_imp.h"/>
-          <FILE id="hMIHbb" name="m_memory.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_memory.c"/>
-          <FILE id="exDJqC" name="m_obj.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_obj.c"/>
-          <FILE id="duGv59" name="m_pd.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_pd.c"/>
-          <FILE id="g2SCHc" name="m_pd.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_pd.h"/>
-          <FILE id="Rvvs4a" name="m_sched.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_sched.c"/>
-          <FILE id="UBYCd8" name="s_audio.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_audio.c"/>
-          <FILE id="NZ4efs" name="s_audio_dummy.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_audio_dummy.c"/>
-          <FILE id="I2zgTQ" name="s_file.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_file.c"/>
-          <FILE id="L5KTen" name="s_inter.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_inter.c"/>
-          <FILE id="grBTfY" name="s_loader.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_loader.c"/>
-          <FILE id="rxNkOt" name="s_main.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_main.c"/>
-          <FILE id="jfIe8N" name="s_path.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_path.c"/>
-          <FILE id="STM4WV" name="s_print.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_print.c"/>
-          <FILE id="xfU0kQ" name="s_stuff.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_stuff.h"/>
-          <FILE id="h8m135" name="s_utf8.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_utf8.c"/>
-          <FILE id="NzUTec" name="s_utf8.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_utf8.h"/>
-          <FILE id="G96QlM" name="x_acoustics.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_acoustics.c"/>
-          <FILE id="Qple2y" name="x_arithmetic.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_arithmetic.c"/>
-          <FILE id="AYaPox" name="x_array.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_array.c"/>
-          <FILE id="tcP1yG" name="x_connective.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_connective.c"/>
-          <FILE id="g7N4Dy" name="x_gui.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_gui.c"/>
-          <FILE id="liPmPC" name="x_interface.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_interface.c"/>
-          <FILE id="tNyOPt" name="x_list.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_list.c"/>
-          <FILE id="FkA5DU" name="x_midi.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_midi.c"/>
-          <FILE id="Rvky0s" name="x_misc.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_misc.c"/>
-          <FILE id="bO3YBd" name="x_net.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_net.c"/>
-          <FILE id="rOmrMz" name="x_scalar.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_scalar.c"/>
-          <FILE id="rXiF0c" name="x_text.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_text.c"/>
-          <FILE id="v97fVk" name="x_time.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_time.c"/>
-        </GROUP>
-      </GROUP>
       <GROUP id="{CED99C81-1272-7D25-AC23-D94991478678}" name="libpd_wrapper">
         <FILE id="z3L30m" name="s_libpdmidi.c" compile="1" resource="0" file="../ThirdParty/LibPd/libpd_wrapper/s_libpdmidi.c"/>
         <GROUP id="{BE681C9C-7225-B421-62BB-978230A88A17}" name="util">
@@ -336,14 +169,181 @@
         <FILE id="UBQiSA" name="z_libpd.h" compile="0" resource="0" file="../ThirdParty/LibPd/libpd_wrapper/z_libpd.h"/>
       </GROUP>
     </GROUP>
-    <GROUP id="{6B4BCD60-19AD-9962-CC20-237184EA4194}" name="Source">
-      <FILE id="GVBkkm" name="PluginEditor.cpp" compile="1" resource="0"
-            file="Source/PluginEditor.cpp"/>
-      <FILE id="YHu0ne" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
-      <FILE id="sd7Tfo" name="PluginProcessor.cpp" compile="1" resource="0"
-            file="Source/PluginProcessor.cpp"/>
-      <FILE id="uRmSXo" name="PluginProcessor.h" compile="0" resource="0"
-            file="Source/PluginProcessor.h"/>
+    <GROUP id="{9C09BD5C-F227-2D4D-37A6-3D365E3B864F}" name="pure-data">
+      <GROUP id="{134ECD25-2C7E-C671-7208-4D42E9FC8DAB}" name="src">
+        <FILE id="n3LerG" name="CHANGELOG.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/src/CHANGELOG.txt"/>
+        <FILE id="xLYpJF" name="d_arithmetic.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_arithmetic.c"/>
+        <FILE id="OYhJHj" name="d_array.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_array.c"/>
+        <FILE id="uag8ap" name="d_ctl.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_ctl.c"/>
+        <FILE id="tEeYse" name="d_dac.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_dac.c"/>
+        <FILE id="Lg67VU" name="d_delay.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_delay.c"/>
+        <FILE id="DwjXAo" name="d_fft.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_fft.c"/>
+        <FILE id="KI4w8k" name="d_fft_mayer.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_fft_mayer.c"/>
+        <FILE id="e5y3NC" name="d_fftroutine.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_fftroutine.c"/>
+        <FILE id="NcKUt9" name="d_fftsg_h.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_fftsg_h.c"/>
+        <FILE id="zoN8l6" name="d_filter.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_filter.c"/>
+        <FILE id="EPtmXm" name="d_global.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_global.c"/>
+        <FILE id="LvqvRs" name="d_math.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_math.c"/>
+        <FILE id="bTX7ei" name="d_misc.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_misc.c"/>
+        <FILE id="iQSt4i" name="d_osc.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_osc.c"/>
+        <FILE id="I6ZtXq" name="d_resample.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_resample.c"/>
+        <FILE id="Aw39Nk" name="d_soundfile.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_soundfile.c"/>
+        <FILE id="beNDkr" name="d_ugen.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/d_ugen.c"/>
+        <FILE id="Qc8HPO" name="g_all_guis.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_all_guis.c"/>
+        <FILE id="jyHAs1" name="g_all_guis.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_all_guis.h"/>
+        <FILE id="D0RdCf" name="g_array.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_array.c"/>
+        <FILE id="rwvYn0" name="g_bang.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_bang.c"/>
+        <FILE id="xFQ6vj" name="g_canvas.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_canvas.c"/>
+        <FILE id="xQJaG9" name="g_canvas.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_canvas.h"/>
+        <FILE id="vQBo4R" name="g_editor.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_editor.c"/>
+        <FILE id="pFqVQv" name="g_graph.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_graph.c"/>
+        <FILE id="zFEHcQ" name="g_guiconnect.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_guiconnect.c"/>
+        <FILE id="ImblH3" name="g_hdial.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_hdial.c"/>
+        <FILE id="rVUnlG" name="g_hslider.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_hslider.c"/>
+        <FILE id="LBgXrE" name="g_io.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_io.c"/>
+        <FILE id="RMXTgj" name="g_mycanvas.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_mycanvas.c"/>
+        <FILE id="WBIihU" name="g_numbox.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_numbox.c"/>
+        <FILE id="MPSNhW" name="g_readwrite.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_readwrite.c"/>
+        <FILE id="rG7Zib" name="g_rtext.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_rtext.c"/>
+        <FILE id="DGRobK" name="g_scalar.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_scalar.c"/>
+        <FILE id="hIXFQ9" name="g_template.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_template.c"/>
+        <FILE id="THi0PZ" name="g_text.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_text.c"/>
+        <FILE id="QNm1GW" name="g_toggle.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_toggle.c"/>
+        <FILE id="YJJdCh" name="g_traversal.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_traversal.c"/>
+        <FILE id="GkkLel" name="g_vdial.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_vdial.c"/>
+        <FILE id="Lkcqf8" name="g_vslider.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_vslider.c"/>
+        <FILE id="LOsNMW" name="g_vumeter.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/g_vumeter.c"/>
+        <FILE id="EaQccg" name="m_atom.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_atom.c"/>
+        <FILE id="aYxifA" name="m_binbuf.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_binbuf.c"/>
+        <FILE id="ADQdfS" name="m_class.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_class.c"/>
+        <FILE id="IJzVDW" name="m_conf.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_conf.c"/>
+        <FILE id="MHlJQH" name="m_glob.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_glob.c"/>
+        <FILE id="DtPxL0" name="m_imp.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_imp.h"/>
+        <FILE id="DJqQsV" name="m_memory.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_memory.c"/>
+        <FILE id="NRo4OC" name="m_obj.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_obj.c"/>
+        <FILE id="bf7Mda" name="m_pd.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_pd.c"/>
+        <FILE id="qEfLmr" name="m_pd.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_pd.h"/>
+        <FILE id="wy4ptZ" name="m_sched.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/m_sched.c"/>
+        <FILE id="UWAZtn" name="s_audio.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_audio.c"/>
+        <FILE id="ArmYzO" name="s_audio_dummy.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_audio_dummy.c"/>
+        <FILE id="qthofS" name="s_file.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_file.c"/>
+        <FILE id="XDKJAJ" name="s_inter.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_inter.c"/>
+        <FILE id="WZ9iW5" name="s_loader.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_loader.c"/>
+        <FILE id="pUp2E7" name="s_main.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_main.c"/>
+        <FILE id="BZtduv" name="s_path.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_path.c"/>
+        <FILE id="p5I92o" name="s_print.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_print.c"/>
+        <FILE id="COEEDE" name="s_stuff.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_stuff.h"/>
+        <FILE id="ApJSyZ" name="s_utf8.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_utf8.c"/>
+        <FILE id="pFe5Ms" name="s_utf8.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/src/s_utf8.h"/>
+        <FILE id="jpXbck" name="x_acoustics.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_acoustics.c"/>
+        <FILE id="cdjh84" name="x_arithmetic.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_arithmetic.c"/>
+        <FILE id="iC4DNy" name="x_array.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_array.c"/>
+        <FILE id="vrZ3o3" name="x_connective.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_connective.c"/>
+        <FILE id="exQUwU" name="x_gui.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_gui.c"/>
+        <FILE id="A2KAZ0" name="x_interface.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_interface.c"/>
+        <FILE id="tBuC4D" name="x_list.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_list.c"/>
+        <FILE id="ShQ5Hl" name="x_midi.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_midi.c"/>
+        <FILE id="Ee8BBJ" name="x_misc.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_misc.c"/>
+        <FILE id="sGvxfx" name="x_net.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_net.c"/>
+        <FILE id="RMiKbX" name="x_scalar.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_scalar.c"/>
+        <FILE id="MlIgxc" name="x_text.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_text.c"/>
+        <FILE id="sODxHz" name="x_time.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/src/x_time.c"/>
+      </GROUP>
+      <GROUP id="{97BCE0B4-F45B-AAB6-302E-C9E3821DDE0A}" name="extra">
+        <GROUP id="{E6078A3D-47DB-14BD-7EEB-28D3EA056EA4}" name="bonk~">
+          <FILE id="o76sOs" name="bonk~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/bonk~/bonk~-help.pd"/>
+          <FILE id="nEokvH" name="bonk~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/bonk~/bonk~.c"/>
+          <FILE id="DQKxtm" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/bonk~/GNUmakefile.am"/>
+          <FILE id="b30bY4" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/bonk~/makefile"/>
+          <FILE id="CwSloo" name="templates.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/bonk~/templates.txt"/>
+        </GROUP>
+        <GROUP id="{598D1560-9101-5044-A4DE-CB84F7BC09FB}" name="choice">
+          <FILE id="vxVvgt" name="choice-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/choice/choice-help.pd"/>
+          <FILE id="uXCy2S" name="choice.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/choice/choice.c"/>
+          <FILE id="ZWZYhd" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/choice/GNUmakefile.am"/>
+          <FILE id="aK4sgQ" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/choice/makefile"/>
+        </GROUP>
+        <FILE id="o8fLT6" name="complex-mod~-help.pd" compile="0" resource="1"
+              file="../ThirdParty/LibPd/pure-data/extra/complex-mod~-help.pd"/>
+        <FILE id="HsJ8v1" name="complex-mod~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/complex-mod~.pd"/>
+        <FILE id="Fx4PPy" name="expr-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr-help.pd"/>
+        <GROUP id="{733327A9-52DC-8674-AC06-D31BF2DE9A8E}" name="expr~">
+          <FILE id="u8EhGP" name="fts_to_pd.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/fts_to_pd.h"/>
+          <FILE id="Idn4Ee" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr~/GNUmakefile.am"/>
+          <FILE id="MLkK8T" name="LICENSE.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr~/LICENSE.txt"/>
+          <FILE id="oAJGLz" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr~/makefile"/>
+          <FILE id="o2CuAs" name="README.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/expr~/README.txt"/>
+          <FILE id="x8u8yn" name="vexp.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/vexp.c"/>
+          <FILE id="nq9Su6" name="vexp.h" compile="0" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/vexp.h"/>
+          <FILE id="byQeyV" name="vexp_fun.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/vexp_fun.c"/>
+          <FILE id="y2MTQe" name="vexp_if.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/expr~/vexp_if.c"/>
+        </GROUP>
+        <GROUP id="{4FDDE11D-C003-0ABB-6250-9F4A9AF33E2C}" name="fiddle~">
+          <FILE id="wterbC" name="fiddle~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/fiddle~/fiddle~-help.pd"/>
+          <FILE id="NOdT12" name="fiddle~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/fiddle~/fiddle~.c"/>
+          <FILE id="ZiSqM5" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/fiddle~/GNUmakefile.am"/>
+          <FILE id="HOC2OB" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/fiddle~/makefile"/>
+        </GROUP>
+        <FILE id="Wp12q8" name="hilbert~-help.pd" compile="0" resource="1"
+              file="../ThirdParty/LibPd/pure-data/extra/hilbert~-help.pd"/>
+        <FILE id="lpdwJh" name="hilbert~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/hilbert~.pd"/>
+        <GROUP id="{E13D72FE-C3E3-F879-F7E7-D481A78C06D3}" name="loop~">
+          <FILE id="XW9p1z" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/loop~/GNUmakefile.am"/>
+          <FILE id="ZDH1Rs" name="loop~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/loop~/loop~-help.pd"/>
+          <FILE id="mvc7t4" name="loop~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/loop~/loop~.c"/>
+          <FILE id="II61Dj" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/loop~/makefile"/>
+          <FILE id="KLuORS" name="test-loop~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/loop~/test-loop~.pd"/>
+        </GROUP>
+        <GROUP id="{312D5418-7C92-D53E-A941-BFD8166AF93C}" name="lrshift~">
+          <FILE id="UeVjtZ" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/lrshift~/GNUmakefile.am"/>
+          <FILE id="uIAfZ9" name="lrshift~-help.pd" compile="0" resource="1"
+                file="../ThirdParty/LibPd/pure-data/extra/lrshift~/lrshift~-help.pd"/>
+          <FILE id="fG8502" name="lrshift~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/lrshift~/lrshift~.c"/>
+          <FILE id="gCQMqR" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/lrshift~/makefile"/>
+        </GROUP>
+        <FILE id="qQfyLJ" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/makefile"/>
+        <FILE id="d35hlO" name="Makefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/Makefile.am"/>
+        <FILE id="r2i1Vc" name="makefile.subdir" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/makefile.subdir"/>
+        <GROUP id="{8A8C1480-46FF-2257-93A0-9A794858429C}" name="pd~">
+          <FILE id="YV3Wda" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/GNUmakefile.am"/>
+          <FILE id="azZWyK" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/makefile"/>
+          <FILE id="q7O07h" name="notes.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/notes.txt"/>
+          <FILE id="S8IdER" name="pd~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/pd~-help.pd"/>
+          <FILE id="mZClt7" name="pd~-subprocess.pd" compile="0" resource="1"
+                file="../ThirdParty/LibPd/pure-data/extra/pd~/pd~-subprocess.pd"/>
+          <FILE id="qlDwFO" name="pd~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/pd~/pd~.c"/>
+          <FILE id="e5wc4p" name="pdsched.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/pd~/pdsched.c"/>
+          <FILE id="KjHulp" name="z.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pd~/z.pd"/>
+        </GROUP>
+        <GROUP id="{A10F235C-1D87-4352-911A-734C9845C35B}" name="pique">
+          <FILE id="MHxSbm" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pique/GNUmakefile.am"/>
+          <FILE id="Vnsn7g" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pique/makefile"/>
+          <FILE id="uAT731" name="pique-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/pique/pique-help.pd"/>
+          <FILE id="VNRLtX" name="pique.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/pique/pique.c"/>
+        </GROUP>
+        <FILE id="ekTqVF" name="README.txt" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/README.txt"/>
+        <FILE id="cVMXyy" name="rev1-final.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev1-final.pd"/>
+        <FILE id="VCQZxe" name="rev1-stage.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev1-stage.pd"/>
+        <FILE id="RGqBHI" name="rev1~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev1~-help.pd"/>
+        <FILE id="Cp4VZZ" name="rev1~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev1~.pd"/>
+        <FILE id="sT7RDf" name="rev2~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev2~-help.pd"/>
+        <FILE id="rhHy7n" name="rev2~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev2~.pd"/>
+        <FILE id="NPUCF9" name="rev3~-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev3~-help.pd"/>
+        <FILE id="arywno" name="rev3~.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/rev3~.pd"/>
+        <GROUP id="{4BCC685C-8806-531D-5E98-BA810211594D}" name="sigmund~">
+          <FILE id="x7Nzey" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/sigmund~/GNUmakefile.am"/>
+          <FILE id="lSGCml" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/sigmund~/makefile"/>
+          <FILE id="VjdZ5E" name="sigmund~-help.pd" compile="0" resource="1"
+                file="../ThirdParty/LibPd/pure-data/extra/sigmund~/sigmund~-help.pd"/>
+          <FILE id="m6RCC9" name="sigmund~.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/sigmund~/sigmund~.c"/>
+        </GROUP>
+        <GROUP id="{E4359EE7-5F13-75AC-418E-F8A3607E7155}" name="stdout">
+          <FILE id="VceeKI" name="GNUmakefile.am" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/stdout/GNUmakefile.am"/>
+          <FILE id="pfoq4B" name="makefile" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/stdout/makefile"/>
+          <FILE id="t4n3qC" name="stdout-help.pd" compile="0" resource="1" file="../ThirdParty/LibPd/pure-data/extra/stdout/stdout-help.pd"/>
+          <FILE id="E4UHYb" name="stdout.c" compile="1" resource="0" file="../ThirdParty/LibPd/pure-data/extra/stdout/stdout.c"/>
+        </GROUP>
+      </GROUP>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
@@ -355,10 +355,10 @@
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.6 SDK" osxArchitecture="64BitUniversal"
                        isDebug="1" optimisation="1" targetName="Camomile" libraryPath=""
                        headerPath="../../../ThirdParty/LibPd/cpp&#10;../../../ThirdParty/LibPd/libpd_wrapper&#10;../../../ThirdParty/LibPd/pure-data/src"
-                       customXcodeFlags="OTHER_CFLAGS = &quot;-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H&quot;, WARNING_CFLAGS = &quot;-Wno-unused-variable -Wno-parentheses&quot;"/>
+                       customXcodeFlags="OTHER_CFLAGS = &quot;-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H&quot;, WARNING_CFLAGS = &quot;-Wno-unused-variable -Wno-parentheses -Wno-format&quot; "/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.6 SDK" osxArchitecture="64BitUniversal"
                        isDebug="0" optimisation="3" targetName="Camomile" headerPath="../../../ThirdParty/LibPd/cpp&#10;../../../ThirdParty/LibPd/libpd_wrapper&#10;../../../ThirdParty/LibPd/pure-data/src"
-                       libraryPath="" customXcodeFlags="OTHER_CFLAGS = &quot;-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H&quot;, WARNING_CFLAGS = &quot;-Wno-unused-variable -Wno-parentheses&quot;"/>
+                       libraryPath="" customXcodeFlags="OTHER_CFLAGS = &quot;-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H&quot;, WARNING_CFLAGS = &quot;-Wno-unused-variable -Wno-parentheses -Wno-format&quot; "/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../ThirdParty/JuceModules"/>

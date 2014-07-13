@@ -141,6 +141,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
+    <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\c.library.cpp"/>
     <ClCompile Include="..\..\..\Caramel\AudioFFT.cpp"/>
     <ClCompile Include="..\..\..\Caramel\c.convolve_tilde.cpp"/>
@@ -200,19 +202,13 @@
     <ClCompile Include="..\..\..\ThirdParty\PureData\Sources\epopup\epopup.c"/>
     <ClCompile Include="..\..\..\ThirdParty\LibPd\cpp\PdBase.cpp"/>
     <ClCompile Include="..\..\..\ThirdParty\LibPd\cpp\PdTypes.cpp"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\bonk~\bonk~.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\choice\choice.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\vexp.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\vexp_fun.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\vexp_if.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\fiddle~\fiddle~.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\loop~\loop~.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\lrshift~\lrshift~.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\pd~\pd~.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\pd~\pdsched.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\pique\pique.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\sigmund~\sigmund~.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\stdout\stdout.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\s_libpdmidi.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\ringbuffer.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\z_print_util.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\z_queued.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\x_libpdreceive.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\z_hooks.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\z_libpd.c"/>
     <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\src\d_arithmetic.c"/>
     <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\src\d_array.c"/>
     <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\src\d_ctl.c"/>
@@ -283,15 +279,19 @@
     <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\src\x_scalar.c"/>
     <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\src\x_text.c"/>
     <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\src\x_time.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\s_libpdmidi.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\ringbuffer.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\z_print_util.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\z_queued.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\x_libpdreceive.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\z_hooks.c"/>
-    <ClCompile Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\z_libpd.c"/>
-    <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
-    <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\bonk~\bonk~.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\choice\choice.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\vexp.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\vexp_fun.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\vexp_if.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\fiddle~\fiddle~.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\loop~\loop~.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\lrshift~\lrshift~.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\pd~\pd~.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\pd~\pdsched.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\pique\pique.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\sigmund~\sigmund~.c"/>
+    <ClCompile Include="..\..\..\ThirdParty\LibPd\pure-data\extra\stdout\stdout.c"/>
     <ClCompile Include="..\..\..\ThirdParty\JuceModules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1366,6 +1366,8 @@
     <ClCompile Include="..\..\..\ThirdParty\JuceModules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\PluginEditor.h"/>
+    <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\..\c.library.h"/>
     <ClInclude Include="..\..\..\Caramel\AudioFFT.h"/>
     <ClInclude Include="..\..\..\Caramel\FFTConvolver.h"/>
@@ -1386,22 +1388,20 @@
     <ClInclude Include="..\..\..\ThirdParty\LibPd\cpp\PdMidiReceiver.hpp"/>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\cpp\PdReceiver.hpp"/>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\cpp\PdTypes.hpp"/>
-    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\fts_to_pd.h"/>
-    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\vexp.h"/>
-    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\g_all_guis.h"/>
-    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\g_canvas.h"/>
-    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\m_imp.h"/>
-    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\m_pd.h"/>
-    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\s_stuff.h"/>
-    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\s_utf8.h"/>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\ringbuffer.h"/>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\z_print_util.h"/>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\util\z_queued.h"/>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\x_libpdreceive.h"/>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\z_hooks.h"/>
     <ClInclude Include="..\..\..\ThirdParty\LibPd\libpd_wrapper\z_libpd.h"/>
-    <ClInclude Include="..\..\Source\PluginEditor.h"/>
-    <ClInclude Include="..\..\Source\PluginProcessor.h"/>
+    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\g_all_guis.h"/>
+    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\g_canvas.h"/>
+    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\m_imp.h"/>
+    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\m_pd.h"/>
+    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\s_stuff.h"/>
+    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\src\s_utf8.h"/>
+    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\fts_to_pd.h"/>
+    <ClInclude Include="..\..\..\ThirdParty\LibPd\pure-data\extra\expr~\vexp.h"/>
     <ClInclude Include="..\..\..\ThirdParty\JuceModules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
     <ClInclude Include="..\..\..\ThirdParty\JuceModules\juce_audio_basics\buffers\juce_AudioSampleBuffer.h"/>
     <ClInclude Include="..\..\..\ThirdParty\JuceModules\juce_audio_basics\buffers\juce_FloatVectorOperations.h"/>
@@ -1830,6 +1830,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\ThirdParty\LibPd\cpp\LICENSE.txt"/>
+    <None Include="..\..\..\ThirdParty\LibPd\pure-data\src\CHANGELOG.txt"/>
     <None Include="..\..\..\ThirdParty\LibPd\pure-data\extra\bonk~\bonk~-help.pd"/>
     <None Include="..\..\..\ThirdParty\LibPd\pure-data\extra\bonk~\GNUmakefile.am"/>
     <None Include="..\..\..\ThirdParty\LibPd\pure-data\extra\bonk~\makefile"/>
@@ -1883,7 +1884,6 @@
     <None Include="..\..\..\ThirdParty\LibPd\pure-data\extra\stdout\GNUmakefile.am"/>
     <None Include="..\..\..\ThirdParty\LibPd\pure-data\extra\stdout\makefile"/>
     <None Include="..\..\..\ThirdParty\LibPd\pure-data\extra\stdout\stdout-help.pd"/>
-    <None Include="..\..\..\ThirdParty\LibPd\pure-data\src\CHANGELOG.txt"/>
     <None Include="..\..\..\ThirdParty\JuceModules\juce_audio_basics\juce_module_info"/>
     <None Include="..\..\..\ThirdParty\JuceModules\juce_audio_devices\juce_module_info"/>
     <None Include="..\..\..\ThirdParty\JuceModules\juce_audio_formats\juce_module_info"/>

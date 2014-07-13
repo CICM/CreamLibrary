@@ -45,8 +45,274 @@ static const unsigned char temp_binary_data_0[] =
 
 const char* LICENSE_txt = (const char*) temp_binary_data_0;
 
-//================== bonk~-help.pd ==================
+//================== CHANGELOG.txt ==================
 static const unsigned char temp_binary_data_1[] =
+"This file describes implementation and API changes; stuff more visible to the\n"
+"user appears in the \"release notes\" instead.  See the bottom of this file\n"
+"for original notes on source style and organization.\n"
+"\n"
+"0.42.0 \n"
+"\n"
+"changed definition of t_float, t_sample, t_floatarg so that they can be\n"
+"set via #defines (PD_FLOATTYPE, etc).\n"
+"\n"
+"0.41.0\n"
+"\n"
+"add support for callback-based audio I/O\n"
+"headers & code changed to use t_float or t_sample instead of float (patches\n"
+"by zmoelnig).\n"
+"\n"
+"\n"
+"0.40.0\n"
+"\n"
+"0.39.0\n"
+"\n"
+"canvas_dspstate and signalinlet_new() exported to m_pd.h\n"
+"\n"
+"new function verbose() added to m_pd.h \n"
+"\n"
+"0.38.0\n"
+"\n"
+"finally figured out how to do \"-enable-\", etc., flags in the configure\n"
+"script correctly.\n"
+"\n"
+"The scheduler now has a hook (set_so you can add polling routines) :\n"
+"    sys_idlehook().\n"
+"\n"
+"I'm now uploading directly to CVS repository (\"main\" and \"stable_0_38\"\n"
+"branches.)  There are still problems keeping CVS's and my versions of\n"
+"portaudio the same (CVS bashes the \"ident\" lines).\n"
+"\n"
+"t_int to int in binbuf_addv prototype\n"
+"\n"
+"64-bit fix to externs makefiles\n"
+"\n"
+"Pd now uses portaudio out-of-the-box; customized files are moved to\n"
+"\"src\" directory.\n"
+"\n"
+"All \"tags\" are printf'd as %lx to make 64-bit safe.  \n"
+"\n"
+"GUI queueing mechanism added: sys_queuegui() etc. \n"
+"\n"
+"massive rewrite of array code to unify arrays and scalars.\n"
+"\n"
+"fixed empty lists automatically to call \"bang\" method if one is supplied.\n"
+"\n"
+"rewrote the \"namelist\" stuff to facilitate preference saving (s_stuff.h,\n"
+"s_path.c, s_file.c, s_main.c)\n"
+"\n"
+"0.37.2\n"
+"\n"
+"expr() \"exp\" temporary variables renamed to avoid compilation problems\n"
+"\n"
+"0.37.1\n"
+"\n"
+"makefile.in: MANINSTDIR = $(DESTDIR)/$(MANDIR) changed to\n"
+"    $(DESTDIR)/$(INSTALL_PREFIX)/$(MANDIR) (thx. Mathieu Bouchard)\n"
+"\n"
+"applied 2 jack patches from Luke Yelavich\n"
+"\n"
+"add -fno-strict-aliasing to config script (linux&mac) to improve underflow,\n"
+"etc., protection\n"
+"\n"
+"add underflow protection to vcf~ object; rewrote underflow protection to be\n"
+"faster in throw~/catch~ and send~/receive~\n"
+"\n"
+"fixed bug in -inchannels/-outchannels arg parsing\n"
+"\n"
+"fixed u_main.tk to make \"apple\" key work to accelerate menus on MACOS\n"
+"\n"
+"fooled with MIDI to try to get sysex and other system messages to work.\n"
+"Needs lots of testing now...\n"
+"\n"
+"finally fixed OSS to open audio with NODELAY... also cleared dup-on-exec flag.\n"
+"\n"
+"bug fix in scalar_properties\n"
+"\n"
+"major editions to the IEM GUIs to fix bugs in how \"$\" variables are handled.\n"
+"The code still isn't pretty but hopefully at least works now.\n"
+"\n"
+"tried to get alsa noninterleaved access to work (needed for RME).  Failed\n"
+"to get my RME card to load under ALSA and gave up for now.\n"
+"\n"
+"fixed scalar drawing to fail gracefully when the template canvas disappears\n"
+"\n"
+"bug fix in vd~ for very small delays (d_delay.c)\n"
+"\n"
+"set up sys_oldtclversion flag to correct for changed text selection\n"
+"(u_main.tk, s_main.c, g_rtext.c)\n"
+"\n"
+"tried again to add \"readn\" support to s_audio_alsa.c: coded, but failing so far.\n"
+"\n"
+"fixed broken octave divider example\n"
+"\n"
+"removed \"-Werror\" from default makefile; fixed  configure script to respect\n"
+"\"CFLAGS\" environment variable instead.  Suggest developers should use\n"
+"\"setenv CFLAGS -Werror\".\n"
+"\n"
+"added \"-alsaadd\" flag so people can specify alsa devnames to add to list.\n"
+"fixed some problems with Pd crashing when ALSA failed to open.\n"
+"\n"
+"took out the 2-pixel padding for MSW in g_canvas.g (HORIZBORDER/VERTBORDER)\n"
+"\n"
+"went back to s_midi_mmio (portaudio version got assertion errors and anyway\n"
+"I could never get sysex working in it as I had wanted.)\n"
+"\n"
+"Took bug fixes from s_midi_pm.c, s_audio_jack.c, s_inter.c from \"devel\" branch;\n"
+"also added \"static\" flag to configure.in (but the devel configure.in as a whole\n"
+"doesn't seem to work for OSX, for me at least.)\n"
+" \n"
+"Might have fixed a bug where labels disappear in buttons, etc, when saved\n"
+"and reloaded.\n"
+"\n"
+"brought s_audio_alsa.c up to alsa 1.0.0 compatibility\n"
+"\n"
+"fixed \"-alsaadd\" (never worked before)\n"
+"\n"
+"fooled with macintosh audio.  Fixed some (not all) of the audio I/O APIs\n"
+"to deal with open failures better (reducing sys_{in,out}channels accordingly)\n"
+"\n"
+"In the Alsa API, the synchronization test was too stringent and was loosened\n"
+"to 3*DACBLKSIZE/2.\n"
+"\n"
+"'make install' fixed to deal with 'extra' correctly.\n"
+"\n"
+"one more improvement in jack support (guenter)\n"
+"\n"
+"make an \"nrt\" flag so mac can disable pthread_setschedparam call if yu want.\n"
+"\n"
+"------------------- original source notes -------------\n"
+"\n"
+"0.  structure definition roadmap.  First, the containment tree of things\n"
+"that can be sent messages (\"pure data\").  (note that t_object and t_text,\n"
+"and t_graph and t_canvas, should be unified...)\n"
+"\n"
+"------------ BFFORE 0.35: ---------\n"
+"m_pd.h\t    t_pd    \t    \t    anything with a class\n"
+"    \t    \tt_gobj\t    \t    \"graphic object\"\n"
+"    \t    \t    t_text  \t    text object\n"
+"g_canvas.h  \n"
+"    \t    \t    t_glist \t    list of graphic objects\n"
+"g_canvas.c  \t    \tt_canvas    Pd \"document\"\n"
+"\n"
+"------------ AFTER 0.35: ---------\n"
+"m_pd.h\t    t_pd    \t    \t    anything with a class\n"
+"    \t    \tt_gobj\t    \t    \"graphic object\"\n"
+"    \t    \t    t_text  \t    patchable object, AKA t_object\n"
+"g_canvas.h     \t    \tt_glist     list of graphic objects, AKA t_canvas\n"
+"\n"
+"... and other structures:\n"
+"g_canvas.h  t_selection -- linked list of gobjs\n"
+"    \t    t_editor -- editor state, allocated for visible glists\n"
+"m_imp.h     t_methodentry -- method handler\n"
+"    \t    t_widgetbehavior -- class-dependent editing behavior for gobjs\n"
+"    \t    t_parentwidgetbehavior -- objects' behavior on parent window\n"
+"    \t    t_class -- method definitions, instance size, flags, etc.\n"
+"\n"
+"\n"
+"1.  C coding style.  The source should pass most \"warnings\" of C compilers\n"
+"(-Wall on linux, for instance; see the makefile.)  Some informalities\n"
+"are intentional, for instance the loose use of function prototypes (see\n"
+"below) and uncast conversions from longer to shorter numerical formats.\n"
+"The code doesn't respect \"const\" yet.\n"
+"\n"
+"1.1.  Prefixes in structure elements.  The names of structure elements always\n"
+"have a K&R-style prefix, as in ((t_atom)x)->a_type, where the \"a_\" prefix\n"
+"indicates \"atom.\"  This is intended to enhance readability (although the\n"
+"convention arose from a limitation of early C compilers.)  Common prefixes are\n"
+"\"w_\" (word), \"a_\" (atom), \"s_\" (symbol), \"ob_\" (object), \"te_\" (text object),\n"
+"\"g_\" (graphical object), and \"gl_\" (glist, a list of graphical objects).  Also,\n"
+"global symbols sometimes get prefixes, as in \"s_float\" (the symbol whose string\n"
+"is \"float).  Typedefs are prefixed by \"t_\".  Most _private_ structures, i.e.,\n"
+"structures whose definitions appear in a \".c\" file, are prefixed by \"x_\".\n"
+"\n"
+"1.2.   Function arguments.  Many functions take as their first\n"
+"argument a pointer named \"x\", which is a pointer to a structure suggested\n"
+"by the function prefix; e.g., canvas_dirty(x, n) where \"x\" points to a canvas\n"
+"(t_canvas *x).\n"
+"\n"
+"1.3.  Function Prototypes.  Functions which are used in at least two different\n"
+"files (besides where they originate) are prototyped in the appropriate include\n"
+"file. Functions which are provided in one file and used in one other are\n"
+"prototyped right where they are used.  This is just to keep the size of the\n"
+"\".h\" files down for readability's sake.\n"
+"\n"
+"1.4.  Whacko private terminology.  Some terms are lifted from other historically\n"
+"relevant programs, notably \"ugen\" (which is just a tilde object; see d_ugen.c.)\n"
+"\n"
+"1.5.  Spacing.  Tabs are 8 spaces; indentation is 4 spaces.  Indenting\n"
+"curly brackets are by themselves on their own lines, as in:\n"
+"\n"
+"    if (x)\n"
+"    {\n"
+"\tx = 0;\n"
+"    }\n"
+"\n"
+"Lines should fit within 80 spaces.\n"
+"\n"
+"2.  Max patch-level compatibility.  \"Import\" and \"Export\" functions are\n"
+"provided which aspire to strict compatibility with 0.26 patches (ISPW version),\n"
+"but which don't get anywhere close to that yet.  Where possible, features\n"
+"appearing on the Mac will comeday also be provided; for instance, the connect\n"
+"message on the Mac offers segmented patch cords; these will devolve into\n"
+"straight lines in Pd.  Many, many UI objects in Opcode Max will not appear in\n"
+"Pd, at least at first.\n"
+"\n"
+"3.  Compatibility with Max 0.26 \"externs\", i.e., source-level compatibility. Pd\n"
+"objects follow the style of 0.26 objects as closely as possible, making\n"
+"exceptions in cases where the 0.26 model is clearly deficient.  These are:\n"
+"\n"
+"3.1.  Anything involving the MacIntosh \"Handle\" data type is changed to use\n"
+"char * or void * instead.\n"
+"\n"
+"3.2.  Pd passes true single-precision floating-point arguments to methods;\n"
+"Max uses double.\n"
+"Typedefs are provided:\n"
+"    t_floatarg, t_intarg for arguments passed by the message system\n"
+"    t_float, t_int for the \"word\" union (in atoms, for example.)\n"
+"\n"
+"3.3.  Badly-named entities got name changes:\n"
+"\n"
+"    w_long --> w_int (in the \"union word\" structure)\n"
+"\n"
+"3.4.  Many library functions are renamed and have different arguments;\n"
+"I hope to provide an include file to alias them when compiling Max externs.\n"
+"\n"
+"4.  Function name prefixes.\n"
+"Many function names have prefixes which indicate what \"package\" they belong\n"
+"to.  The exceptions are:\n"
+"    typedmess, vmess, getfn, gensym (m_class.c)\n"
+"    getbytes, freebytes, resizebytes (m_memory.c)\n"
+"    post, error, bug (s_print.c)\n"
+"which are all frequently called and which don't fit into simple categories.\n"
+"Important packages are:\n"
+"(pd-gui:)   pdgui -- everything\n"
+"(pd:)\t    pd -- functions common to all \"pd\" objects\n"
+"    \t    obj -- fuctions common to all \"patchable\" objects ala Max\n"
+"    \t    sys -- \"system\" level functions\n"
+"    \t    binbuf -- functions manipulating binbufs\n"
+"    \t    class -- functions manipulating classes\n"
+"    \t    (other) -- functions common to the named Pd class\n"
+"\n"
+"5. Source file prefixes. \n"
+"PD:\n"
+"s    system interface\n"
+"m    message system\n"
+"g    graphics stuff\n"
+"d    DSP objects\n"
+"x    control objects\n"
+"z    other\n"
+"\n"
+"PD-GUI:\n"
+"t    TK front end\n"
+"\n"
+"\n"
+"\n";
+
+const char* CHANGELOG_txt = (const char*) temp_binary_data_1;
+
+//================== bonk~-help.pd ==================
+static const unsigned char temp_binary_data_2[] =
 "#N canvas 0 0 1052 581 12;\n"
 "#X obj 382 492 spigot;\n"
 "#X msg 484 293 bang;\n"
@@ -257,10 +523,10 @@ static const unsigned char temp_binary_data_1[] =
 "#X connect 40 0 2 0;\n"
 "#X connect 42 0 2 0;\n";
 
-const char* bonkhelp_pd = (const char*) temp_binary_data_1;
+const char* bonkhelp_pd = (const char*) temp_binary_data_2;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_2[] =
+static const unsigned char temp_binary_data_3[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=bonk~\n"
@@ -292,28 +558,28 @@ static const unsigned char temp_binary_data_2[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am = (const char*) temp_binary_data_2;
+const char* GNUmakefile_am = (const char*) temp_binary_data_3;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_3[] =
+static const unsigned char temp_binary_data_4[] =
 "NAME=bonk~\n"
 "CSYM=bonk_tilde\n"
 "\n"
 "include ../makefile.subdir\n";
 
-const char* makefile = (const char*) temp_binary_data_3;
+const char* makefile = (const char*) temp_binary_data_4;
 
 //================== templates.txt ==================
-static const unsigned char temp_binary_data_4[] =
+static const unsigned char temp_binary_data_5[] =
 " 10.47   9.65  14.95  23.77  28.32  38.84  53.21  41.20  31.25  21.70  16.48 \n"
 "  6.52  13.93  27.82  58.05  24.11  35.26  35.98  37.78  22.54  13.56  10.75 \n"
 " 30.45  28.86  29.42  21.94  29.92  35.70  38.49  32.01  28.19  27.38  22.10 \n"
 " 66.77  46.27  28.82  25.95  22.84  20.61  20.33  14.18   6.86   8.92   7.37 \n";
 
-const char* templates_txt = (const char*) temp_binary_data_4;
+const char* templates_txt = (const char*) temp_binary_data_5;
 
 //================== choice-help.pd ==================
-static const unsigned char temp_binary_data_5[] =
+static const unsigned char temp_binary_data_6[] =
 "#N canvas 16 5 609 600 12;\n"
 "#X obj 8 195 choice;\n"
 "#X msg 41 86 print;\n"
@@ -373,10 +639,10 @@ static const unsigned char temp_binary_data_5[] =
 "#X connect 9 0 8 0;\n"
 "#X connect 11 0 12 0;\n";
 
-const char* choicehelp_pd = (const char*) temp_binary_data_5;
+const char* choicehelp_pd = (const char*) temp_binary_data_6;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_6[] =
+static const unsigned char temp_binary_data_7[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=choice\n"
@@ -408,19 +674,19 @@ static const unsigned char temp_binary_data_6[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am2 = (const char*) temp_binary_data_6;
+const char* GNUmakefile_am2 = (const char*) temp_binary_data_7;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_7[] =
+static const unsigned char temp_binary_data_8[] =
 "NAME=choice\n"
 "CSYM=choice\n"
 "\n"
 "include ../makefile.subdir\n";
 
-const char* makefile2 = (const char*) temp_binary_data_7;
+const char* makefile2 = (const char*) temp_binary_data_8;
 
 //================== complex-mod~-help.pd ==================
-static const unsigned char temp_binary_data_8[] =
+static const unsigned char temp_binary_data_9[] =
 "#N canvas 136 85 600 480 12;\n"
 "#X graph graph1 0 -1 882 1 279 209 579 39;\n"
 "#X array mod-output 882 float;\n"
@@ -449,10 +715,10 @@ static const unsigned char temp_binary_data_8[] =
 "#X connect 7 0 6 0;\n"
 "#X connect 8 0 3 2;\n";
 
-const char* complexmodhelp_pd = (const char*) temp_binary_data_8;
+const char* complexmodhelp_pd = (const char*) temp_binary_data_9;
 
 //================== complex-mod~.pd ==================
-static const unsigned char temp_binary_data_9[] =
+static const unsigned char temp_binary_data_10[] =
 "#N canvas 206 108 428 341 12;\n"
 "#X obj 142 87 inlet~;\n"
 "#X obj 315 166 cos~;\n"
@@ -484,10 +750,10 @@ static const unsigned char temp_binary_data_9[] =
 "#X connect 13 0 1 0;\n"
 "#X connect 14 0 13 0;\n";
 
-const char* complexmod_pd = (const char*) temp_binary_data_9;
+const char* complexmod_pd = (const char*) temp_binary_data_10;
 
 //================== expr-help.pd ==================
-static const unsigned char temp_binary_data_10[] =
+static const unsigned char temp_binary_data_11[] =
 "#N canvas 165 94 1012 579 12;\n"
 "#X text 66 10 expression evaluation family - expr \\, expr~ \\, fexpr~\n"
 ";\n"
@@ -986,10 +1252,10 @@ static const unsigned char temp_binary_data_10[] =
 "#X restore 308 541 pd lorenz equations for visualization;\n"
 "#X text 68 24 by Shahrokh Yadegari;\n";
 
-const char* exprhelp_pd = (const char*) temp_binary_data_10;
+const char* exprhelp_pd = (const char*) temp_binary_data_11;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_11[] =
+static const unsigned char temp_binary_data_12[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=expr~\n"
@@ -1054,10 +1320,10 @@ static const unsigned char temp_binary_data_11[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am3 = (const char*) temp_binary_data_11;
+const char* GNUmakefile_am3 = (const char*) temp_binary_data_12;
 
 //================== LICENSE.txt ==================
-static const unsigned char temp_binary_data_12[] =
+static const unsigned char temp_binary_data_13[] =
 "                 GNU LESSER GENERAL PUBLIC LICENSE\n"
 "                       Version 3, 29 June 2007\n"
 "\n"
@@ -1224,10 +1490,10 @@ static const unsigned char temp_binary_data_12[] =
 "permanent authorization for you to choose that version for the\n"
 "Library.\n";
 
-const char* LICENSE_txt2 = (const char*) temp_binary_data_12;
+const char* LICENSE_txt2 = (const char*) temp_binary_data_13;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_13[] =
+static const unsigned char temp_binary_data_14[] =
 "current: expr.pd_linux expr~.pd_linux fexpr~.pd_linux \\\n"
 "     ../expr.pd_linux ../expr~.pd_linux ../fexpr~.pd_linux\n"
 "\n"
@@ -1387,10 +1653,10 @@ static const unsigned char temp_binary_data_13[] =
 "\trm -f *.d_ppc_o *.o\n"
 "\n";
 
-const char* makefile3 = (const char*) temp_binary_data_13;
+const char* makefile3 = (const char*) temp_binary_data_14;
 
 //================== README.txt ==================
-static const unsigned char temp_binary_data_14[] =
+static const unsigned char temp_binary_data_15[] =
 "\n"
 "You can get more information on the expr object at\n"
 "http://www.crca.ucsd.edu/~yadegari/expr.html\n"
@@ -1489,10 +1755,10 @@ static const unsigned char temp_binary_data_14[] =
 "Shahrokh Yadegari (sdy@ucsd.edu)\n"
 "7/10/02\n";
 
-const char* README_txt = (const char*) temp_binary_data_14;
+const char* README_txt = (const char*) temp_binary_data_15;
 
 //================== fiddle~-help.pd ==================
-static const unsigned char temp_binary_data_15[] =
+static const unsigned char temp_binary_data_16[] =
 "#N canvas 93 26 980 745 10;\n"
 "#X obj 262 522 phasor~;\n"
 "#X obj 531 616 unpack;\n"
@@ -1636,10 +1902,10 @@ static const unsigned char temp_binary_data_15[] =
 "#X connect 69 0 48 0;\n"
 "#X connect 71 0 48 0;\n";
 
-const char* fiddlehelp_pd = (const char*) temp_binary_data_15;
+const char* fiddlehelp_pd = (const char*) temp_binary_data_16;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_16[] =
+static const unsigned char temp_binary_data_17[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=fiddle~\n"
@@ -1671,19 +1937,19 @@ static const unsigned char temp_binary_data_16[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am4 = (const char*) temp_binary_data_16;
+const char* GNUmakefile_am4 = (const char*) temp_binary_data_17;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_17[] =
+static const unsigned char temp_binary_data_18[] =
 "NAME=fiddle~\n"
 "CSYM=fiddle_tilde\n"
 "\n"
 "include ../makefile.subdir\n";
 
-const char* makefile4 = (const char*) temp_binary_data_17;
+const char* makefile4 = (const char*) temp_binary_data_18;
 
 //================== hilbert~-help.pd ==================
-static const unsigned char temp_binary_data_18[] =
+static const unsigned char temp_binary_data_19[] =
 "#N canvas 156 234 600 488 12;\n"
 "#X obj 67 124 hilbert~;\n"
 "#X obj 66 85 osc~ 440;\n"
@@ -1703,10 +1969,10 @@ static const unsigned char temp_binary_data_18[] =
 "#X connect 5 0 4 0;\n"
 "#X connect 6 0 1 0;\n";
 
-const char* hilberthelp_pd = (const char*) temp_binary_data_18;
+const char* hilberthelp_pd = (const char*) temp_binary_data_19;
 
 //================== hilbert~.pd ==================
-static const unsigned char temp_binary_data_19[] =
+static const unsigned char temp_binary_data_20[] =
 "#N canvas 269 0 593 306 12;\n"
 "#X obj 105 92 biquad~ 0.83774 -0.06338 0.06338 -0.83774 1;\n"
 "#X obj 105 66 biquad~ 1.94632 -0.94657 0.94657 -1.94632 1;\n"
@@ -1735,10 +2001,10 @@ static const unsigned char temp_binary_data_19[] =
 "#X connect 11 0 2 0;\n"
 "#X connect 11 0 3 0;\n";
 
-const char* hilbert_pd = (const char*) temp_binary_data_19;
+const char* hilbert_pd = (const char*) temp_binary_data_20;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_20[] =
+static const unsigned char temp_binary_data_21[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=loop~\n"
@@ -1770,10 +2036,10 @@ static const unsigned char temp_binary_data_20[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am5 = (const char*) temp_binary_data_20;
+const char* GNUmakefile_am5 = (const char*) temp_binary_data_21;
 
 //================== loop~-help.pd ==================
-static const unsigned char temp_binary_data_21[] =
+static const unsigned char temp_binary_data_22[] =
 "#N canvas 234 90 647 662 12;\n"
 "#X floatatom 41 204 0 0 0 0 - - -;\n"
 "#X obj 254 382 print~;\n"
@@ -1849,19 +2115,19 @@ static const unsigned char temp_binary_data_21[] =
 "#X connect 31 0 29 0;\n"
 "#X connect 36 0 10 0;\n";
 
-const char* loophelp_pd = (const char*) temp_binary_data_21;
+const char* loophelp_pd = (const char*) temp_binary_data_22;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_22[] =
+static const unsigned char temp_binary_data_23[] =
 "NAME=loop~\n"
 "CSYM=loop_tilde\n"
 "\n"
 "include ../makefile.subdir\n";
 
-const char* makefile5 = (const char*) temp_binary_data_22;
+const char* makefile5 = (const char*) temp_binary_data_23;
 
 //================== test-loop~.pd ==================
-static const unsigned char temp_binary_data_23[] =
+static const unsigned char temp_binary_data_24[] =
 "#N canvas 33 0 680 609 12;\n"
 "#X floatatom 52 262 0 0 0 0 - - -;\n"
 "#X obj 261 346 print~;\n"
@@ -1921,10 +2187,10 @@ static const unsigned char temp_binary_data_23[] =
 "#X connect 25 0 24 0;\n"
 "#X connect 26 0 24 0;\n";
 
-const char* testloop_pd = (const char*) temp_binary_data_23;
+const char* testloop_pd = (const char*) temp_binary_data_24;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_24[] =
+static const unsigned char temp_binary_data_25[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=lrshift~\n"
@@ -1956,10 +2222,10 @@ static const unsigned char temp_binary_data_24[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am6 = (const char*) temp_binary_data_24;
+const char* GNUmakefile_am6 = (const char*) temp_binary_data_25;
 
 //================== lrshift~-help.pd ==================
-static const unsigned char temp_binary_data_25[] =
+static const unsigned char temp_binary_data_26[] =
 "#N canvas 143 0 673 325 12;\n"
 "#X msg 268 277 bang;\n"
 "#X obj 244 303 print~;\n"
@@ -1994,19 +2260,19 @@ static const unsigned char temp_binary_data_25[] =
 "#X connect 15 0 9 0;\n"
 "#X connect 15 0 10 0;\n";
 
-const char* lrshifthelp_pd = (const char*) temp_binary_data_25;
+const char* lrshifthelp_pd = (const char*) temp_binary_data_26;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_26[] =
+static const unsigned char temp_binary_data_27[] =
 "NAME=lrshift~\n"
 "CSYM=lrshift_tilde\n"
 "\n"
 "include ../makefile.subdir\n";
 
-const char* makefile6 = (const char*) temp_binary_data_26;
+const char* makefile6 = (const char*) temp_binary_data_27;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_27[] =
+static const unsigned char temp_binary_data_28[] =
 "# this is the UNIX-style complicated layout dir, simple goes to $(prefix)/po\n"
 "prefix = /usr/local\n"
 "libpddir = $(prefix)/lib/pd\n"
@@ -2106,10 +2372,10 @@ static const unsigned char temp_binary_data_27[] =
 "test:\n"
 "\t@echo prefix: $(prefix)\n";
 
-const char* makefile7 = (const char*) temp_binary_data_27;
+const char* makefile7 = (const char*) temp_binary_data_28;
 
 //================== Makefile.am ==================
-static const unsigned char temp_binary_data_28[] =
+static const unsigned char temp_binary_data_29[] =
 "SUBDIRS=bonk~ choice expr~ fiddle~ loop~ lrshift~ pd~ pique sigmund~ stdout\n"
 "\n"
 "DIST_SUBDIRS=$(SUBDIRS)\n"
@@ -2123,10 +2389,10 @@ static const unsigned char temp_binary_data_28[] =
 "\n"
 "dist_libpdextra_DATA = $(PATCHES) $(HELPPATCHES) \n";
 
-const char* Makefile_am = (const char*) temp_binary_data_28;
+const char* Makefile_am = (const char*) temp_binary_data_29;
 
 //================== makefile.subdir ==================
-static const unsigned char temp_binary_data_29[] =
+static const unsigned char temp_binary_data_30[] =
 "# this is the UNIX-style complicated layout dir, simple goes to $(prefix)/pd\n"
 "prefix = /usr/local\n"
 "libpddir = $(prefix)/lib/pd\n"
@@ -2212,10 +2478,10 @@ static const unsigned char temp_binary_data_29[] =
 "\tinstall -m644 -p *.*_* $(DESTDIR)$(libpddir)/extra/$(NAME)\n"
 "\tinstall -m644 -p *.pd $(DESTDIR)$(libpddir)/extra/$(NAME)\n";
 
-const char* makefile_subdir = (const char*) temp_binary_data_29;
+const char* makefile_subdir = (const char*) temp_binary_data_30;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_30[] =
+static const unsigned char temp_binary_data_31[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=pd~\n"
@@ -2249,10 +2515,10 @@ static const unsigned char temp_binary_data_30[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am7 = (const char*) temp_binary_data_30;
+const char* GNUmakefile_am7 = (const char*) temp_binary_data_31;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_31[] =
+static const unsigned char temp_binary_data_32[] =
 "NAME=pd~\n"
 "CSYM=pd_tilde\n"
 "\n"
@@ -2274,10 +2540,10 @@ static const unsigned char temp_binary_data_31[] =
 "\t$(MSLN) /nologo /dll /export:pd_extern_sched $*.obj $(PDNTLIB)\n"
 "\trm -f $*.obj\n";
 
-const char* makefile8 = (const char*) temp_binary_data_31;
+const char* makefile8 = (const char*) temp_binary_data_32;
 
 //================== notes.txt ==================
-static const unsigned char temp_binary_data_32[] =
+static const unsigned char temp_binary_data_33[] =
 "pd -schedlib `pwd`/pdsched\n"
 "\n"
 "dolist:\n"
@@ -2287,10 +2553,10 @@ static const unsigned char temp_binary_data_32[] =
 "\n"
 "\n";
 
-const char* notes_txt = (const char*) temp_binary_data_32;
+const char* notes_txt = (const char*) temp_binary_data_33;
 
 //================== pd~-help.pd ==================
-static const unsigned char temp_binary_data_33[] =
+static const unsigned char temp_binary_data_34[] =
 "#N canvas 12 0 566 872 12;\n"
 "#X msg 31 406 foo bar baz;\n"
 "#X obj 189 466 osc~ 440;\n"
@@ -2367,10 +2633,10 @@ static const unsigned char temp_binary_data_33[] =
 "#X connect 17 1 2 0;\n"
 "#X connect 17 2 7 0;\n";
 
-const char* pdhelp_pd = (const char*) temp_binary_data_33;
+const char* pdhelp_pd = (const char*) temp_binary_data_34;
 
 //================== pd~-subprocess.pd ==================
-static const unsigned char temp_binary_data_34[] =
+static const unsigned char temp_binary_data_35[] =
 "#N canvas 1233 66 646 598 12;\n"
 "#X obj 202 395 r foo;\n"
 "#X obj 202 423 print foo;\n"
@@ -2432,10 +2698,10 @@ static const unsigned char temp_binary_data_34[] =
 "#X connect 20 0 19 0;\n"
 "#X connect 21 0 3 0;\n";
 
-const char* pdsubprocess_pd = (const char*) temp_binary_data_34;
+const char* pdsubprocess_pd = (const char*) temp_binary_data_35;
 
 //================== z.pd ==================
-static const unsigned char temp_binary_data_35[] =
+static const unsigned char temp_binary_data_36[] =
 "#N canvas 686 241 450 300 10;\n"
 "#X obj 65 58 r foo;\n"
 "#X obj 62 100 print foo;\n"
@@ -2452,10 +2718,10 @@ static const unsigned char temp_binary_data_35[] =
 "#X connect 6 0 5 0;\n"
 "#X connect 8 0 7 0;\n";
 
-const char* z_pd = (const char*) temp_binary_data_35;
+const char* z_pd = (const char*) temp_binary_data_36;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_36[] =
+static const unsigned char temp_binary_data_37[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=pique\n"
@@ -2487,19 +2753,19 @@ static const unsigned char temp_binary_data_36[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am8 = (const char*) temp_binary_data_36;
+const char* GNUmakefile_am8 = (const char*) temp_binary_data_37;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_37[] =
+static const unsigned char temp_binary_data_38[] =
 "NAME=pique\n"
 "CSYM=pique\n"
 "\n"
 "include ../makefile.subdir\n";
 
-const char* makefile9 = (const char*) temp_binary_data_37;
+const char* makefile9 = (const char*) temp_binary_data_38;
 
 //================== pique-help.pd ==================
-static const unsigned char temp_binary_data_38[] =
+static const unsigned char temp_binary_data_39[] =
 "#N canvas 143 0 729 407 12;\n"
 "#X obj 47 11 pique;\n"
 "#X text 105 12 -- find peaks in an FFT spectrum;\n"
@@ -2534,10 +2800,10 @@ static const unsigned char temp_binary_data_38[] =
 "#X connect 12 0 11 0;\n"
 "#X connect 14 0 2 0;\n";
 
-const char* piquehelp_pd = (const char*) temp_binary_data_38;
+const char* piquehelp_pd = (const char*) temp_binary_data_39;
 
 //================== README.txt ==================
-static const unsigned char temp_binary_data_39[] =
+static const unsigned char temp_binary_data_40[] =
 "This is the README file for the \"extras\" library, consisting of Pd\n"
 "objects which are too specialized or otherwise non-canonical for\n"
 "inclusion into Pd proper.   These files are open source; see \n"
@@ -2569,10 +2835,10 @@ static const unsigned char temp_binary_data_39[] =
 "from http://www.crca.ucsd.edu/~tapel\n"
 "- msp@ucsd.edu\n";
 
-const char* README_txt2 = (const char*) temp_binary_data_39;
+const char* README_txt2 = (const char*) temp_binary_data_40;
 
 //================== rev1-final.pd ==================
-static const unsigned char temp_binary_data_40[] =
+static const unsigned char temp_binary_data_41[] =
 "#N canvas 133 53 729 468 10;\n"
 "#X obj 72 240 inlet~;\n"
 "#X obj 347 28 loadbang;\n"
@@ -2680,10 +2946,10 @@ static const unsigned char temp_binary_data_40[] =
 "#X connect 48 0 2 0;\n"
 "#X connect 49 0 15 1;\n";
 
-const char* rev1final_pd = (const char*) temp_binary_data_40;
+const char* rev1final_pd = (const char*) temp_binary_data_41;
 
 //================== rev1-stage.pd ==================
-static const unsigned char temp_binary_data_41[] =
+static const unsigned char temp_binary_data_42[] =
 "#N canvas 86 133 729 452 10;\n"
 "#X obj 27 238 inlet~;\n"
 "#X obj 347 28 loadbang;\n"
@@ -2784,10 +3050,10 @@ static const unsigned char temp_binary_data_41[] =
 "#X connect 45 0 4 1;\n"
 "#X connect 46 0 17 1;\n";
 
-const char* rev1stage_pd = (const char*) temp_binary_data_41;
+const char* rev1stage_pd = (const char*) temp_binary_data_42;
 
 //================== rev1~-help.pd ==================
-static const unsigned char temp_binary_data_42[] =
+static const unsigned char temp_binary_data_43[] =
 "#N canvas 55 21 1008 526 12;\n"
 "#X obj 148 439 dac~;\n"
 "#X obj 58 72 line~;\n"
@@ -2908,10 +3174,10 @@ static const unsigned char temp_binary_data_42[] =
 "#X connect 54 0 18 0;\n"
 "#X connect 54 0 41 0;\n";
 
-const char* rev1help_pd = (const char*) temp_binary_data_42;
+const char* rev1help_pd = (const char*) temp_binary_data_43;
 
 //================== rev1~.pd ==================
-static const unsigned char temp_binary_data_43[] =
+static const unsigned char temp_binary_data_44[] =
 "#N canvas 66 116 512 312 10;\n"
 "#X obj 345 154 dbtorms;\n"
 "#X obj 316 120 min 100;\n"
@@ -2977,10 +3243,10 @@ static const unsigned char temp_binary_data_43[] =
 "#X connect 25 1 26 1;\n"
 "#X connect 26 1 12 0;\n";
 
-const char* rev1_pd = (const char*) temp_binary_data_43;
+const char* rev1_pd = (const char*) temp_binary_data_44;
 
 //================== rev2~-help.pd ==================
-static const unsigned char temp_binary_data_44[] =
+static const unsigned char temp_binary_data_45[] =
 "#N canvas 167 160 766 354 12;\n"
 "#X floatatom 73 185 0 0 120 0 - - -;\n"
 "#X floatatom 106 323 0 0 120 0 - - -;\n"
@@ -3116,10 +3382,10 @@ static const unsigned char temp_binary_data_44[] =
 "#X connect 21 0 9 0;\n"
 "#X connect 21 1 9 1;\n";
 
-const char* rev2help_pd = (const char*) temp_binary_data_44;
+const char* rev2help_pd = (const char*) temp_binary_data_45;
 
 //================== rev2~.pd ==================
-static const unsigned char temp_binary_data_45[] =
+static const unsigned char temp_binary_data_46[] =
 "#N canvas 333 147 832 664 12;\n"
 "#X obj 161 497 +~;\n"
 "#X obj 520 105 inlet;\n"
@@ -3358,10 +3624,10 @@ static const unsigned char temp_binary_data_45[] =
 "#X connect 71 0 3 0;\n"
 "#X connect 72 0 29 0;\n";
 
-const char* rev2_pd = (const char*) temp_binary_data_45;
+const char* rev2_pd = (const char*) temp_binary_data_46;
 
 //================== rev3~-help.pd ==================
-static const unsigned char temp_binary_data_46[] =
+static const unsigned char temp_binary_data_47[] =
 "#N canvas 70 263 765 380 12;\n"
 "#X floatatom 99 212 0 0 120 0 - - -;\n"
 "#X floatatom 105 340 0 0 120 0 - - -;\n"
@@ -3499,10 +3765,10 @@ static const unsigned char temp_binary_data_46[] =
 "#X connect 25 0 9 0;\n"
 "#X connect 25 1 9 1;\n";
 
-const char* rev3help_pd = (const char*) temp_binary_data_46;
+const char* rev3help_pd = (const char*) temp_binary_data_47;
 
 //================== rev3~.pd ==================
-static const unsigned char temp_binary_data_47[] =
+static const unsigned char temp_binary_data_48[] =
 "#N canvas 220 79 810 570 12;\n"
 "#X obj 520 105 inlet;\n"
 "#X obj 452 105 inlet;\n"
@@ -3943,10 +4209,10 @@ static const unsigned char temp_binary_data_47[] =
 "#X connect 37 0 35 1;\n"
 "#X connect 41 0 7 0;\n";
 
-const char* rev3_pd = (const char*) temp_binary_data_47;
+const char* rev3_pd = (const char*) temp_binary_data_48;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_48[] =
+static const unsigned char temp_binary_data_49[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=sigmund~\n"
@@ -3978,19 +4244,19 @@ static const unsigned char temp_binary_data_48[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am9 = (const char*) temp_binary_data_48;
+const char* GNUmakefile_am9 = (const char*) temp_binary_data_49;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_49[] =
+static const unsigned char temp_binary_data_50[] =
 "NAME=sigmund~\n"
 "CSYM=sigmund_tilde\n"
 "\n"
 "include ../makefile.subdir\n";
 
-const char* makefile10 = (const char*) temp_binary_data_49;
+const char* makefile10 = (const char*) temp_binary_data_50;
 
 //================== sigmund~-help.pd ==================
-static const unsigned char temp_binary_data_50[] =
+static const unsigned char temp_binary_data_51[] =
 "#N canvas 167 -7 580 617 12;\n"
 "#X text 42 4 sigmund~ - sinusoidal analysis and pitch tracking;\n"
 "#N canvas 432 117 573 597 using-with-tables 0;\n"
@@ -4186,10 +4452,10 @@ static const unsigned char temp_binary_data_50[] =
 "#X connect 24 0 5 0;\n"
 "#X connect 24 1 6 0;\n";
 
-const char* sigmundhelp_pd = (const char*) temp_binary_data_50;
+const char* sigmundhelp_pd = (const char*) temp_binary_data_51;
 
 //================== GNUmakefile.am ==================
-static const unsigned char temp_binary_data_51[] =
+static const unsigned char temp_binary_data_52[] =
 "## Makefile.am -- Process this file with automake to produce Makefile.in\n"
 "\n"
 "NAME=stdout\n"
@@ -4221,19 +4487,19 @@ static const unsigned char temp_binary_data_51[] =
 "libtool: $(LIBTOOL_DEPS)\n"
 "\t$(SHELL) ./config.status --recheck\n";
 
-const char* GNUmakefile_am10 = (const char*) temp_binary_data_51;
+const char* GNUmakefile_am10 = (const char*) temp_binary_data_52;
 
 //================== makefile ==================
-static const unsigned char temp_binary_data_52[] =
+static const unsigned char temp_binary_data_53[] =
 "NAME=stdout\n"
 "CSYM=stdout\n"
 "\n"
 "include ../makefile.subdir\n";
 
-const char* makefile11 = (const char*) temp_binary_data_52;
+const char* makefile11 = (const char*) temp_binary_data_53;
 
 //================== stdout-help.pd ==================
-static const unsigned char temp_binary_data_53[] =
+static const unsigned char temp_binary_data_54[] =
 "#N canvas 121 60 488 321 12;\n"
 "#X msg 126 203 walk the dog;\n"
 "#X msg 117 156 1;\n"
@@ -4254,273 +4520,7 @@ static const unsigned char temp_binary_data_53[] =
 "#X connect 1 0 2 0;\n"
 "#X connect 6 0 2 0;\n";
 
-const char* stdouthelp_pd = (const char*) temp_binary_data_53;
-
-//================== CHANGELOG.txt ==================
-static const unsigned char temp_binary_data_54[] =
-"This file describes implementation and API changes; stuff more visible to the\n"
-"user appears in the \"release notes\" instead.  See the bottom of this file\n"
-"for original notes on source style and organization.\n"
-"\n"
-"0.42.0 \n"
-"\n"
-"changed definition of t_float, t_sample, t_floatarg so that they can be\n"
-"set via #defines (PD_FLOATTYPE, etc).\n"
-"\n"
-"0.41.0\n"
-"\n"
-"add support for callback-based audio I/O\n"
-"headers & code changed to use t_float or t_sample instead of float (patches\n"
-"by zmoelnig).\n"
-"\n"
-"\n"
-"0.40.0\n"
-"\n"
-"0.39.0\n"
-"\n"
-"canvas_dspstate and signalinlet_new() exported to m_pd.h\n"
-"\n"
-"new function verbose() added to m_pd.h \n"
-"\n"
-"0.38.0\n"
-"\n"
-"finally figured out how to do \"-enable-\", etc., flags in the configure\n"
-"script correctly.\n"
-"\n"
-"The scheduler now has a hook (set_so you can add polling routines) :\n"
-"    sys_idlehook().\n"
-"\n"
-"I'm now uploading directly to CVS repository (\"main\" and \"stable_0_38\"\n"
-"branches.)  There are still problems keeping CVS's and my versions of\n"
-"portaudio the same (CVS bashes the \"ident\" lines).\n"
-"\n"
-"t_int to int in binbuf_addv prototype\n"
-"\n"
-"64-bit fix to externs makefiles\n"
-"\n"
-"Pd now uses portaudio out-of-the-box; customized files are moved to\n"
-"\"src\" directory.\n"
-"\n"
-"All \"tags\" are printf'd as %lx to make 64-bit safe.  \n"
-"\n"
-"GUI queueing mechanism added: sys_queuegui() etc. \n"
-"\n"
-"massive rewrite of array code to unify arrays and scalars.\n"
-"\n"
-"fixed empty lists automatically to call \"bang\" method if one is supplied.\n"
-"\n"
-"rewrote the \"namelist\" stuff to facilitate preference saving (s_stuff.h,\n"
-"s_path.c, s_file.c, s_main.c)\n"
-"\n"
-"0.37.2\n"
-"\n"
-"expr() \"exp\" temporary variables renamed to avoid compilation problems\n"
-"\n"
-"0.37.1\n"
-"\n"
-"makefile.in: MANINSTDIR = $(DESTDIR)/$(MANDIR) changed to\n"
-"    $(DESTDIR)/$(INSTALL_PREFIX)/$(MANDIR) (thx. Mathieu Bouchard)\n"
-"\n"
-"applied 2 jack patches from Luke Yelavich\n"
-"\n"
-"add -fno-strict-aliasing to config script (linux&mac) to improve underflow,\n"
-"etc., protection\n"
-"\n"
-"add underflow protection to vcf~ object; rewrote underflow protection to be\n"
-"faster in throw~/catch~ and send~/receive~\n"
-"\n"
-"fixed bug in -inchannels/-outchannels arg parsing\n"
-"\n"
-"fixed u_main.tk to make \"apple\" key work to accelerate menus on MACOS\n"
-"\n"
-"fooled with MIDI to try to get sysex and other system messages to work.\n"
-"Needs lots of testing now...\n"
-"\n"
-"finally fixed OSS to open audio with NODELAY... also cleared dup-on-exec flag.\n"
-"\n"
-"bug fix in scalar_properties\n"
-"\n"
-"major editions to the IEM GUIs to fix bugs in how \"$\" variables are handled.\n"
-"The code still isn't pretty but hopefully at least works now.\n"
-"\n"
-"tried to get alsa noninterleaved access to work (needed for RME).  Failed\n"
-"to get my RME card to load under ALSA and gave up for now.\n"
-"\n"
-"fixed scalar drawing to fail gracefully when the template canvas disappears\n"
-"\n"
-"bug fix in vd~ for very small delays (d_delay.c)\n"
-"\n"
-"set up sys_oldtclversion flag to correct for changed text selection\n"
-"(u_main.tk, s_main.c, g_rtext.c)\n"
-"\n"
-"tried again to add \"readn\" support to s_audio_alsa.c: coded, but failing so far.\n"
-"\n"
-"fixed broken octave divider example\n"
-"\n"
-"removed \"-Werror\" from default makefile; fixed  configure script to respect\n"
-"\"CFLAGS\" environment variable instead.  Suggest developers should use\n"
-"\"setenv CFLAGS -Werror\".\n"
-"\n"
-"added \"-alsaadd\" flag so people can specify alsa devnames to add to list.\n"
-"fixed some problems with Pd crashing when ALSA failed to open.\n"
-"\n"
-"took out the 2-pixel padding for MSW in g_canvas.g (HORIZBORDER/VERTBORDER)\n"
-"\n"
-"went back to s_midi_mmio (portaudio version got assertion errors and anyway\n"
-"I could never get sysex working in it as I had wanted.)\n"
-"\n"
-"Took bug fixes from s_midi_pm.c, s_audio_jack.c, s_inter.c from \"devel\" branch;\n"
-"also added \"static\" flag to configure.in (but the devel configure.in as a whole\n"
-"doesn't seem to work for OSX, for me at least.)\n"
-" \n"
-"Might have fixed a bug where labels disappear in buttons, etc, when saved\n"
-"and reloaded.\n"
-"\n"
-"brought s_audio_alsa.c up to alsa 1.0.0 compatibility\n"
-"\n"
-"fixed \"-alsaadd\" (never worked before)\n"
-"\n"
-"fooled with macintosh audio.  Fixed some (not all) of the audio I/O APIs\n"
-"to deal with open failures better (reducing sys_{in,out}channels accordingly)\n"
-"\n"
-"In the Alsa API, the synchronization test was too stringent and was loosened\n"
-"to 3*DACBLKSIZE/2.\n"
-"\n"
-"'make install' fixed to deal with 'extra' correctly.\n"
-"\n"
-"one more improvement in jack support (guenter)\n"
-"\n"
-"make an \"nrt\" flag so mac can disable pthread_setschedparam call if yu want.\n"
-"\n"
-"------------------- original source notes -------------\n"
-"\n"
-"0.  structure definition roadmap.  First, the containment tree of things\n"
-"that can be sent messages (\"pure data\").  (note that t_object and t_text,\n"
-"and t_graph and t_canvas, should be unified...)\n"
-"\n"
-"------------ BFFORE 0.35: ---------\n"
-"m_pd.h\t    t_pd    \t    \t    anything with a class\n"
-"    \t    \tt_gobj\t    \t    \"graphic object\"\n"
-"    \t    \t    t_text  \t    text object\n"
-"g_canvas.h  \n"
-"    \t    \t    t_glist \t    list of graphic objects\n"
-"g_canvas.c  \t    \tt_canvas    Pd \"document\"\n"
-"\n"
-"------------ AFTER 0.35: ---------\n"
-"m_pd.h\t    t_pd    \t    \t    anything with a class\n"
-"    \t    \tt_gobj\t    \t    \"graphic object\"\n"
-"    \t    \t    t_text  \t    patchable object, AKA t_object\n"
-"g_canvas.h     \t    \tt_glist     list of graphic objects, AKA t_canvas\n"
-"\n"
-"... and other structures:\n"
-"g_canvas.h  t_selection -- linked list of gobjs\n"
-"    \t    t_editor -- editor state, allocated for visible glists\n"
-"m_imp.h     t_methodentry -- method handler\n"
-"    \t    t_widgetbehavior -- class-dependent editing behavior for gobjs\n"
-"    \t    t_parentwidgetbehavior -- objects' behavior on parent window\n"
-"    \t    t_class -- method definitions, instance size, flags, etc.\n"
-"\n"
-"\n"
-"1.  C coding style.  The source should pass most \"warnings\" of C compilers\n"
-"(-Wall on linux, for instance; see the makefile.)  Some informalities\n"
-"are intentional, for instance the loose use of function prototypes (see\n"
-"below) and uncast conversions from longer to shorter numerical formats.\n"
-"The code doesn't respect \"const\" yet.\n"
-"\n"
-"1.1.  Prefixes in structure elements.  The names of structure elements always\n"
-"have a K&R-style prefix, as in ((t_atom)x)->a_type, where the \"a_\" prefix\n"
-"indicates \"atom.\"  This is intended to enhance readability (although the\n"
-"convention arose from a limitation of early C compilers.)  Common prefixes are\n"
-"\"w_\" (word), \"a_\" (atom), \"s_\" (symbol), \"ob_\" (object), \"te_\" (text object),\n"
-"\"g_\" (graphical object), and \"gl_\" (glist, a list of graphical objects).  Also,\n"
-"global symbols sometimes get prefixes, as in \"s_float\" (the symbol whose string\n"
-"is \"float).  Typedefs are prefixed by \"t_\".  Most _private_ structures, i.e.,\n"
-"structures whose definitions appear in a \".c\" file, are prefixed by \"x_\".\n"
-"\n"
-"1.2.   Function arguments.  Many functions take as their first\n"
-"argument a pointer named \"x\", which is a pointer to a structure suggested\n"
-"by the function prefix; e.g., canvas_dirty(x, n) where \"x\" points to a canvas\n"
-"(t_canvas *x).\n"
-"\n"
-"1.3.  Function Prototypes.  Functions which are used in at least two different\n"
-"files (besides where they originate) are prototyped in the appropriate include\n"
-"file. Functions which are provided in one file and used in one other are\n"
-"prototyped right where they are used.  This is just to keep the size of the\n"
-"\".h\" files down for readability's sake.\n"
-"\n"
-"1.4.  Whacko private terminology.  Some terms are lifted from other historically\n"
-"relevant programs, notably \"ugen\" (which is just a tilde object; see d_ugen.c.)\n"
-"\n"
-"1.5.  Spacing.  Tabs are 8 spaces; indentation is 4 spaces.  Indenting\n"
-"curly brackets are by themselves on their own lines, as in:\n"
-"\n"
-"    if (x)\n"
-"    {\n"
-"\tx = 0;\n"
-"    }\n"
-"\n"
-"Lines should fit within 80 spaces.\n"
-"\n"
-"2.  Max patch-level compatibility.  \"Import\" and \"Export\" functions are\n"
-"provided which aspire to strict compatibility with 0.26 patches (ISPW version),\n"
-"but which don't get anywhere close to that yet.  Where possible, features\n"
-"appearing on the Mac will comeday also be provided; for instance, the connect\n"
-"message on the Mac offers segmented patch cords; these will devolve into\n"
-"straight lines in Pd.  Many, many UI objects in Opcode Max will not appear in\n"
-"Pd, at least at first.\n"
-"\n"
-"3.  Compatibility with Max 0.26 \"externs\", i.e., source-level compatibility. Pd\n"
-"objects follow the style of 0.26 objects as closely as possible, making\n"
-"exceptions in cases where the 0.26 model is clearly deficient.  These are:\n"
-"\n"
-"3.1.  Anything involving the MacIntosh \"Handle\" data type is changed to use\n"
-"char * or void * instead.\n"
-"\n"
-"3.2.  Pd passes true single-precision floating-point arguments to methods;\n"
-"Max uses double.\n"
-"Typedefs are provided:\n"
-"    t_floatarg, t_intarg for arguments passed by the message system\n"
-"    t_float, t_int for the \"word\" union (in atoms, for example.)\n"
-"\n"
-"3.3.  Badly-named entities got name changes:\n"
-"\n"
-"    w_long --> w_int (in the \"union word\" structure)\n"
-"\n"
-"3.4.  Many library functions are renamed and have different arguments;\n"
-"I hope to provide an include file to alias them when compiling Max externs.\n"
-"\n"
-"4.  Function name prefixes.\n"
-"Many function names have prefixes which indicate what \"package\" they belong\n"
-"to.  The exceptions are:\n"
-"    typedmess, vmess, getfn, gensym (m_class.c)\n"
-"    getbytes, freebytes, resizebytes (m_memory.c)\n"
-"    post, error, bug (s_print.c)\n"
-"which are all frequently called and which don't fit into simple categories.\n"
-"Important packages are:\n"
-"(pd-gui:)   pdgui -- everything\n"
-"(pd:)\t    pd -- functions common to all \"pd\" objects\n"
-"    \t    obj -- fuctions common to all \"patchable\" objects ala Max\n"
-"    \t    sys -- \"system\" level functions\n"
-"    \t    binbuf -- functions manipulating binbufs\n"
-"    \t    class -- functions manipulating classes\n"
-"    \t    (other) -- functions common to the named Pd class\n"
-"\n"
-"5. Source file prefixes. \n"
-"PD:\n"
-"s    system interface\n"
-"m    message system\n"
-"g    graphics stuff\n"
-"d    DSP objects\n"
-"x    control objects\n"
-"z    other\n"
-"\n"
-"PD-GUI:\n"
-"t    TK front end\n"
-"\n"
-"\n"
-"\n";
-
-const char* CHANGELOG_txt = (const char*) temp_binary_data_54;
+const char* stdouthelp_pd = (const char*) temp_binary_data_54;
 
 
 const char* getNamedResource (const char*, int&) throw();
@@ -4534,6 +4534,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
     switch (hash)
     {
         case 0x5a320952:  numBytes = 1574; return LICENSE_txt;
+        case 0x309cd925:  numBytes = 9574; return CHANGELOG_txt;
         case 0x3bf1bda8:  numBytes = 7574; return bonkhelp_pd;
         case 0x95199b13:  numBytes = 695; return GNUmakefile_am;
         case 0x0272546a:  numBytes = 55; return makefile;
@@ -4587,7 +4588,6 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
         case 0xb51f2872:  numBytes = 686; return GNUmakefile_am10;
         case 0x2f2ee80a:  numBytes = 52; return makefile11;
         case 0xbbdf9b07:  numBytes = 755; return stdouthelp_pd;
-        case 0x309cd925:  numBytes = 9574; return CHANGELOG_txt;
         default: break;
     }
 
@@ -4598,6 +4598,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
 const char* namedResourceList[] =
 {
     "LICENSE_txt",
+    "CHANGELOG_txt",
     "bonkhelp_pd",
     "GNUmakefile_am",
     "makefile",
@@ -4650,8 +4651,7 @@ const char* namedResourceList[] =
     "sigmundhelp_pd",
     "GNUmakefile_am10",
     "makefile11",
-    "stdouthelp_pd",
-    "CHANGELOG_txt"
+    "stdouthelp_pd"
 };
 
 }

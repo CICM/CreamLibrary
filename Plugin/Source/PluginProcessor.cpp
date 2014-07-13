@@ -29,17 +29,112 @@
 
 AudioProcessor* JUCE_CALLTYPE createPluginFilter();
 
+typedef struct _pdinstance_list
+{
+    t_pdinstance* current;
+    _pdinstance_list* next;
+} t_pdinstance_list;
+
+static t_pdinstance_list* pdinstance_list = NULL;
+
+void pdinstance_list_add(t_pdinstance* x)
+{
+    t_pdinstance_list* newlist = (t_pdinstance_list *)malloc(sizeof(t_pdinstance_list));
+    newlist->current = x;
+    newlist->next    = NULL;
+    if(!pdinstance_list)
+    {
+        pdinstance_list = newlist;
+    }
+    else
+    {
+        t_pdinstance_list* pdilist = pdinstance_list;
+        while(pdilist)
+        {
+            if(pdilist->next)
+            {
+                pdilist->next = newlist;
+                return;
+            }
+            pdilist = pdilist->next;
+        }
+    }
+}
+
+void pdinstance_list_remove(t_pdinstance* x)
+{
+    t_pdinstance_list* temp;
+    t_pdinstance_list* pdilist = pdinstance_list;
+    while(pdilist)
+    {
+        if(pdilist->current == x)
+        {
+            temp = pdilist;
+            pdilist = pdilist->next;
+            free(temp);
+            return;
+        }
+        pdilist = pdilist->next;
+    }
+}
+
+void pdinstance_list_startdsp()
+{
+    t_pdinstance_list* temp;
+    t_pdinstance_list* pdilist = pdinstance_list;
+    while(pdilist)
+    {
+        pd_setinstance(pdilist->current);
+        libpd_start_message(1);
+        libpd_add_float(1.f);
+        libpd_finish_message("pd", "dsp");
+        pdilist = pdilist->next;
+    }
+}
+
+void pdinstance_list_stopdsp()
+{
+    t_pdinstance_list* temp;
+    t_pdinstance_list* pdilist = pdinstance_list;
+    while(pdilist)
+    {
+        pd_setinstance(pdilist->current);
+        libpd_start_message(1);
+        libpd_add_float(0.f);
+        libpd_finish_message("pd", "dsp");
+        pdilist = pdilist->next;
+    }
+}
 
 PluginProcessor::PluginProcessor()
 {
-    m_pd.init(2, 2, 44100);
-    m_pd.subscribe("camomile1572");
+    m_pd = pdinstance_new();
+    
+    pdinstance_list_stopdsp();
+    pdinstance_list_add(m_pd);
+    
+    sys_lock();
+    libpd_init();
     setup_c0x2elibrary();
+    sys_unlock();
+    
+    m_input_pd  = NULL;
+    m_output_pd = NULL;
+    m_patch     = NULL;
 }
 
 PluginProcessor::~PluginProcessor()
 {
-    m_pd.clear();
+    pdinstance_list_stopdsp();
+    
+    sys_lock();
+    pd_setinstance(m_pd);
+    if(m_patch)
+        libpd_closefile(m_patch);
+    sys_unlock();
+    
+    pdinstance_list_remove(m_pd);
+    pdinstance_free(m_pd);
 }
 
 int PluginProcessor::getNumParameters()
@@ -74,68 +169,66 @@ const String PluginProcessor::getParameterText(int index)
 
 void PluginProcessor::prepareToPlay(double samplerate, int vectorsize)
 {
-    Patch patch = m_pd.openPatch("zaza.pd", "/Users/Pierre/Desktop");
-
-    m_pd.clear();
-    m_pd.init(0, 2, samplerate);
-    m_pd.subscribe("camomile1572");
-    m_pd.openPatch(patch);
-    
-    m_juceIn = new float*[getNumInputChannels()];
-    for(int i = 0; i < getNumInputChannels(); ++i)
-    {
-        m_juceIn[i] = new float[vectorsize];
-        memset(m_juceIn[i], 0, vectorsize * sizeof(float));
-    }
-    m_juceOut = new float*[getNumOutputChannels()];
-    for(int i = 0; i < getNumOutputChannels(); ++i)
-    {
-        m_juceOut[i] = new float[vectorsize];
-        memset(m_juceOut[i], 0, vectorsize * sizeof(float));
-    }
-    m_pdIn = new float[getNumInputChannels() * vectorsize];
-    memset(m_pdIn, 0, getNumInputChannels() * vectorsize * sizeof(float));
-    m_pdOut = new float[getNumOutputChannels() * vectorsize];
-    memset(m_pdOut, 0, getNumOutputChannels() * vectorsize * sizeof(float));
-    
+    releaseResources();
     m_vector_size = vectorsize;
-    m_ticks = vectorsize / m_pd.blockSize();
-}
-
-void PluginProcessor::releaseResources()
-{
-    for(int i = 0; i < getNumInputChannels(); ++i)
-        delete [] m_juceIn[i];
-    delete [] m_juceIn;
-    for(int i = 0; i < getNumOutputChannels(); ++i)
-        delete [] m_juceOut[i];
-    delete [] m_juceOut;
-    delete [] m_pdIn;
-    delete [] m_pdOut;
-    m_juceIn = NULL;
-    m_juceOut = NULL;
-    m_pdIn = NULL;
-    m_pdOut = NULL;
+    m_input_pd = new float[getNumInputChannels() * m_vector_size];
+    m_output_pd = new float[getNumOutputChannels() * m_vector_size];
+    
+    sys_lock();
+    pd_setinstance(m_pd);
+    if(m_patch)
+        libpd_closefile(m_patch);
+	m_patch = libpd_openfile("zaza.pd", "/Users/Pierre/Desktop");
+    
+    libpd_init_audio(getNumInputChannels(), getNumOutputChannels(), samplerate);
+    sys_unlock();
+    
+    pdinstance_list_startdsp();
 }
 
 void PluginProcessor::reset()
 {
-    // Use this method as the place to clear any delay lines, buffers, etc, as it
-    // means there's been a break in the audio's continuity.
+    /*
+    if(m_input_pd)
+    {
+        memset(m_input_pd, 0, getNumInputChannels() * m_vector_size * sizeof(float));
+    }
+    if(m_output_pd)
+    {
+        memset(m_output_pd, 0, getNumOutputChannels() * m_vector_size * sizeof(float));
+    }*/
+}
+
+void PluginProcessor::releaseResources()
+{
+    pdinstance_list_stopdsp();
+    if(m_input_pd)
+    {
+        delete [] m_input_pd;
+        m_input_pd = NULL;
+    }
+    if(m_output_pd)
+    {
+        delete [] m_output_pd;
+        m_output_pd = NULL;
+    }
 }
 
 void PluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-    m_pd.processFloat(m_ticks, m_pdIn, m_pdOut);
-    for(int i = 0; i < m_vector_size * getNumOutputChannels(); ++i)
+    pd_setinstance(m_pd);
+	int ticks = m_vector_size / libpd_blocksize();
+    for(int i = 0; i < getNumInputChannels(); i++)
     {
-        for (int channel = 0; channel < getNumOutputChannels(); ++channel)
-            m_juceOut[channel][i / getNumOutputChannels()] = m_pdOut[i];
+        cblas_scopy(m_vector_size, buffer.getReadPointer(i), 1, m_input_pd+i, getNumInputChannels());
     }
-    for(int channel = 0; channel < getNumOutputChannels(); ++channel)
-        buffer.copyFrom(channel, 0, m_juceOut[channel], m_vector_size);
-    
-    m_pd.computeAudio(1);
+    sys_lock();
+	libpd_process_float(ticks, m_input_pd, m_output_pd);
+	sys_unlock();
+    for(int i = 0; i < getNumOutputChannels(); i++)
+    {
+        cblas_scopy(m_vector_size, m_output_pd+i, getNumOutputChannels(), buffer.getWritePointer(i), 1);
+    }
 }
 
 AudioProcessorEditor* PluginProcessor::createEditor()

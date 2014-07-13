@@ -27,13 +27,21 @@
 #ifndef CREAM_PLUGIN_PROCESSOR
 #define CREAM_PLUGIN_PROCESSOR
 
+#ifdef __APPLE__
+#include <Accelerate/Accelerate.h>
+#endif
+
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "PdBase.hpp"
+extern "C"
+{
+#include "z_libpd.h"
+#include "m_imp.h"
+}
 #include "../../c.library.h"
 
-using namespace pd;
 
-class PluginProcessor  : public AudioProcessor
+
+class PluginProcessor  : public AudioProcessor//, public PdReceiver
 {
 public:
     PluginProcessor();
@@ -75,16 +83,13 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
-private:
-    PdBase m_pd;
-    int    m_ticks;
-    int    m_vector_size;
-    float **m_juceIn;
-    float **m_juceOut;
-    float *m_pdIn;
-    float *m_pdOut;
     
+private:
+    t_pdinstance*   m_pd;
+    void*           m_patch;
+    int             m_vector_size;
+    float*          m_input_pd;
+    float*          m_output_pd;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginProcessor)
 };

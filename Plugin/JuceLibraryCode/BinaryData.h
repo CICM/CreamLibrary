@@ -12,6 +12,9 @@ namespace BinaryData
     extern const char*   LICENSE_txt;
     const int            LICENSE_txtSize = 1574;
 
+    extern const char*   CHANGELOG_txt;
+    const int            CHANGELOG_txtSize = 9574;
+
     extern const char*   bonkhelp_pd;
     const int            bonkhelp_pdSize = 7574;
 
@@ -170,9 +173,6 @@ namespace BinaryData
 
     extern const char*   stdouthelp_pd;
     const int            stdouthelp_pdSize = 755;
-
-    extern const char*   CHANGELOG_txt;
-    const int            CHANGELOG_txtSize = 9574;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];
