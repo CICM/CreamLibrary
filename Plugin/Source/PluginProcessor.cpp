@@ -41,21 +41,22 @@ static int libpd_audioinited = 0;
 
 void pdinstance_list_add(t_pdinstance* x)
 {
-    t_pdinstance_list* newlist = (t_pdinstance_list *)malloc(sizeof(t_pdinstance_list));
-    newlist->current = x;
-    newlist->next    = NULL;
     if(!pdinstance_list)
     {
-        pdinstance_list = newlist;
+        pdinstance_list = (t_pdinstance_list *)malloc(sizeof(t_pdinstance_list));
+        pdinstance_list->current = x;
+        pdinstance_list->next    = NULL;
     }
     else
     {
         t_pdinstance_list* pdilist = pdinstance_list;
         while(pdilist)
         {
-            if(pdilist->next)
+            if(!pdilist->next)
             {
-                pdilist->next = newlist;
+                pdilist->next = (t_pdinstance_list *)malloc(sizeof(t_pdinstance_list));
+                pdilist->next->current = x;
+                pdilist->next->next = NULL;
                 return;
             }
             pdilist = pdilist->next;
@@ -67,6 +68,13 @@ void pdinstance_list_remove(t_pdinstance* x)
 {
     t_pdinstance_list* temp;
     t_pdinstance_list* pdilist = pdinstance_list;
+    if(pdinstance_list->current == x)
+    {
+        temp = pdinstance_list->next;
+        free(pdinstance_list);
+        pdinstance_list = temp;
+        return;
+    }
     while(pdilist)
     {
         if(pdilist->current == x)
