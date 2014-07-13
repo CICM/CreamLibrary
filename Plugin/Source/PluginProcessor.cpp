@@ -36,6 +36,8 @@ typedef struct _pdinstance_list
 } t_pdinstance_list;
 
 static t_pdinstance_list* pdinstance_list = NULL;
+static int libpd_inited = 0;
+static int libpd_audioinited = 0;
 
 void pdinstance_list_add(t_pdinstance* x)
 {
@@ -114,8 +116,12 @@ PluginProcessor::PluginProcessor()
     pdinstance_list_add(m_pd);
     
     sys_lock();
-    libpd_init();
-    setup_c0x2elibrary();
+    if(!libpd_inited)
+    {
+        libpd_init();
+        libpd_loadcream();
+        libpd_inited = 1;
+    }
     sys_unlock();
     
     m_input_pd  = NULL;
@@ -180,10 +186,19 @@ void PluginProcessor::prepareToPlay(double samplerate, int vectorsize)
         libpd_closefile(m_patch);
 	m_patch = libpd_openfile("zaza.pd", "/Users/Pierre/Desktop");
     
-    libpd_init_audio(getNumInputChannels(), getNumOutputChannels(), samplerate);
+    if(!libpd_audioinited)
+    {
+        libpd_init_audio(getNumInputChannels(), getNumOutputChannels(), samplerate);
+        libpd_audioinited = 1;
+    }
+    
+    libpd_start_message(1);
+    libpd_add_float(1.f);
+    libpd_finish_message("pd", "dsp");
+    
     sys_unlock();
     
-    pdinstance_list_startdsp();
+    //pdinstance_list_startdsp();
 }
 
 void PluginProcessor::reset()
@@ -201,7 +216,7 @@ void PluginProcessor::reset()
 
 void PluginProcessor::releaseResources()
 {
-    pdinstance_list_stopdsp();
+    //pdinstance_list_stopdsp();
     if(m_input_pd)
     {
         delete [] m_input_pd;
