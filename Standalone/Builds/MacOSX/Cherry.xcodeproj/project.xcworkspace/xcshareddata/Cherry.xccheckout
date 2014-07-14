@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>A9905AB5-227B-4288-8D65-0DFAF0DEE7BF</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Cherry</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>4B7B88CB-4047-47C7-B29B-6B7B7D2A7249</key>
+		<string>https://github.com/CICM/CreamLibrary.git</string>
+		<key>88421E10-B47E-4363-B732-AB4A0FA3E1E5</key>
+		<string>https://github.com/CICM/CicmWrapper.git</string>
+		<key>93737620-3441-40F8-A729-23208A09736B</key>
+		<string>https://github.com/libpd/libpd.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Standalone/Builds/MacOSX/Cherry.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>4B7B88CB-4047-47C7-B29B-6B7B7D2A7249</key>
+		<string>../../../../..</string>
+		<key>88421E10-B47E-4363-B732-AB4A0FA3E1E5</key>
+		<string>../../../../../ThirdParty/PureData</string>
+		<key>93737620-3441-40F8-A729-23208A09736B</key>
+		<string>../../../../../ThirdParty/LibPd</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/CICM/CreamLibrary.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>4B7B88CB-4047-47C7-B29B-6B7B7D2A7249</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>4B7B88CB-4047-47C7-B29B-6B7B7D2A7249</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CreamLibrary</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>93737620-3441-40F8-A729-23208A09736B</string>
+			<key>IDESourceControlWCCName</key>
+			<string>LibPd</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>88421E10-B47E-4363-B732-AB4A0FA3E1E5</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PureData</string>
+		</dict>
+	</array>
+</dict>
+</plist>

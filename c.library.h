@@ -44,6 +44,7 @@ extern "C" void setup_c0x2evoronoy(void);
 
 // Coffee
 extern "C" void setup_c0x2einformer(void);
+extern "C" void cio_setup(void);
 extern "C" void setup_c0x2eloadmess(void);
 extern "C" void setup_c0x2epak(void);
 extern "C" void setup_c0x2epatcherargs(void);

@@ -58,6 +58,7 @@ extern "C" void setup_c0x2elibrary(void)
 
 	// Coffee
     setup_c0x2einformer();
+    cio_setup();
 	setup_c0x2eloadmess();
 	setup_c0x2epak();
 	setup_c0x2epatcherargs();
