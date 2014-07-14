@@ -141,6 +141,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\epd_ugen.c"/>
     <ClCompile Include="..\..\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\c.library.cpp"/>
@@ -169,6 +170,7 @@
     <ClCompile Include="..\..\..\Chocolate\c.tab.cpp"/>
     <ClCompile Include="..\..\..\Chocolate\c.toggle.cpp"/>
     <ClCompile Include="..\..\..\Coffee\c.informer.cpp"/>
+    <ClCompile Include="..\..\..\Coffee\c.io.cpp"/>
     <ClCompile Include="..\..\..\Coffee\c.loadmess.cpp"/>
     <ClCompile Include="..\..\..\Coffee\c.mousestate.cpp"/>
     <ClCompile Include="..\..\..\Coffee\c.pak.cpp"/>
@@ -1366,6 +1368,7 @@
     <ClCompile Include="..\..\..\ThirdParty\JuceModules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\epd_ugen.h"/>
     <ClInclude Include="..\..\Source\PluginEditor.h"/>
     <ClInclude Include="..\..\Source\PluginProcessor.h"/>
     <ClInclude Include="..\..\..\c.library.h"/>

@@ -10,6 +10,10 @@
 #define Camomile_epd_ugen_h
 
 #include "z_libpd.h"
+#include "m_pd.h"
+#include "m_imp.h"
+#include "g_canvas.h"
+#include "s_stuff.h"
 
 #ifndef __m_pd_h_
 #ifdef PD_EXTENTED
@@ -27,7 +31,22 @@
 #include <Accelerate/Accelerate.h>
 #endif
 
-#define EMAXLOGSIG 16384
+typedef struct _cinbis
+{
+    t_object x_obj;
+    t_int x_n;
+    t_int *x_vec;
+    t_sample* x_inputs;
+} t_cinbis;
+
+typedef struct _coutbis
+{
+    t_object x_obj;
+    t_int x_n;
+    t_int *x_vec;
+    t_float x_f;
+    t_sample* x_outputs;
+} t_coutbis;
 
 typedef struct _epd_process
 {
@@ -41,6 +60,8 @@ typedef struct _epd_process
     int             p_noutputs;
     float*          p_input_pd;
     float*          p_output_pd;
+    t_sample*       p_sysin_pd;
+    t_sample*       p_sysout_pd;
     
     t_signal*       p_sigfreelist[MAXLOGSIG+1];
     t_signal*       p_sigfreeborrowed;

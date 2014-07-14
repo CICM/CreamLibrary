@@ -78,6 +78,7 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
 private:
+    int             m_start;
     t_epd_process*  m_process;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PluginProcessor)
 };

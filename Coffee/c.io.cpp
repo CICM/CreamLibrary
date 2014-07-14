@@ -104,8 +104,7 @@ static void cout_free(t_cout *x)
 
 static void cout_setup(void)
 {
-    cout_class = class_new(gensym("cout~"), (t_newmethod)cout_new,
-                           (t_method)cout_free, sizeof(t_cout), 0, A_GIMME, 0);
+    cout_class = class_new(gensym("c.out~"), (t_newmethod)cout_new, (t_method)cout_free, sizeof(t_cout), 0, A_GIMME, 0);
     CLASS_MAINSIGNALIN(cout_class, t_cout, x_f);
     class_addmethod(cout_class, (t_method)cout_dsp, gensym("dsp"), A_CANT, 0);
 }
@@ -199,8 +198,7 @@ static void cin_free(t_cin *x)
 
 static void cin_setup(void)
 {
-    cin_class = class_new(gensym("c.in~"), (t_newmethod)cin_new,
-                          (t_method)cin_free, sizeof(t_cin), 0, A_GIMME, 0);
+    cin_class = class_new(gensym("c.in~"), (t_newmethod)cin_new, (t_method)cin_free, sizeof(t_cin), 0, A_GIMME, 0);
     class_addmethod(cin_class, (t_method)cin_dsp, gensym("dsp"), A_CANT, 0);
 }
 

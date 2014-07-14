@@ -379,6 +379,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\epd_ugen.c">
+      <Filter>Camomile\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
       <Filter>Camomile\Source</Filter>
     </ClCompile>
@@ -461,6 +464,9 @@
       <Filter>Camomile\Cream\Chocolate</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Coffee\c.informer.cpp">
+      <Filter>Camomile\Cream\Coffee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Coffee\c.io.cpp">
       <Filter>Camomile\Cream\Coffee</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Coffee\c.loadmess.cpp">
@@ -2022,6 +2028,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\epd_ugen.h">
+      <Filter>Camomile\Source</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">
       <Filter>Camomile\Source</Filter>
     </ClInclude>

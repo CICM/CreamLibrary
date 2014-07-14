@@ -44,9 +44,10 @@ PluginProcessor::PluginProcessor()
         libpd_inited = libpd_init();
         libpd_loadcream();
     }
-    
+    m_start = 1;
     m_process = epd_process_new();
     epd_process_open(m_process, "zaza.pd", "/Users/Pierre/Desktop");
+    
 }
 
 PluginProcessor::~PluginProcessor()
@@ -87,7 +88,7 @@ const String PluginProcessor::getParameterText(int index)
 void PluginProcessor::prepareToPlay(double samplerate, int vectorsize)
 {
     libpd_init_audio(getNumInputChannels(), getNumOutputChannels(), samplerate);
-    epd_process_dspstart(m_process, getNumInputChannels(),  getNumOutputChannels(), samplerate, vectorsize);
+    m_start = epd_process_dspstart(m_process, getNumInputChannels(),  getNumOutputChannels(), samplerate, vectorsize);
 }
 
 void PluginProcessor::reset()
@@ -102,7 +103,9 @@ void PluginProcessor::releaseResources()
 
 void PluginProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-    epd_process_process(m_process, buffer.getArrayOfReadPointers(), buffer.getArrayOfWritePointers()); 
+    if(!m_start)
+        epd_process_process(m_process, buffer.getArrayOfReadPointers(), buffer.getArrayOfWritePointers());
+    buffer.clear();
 }
 
 AudioProcessorEditor* PluginProcessor::createEditor()
