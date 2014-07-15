@@ -72,6 +72,42 @@ int epd_process_open(t_epd_process* x, char* name, char* dir)
         return 1;    
 }
 
+EXTERN_STRUCT _dspcontext;
+#define t_dspcontext struct _dspcontext
+t_dspcontext *ugen_start_graph(int toplevel, t_signal **sp,
+                               int ninlets, int noutlets);
+void ugen_add(t_dspcontext *dc, t_object *x);
+void ugen_connect(t_dspcontext *dc, t_object *x1, int outno,
+                  t_object *x2, int inno);
+void ugen_done_graph(t_dspcontext *dc);
+
+void ecanvas_dodsp(t_canvas *x, int toplevel, t_signal **sp)
+{
+    t_linetraverser t;
+    t_outconnect *oc;
+    t_gobj *y;
+    t_object *ob;
+    t_symbol *dspsym = gensym("dsp");
+    t_dspcontext *dc;
+ 
+    dc = ugen_start_graph(toplevel, sp,
+                          obj_nsiginlets(&x->gl_obj),
+                          obj_nsigoutlets(&x->gl_obj));
+ 
+    
+    for (y = x->gl_list; y; y = y->g_next)
+        if ((ob = pd_checkobject(&y->g_pd)) && zgetfn(&y->g_pd, dspsym))
+            ugen_add(dc, ob);
+ 
+    linetraverser_start(&t, x);
+    while (oc = linetraverser_next(&t))
+        if (obj_issignaloutlet(t.tr_ob, t.tr_outno))
+            ugen_connect(dc, t.tr_ob, t.tr_outno, t.tr_ob2, t.tr_inno);
+ 
+    ugen_done_graph(dc);
+}
+
+static int audio_inited = 1;
 int epd_process_dspstart(t_epd_process *x, int nins, int nouts, float samplerate, float vectorsize)
 {
     t_signal* list;
@@ -81,27 +117,8 @@ int epd_process_dspstart(t_epd_process *x, int nins, int nouts, float samplerate
     t_symbol*  sym_cout = gensym("c.out~");
     t_cinbis* cin;
     t_coutbis* cout;
-    int nsys_ins = 2;
-    int nsys_outs = 2;
-    if (x->p_ninputs > nsys_ins)
-    {
-        nsys_ins = x->p_ninputs;
-    }
-    if (x->p_noutputs > nsys_outs)
-    {
-        nsys_outs = x->p_output_pd;
-    }
     
-    if(x->p_input_pd)
-    {
-        freebytes(x->p_input_pd, sizeof(float) * x->p_vector_size * x->p_ninputs);
-        x->p_input_pd = NULL;
-    }
-    if(x->p_output_pd)
-    {
-        freebytes(x->p_output_pd, sizeof(float) * x->p_vector_size * x->p_noutputs);
-        x->p_output_pd = NULL;
-    }
+    epd_process_dspstop(x);
     
     x->p_ninputs    = nins;
     x->p_noutputs   = nouts;
@@ -111,23 +128,19 @@ int epd_process_dspstart(t_epd_process *x, int nins, int nouts, float samplerate
         x->p_noutputs = 0;
     
     x->p_vector_size = vectorsize;
-    x->p_input_pd  = (float *)getbytes(sizeof(float) * x->p_vector_size * nsys_ins);
-    x->p_output_pd = (float *)getbytes(sizeof(float) * x->p_vector_size * nsys_outs);
+    x->p_input_pd  = (float *)getbytes(sizeof(float) * x->p_vector_size * x->p_ninputs);
+    x->p_output_pd = (float *)getbytes(sizeof(float) * x->p_vector_size * x->p_noutputs);
     
-    x->p_sysin_pd  = (t_sample *)getbytes(sizeof(t_sample) * DEFDACBLKSIZE * nsys_ins);
-    x->p_sysout_pd = (t_sample *)getbytes(sizeof(t_sample) * DEFDACBLKSIZE * nsys_outs);
+    x->p_sysin_pd  = (t_sample *)getbytes(sizeof(t_sample) * DEFDACBLKSIZE * x->p_ninputs);
+    x->p_sysout_pd = (t_sample *)getbytes(sizeof(t_sample) * DEFDACBLKSIZE * x->p_noutputs);
     
     if(x->p_input_pd && x->p_output_pd && x->p_sysin_pd && x->p_sysout_pd)
     {
-        memset(x->p_input_pd, 0, sizeof(float) * x->p_vector_size * nsys_ins);
-        memset(x->p_output_pd, 0, sizeof(float) * x->p_vector_size * nsys_outs);
+        memset(x->p_input_pd, 0, sizeof(float) * x->p_vector_size * x->p_ninputs);
+        memset(x->p_output_pd, 0, sizeof(float) * x->p_vector_size * x->p_noutputs);
         
-        memset(x->p_sysin_pd, 0, sizeof(t_sample) * DEFDACBLKSIZE * nsys_ins);
-        memset(x->p_sysout_pd, 0, sizeof(t_sample) * DEFDACBLKSIZE * nsys_outs);
-        
-        sys_lock();
-        pd_setinstance(x->p_instance);
-        libpd_init_audio(x->p_ninputs, x->p_noutputs, samplerate);
+        memset(x->p_sysin_pd, 0, sizeof(t_sample) * DEFDACBLKSIZE * x->p_ninputs);
+        memset(x->p_sysout_pd, 0, sizeof(t_sample) * DEFDACBLKSIZE * x->p_noutputs);
         
         if(x->p_canvas)
         {
@@ -146,10 +159,15 @@ int epd_process_dspstart(t_epd_process *x, int nins, int nouts, float samplerate
             }
         }
         
-        libpd_start_message(1);
-        libpd_add_float(1.f);
-        libpd_finish_message("pd", "dsp");
-        
+        sys_lock();
+        pd_setinstance(x->p_instance);
+        if(audio_inited)
+        {
+            audio_inited = libpd_init_audio(x->p_ninputs, x->p_noutputs, samplerate);
+            libpd_start_message(1);
+            libpd_add_float(1.f);
+            libpd_finish_message("pd", "dsp");
+        }
         freelist = get_signal_freelist();
         for(int i = 0; i <= MAXLOGSIG; i++)
         {
@@ -174,57 +192,36 @@ int epd_process_dspstart(t_epd_process *x, int nins, int nouts, float samplerate
 
 void epd_process_dspsuspend(t_epd_process *x)
 {
-    int nsys_ins = 2;
-    int nsys_outs = 2;
-    if (x->p_ninputs > nsys_ins)
-    {
-        nsys_ins = x->p_ninputs;
-    }
-    if (x->p_noutputs > nsys_outs)
-    {
-        nsys_outs = x->p_output_pd;
-    }
-    
     if(x->p_input_pd)
-        memset(x->p_input_pd, 0, sizeof(float) * x->p_vector_size * nsys_ins);
+        memset(x->p_input_pd, 0, sizeof(float) * x->p_vector_size * x->p_ninputs);
     if(x->p_output_pd)
-        memset(x->p_output_pd, 0, sizeof(float) * x->p_vector_size * nsys_outs);
+        memset(x->p_output_pd, 0, sizeof(float) * x->p_vector_size * x->p_noutputs);
 }
 
 void epd_process_dspstop(t_epd_process *x)
 {
     int i;
     t_signal **svec, *sig, *sig2;
-    int nsys_ins = 2;
-    int nsys_outs = 2;
-    if (x->p_ninputs > nsys_ins)
-    {
-        nsys_ins = x->p_ninputs;
-    }
-    if (x->p_noutputs > nsys_outs)
-    {
-        nsys_outs = x->p_output_pd;
-    }
     
     if(x->p_input_pd)
     {
-        freebytes(x->p_input_pd, sizeof(float) * x->p_vector_size * nsys_ins);
+        freebytes(x->p_input_pd, sizeof(float) * x->p_vector_size * x->p_ninputs);
         x->p_input_pd = NULL;
     }
     if(x->p_output_pd)
     {
-        freebytes(x->p_output_pd, sizeof(float) * x->p_vector_size * nsys_outs);
+        freebytes(x->p_output_pd, sizeof(float) * x->p_vector_size * x->p_noutputs);
         x->p_output_pd = NULL;
     }
     
     if(x->p_sysin_pd)
     {
-        freebytes(x->p_sysin_pd, sizeof(t_sample) * DEFDACBLKSIZE * nsys_ins);
+        freebytes(x->p_sysin_pd, sizeof(t_sample) * DEFDACBLKSIZE * x->p_ninputs);
         x->p_sysin_pd = NULL;
     }
     if(x->p_sysout_pd)
     {
-        freebytes(x->p_sysout_pd, sizeof(t_sample) * DEFDACBLKSIZE * nsys_outs);
+        freebytes(x->p_sysout_pd, sizeof(t_sample) * DEFDACBLKSIZE * x->p_noutputs);
         x->p_sysout_pd = NULL;
     }
     
@@ -262,13 +259,7 @@ void eprocess_sched_tick(t_pdinstance *x)
     }
     x->pd_systime = next_sys_time;
      */
-    if(x->pd_dspchainsize)
-    {
-        t_int *ip;
-        for(ip = x->pd_dspchain; ip; )
-            ip = (*(t_perfroutine)(*ip))(ip);
-        //dsp_phase++;
-    }
+    
     //sched_diddsp++;
 }
 
@@ -276,22 +267,13 @@ void epd_process_process(t_epd_process *x, const float** inputs, float** outputs
 {
     int i, j, k;
     int ticks = x->p_vector_size / DEFDACBLKSIZE;
+    
     t_sample *p0, *p1;
-    int nsys_ins = 2;
-    int nsys_outs = 2;
     t_sample* ins = x->p_sysin_pd;
     t_sample* outs = x->p_sysout_pd;
-    if (x->p_ninputs > nsys_ins)
-    {
-        nsys_ins = x->p_ninputs;
-    }
-    if (x->p_noutputs > nsys_outs)
-    {
-        nsys_outs = x->p_output_pd;
-    }
+    t_pdinstance *pd = x->p_instance;
     
-    
-    if (x->p_sysout_pd && x->p_sysin_pd)
+    if(x->p_sysout_pd && x->p_sysin_pd)
     {
 
 #ifdef __APPLE__
@@ -305,23 +287,29 @@ void epd_process_process(t_epd_process *x, const float** inputs, float** outputs
         /*
         for (j = 0, p0 = x->p_sysin_pd; j < DEFDACBLKSIZE; j++, p0++)
         {
-            for (k = 0, p1 = p0; k < nsys_ins; k++, p1 += DEFDACBLKSIZE)
+            for (k = 0, p1 = p0; k < x->p_ninputs; k++, p1 += DEFDACBLKSIZE)
             {
                 *p1 = * x->p_input_pd++;
             }
         }
-        */
-        //memset(x->p_sysout_pd, 0, nsys_outs * DEFDACBLKSIZE * sizeof(t_sample));
+        memset(x->p_sysout_pd, 0, x->p_noutputs * DEFDACBLKSIZE * sizeof(t_sample));
         
-        eprocess_sched_tick(x->p_instance);
+        if(pd->pd_dspchainsize)
+        {
+            t_int *ip;
+            for(ip = pd->pd_dspchain; ip; )
+                ip = (*(t_perfroutine)(*ip))(ip);
+            
+            //dsp_phase++;
+        }
         
         for (j = 0, p0 = outs; j < DEFDACBLKSIZE; j++, p0++)
         {
-            for (k = 0, p1 = p0; k < nsys_outs; k++, p1 += DEFDACBLKSIZE)
+            for (k = 0, p1 = p0; k < x->p_noutputs; k++, p1 += DEFDACBLKSIZE)
             {
                 *x->p_output_pd++ = *p1;
             }
-        }
+        }*/
     }
 #ifdef __APPLE__
     for(int i = 0; i < x->p_noutputs; i++)
