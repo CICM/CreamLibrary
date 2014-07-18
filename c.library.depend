@@ -540,3 +540,281 @@
 1399978903 source:/home/pierre/Git/CicmWrapper/CreamLibrary/Chocolate/c.preset.c
 	"../c.library.h"
 
+1405693570 source:/home/pierre/Git/CreamLibrary/c.library.cpp
+	"c.library.h"
+
+1405693570 /home/pierre/Git/CreamLibrary/c.library.h
+	"ThirdParty/PureData/Sources/cicm_wrapper.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/cicm_wrapper.h
+	"epd.h"
+	"epd_max.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/epd.h
+	"eclass/eclass.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eclass/eclass.h
+	"../estruct.h"
+	"../ebox/ebox.h"
+	"../epopup/epopup.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/estruct.h
+	"ecommon/ecommon.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/ecommon.h
+	<io.h>
+	<unistd.h>
+	"pd-extented/m_pd.h"
+	"pd-extented/m_imp.h"
+	"pd-extented/g_canvas.h"
+	"pd-extented/s_stuff.h"
+	"m_pd.h"
+	"m_imp.h"
+	"g_canvas.h"
+	"s_stuff.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdint.h>
+	<math.h>
+	<ctype.h>
+	<string.h>
+	<stdarg.h>
+	<fcntl.h>
+	"eboxflag.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/pd-extented/m_pd.h
+	<stddef.h>
+	<stdint.h>
+	<stdio.h>
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/pd-extented/m_imp.h
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/pd-extented/g_canvas.h
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/pd-extented/s_stuff.h
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/m_pd.h
+	<stddef.h>
+	<stdint.h>
+	<stdio.h>
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/m_imp.h
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/g_canvas.h
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/s_stuff.h
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/eboxflag.h
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ebox/ebox.h
+	"../estruct.h"
+	"../egraphics/egraphics.h"
+	"../eobj/eobj.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/egraphics/egraphics.h
+	"../estruct.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eobj/eobj.h
+	"../estruct.h"
+	"../egraphics/egraphics.h"
+	"../ecommon/ecommon.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/epopup/epopup.h
+	"../estruct.h"
+	"../ebox/ebox.h"
+
+1405694165 /home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/epd_max.h
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Caramel/AudioFFT.cpp
+	"AudioFFT.h"
+	<cassert>
+	<cmath>
+	<cstring>
+
+1405693570 /home/pierre/Git/CreamLibrary/Caramel/AudioFFT.h
+	<cstddef>
+	<Accelerate/Accelerate.h>
+	<vector>
+	<vector>
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Caramel/c.convolve_tilde.cpp
+	"../c.library.h"
+	<algorithm>
+	<cstring>
+	<numeric>
+	<vector>
+	<cmath>
+	<cstdio>
+	<cstdlib>
+	"FFTConvolver.h"
+	"Utilities.h"
+
+1405693570 /home/pierre/Git/CreamLibrary/Caramel/FFTConvolver.h
+	"AudioFFT.h"
+	"Utilities.h"
+	<vector>
+
+1405693570 /home/pierre/Git/CreamLibrary/Caramel/Utilities.h
+	<algorithm>
+	<cassert>
+	<cstddef>
+	<cstring>
+	<new>
+	<xmmintrin.h>
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Caramel/c.freeverb_tilde.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Caramel/FFTConvolver.cpp
+	"FFTConvolver.h"
+	<cassert>
+	<cmath>
+	<xmmintrin.h>
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Caramel/Utilities.cpp
+	"Utilities.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.bang.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.blackboard.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.breakpoints.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.colorpanel.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.gain_tilde.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.incdec.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.knob.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.menu.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.meter_tilde.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.number.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.number_tilde.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.plane.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.preset.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.radio.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.rslider.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.scope_tilde.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.slider.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.tab.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Chocolate/c.toggle.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Coffee/c.loadmess.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Coffee/c.pak.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Coffee/c.patcherargs.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Coffee/c.patcherinfos.cpp
+	"../c.library.h"
+
+1405693570 source:/home/pierre/Git/CreamLibrary/Coffee/c.prepend.cpp
+	"../c.library.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ebox/ebox_attr.c
+	"ebox.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ebox/ebox_basic.c
+	"ebox.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ebox/ebox_draw.c
+	"ebox.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ebox/ebox_handle.c
+	"ebox.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ebox/ebox_patcher.c
+	"ebox.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ebox/ebox_window.c
+	"ebox.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eclass/eclass_attrgetter.c
+	"eclass.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eclass/eclass_attrnew.c
+	"eclass.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eclass/eclass_attroptions.c
+	"eclass.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eclass/eclass_attrsetter.c
+	"eclass.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eclass/eclass_basic.c
+	"eclass.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eclass/eclass_widget.c
+	"eclass.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/ecommon/ecommon.c
+	"ecommon.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/egraphics/egraphics.c
+	"egraphics.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/egraphics/egraphics_color.c
+	"egraphics.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/egraphics/egraphics_forms.c
+	"egraphics.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/egraphics/egraphics_matrix.c
+	"egraphics.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/egraphics/egraphics_text.c
+	"egraphics.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eobj/eobj_basic.c
+	"eobj.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eobj/eobj_dsp.c
+	"eobj.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eobj/eobj_handle.c
+	"eobj.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eobj/eobj_proxy.c
+	"eobj.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/eobj/eobj_router.c
+	"eobj.h"
+
+1405694165 source:/home/pierre/Git/CreamLibrary/ThirdParty/PureData/Sources/epopup/epopup.c
+	"epopup.h"
+
