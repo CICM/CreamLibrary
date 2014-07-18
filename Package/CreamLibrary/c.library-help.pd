@@ -1,4 +1,4 @@
-#N canvas 588 70 412 721 10;
+#N canvas 588 70 439 721 10;
 #X obj -701 -1821 c.patcherinfos;
 #X obj -701 -1838 loadbang;
 #X obj -700 -1699 c.tab @size 398 36 @fontname Monaco @fontweight normal
