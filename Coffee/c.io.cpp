@@ -25,7 +25,7 @@
  */
 
 #include "../c.library.h"
-
+/*
 static t_class *cin_class;
 
 typedef struct _cin
@@ -47,7 +47,6 @@ typedef struct _cout
     t_sample* x_outputs;
 } t_cout;
 
-/* ----------------------------- cout~ --------------------------- */
 static void *cout_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_cout *x = (t_cout *)pd_new(cout_class);
@@ -109,7 +108,6 @@ static void cout_setup(void)
     class_addmethod(cout_class, (t_method)cout_dsp, gensym("dsp"), A_CANT, 0);
 }
 
-/* ----------------------------- cin~ --------------------------- */
 
 static void *cin_new(t_symbol *s, int argc, t_atom *argv)
 {
@@ -208,5 +206,5 @@ void cio_setup(void)
     cin_setup();
 }
 
-
+*/
 
