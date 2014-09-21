@@ -15,7 +15,7 @@ void cream_initclass(t_eclass* c)
 
 char creamversion[] = "Beta 0.3";
 #ifdef PD_EXTENTED
-char pdversion[] = "Pd-Extented";
+char pdversion[] = "Pd-Extended";
 #else
 char pdversion[] = "Pd-Vanilla";
 #endif
