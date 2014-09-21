@@ -204,7 +204,7 @@ void number_tilde_tick(t_number_tilde *x)
 	ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
 	ebox_redraw((t_ebox *)x);
 
-	if(canvas_dspstate)
+	if(sys_getdspstate())
 		clock_delay(x->f_clock, x->f_interval);
 }
 
