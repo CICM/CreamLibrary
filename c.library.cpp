@@ -65,7 +65,7 @@ extern "C" void setup_c0x2elibrary(void)
 	setup_c0x2epatcherinfos();
     //setup_c0x2epatchermess();
 	setup_c0x2eprepend();
-    setup_c0x2emousestate();
+//    setup_c0x2emousestate();
 
     pd_library_add_folder("CreamLibrary", "misc");
 }
