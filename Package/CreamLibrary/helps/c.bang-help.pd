@@ -1,27 +1,27 @@
-#N canvas 525 44 625 321 10;
-#X obj -142 -33 delay 500;
-#X obj -142 -63 c.bang @size 17 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj -142 33 delay 500;
-#X obj -142 3 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#N canvas 521 98 625 321 10;
+#X obj 86 123 delay 500;
+#X obj 86 93 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj -14 33 delay 500;
-#X obj -14 3 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#X obj 86 189 delay 500;
+#X obj 86 159 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj -14 -33 delay 500;
-#X obj -14 -63 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#X obj 214 189 delay 500;
+#X obj 214 159 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X text -186 -104 c.bang do nothing more than vanilla bang for the
-moment...;
-#X obj -181 -126 c.patcherinfos;
-#X obj -180 -135 c.loadmess;
-#X obj -63 92 c.help.pub;
-#X obj -186 -147 c.help.header;
-#N canvas 390 84 722 277 what 0;
+#X obj 214 123 delay 500;
+#X obj 214 93 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+@fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X text 42 52 c.bang do nothing more than vanilla bang for the moment...
+;
+#X obj 47 30 c.patcherinfos;
+#X obj 48 21 c.loadmess;
+#X obj 165 248 c.help.pub;
+#X obj 42 9 c.help.header;
+#N canvas 388 93 722 277 what 0;
 #X msg 595 99 attrprint;
 #X text 29 -5 - Look at the properties window to edit the attributes.
 Use the attrprint message to post the attributes characteristics.;
@@ -39,17 +39,17 @@ with the "edit mode";
 edit the attribute \, "Type" is the type of the values (float \, symbol
 \, etc...) and "Size" is the number of values the object is expecting.
 ;
-#X obj 516 73 c.number @size 53 17 @fontname Helvetica @fontweight
+#X obj 516 73 c.number @size 53 14 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 64 @max (null) @minmax 64 (null) @decimal 6 @bgcolor 0.75
 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 516 142 c.radio @size 64 8 @fontname Helvetica @fontweight normal
+#X obj 516 142 c.radio @size 96 8 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @nitems 8 @mode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5
+(null) @nitems 12 @mode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5
 0.5 1 @itcolor 0.5 0.5 0.5 1;
 #X msg 516 102 size \$1 8;
 #X text 513 45 Example;
-#X obj 446 73 c.number @size 53 17 @fontname Helvetica @fontweight
+#X obj 446 73 c.number @size 53 14 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 1 @max (null) @minmax 1 (null) @decimal 6 @bgcolor 0.75
 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
@@ -59,7 +59,7 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X connect 9 0 8 0;
 #X connect 11 0 12 0;
 #X connect 12 0 8 0;
-#X restore 162 -31 pd what you can do with GUI;
+#X restore 390 125 pd what you can do with GUI;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 5 0;
