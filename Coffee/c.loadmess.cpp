@@ -49,16 +49,16 @@ void loadmess_loadbang(t_loadmess *x);
 extern "C" void setup_c0x2eloadmess(void)
 {
 	t_eclass *c;
-    
+
 	c = eclass_new("c.loadmess", (method)loadmess_new, (method)loadmess_free, (short)sizeof(t_loadmess), 0L, A_GIMME, 0);
-    cream_initclass(c);
-    
-    eclass_addmethod(c, (method) loadmess_loadbang,    "loadbang",         A_NULL, 0);
-    eclass_addmethod(c, (method) loadmess_output,      "bang",             A_CANT, 0);
-	eclass_addmethod(c, (method) loadmess_click,       "click",            A_CANT, 0);
-    eclass_addmethod(c, (method) loadmess_assist,      "assist",           A_CANT, 0);
-	
-    eclass_register(CLASS_OBJ, c);
+  cream_initclass(c);
+
+  eclass_addmethod(c, (method) loadmess_loadbang,    "loadbang",         A_NULL, 0);
+  eclass_addmethod(c, (method) loadmess_output,      "bang",             A_CANT, 0);
+  eclass_addmethod(c, (method) loadmess_click,       "click",            A_CANT, 0);
+  eclass_addmethod(c, (method) loadmess_assist,      "assist",           A_CANT, 0);
+
+  eclass_register(CLASS_OBJ, c);
 	loadmess_class = c;
 }
 
@@ -67,10 +67,10 @@ void *loadmess_new(t_symbol *s, int argc, t_atom *argv)
     int i;
 	t_loadmess *x =  NULL;
 	t_binbuf* d;
-    
+
     if (!(d = binbuf_via_atoms(argc,argv)))
         return NULL;
-    
+
     x = (t_loadmess *)eobj_new(loadmess_class);
     x->l_loaded = 0;
     x->l_time = clock_getsystime();
@@ -78,7 +78,7 @@ void *loadmess_new(t_symbol *s, int argc, t_atom *argv)
     x->l_argv = (t_atom *)calloc(x->l_argc, sizeof(t_atom));
     for(i = 0; i < argc; i++)
         x->l_argv[i] = argv[i];
-    
+
     if(!x->l_argc)
     {
         x->l_out = (t_outlet *)bangout(x);
@@ -97,7 +97,7 @@ void *loadmess_new(t_symbol *s, int argc, t_atom *argv)
         else if (atom_gettype(argv) == A_SYMBOL)
             x->l_out = (t_outlet *)anythingout(x);
     }
-    
+
     return (x);
 }
 
