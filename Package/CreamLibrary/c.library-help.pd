@@ -1,25 +1,25 @@
-#N canvas 588 70 439 721 10;
-#X obj -701 -1821 c.patcherinfos;
-#X obj -701 -1838 loadbang;
-#X obj -700 -1699 c.tab @size 398 36 @fontname Monaco @fontweight normal
+#N canvas 578 125 439 725 10;
+#X obj 14 30 c.patcherinfos;
+#X obj 14 13 loadbang;
+#X obj 15 152 c.tab @size 398 36 @fontname Monaco @fontweight normal
 @fontslant roman @fontsize 13 @receive (null) @send (null) @presetname
 (null) @orientation 0 @toggle 1 @items Chocolate Caramel Coffee @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1 @hocolor
 0.5 0.5 0.5 1 @secolor 0.35 0.35 0.35 1;
-#X obj -687 -1220 c.help.pub;
-#X obj -700 -1659 c.tab @size 398 371 @fontname Monaco @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+#X obj 28 631 c.help.pub;
+#X obj 15 192 c.tab @size 398 371 @fontname Monaco @fontweight normal
+@fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @orientation 1 @toggle 0 @items c.bang c.blackboard c.breakpoints
 c.colorpanel c.gain~ c.incdec c.knob c.menu c.meter~ c.number c.number~
 c.plane c.preset c.radio c.scope~ c.slider c.tab c.toggle @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1 @hocolor
 0.5 0.5 0.5 1 @secolor 0.35 0.35 0.35 1;
-#X obj -670 -1693 c.loadmess 0;
-#X obj -616 -1691 c.prepend append;
-#X text -680 -1795 The Cream library is a set of objects made with
-the CICM Wrapper developed to facilitate the creation of signal objects
-and GUI and to improve user interactions. The GUI part of the library
-is Chocolate \, the DSP part of the library is Caramel and the Patching/Data
+#X obj 45 158 c.loadmess 0;
+#X obj 99 160 c.prepend append;
+#X text 35 56 The Cream library is a set of objects made with the CICM
+Wrapper developed to facilitate the creation of signal objects and
+GUI and to improve user interactions. The GUI part of the library is
+Chocolate \, the DSP part of the library is Caramel and the Patching/Data
 part of the library is Coffee.;
 #N canvas 108 132 741 435 sel.c.txt 0;
 #X obj -556 -387 unpack s s;
@@ -93,13 +93,13 @@ part of the library is Coffee.;
 #X connect 29 0 30 0;
 #X connect 31 0 20 0;
 #X connect 32 0 18 0;
-#X restore -524 -1686 pd sel.c.txt;
-#X obj -700 -1284 c.blackboard @size 398 39 @fontname Monaco @fontweight
+#X restore 191 165 pd sel.c.txt;
+#X obj 15 567 c.blackboard @size 398 39 @fontname Monaco @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
-#X obj -470 -1690 c.prepend text;
-#X msg -403 -1686 clear;
-#X obj -440 -1686 t list b;
+#X obj 245 161 c.prepend text;
+#X msg 312 165 clear;
+#X obj 275 165 t list b;
 #N canvas 129 211 691 357 sel.c.text2 0;
 #X obj -326 -135 list split 1;
 #X obj -292 -115 list split 1;
@@ -150,10 +150,10 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
 #X connect 20 0 9 0;
 #X connect 20 1 15 0;
 #X connect 21 0 8 0;
-#X restore -441 -1509 pd sel.c.text2;
-#X msg -466 -1468 clear;
-#X obj -480 -1409 c.prepend text;
-#X obj -701 -1838 c.help.header;
+#X restore 274 342 pd sel.c.text2;
+#X msg 249 383 clear;
+#X obj 235 442 c.prepend text;
+#X obj 14 13 c.help.header;
 #N canvas 698 181 450 300 c.open.hel 0;
 #X obj -259 -281 makefilename %s-help.pd;
 #X obj -259 -248 pack s s;
@@ -184,7 +184,7 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
 #X connect 12 0 11 0;
 #X connect 12 1 9 0;
 #X connect 13 0 8 1;
-#X restore -421 -1318 pd c.open.hel;
+#X restore 294 533 pd c.open.hel;
 #X connect 0 0 16 0;
 #X connect 1 0 0 0;
 #X connect 2 1 8 0;
