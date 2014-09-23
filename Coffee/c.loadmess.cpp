@@ -53,7 +53,7 @@ extern "C" void setup_c0x2eloadmess(void)
 	c = eclass_new("c.loadmess", (method)loadmess_new, (method)loadmess_free, (short)sizeof(t_loadmess), 0L, A_GIMME, 0);
     cream_initclass(c);
     
-    eclass_addmethod(c, (method) loadmess_loadbang,    "loadbang",         A_CANT, 0);
+    eclass_addmethod(c, (method) loadmess_loadbang,    "loadbang",         A_NULL, 0);
     eclass_addmethod(c, (method) loadmess_output,      "bang",             A_CANT, 0);
 	eclass_addmethod(c, (method) loadmess_click,       "click",            A_CANT, 0);
     eclass_addmethod(c, (method) loadmess_assist,      "assist",           A_CANT, 0);
