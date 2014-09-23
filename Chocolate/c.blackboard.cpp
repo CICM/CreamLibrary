@@ -114,9 +114,9 @@ extern "C" void setup_c0x2eblackboard(void)
     eclass_addmethod(c, (method) blackboard_image,           "image",            A_GIMME,0);
     eclass_addmethod(c, (method) blackboard_text,            "text",             A_GIMME,0);
     
-    eclass_addmethod(c, (method) blackboard_clear,           "clear",            A_CANT, 0);
-    eclass_addmethod(c, (method) blackboard_reset,           "reset",            A_CANT, 0);
-    
+
+    eclass_addmethod(c, (method) blackboard_clear,           "clear",            A_NULL, 0);
+    eclass_addmethod(c, (method) blackboard_reset,           "reset",            A_NULL, 0);
     eclass_addmethod(c, (method) blackboard_mousemove,       "mousemove",        A_CANT, 0);
     eclass_addmethod(c, (method) blackboard_mousedrag,       "mousedrag",        A_CANT, 0);
     eclass_addmethod(c, (method) blackboard_mousedown,       "mousedown",        A_CANT, 0);
