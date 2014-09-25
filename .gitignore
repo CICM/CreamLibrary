@@ -1,5 +1,9 @@
 # backup copies
 *~
+
+# archive
+*.tar.gz
+
 # build products
 *.la
 *.a
@@ -19,6 +23,8 @@
 *.layout
 *.save
 *build_log.html
+*.cscope_file_list
+*.depend
 
 # Shared objects (inc. Windows DLLs)
 *.so
