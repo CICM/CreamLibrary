@@ -16,7 +16,7 @@ ALL_CFLAGS = -I"$(PD_INCLUDE)"
 creamdir=$(pkglibdir)
 
 dist_cream_DATA = \
-	cream-meta.pd \
+	c.library-meta.pd \
 	LICENSE.txt \
 	README.txt
 	
@@ -30,6 +30,7 @@ DISTBINDIR=$(DISTDIR)-$(OS)
 SUBDIRS=Coffee Caramel Chocolate
 
 SUBDIRS+= ThirdParty/PureData
+SUBDIRS+= Package/CreamLibrary
 
 libdir: all
 	$(INSTALL) -p -m 755 -d $(DISTBINDIR)
