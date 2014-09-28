@@ -1,0 +1,100 @@
+dnl Process this file with autoconf to produce a configure script.
+## replace the email below with authors' emails
+AC_INIT([cream], 2.1-git, musique@univ-paris8.fr,[cream],[https://github.com/CICM/CreamLibrary])
+
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_FILES([Coffee/Makefile Chocolate/Makefile Caramel/Makefile])
+AC_CONFIG_FILES([ThirdParty/PureData/Sources/ebox/Makefile])
+AC_CONFIG_FILES([ThirdParty/PureData/Sources/eclass/Makefile])
+AC_CONFIG_FILES([ThirdParty/PureData/Sources/ecommon/Makefile])
+AC_CONFIG_FILES([ThirdParty/PureData/Sources/egraphics/Makefile])
+AC_CONFIG_FILES([ThirdParty/PureData/Sources/eobj/Makefile])
+AC_CONFIG_FILES([ThirdParty/PureData/Sources/epopup/Makefile])
+
+#~AC_CONFIG_FILES([cream.library-meta.pd])
+
+AC_SUBST(PD_CPPFLAGS)
+AC_SUBST(PD_LDFLAGS)
+
+AC_SUBST(EXTENSION)
+
+AM_INIT_AUTOMAKE([1.10 foreign])
+
+AC_ARG_WITH([pd],       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
+AC_ARG_WITH([extension],[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
+
+ARCH=$(uname -m)
+KERN=$(uname -s)
+
+AC_PROG_CXX
+AC_PROG_LIBTOOL
+
+if test "x${libdir}" = "x\${exec_prefix}/lib"; then
+ libdir='${exec_prefix}/lib/pd/extra'
+fi
+
+if test "x$with_pd" != "x"; then
+ if test -d "${with_pd}"; then
+   PDPATH=${with_pd}
+ fi
+ if test -d "${PDPATH}/src"; then
+  AC_MSG_RESULT([adding ${PDPATH}/src to INCLUDES])
+  PD_CPPFLAGS="-I${PDPATH}/src ${CPPFLAGS}"
+
+  AC_MSG_RESULT([adding ${PDPATH}/src to LDFLAGS])
+  PD_LDFLAGS="-L${PDPATH}/src ${LDFLAGS}"
+ else
+  if test -d "${PDPATH}"; then
+   AC_MSG_RESULT([adding ${PDPATH} to INCLUDES])
+   PD_CPPFLAGS="-I${PDPATH} ${CPPFLAGS}"
+  fi
+ fi
+ if test -d "${PDPATH}/bin"; then
+  AC_MSG_RESULT([adding ${PDPATH}/bin to LDFLAGS])
+  PD_LDFLAGS="-L${PDPATH}/bin ${LDFLAGS}"
+ else
+  if test -d "${PDPATH}"; then
+   AC_MSG_RESULT([adding ${PDPATH} to LDFLAGS])
+   PD_LDFLAGS="-L${PDPATH} ${LDFLAGS}"
+  fi
+ fi
+else 
+  AC_MSG_RESULT([no pd path given, trying with pkg-config data])
+  PD_CPPFLAGS=`pkg-config --cflags pd`
+  PD_LDFLAGS=`pkg-config --libs pd`
+fi
+
+AC_MSG_CHECKING([extension])
+if test "x$with_extension" != "x"
+then
+ EXTENSION=$with_extension
+else
+ case "$KERN" in
+ Darwin)
+   EXTENSION=pd_darwin
+   ;;
+ Linux)
+   if test "$ARCH" == x86_64
+   then
+     EXTENSION=l_ia64
+   else
+     EXTENSION=l_i386
+   fi
+   ;;
+ *CYGWIN*)
+   EXTENSION=dll
+   ;;
+ *MINGW*)
+   EXTENSION=dll
+   ;;
+ *)
+   EXTENSION=pd_linux
+   ;;
+ esac
+fi
+AC_MSG_RESULT([$EXTENSION])
+
+#~AC_CHECK_LIB([blas], [cblas_scopy],,)
+
+AC_OUTPUT(Makefile)
