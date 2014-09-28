@@ -1,16 +1,11 @@
 dnl Process this file with autoconf to produce a configure script.
 ## replace the email below with authors' emails
-AC_INIT([cream], 2.1-git, musique@univ-paris8.fr,[cream],[https://github.com/CICM/CreamLibrary])
+AC_INIT([cream], 0.3-git, musique@univ-paris8.fr,[cream],[https://github.com/CICM/CreamLibrary])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_FILES([Coffee/Makefile Chocolate/Makefile Caramel/Makefile])
-AC_CONFIG_FILES([ThirdParty/PureData/Sources/ebox/Makefile])
-AC_CONFIG_FILES([ThirdParty/PureData/Sources/eclass/Makefile])
-AC_CONFIG_FILES([ThirdParty/PureData/Sources/ecommon/Makefile])
-AC_CONFIG_FILES([ThirdParty/PureData/Sources/egraphics/Makefile])
-AC_CONFIG_FILES([ThirdParty/PureData/Sources/eobj/Makefile])
-AC_CONFIG_FILES([ThirdParty/PureData/Sources/epopup/Makefile])
+AC_CONFIG_FILES([ThirdParty/PureData/Makefile])
 
 #~AC_CONFIG_FILES([cream.library-meta.pd])
 
@@ -94,7 +89,5 @@ else
  esac
 fi
 AC_MSG_RESULT([$EXTENSION])
-
-#~AC_CHECK_LIB([blas], [cblas_scopy],,)
 
 AC_OUTPUT(Makefile)

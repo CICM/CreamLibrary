@@ -6,15 +6,7 @@ pkglib_LTLIBRARIES = cream.la
 cream_la_CXXFLAGS = @PD_CPPFLAGS@ -s -O2 -fPIC -fpermissive 
 cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
 cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la
-cream_la_LIBADD += ThirdParty/PureData/Sources/ebox/libebox.la \
- ThirdParty/PureData/Sources/eclass/libeclass.la \
- ThirdParty/PureData/Sources/ecommon/libecommon.la \
- ThirdParty/PureData/Sources/egraphics/libegraphics.la \
- ThirdParty/PureData/Sources/epopup/libepopup.la \
- ThirdParty/PureData/Sources/eobj/libeobj.la
-#~cream_la_LIBADD += ThirdParty/PureData/Sources/ebox/.libs/libebox.a ThirdParty/PureData/Sources/eclass/.libs/libeclass.a ThirdParty/PureData/Sources/ecommon/.libs/libecommon.a ThirdParty/PureData/Sources/egraphics/.libs/libegraphics.a ThirdParty/PureData/Sources/eobj/.libs/libeobj.a ThirdParty/PureData/Sources/epopup/.libs/libepopup.a
-#~cream_la_LIBADD += ThirdParty/PureData/Sources/libCicmWrapper.la
-#~cream_la_LIBADD += ThirdParty/PureData/Sources/.libs/libCicmWrapper.a
+cream_la_LIBADD += ThirdParty/PureData/Sources/libCicmWrapper.la
 
 cream_la_SOURCES = c.library.h \
  c.library.cpp
@@ -37,12 +29,7 @@ DISTBINDIR=$(DISTDIR)-$(OS)
 
 SUBDIRS=Coffee Caramel Chocolate
 
-SUBDIRS+= ThirdParty/PureData/Sources/ebox \
- ThirdParty/PureData/Sources/eclass \
- ThirdParty/PureData/Sources/ecommon \
- ThirdParty/PureData/Sources/egraphics \
- ThirdParty/PureData/Sources/eobj \
- ThirdParty/PureData/Sources/epopup
+SUBDIRS+= ThirdParty/PureData
 
 libdir: all
 	$(INSTALL) -p -m 755 -d $(DISTBINDIR)
