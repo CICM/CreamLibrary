@@ -13,7 +13,7 @@ void cream_initclass(t_eclass* c)
     class_sethelpsymbol((t_class *)c, gensym(help));
 }
 
-char creamversion[] = "Beta 0.3";
+char creamversion[] = "Beta 0.4";
 #ifdef PD_EXTENTED
 char pdversion[] = "Pd-Extented";
 #else
@@ -30,11 +30,11 @@ extern "C" void setup_c0x2elibrary(void)
 	post("Cream Library by Pierre Guillot");
 	post("© 2013 - 2014  CICM | Paris 8 University");
     post("Version %s (%s) for %s",creamversion, __DATE__, pdversion);
-
+    
 	// Caramel
 	setup_c0x2econvolve_tilde();
 	setup_c0x2efreeverb_tilde();
-
+    
 	// Chocolate
 	setup_c0x2ebang();
 	setup_c0x2eblackboard();
@@ -57,13 +57,10 @@ extern "C" void setup_c0x2elibrary(void)
 	setup_c0x2etoggle();
 
 	// Coffee
-    //setup_c0x2einformer();
-    //cio_setup();
 	setup_c0x2eloadmess();
 	setup_c0x2epak();
 	setup_c0x2epatcherargs();
 	setup_c0x2epatcherinfos();
-    //setup_c0x2epatchermess();
 	setup_c0x2eprepend();
     setup_c0x2emousestate();
 

@@ -745,11 +745,11 @@
 				EXECUTABLE_EXTENSION = pd_darwin;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = PD_EXTENTED;
+				GCC_PREPROCESSOR_DEFINITIONS = PD_EXTENDED;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "";
 				"HEADER_SEARCH_PATHS[arch=*]" = "";
-				INSTALL_PATH = "$SRCROOT/Package/CreamLibrary/pd-extented";
+				INSTALL_PATH = "$SRCROOT/Package/CreamLibrary/externals/MacOs/pd-extented";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (
 					"-undefined",

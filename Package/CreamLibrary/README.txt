@@ -14,15 +14,22 @@ http://www.univ-paris8.fr/
 
 ------------------------------------------------------------------------------------------
 
+This version is compatible with Pure Data and Pure Data Extented.
+
 Installation :
-Copy the "CreamLibrary" folder in your Pure Data "package" folder and add "c.library" in startup preferences. You can also copy the "CreamLibrary" folder in another folder than the default package folder, then you have to add this folder in the path preferences and add "CreamLibrary/c.library" in the startup preferences. For PD-Extented, use the startup flags "-lib c.library" or "-lib CreamLibrary/c.library". 
 
-On Linux 32 bits, you have to replace the "c.library.pd_linux" in the CreamLibrary folder by the one that is in the "Linux32" subfolder.
+Copy the "CreamLibrary" folder in your Pure Data "package" folder and add "c.library" in startup preferences. 
+You can also copy the "CreamLibrary" folder in another folder than the default package folder, then you have to add this folder in the path preferences and add "CreamLibrary/c.library" in the startup preferences. 
 
-This libraries should work for Pd 0.43 and higher - Mac Os, Windows and Linux. 
-Tested with PD Extended 0.43.4 and PD 0.45.3 - Max Os 10.8.5, Windows 7, Ubuntu 13.10
+For PD-Extented or Linux 32 bits, replace the c.library external (.pd_linux, .pd_darwin or .dll) with the one that matchs to your system and your PD distribution from the externals folder. 
 
-Look at the PD browser to have an overview of Chocolate, Coffee and Caramel.
+For PD-Extented use the startup flags "-lib c.library" (or "-lib CreamLibrary/c.library" if you use another folder than the default ones). 
+
+In the help menu of Pure Data, the CreamLibrary folder constains informations, helps and tutorials.
+
+Uninstall:
+Remove the "CreamLibrary" folder and the startup flag .
+
 ------------------------------------------------------------------------------------------
 
 For further information about CICCM wrapper and the other libraries :

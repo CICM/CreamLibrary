@@ -19,6 +19,7 @@ extern "C" void libpd_loadcream(void);
 // Caramel
 extern "C" void setup_c0x2econvolve_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
+//extern "C" void setup_c0x2efuzz_tilde(void);
 
 // Chocolate
 extern "C" void setup_c0x2ebang(void);
