@@ -54,7 +54,7 @@ extern "C" void setup_c0x2eloadmess(void)
   cream_initclass(c);
 
   eclass_addmethod(c, (method) loadmess_loadbang,    "loadbang",         A_NULL, 0);
-  eclass_addmethod(c, (method) loadmess_output,      "bang",             A_CANT, 0);
+  eclass_addmethod(c, (method) loadmess_output,      "bang",             A_NULL, 0);
   eclass_addmethod(c, (method) loadmess_click,       "click",            A_NULL, 0);
   eclass_addmethod(c, (method) loadmess_assist,      "assist",           A_CANT, 0);
 
