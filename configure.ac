@@ -7,7 +7,7 @@ AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_FILES([Coffee/Makefile Chocolate/Makefile Caramel/Makefile])
 AC_CONFIG_FILES([ThirdParty/PureData/Makefile])
 
-#~AC_CONFIG_FILES([cream.library-meta.pd])
+AC_CONFIG_FILES([c.library-meta.pd])
 
 AC_SUBST(PD_CPPFLAGS)
 AC_SUBST(PD_LDFLAGS)
