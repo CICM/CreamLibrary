@@ -1,6 +1,6 @@
 #N canvas 15 49 200 200 10;
 #N canvas 25 49 420 300 META 1;
-#X text 13 41 NAME c.library;
+#X text 13 41 NAME cream;
 #X text 10 25 AUTHOR Pierre Guillot;
 #X text 10 10 VERSION @PACKAGE_VERSION@;
 #X restore 10 10 pd META;
