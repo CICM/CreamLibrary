@@ -92,23 +92,23 @@ extern "C" void setup_c0x2enumber(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 
-	eclass_addmethod(c, (method) number_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) number_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) number_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) number_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) number_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) number_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) number_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) number_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) number_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) number_oksize,          "oksize",           A_NULL, 0);
     eclass_addmethod(c, (method) number_float,           "float",            A_FLOAT,0);
     eclass_addmethod(c, (method) number_set,             "set",              A_FLOAT,0);
-    eclass_addmethod(c, (method) number_output,          "bang",             A_CANT, 0);
+    eclass_addmethod(c, (method) number_output,          "bang",             A_NULL, 0);
 
-    eclass_addmethod(c, (method) number_mousedown,        "mousedown",       A_CANT, 0);
-    eclass_addmethod(c, (method) number_mousedrag,        "mousedrag",       A_CANT, 0);
-    eclass_addmethod(c, (method) number_dblclick,         "dblclick",        A_CANT, 0);
-    eclass_addmethod(c, (method) number_key,              "key",             A_CANT, 0);
-    eclass_addmethod(c, (method) number_keyfilter,        "keyfilter",       A_CANT, 0);
-    eclass_addmethod(c, (method) number_deserted,         "deserted",        A_CANT, 0);
+    eclass_addmethod(c, (method) number_mousedown,        "mousedown",       A_NULL, 0);
+    eclass_addmethod(c, (method) number_mousedrag,        "mousedrag",       A_NULL, 0);
+    eclass_addmethod(c, (method) number_dblclick,         "dblclick",        A_NULL, 0);
+    eclass_addmethod(c, (method) number_key,              "key",             A_NULL, 0);
+    eclass_addmethod(c, (method) number_keyfilter,        "keyfilter",       A_NULL, 0);
+    eclass_addmethod(c, (method) number_deserted,         "deserted",        A_NULL, 0);
 
-    eclass_addmethod(c, (method) number_preset,           "preset",          A_CANT, 0);
+    eclass_addmethod(c, (method) number_preset,           "preset",          A_NULL, 0);
 
 	CLASS_ATTR_DEFAULT			(c, "size", 0, "53 13");
 

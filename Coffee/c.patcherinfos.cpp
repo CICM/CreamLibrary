@@ -59,8 +59,8 @@ extern "C" void setup_c0x2epatcherinfos(void)
     class_addcreator((t_newmethod)patcherinfos_new, gensym("c.canvasinfos"), A_GIMME, 0);
     cream_initclass(c);
     
-    eclass_addmethod(c, (method)patcherinfos_output,      "bang",       A_CANT, 0);
-    eclass_addmethod(c, (method)patcherinfos_click,       "click",      A_CANT, 0);
+    eclass_addmethod(c, (method)patcherinfos_output,      "bang",       A_NULL, 0);
+    eclass_addmethod(c, (method)patcherinfos_click,       "click",      A_NULL, 0);
     
     CLASS_ATTR_LONG             (c, "notify", 0, t_patcherinfos, f_notify);
     CLASS_ATTR_LABEL            (c, "notify", 0, "Notify mode");

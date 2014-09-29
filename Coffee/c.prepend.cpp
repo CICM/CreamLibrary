@@ -62,7 +62,7 @@ extern "C" void setup_c0x2eprepend(void)
     eclass_addmethod(c, (method)prepend_set,         "set",            A_GIMME, 0);
     eclass_addmethod(c, (method)prepend_float,       "float",          A_FLOAT, 0);
     eclass_addmethod(c, (method)prepend_symbol,      "symbol",         A_SYMBOL,0);
-    eclass_addmethod(c, (method)prepend_bang,        "bang",           A_CANT,  0);
+    eclass_addmethod(c, (method)prepend_bang,        "bang",           A_NULL,  0);
     
     eclass_register(CLASS_OBJ, c);
 	prepend_class = c;

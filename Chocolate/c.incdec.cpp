@@ -73,18 +73,18 @@ extern "C" void setup_c0x2eincdec(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 
-	eclass_addmethod(c, (method) incdec_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) incdec_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) incdec_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) incdec_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) incdec_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) incdec_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) incdec_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) incdec_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) incdec_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) incdec_oksize,          "oksize",           A_NULL, 0);
     eclass_addmethod(c, (method) incdec_set,             "set",              A_FLOAT,0);
     eclass_addmethod(c, (method) incdec_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) incdec_output,          "bang",             A_CANT, 0);
-    eclass_addmethod(c, (method) incdec_inc,             "inc",              A_CANT, 0);
-    eclass_addmethod(c, (method) incdec_dec,             "dec",              A_CANT, 0);
-    eclass_addmethod(c, (method) incdec_mousedown,       "mousedown",        A_CANT, 0);
-    eclass_addmethod(c, (method) incdec_mouseup,         "mouseup",          A_CANT, 0);
+    eclass_addmethod(c, (method) incdec_output,          "bang",             A_NULL, 0);
+    eclass_addmethod(c, (method) incdec_inc,             "inc",              A_NULL, 0);
+    eclass_addmethod(c, (method) incdec_dec,             "dec",              A_NULL, 0);
+    eclass_addmethod(c, (method) incdec_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (method) incdec_mouseup,         "mouseup",          A_NULL, 0);
     
     CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);

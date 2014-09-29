@@ -58,7 +58,7 @@ extern "C" void setup_c0x2epak(void)
     eclass_addmethod(c, (method)pak_list,        "list",           A_GIMME, 0);
     eclass_addmethod(c, (method)pak_float,       "float",          A_FLOAT, 0);
     eclass_addmethod(c, (method)pak_symbol,      "symbol",         A_SYMBOL,0);
-    eclass_addmethod(c, (method)pak_output,      "bang",           A_CANT,  0);
+    eclass_addmethod(c, (method)pak_output,      "bang",           A_NULL,  0);
     
     eclass_register(CLASS_OBJ, c);
 	pak_class = c;

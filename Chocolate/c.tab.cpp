@@ -94,11 +94,11 @@ extern "C" void setup_c0x2etab(void)
     eclass_init(c, 0);
     cream_initclass(c);
 
-	eclass_addmethod(c, (method) tab_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) tab_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) tab_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) tab_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) tab_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) tab_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) tab_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) tab_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) tab_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) tab_oksize,          "oksize",           A_NULL, 0);
 
     eclass_addmethod(c, (method) tab_append,          "append",           A_GIMME,0);
     eclass_addmethod(c, (method) tab_insert,          "insert",           A_GIMME,0);
@@ -109,13 +109,13 @@ extern "C" void setup_c0x2etab(void)
     eclass_addmethod(c, (method) tab_float,           "float",            A_FLOAT,0);
     eclass_addmethod(c, (method) tab_symbol,          "anything",         A_GIMME,0);
     eclass_addmethod(c, (method) tab_set,             "set",              A_GIMME,0);
-    eclass_addmethod(c, (method) tab_output,          "bang",             A_CANT, 0);
+    eclass_addmethod(c, (method) tab_output,          "bang",             A_NULL, 0);
 
-    eclass_addmethod(c, (method) tab_mousedown,        "mousedown",       A_CANT, 0);
-    eclass_addmethod(c, (method) tab_mouseup,          "mouseup",         A_CANT, 0);
-    eclass_addmethod(c, (method) tab_mousemove,        "mousemove",       A_CANT, 0);
-    eclass_addmethod(c, (method) tab_mouseleave,       "mouseleave",      A_CANT, 0);
-    eclass_addmethod(c, (method) tab_preset,           "preset",          A_CANT, 0);
+    eclass_addmethod(c, (method) tab_mousedown,        "mousedown",       A_NULL, 0);
+    eclass_addmethod(c, (method) tab_mouseup,          "mouseup",         A_NULL, 0);
+    eclass_addmethod(c, (method) tab_mousemove,        "mousemove",       A_NULL, 0);
+    eclass_addmethod(c, (method) tab_mouseleave,       "mouseleave",      A_NULL, 0);
+    eclass_addmethod(c, (method) tab_preset,           "preset",          A_NULL, 0);
 
 	CLASS_ATTR_DEFAULT              (c, "size", 0, "100 13");
 

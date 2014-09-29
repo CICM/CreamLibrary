@@ -61,11 +61,11 @@ extern "C" void setup_c0x2emousestate(void)
 	c = eclass_new("c.mousestate", (method)mousestate_new, (method)mousestate_free, (short)sizeof(t_mousestate), 0L, A_GIMME, 0);
     cream_initclass(c);
     
-    eclass_addmethod(c, (method) mousestate_assist,     "assist",          A_CANT, 0);
-    eclass_addmethod(c, (method) mousestate_poll,       "poll",            A_CANT, 0);
-    eclass_addmethod(c, (method) mousestate_nopoll,     "nopoll",          A_CANT, 0);
-    eclass_addmethod(c, (method) mousestate_reset,      "reset",           A_CANT, 0);
-    eclass_addmethod(c, (method) mousestate_zero,       "zero",            A_CANT, 0);
+    eclass_addmethod(c, (method) mousestate_assist,     "assist",          A_NULL, 0);
+    eclass_addmethod(c, (method) mousestate_poll,       "poll",            A_NULL, 0);
+    eclass_addmethod(c, (method) mousestate_nopoll,     "nopoll",          A_NULL, 0);
+    eclass_addmethod(c, (method) mousestate_reset,      "reset",           A_NULL, 0);
+    eclass_addmethod(c, (method) mousestate_zero,       "zero",            A_NULL, 0);
     eclass_addmethod(c, (method) mousestate_mode,       "mode",            A_FLOAT, 0);
 
     eclass_register(CLASS_OBJ, c);

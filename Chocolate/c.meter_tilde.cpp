@@ -80,12 +80,12 @@ extern "C" void setup_c0x2emeter_tilde(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 	
-	eclass_addmethod(c, (method) meter_dsp,             "dsp",              A_CANT, 0);
-	eclass_addmethod(c, (method) meter_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) meter_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) meter_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) meter_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) meter_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) meter_dsp,             "dsp",              A_NULL, 0);
+	eclass_addmethod(c, (method) meter_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) meter_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) meter_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) meter_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) meter_oksize,          "oksize",           A_NULL, 0);
     
     CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);

@@ -96,11 +96,11 @@ extern "C" void setup_c0x2eblackboard(void)
 	eclass_init(c, 0);
     cream_initclass(c);
     
-	eclass_addmethod(c, (method) blackboard_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) blackboard_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) blackboard_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) blackboard_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) blackboard_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) blackboard_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) blackboard_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) blackboard_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) blackboard_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) blackboard_oksize,          "oksize",           A_NULL, 0);
     
     eclass_addmethod(c, (method) blackboard_width,           "width",            A_FLOAT,0);
     eclass_addmethod(c, (method) blackboard_color,           "color",            A_GIMME,0);
@@ -114,14 +114,14 @@ extern "C" void setup_c0x2eblackboard(void)
     eclass_addmethod(c, (method) blackboard_image,           "image",            A_GIMME,0);
     eclass_addmethod(c, (method) blackboard_text,            "text",             A_GIMME,0);
     
-    eclass_addmethod(c, (method) blackboard_clear,           "clear",            A_CANT, 0);
-    eclass_addmethod(c, (method) blackboard_reset,           "reset",            A_CANT, 0);
+    eclass_addmethod(c, (method) blackboard_clear,           "clear",            A_NULL, 0);
+    eclass_addmethod(c, (method) blackboard_reset,           "reset",            A_NULL, 0);
     
-    eclass_addmethod(c, (method) blackboard_mousemove,       "mousemove",        A_CANT, 0);
-    eclass_addmethod(c, (method) blackboard_mousedrag,       "mousedrag",        A_CANT, 0);
-    eclass_addmethod(c, (method) blackboard_mousedown,       "mousedown",        A_CANT, 0);
-    eclass_addmethod(c, (method) blackboard_mouseup,         "mouseup",          A_CANT, 0);
-    eclass_addmethod(c, (method) blackboard_mouseleave,      "mouseleave",       A_CANT, 0);
+    eclass_addmethod(c, (method) blackboard_mousemove,       "mousemove",        A_NULL, 0);
+    eclass_addmethod(c, (method) blackboard_mousedrag,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (method) blackboard_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (method) blackboard_mouseup,         "mouseup",          A_NULL, 0);
+    eclass_addmethod(c, (method) blackboard_mouseleave,      "mouseleave",       A_NULL, 0);
     
 	CLASS_ATTR_DEFAULT              (c, "size", 0, "200 200");
     CLASS_ATTR_INVISIBLE            (c, "send", 1);

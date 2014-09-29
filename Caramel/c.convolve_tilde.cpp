@@ -66,7 +66,7 @@ extern "C"  void setup_c0x2econvolve_tilde(void)
     eclass_dspinit(c);
 	cream_initclass(c);
     
-    eclass_addmethod(c, (method) convolve_dsp,       "dsp",              A_CANT, 0);
+    eclass_addmethod(c, (method) convolve_dsp,       "dsp",              A_NULL, 0);
     eclass_addmethod(c, (method) convolve_set,       "set",              A_SYM,  0);
     eclass_addmethod(c, (method) convolve_normalize, "normalize",        A_LONG, 0);
     eclass_register(CLASS_OBJ, c);

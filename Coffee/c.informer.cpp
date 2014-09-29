@@ -62,10 +62,10 @@ extern "C" void setup_c0x2einformer(void)
 	c = eclass_new("c.informer", (method)informer_new, (method)informer_free, (short)sizeof(t_informer), 0L, A_GIMME, 0);
     cream_initclass(c);
     
-    eclass_addmethod(c, (method) informer_loadbang,    "loadbang",         A_CANT, 0);
-    eclass_addmethod(c, (method) informer_output,      "bang",             A_CANT, 0);
-	eclass_addmethod(c, (method) informer_click,       "click",            A_CANT, 0);
-    eclass_addmethod(c, (method) informer_assist,      "assist",           A_CANT, 0);
+    eclass_addmethod(c, (method) informer_loadbang,    "loadbang",         A_NULL, 0);
+    eclass_addmethod(c, (method) informer_output,      "bang",             A_NULL, 0);
+	eclass_addmethod(c, (method) informer_click,       "click",            A_NULL, 0);
+    eclass_addmethod(c, (method) informer_assist,      "assist",           A_NULL, 0);
 	
     eclass_register(CLASS_OBJ, c);
 	informer_class = c;

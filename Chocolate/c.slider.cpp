@@ -76,17 +76,17 @@ extern "C" void setup_c0x2eslider(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 	
-	eclass_addmethod(c, (method) slider_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) slider_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) slider_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) slider_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) slider_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) slider_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) slider_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) slider_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) slider_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) slider_oksize,          "oksize",           A_NULL, 0);
     eclass_addmethod(c, (method) slider_set,             "set",              A_FLOAT,0);
     eclass_addmethod(c, (method) slider_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) slider_bang,            "bang",             A_CANT, 0);
-    eclass_addmethod(c, (method) slider_mousedown,       "mousedown",        A_CANT, 0);
-    eclass_addmethod(c, (method) slider_mousedrag,       "mousedrag",        A_CANT, 0);
-    eclass_addmethod(c, (method) slider_preset,          "preset",           A_CANT, 0);
+    eclass_addmethod(c, (method) slider_bang,            "bang",             A_NULL, 0);
+    eclass_addmethod(c, (method) slider_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (method) slider_mousedrag,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (method) slider_preset,          "preset",           A_NULL, 0);
     
     CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);

@@ -112,37 +112,37 @@ extern "C" void setup_c0x2ebreakpoints(void)
 	eclass_init(c, 0);
     cream_initclass(c);
     
-	eclass_addmethod(c, (method) breakpoints_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) breakpoints_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) breakpoints_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) breakpoints_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) breakpoints_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) breakpoints_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_oksize,          "oksize",           A_NULL, 0);
 
     eclass_addmethod(c, (method) breakpoints_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) breakpoints_bang,            "bang",             A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_next,            "next",             A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_prev,            "prev",             A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_getlist,         "getlist",          A_CANT, 0);
+    eclass_addmethod(c, (method) breakpoints_bang,            "bang",             A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_next,            "next",             A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_prev,            "prev",             A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_getlist,         "getlist",          A_NULL, 0);
 
     eclass_addmethod(c, (method) breakpoints_add,             "add",              A_GIMME,0);
     eclass_addmethod(c, (method) breakpoints_move,            "move",             A_GIMME,0);
     eclass_addmethod(c, (method) breakpoints_remove,          "remove",           A_GIMME,0);
-    eclass_addmethod(c, (method) breakpoints_erase,           "erase",            A_CANT,0);
+    eclass_addmethod(c, (method) breakpoints_erase,           "erase",            A_NULL,0);
     eclass_addmethod(c, (method) breakpoints_function,        "function",         A_GIMME,0);
 
     eclass_addmethod(c, (method) breakpoints_scaleabs,        "scaleabs",         A_GIMME,0);
     eclass_addmethod(c, (method) breakpoints_scaleord,        "scaleord",         A_GIMME,0);
 
-    eclass_addmethod(c, (method) breakpoints_mousedown,       "mousedown",        A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_mousemove,       "mousemove",        A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_mousedrag,       "mousedrag",        A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_mouseleave,      "mouseleave",       A_CANT, 0);
-    eclass_addmethod(c, (method) breakpoints_mouseup,         "mouseup",          A_CANT, 0);
+    eclass_addmethod(c, (method) breakpoints_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_mousemove,       "mousemove",        A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_mousedrag,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_mouseleave,      "mouseleave",       A_NULL, 0);
+    eclass_addmethod(c, (method) breakpoints_mouseup,         "mouseup",          A_NULL, 0);
 
-    eclass_addmethod(c, (method) breakpoints_preset,          "preset",           A_CANT, 0);
+    eclass_addmethod(c, (method) breakpoints_preset,          "preset",           A_NULL, 0);
     eclass_addmethod(c, (method) breakpoints_read,            "read",             A_GIMME,0);
     eclass_addmethod(c, (method) breakpoints_write,           "write",            A_GIMME,0);
-    eclass_addmethod(c, (method) breakpoints_save,            "save",             A_CANT, 0);
+    eclass_addmethod(c, (method) breakpoints_save,            "save",             A_NULL, 0);
 
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
 	CLASS_ATTR_DEFAULT              (c, "size", 0, "150. 100.");

@@ -93,20 +93,20 @@ extern "C"  void setup_c0x2egain_tilde(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 	
-    eclass_addmethod(c, (method) gain_dsp,             "dsp",              A_CANT, 0);
-	eclass_addmethod(c, (method) gain_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) gain_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) gain_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) gain_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) gain_oksize,          "oksize",           A_CANT, 0);
+    eclass_addmethod(c, (method) gain_dsp,             "dsp",              A_NULL, 0);
+	eclass_addmethod(c, (method) gain_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) gain_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) gain_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) gain_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) gain_oksize,          "oksize",           A_NULL, 0);
     eclass_addmethod(c, (method) gain_set,             "set",              A_FLOAT,0);
     eclass_addmethod(c, (method) gain_float,           "float",            A_FLOAT,0);
     eclass_addmethod(c, (method) gain_linear,          "linear",           A_FLOAT,0);
-    eclass_addmethod(c, (method) gain_bang,            "bang",             A_CANT, 0);
-    eclass_addmethod(c, (method) gain_mousedown,       "mousedown",        A_CANT, 0);
-    eclass_addmethod(c, (method) gain_mousedrag,       "mousedrag",        A_CANT, 0);
-    eclass_addmethod(c, (method) gain_dblclick,        "dblclick",         A_CANT, 0);
-    eclass_addmethod(c, (method) gain_preset,          "preset",           A_CANT, 0);
+    eclass_addmethod(c, (method) gain_bang,            "bang",             A_NULL, 0);
+    eclass_addmethod(c, (method) gain_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (method) gain_mousedrag,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (method) gain_dblclick,        "dblclick",         A_NULL, 0);
+    eclass_addmethod(c, (method) gain_preset,          "preset",           A_NULL, 0);
     
     CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);

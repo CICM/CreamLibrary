@@ -75,19 +75,19 @@ extern "C" void setup_c0x2eplane(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 	
-	eclass_addmethod(c, (method) plane_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) plane_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) plane_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) plane_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) plane_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) plane_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) plane_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) plane_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) plane_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) plane_oksize,          "oksize",           A_NULL, 0);
     eclass_addmethod(c, (method) plane_set,             "set",              A_GIMME,0);
     eclass_addmethod(c, (method) plane_list,            "list",            A_GIMME,0);
-    eclass_addmethod(c, (method) plane_output,          "bang",             A_CANT, 0);
+    eclass_addmethod(c, (method) plane_output,          "bang",             A_NULL, 0);
     
-    eclass_addmethod(c, (method) plane_mousedrag,       "mousedown",        A_CANT, 0);
-    eclass_addmethod(c, (method) plane_mousedrag,       "mousedrag",        A_CANT, 0);
+    eclass_addmethod(c, (method) plane_mousedrag,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (method) plane_mousedrag,       "mousedrag",        A_NULL, 0);
     
-    eclass_addmethod(c, (method) plane_preset,          "preset",           A_CANT, 0);
+    eclass_addmethod(c, (method) plane_preset,          "preset",           A_NULL, 0);
     
     CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);

@@ -62,8 +62,8 @@ extern "C" void setup_c0x2epatcherargs(void)
     class_addcreator((t_newmethod)patcherargs_new, gensym("c.canvasargs"), A_GIMME, 0);
     cream_initclass(c);
     
-    eclass_addmethod(c, (method)patcherargs_output,      "bang",       A_CANT, 0);
-    eclass_addmethod(c, (method)patcherargs_click,       "click",      A_CANT, 0);
+    eclass_addmethod(c, (method)patcherargs_output,      "bang",       A_NULL, 0);
+    eclass_addmethod(c, (method)patcherargs_click,       "click",      A_NULL, 0);
     
     eclass_register(CLASS_OBJ, c);
 	patcherargs_class = c;

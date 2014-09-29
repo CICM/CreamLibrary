@@ -247,8 +247,8 @@ extern "C"  void setup_c0x2efreeverb_tilde(void)
     eclass_dspinit(c);
     cream_initclass(c);
     
-    eclass_addmethod(c, (method) freeverb_dsp,             "dsp",              A_CANT, 0);
-	eclass_addmethod(c, (method) freeverb_assist,          "assist",           A_CANT, 0);
+    eclass_addmethod(c, (method) freeverb_dsp,             "dsp",              A_NULL, 0);
+	eclass_addmethod(c, (method) freeverb_assist,          "assist",           A_NULL, 0);
     
     eclass_addmethod(c, (method) freeverb_roomsize,        "roomsize",         A_FLOAT, 0);
     eclass_addmethod(c, (method) freeverb_damp,            "damp",             A_FLOAT, 0);

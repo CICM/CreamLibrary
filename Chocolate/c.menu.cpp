@@ -98,11 +98,11 @@ extern "C" void setup_c0x2emenu(void)
     eclass_init(c, 0);
     cream_initclass(c);
 
-	eclass_addmethod(c, (method) menu_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) menu_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) menu_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) menu_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) menu_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) menu_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) menu_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) menu_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) menu_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) menu_oksize,          "oksize",           A_NULL, 0);
     
     eclass_addmethod(c, (method) menu_append,          "append",           A_GIMME,0);
     eclass_addmethod(c, (method) menu_insert,          "insert",           A_GIMME,0);
@@ -114,12 +114,12 @@ extern "C" void setup_c0x2emenu(void)
     eclass_addmethod(c, (method) menu_float,           "float",            A_FLOAT,0);
     eclass_addmethod(c, (method) menu_symbol,          "anything",         A_GIMME,0);
     eclass_addmethod(c, (method) menu_set,             "set",              A_GIMME,0);
-    eclass_addmethod(c, (method) menu_output,          "bang",             A_CANT, 0);
+    eclass_addmethod(c, (method) menu_output,          "bang",             A_NULL, 0);
     
-    eclass_addmethod(c, (method) menu_mousedown,        "mousedown",       A_CANT, 0);
-    eclass_addmethod(c, (method) menu_mousemove,        "mousemove",       A_CANT, 0);
-    eclass_addmethod(c, (method) menu_mouseleave,       "mouseleave",      A_CANT, 0);
-    eclass_addmethod(c, (method) menu_preset,           "preset",          A_CANT, 0);
+    eclass_addmethod(c, (method) menu_mousedown,        "mousedown",       A_NULL, 0);
+    eclass_addmethod(c, (method) menu_mousemove,        "mousemove",       A_NULL, 0);
+    eclass_addmethod(c, (method) menu_mouseleave,       "mouseleave",      A_NULL, 0);
+    eclass_addmethod(c, (method) menu_preset,           "preset",          A_NULL, 0);
     
 	CLASS_ATTR_DEFAULT              (c, "size", 0, "100 13");
     

@@ -91,21 +91,21 @@ extern "C" void setup_c0x2ecolorpanel(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 	
-	eclass_addmethod(c, (method) colorpanel_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) colorpanel_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) colorpanel_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) colorpanel_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) colorpanel_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) colorpanel_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) colorpanel_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) colorpanel_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) colorpanel_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) colorpanel_oksize,          "oksize",           A_NULL, 0);
     eclass_addmethod(c, (method) colorpanel_set,             "set",              A_GIMME,0);
     eclass_addmethod(c, (method) colorpanel_list,            "list",             A_GIMME,0);
-    eclass_addmethod(c, (method) colorpanel_output,          "bang",             A_CANT, 0);
+    eclass_addmethod(c, (method) colorpanel_output,          "bang",             A_NULL, 0);
     
-    eclass_addmethod(c, (method) colorpanel_mousemove,       "mousemove",        A_CANT, 0);
-    eclass_addmethod(c, (method) colorpanel_mousedown,       "mousedown",        A_CANT, 0);
-    eclass_addmethod(c, (method) colorpanel_mousedown,       "mousedrag",        A_CANT, 0);
-    eclass_addmethod(c, (method) colorpanel_mouseleave,      "mouseleave",       A_CANT, 0);
+    eclass_addmethod(c, (method) colorpanel_mousemove,       "mousemove",        A_NULL, 0);
+    eclass_addmethod(c, (method) colorpanel_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (method) colorpanel_mousedown,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (method) colorpanel_mouseleave,      "mouseleave",       A_NULL, 0);
     
-    eclass_addmethod(c, (method) colorpanel_preset,          "preset",           A_CANT, 0);
+    eclass_addmethod(c, (method) colorpanel_preset,          "preset",           A_NULL, 0);
     
     CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);

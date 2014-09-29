@@ -98,22 +98,22 @@ extern "C" void setup_c0x2epreset(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 
-	eclass_addmethod(c, (method) preset_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) preset_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) preset_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) preset_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) preset_oksize,          "oksize",           A_CANT, 0);
+	eclass_addmethod(c, (method) preset_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) preset_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) preset_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) preset_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) preset_oksize,          "oksize",           A_NULL, 0);
     eclass_addmethod(c, (method) preset_store,           "store",            A_FLOAT,0);
     eclass_addmethod(c, (method) preset_clear,           "clear",            A_FLOAT,0);
     eclass_addmethod(c, (method) preset_float,           "float",            A_FLOAT,0);
     eclass_addmethod(c, (method) preset_interpolate,     "inter",            A_FLOAT,0);
-    eclass_addmethod(c, (method) preset_clearall,        "clearall",         A_CANT,0);
+    eclass_addmethod(c, (method) preset_clearall,        "clearall",         A_NULL,0);
 
-    eclass_addmethod(c, (method) preset_mousemove,       "mousemove",        A_CANT, 0);
-    eclass_addmethod(c, (method) preset_mousedown,       "mousedown",        A_CANT, 0);
-    eclass_addmethod(c, (method) preset_mouseleave,      "mouseleave",       A_CANT, 0);
+    eclass_addmethod(c, (method) preset_mousemove,       "mousemove",        A_NULL, 0);
+    eclass_addmethod(c, (method) preset_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (method) preset_mouseleave,      "mouseleave",       A_NULL, 0);
 
-    eclass_addmethod(c, (method) preset_save,            "save",             A_CANT, 0);
+    eclass_addmethod(c, (method) preset_save,            "save",             A_NULL, 0);
     eclass_addmethod(c, (method) preset_read,            "read",             A_GIMME,0);
     eclass_addmethod(c, (method) preset_write,           "write",            A_GIMME,0);
 

@@ -77,13 +77,13 @@ extern "C" void setup_c0x2enumber_tilde(void)
 	eclass_init(c, 0);
     cream_initclass(c);
 
-	eclass_addmethod(c, (method) number_tilde_dsp,             "dsp",              A_CANT, 0);
-	eclass_addmethod(c, (method) number_tilde_assist,          "assist",           A_CANT, 0);
-	eclass_addmethod(c, (method) number_tilde_paint,           "paint",            A_CANT, 0);
-	eclass_addmethod(c, (method) number_tilde_notify,          "notify",           A_CANT, 0);
-    eclass_addmethod(c, (method) number_tilde_getdrawparams,   "getdrawparams",    A_CANT, 0);
-    eclass_addmethod(c, (method) number_tilde_oksize,          "oksize",           A_CANT, 0);
-    eclass_addmethod(c, (method) number_tilde_output,          "bang",             A_CANT, 0);
+	eclass_addmethod(c, (method) number_tilde_dsp,             "dsp",              A_NULL, 0);
+	eclass_addmethod(c, (method) number_tilde_assist,          "assist",           A_NULL, 0);
+	eclass_addmethod(c, (method) number_tilde_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (method) number_tilde_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) number_tilde_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) number_tilde_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (method) number_tilde_output,          "bang",             A_NULL, 0);
 
 	CLASS_ATTR_DEFAULT			(c, "size", 0, "53 13");
 
@@ -204,7 +204,7 @@ void number_tilde_tick(t_number_tilde *x)
 	ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
 	ebox_redraw((t_ebox *)x);
 
-	if(canvas_dspstate)
+	if(sys_getdspstate())
 		clock_delay(x->f_clock, x->f_interval);
 }
 
