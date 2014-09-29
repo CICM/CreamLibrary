@@ -16,7 +16,7 @@ ALL_CFLAGS = -I"$(PD_INCLUDE)"
 creamdir=$(pkglibdir)
 
 dist_cream_DATA = \
-	c.library-meta.pd \
+	cream-meta.pd \
 	LICENSE.txt \
 	README.txt
 	
@@ -43,8 +43,8 @@ libdir: all
 
 $(abs_builddir)/.libs/cream.@EXTENSION@: cream.la
 
-$(top_builddir)/c.library.@EXTENSION@: $(abs_builddir)/.libs/cream.@EXTENSION@ 
-		rm -f $@ && cd $(top_builddir) && test -e $< && $(LN_S) $< c.library.@EXTENSION@ || true
+$(top_builddir)/cream.@EXTENSION@: $(abs_builddir)/.libs/cream.@EXTENSION@ 
+		rm -f $@ && cd $(top_builddir) && test -e $< && $(LN_S) $< cream.@EXTENSION@ || true
 
 .PHONY: clean-conveniencelink help
 
@@ -52,7 +52,7 @@ clean-conveniencelink:
 	test -L $(top_builddir)/cream.@EXTENSION@ && rm -f $(top_builddir)/cream.@EXTENSION@ || true
 
 
-all-local:: $(top_builddir)/c.library.@EXTENSION@ help
+all-local:: $(top_builddir)/cream.@EXTENSION@ help
 
 clean-local:: clean-conveniencelink
 

@@ -25,6 +25,11 @@ extern "C" void libpd_loadcream(void)
     setup_c0x2elibrary();
 }
 
+extern "C" void cream_setup(void)
+{
+    setup_c0x2elibrary();
+}
+
 extern "C" void setup_c0x2elibrary(void)
 {
 	post("Cream Library by Pierre Guillot");
