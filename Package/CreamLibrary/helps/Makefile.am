@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = foreign
 
 SUFFIXES = .pd
 
-c.libraryhelpdir=$(pkglibdir)
+c.libraryhelpdir=$(pkglibdir)/helps
 
 dist_c.libraryhelp_DATA = \
  c.bang-help.pd \

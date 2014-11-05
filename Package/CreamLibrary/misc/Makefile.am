@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = foreign
 
 SUFFIXES = .pd
 
-c.librarymiscdir=$(pkglibdir)
+c.librarymiscdir=$(pkglibdir)/misc
 
 dist_c.librarymisc_DATA = \
  Caramel-help.pd \

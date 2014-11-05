@@ -72,6 +72,6 @@ extern "C" void setup_c0x2elibrary(void)
 	setup_c0x2eprepend();
 //    setup_c0x2emousestate();
 
-  pd_library_add_folder("CreamLibrary", "misc"); // AV : this doesn't work on Ubuntu with Pd 0.46-0
+  pd_library_add_folder("cream", "misc"); // AV : this doesn't work on Ubuntu with Pd 0.46-0
 }
 
