@@ -32,15 +32,6 @@ SUBDIRS=Coffee Caramel Chocolate
 SUBDIRS+= ThirdParty/PureData
 SUBDIRS+= Package/CreamLibrary
 
-libdir: all
-	$(INSTALL) -p -m 755 -d $(DISTBINDIR)
-	$(INSTALL_DATA) $(PACKAGE_NAME)-meta.pd  $(DISTBINDIR)
-	$(INSTALL_DATA) $(PACKAGE_NAME).$(EXTENSION)  $(DISTBINDIR)
-	$(INSTALL_DATA) $(dist_cream_DATA) $(DISTBINDIR)
-	test -z "$(strip $(EXTRA_DIST))" || \
-		$(INSTALL_DATA) $(EXTRA_DIST)    $(DISTBINDIR)
-#	tar --exclude-vcs -czpf $(DISTBINDIR).tar.gz $(DISTBINDIR)
-
 $(abs_builddir)/.libs/cream.@EXTENSION@: cream.la
 
 $(top_builddir)/cream.@EXTENSION@: $(abs_builddir)/.libs/cream.@EXTENSION@ 
@@ -55,9 +46,6 @@ clean-conveniencelink:
 all-local:: $(top_builddir)/cream.@EXTENSION@ help
 
 clean-local:: clean-conveniencelink
-
-.o: .cc
-	$(CXX) $(ALL_CFLAGS) -o "$*.o" -c "$*.cc"
 	
 README.txt:
 	cp README.md README.txt
