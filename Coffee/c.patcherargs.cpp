@@ -33,16 +33,16 @@ typedef struct  _patcherargs
 	t_outlet*   f_out_args;
     t_outlet*   f_out_attrs;
     t_outlet*   f_out_done;
-    
+
     t_atom*     f_args;
     long        f_argc;
-    
+
     long        f_n_attrs;
     t_symbol*   f_attr_name[256];
     t_atom*     f_attr_vals[256];
     long        f_attr_size[256];
     double      f_time;
-    
+
 } t_patcherargs;
 
 t_eclass *patcherargs_class;
@@ -57,14 +57,14 @@ void patcherargs_bang(t_patcherargs *x);
 extern "C" void setup_c0x2epatcherargs(void)
 {
 	t_eclass *c;
-    
+
 	c = eclass_new("c.patcherargs", (method)patcherargs_new, (method)patcherargs_free, (short)sizeof(t_patcherargs), 0L, A_GIMME, 0);
     class_addcreator((t_newmethod)patcherargs_new, gensym("c.canvasargs"), A_GIMME, 0);
     cream_initclass(c);
-    
-    eclass_addmethod(c, (method)patcherargs_output,      "bang",       A_CANT, 0);
-    eclass_addmethod(c, (method)patcherargs_click,       "click",      A_CANT, 0);
-    
+
+    eclass_addmethod(c, (method)patcherargs_output,      "bang",       A_NULL, 0);
+    eclass_addmethod(c, (method)patcherargs_click,       "click",      A_NULL, 0);
+
     eclass_register(CLASS_OBJ, c);
 	patcherargs_class = c;
 }
@@ -73,7 +73,7 @@ void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
 {
     int i;
 	t_patcherargs *x =  NULL;
-    
+
     x = (t_patcherargs *)eobj_new(patcherargs_class);
     if(x)
     {
@@ -91,7 +91,7 @@ void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
         {
             x->f_args[i] = argv[i];
         }
-        
+
         // ATTRIBUTES //
         x->f_n_attrs = 0;
         for(i = x->f_argc; i < argc; i++)
@@ -109,20 +109,20 @@ void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
         {
             atoms_get_attribute(argc-x->f_argc, argv+x->f_argc, x->f_attr_name[i], &x->f_attr_size[i], &x->f_attr_vals[i]);
         }
-        
+
         if(canvas_getcurrent())
         {
             x->f_canvas = glist_getcanvas(canvas_getcurrent());
         }
         else
             x->f_canvas = NULL;
-        
+
         x->f_out_args = (t_outlet *)listout(x);
         x->f_out_attrs = (t_outlet *)listout(x);
         x->f_out_done = (t_outlet *)bangout(x);
         x->f_time = clock_getsystime();
     }
-    
+
     return (x);
 }
 
@@ -143,7 +143,7 @@ void patcherargs_output(t_patcherargs *x)
     if(x->f_canvas)
     {
         b = x->f_canvas->gl_obj.te_binbuf;
-		
+
         if(b)
         {
             ac = binbuf_getnatom(b);
