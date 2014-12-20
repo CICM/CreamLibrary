@@ -12,10 +12,25 @@
 *.so
 *.pd_darwin
 *.pd_linux
+*.l_ia64
+*.l_i386
 *.dll
 .deps
 .libs
 *.lib
+
+#################
+## automake files
+#################
+Makefile
+Makefile.in
+c.library-meta.pd
+README.txt
+config/*
+configure
+config.status
+libtool
+aclocal.m4
 
 #################
 ## Code::Blocks temp and user files
@@ -108,3 +123,11 @@ Package/CreamLibrary/externals/Linux32/pd-vanilla/c.library.pd_linux
 Package/CreamLibrary/externals/Linux32/pd-extented/c.library.pd_linux
 
 Package/CreamLibrary/c.library.pd_darwin
+
+c.library.cpp
+
+Coffee/c.loadmess.cpp
+
+Coffee/c.patcherargs.cpp
+
+Coffee/c.patcherinfos.cpp

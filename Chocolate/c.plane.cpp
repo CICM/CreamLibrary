@@ -104,7 +104,7 @@ extern "C" void setup_c0x2eplane(void)
     CLASS_ATTR_FLOAT                (c, "ptsize", 0, t_plane, f_size);
 	CLASS_ATTR_LABEL                (c, "ptsize", 0, "Point size");
 	CLASS_ATTR_ORDER                (c, "ptsize", 0, "3");
-    CLASS_ATTR_FILTER_CLIP          (c, "ptsize", 5., 50.f);
+    CLASS_ATTR_FILTER_CLIP          (c, "ptsize", 1., 50.f);
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "ptsize", 0, "5");
     CLASS_ATTR_STYLE                (c, "ptsize", 0, "number");
     CLASS_ATTR_STEP                 (c, "ptsize", 0.5);
