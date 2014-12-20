@@ -1,28 +1,51 @@
-# Object files
-*.o
+# backup copies
+*~
 
-# Libraries
-*.lib
+# archive
+*.tar.gz
+
+# build products
+*.la
 *.a
+*.lo
+*.o
+*.so
+*.pd_darwin
+*.pd_linux
+*.dll
+.deps
+.libs
+*.lib
+
+#################
+## Code::Blocks temp and user files
+#################
+*.layout
+*.save
+*build_log.html
+*.cscope_file_list
+*.depend
 
 # Shared objects (inc. Windows DLLs)
 *.so
 *.so.*
 *.dylib
+#################
+## Juce
+#################
+#JuceLibraryCode/
 
 # Executables
 *.exe
 *.out
 *.app
 
-# xcode
-*.xcbkptlist
-*.xcuserstate
-*.xcsettings
-*.plist
-*.xcscheme
 
-#Visual Studio
+#################
+## Visual Studio
+#################
+
+*.amplxeproj
 *.tlog
 *.obj
 *.log
@@ -41,3 +64,47 @@
 *.rc
 *.manifest
 *.res
+
+sysbuild/
+
+#################
+## XCode
+#################
+xcuserdata/
+xcshareddata/
+
+*.build/
+*.gcda
+
+# Mac crap
+.DS_Store
+
+*.mode1V3
+*.pbxuser
+
+*.xcbkptlist
+*.xcuserstate
+*.xcsettings
+*.plist
+*.xcscheme
+
+#################
+## VST
+#################
+
+ThirdParty/Vst3SDK/*
+!ThirdParty/Vst3SDK/readme.txt
+
+
+
+*.dll
+
+Package/CreamLibrary/externals/Linux64/pd-extented/c.library.pd_linux
+
+Package/CreamLibrary/externals/Windows/pd-extented/c.library.dll
+
+Package/CreamLibrary/externals/Linux32/pd-vanilla/c.library.pd_linux
+
+Package/CreamLibrary/externals/Linux32/pd-extented/c.library.pd_linux
+
+Package/CreamLibrary/c.library.pd_darwin

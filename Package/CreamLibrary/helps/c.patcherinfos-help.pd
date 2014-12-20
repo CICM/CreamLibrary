@@ -1,14 +1,14 @@
-#N canvas 166 158 1207 412 10;
-#X obj -25 -74 cnv 40 552 40 empty empty c.canvasinfos 3 12 0 18 -228856
+#N canvas 164 167 1207 412 10;
+#X obj 5 6 cnv 40 552 40 empty empty c.canvasinfos 3 12 0 18 -228856
 -33289 0;
-#X obj 57 21 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#X obj 87 101 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj 57 79 c.prepend set;
-#X obj 196 79 c.prepend set;
-#X text -13 308 Coffee by Pierre Guillot | CICM - Université Paris
-8;
-#X text 85 21 Bang or double click;
+#X obj 87 159 c.prepend set;
+#X obj 226 159 c.prepend set;
+#X text 17 388 Coffee by Pierre Guillot | CICM - Université Paris 8
+;
+#X text 115 101 Bang or double click;
 #N canvas 298 515 610 300 subpatch 0;
 #X obj 67 31 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
@@ -35,18 +35,18 @@
 #X connect 11 0 1 0;
 #X connect 11 1 2 0;
 #X connect 11 2 10 0;
-#X restore 592 75 pd subpatch;
-#X msg 57 225 c.patcherinfos-help.pd;
-#X msg 196 195 /Users/Pierre/GitHub/CicmWrapper/CreamLibrary/Package/CreamLibrary/helps
+#X restore 622 155 pd subpatch;
+#X msg 87 305 c.patcherinfos-help.pd;
+#X msg 226 275 /Users/Pierre/GitHub/CicmWrapper/CreamLibrary/Package/CreamLibrary/helps
 ;
-#X msg 336 135 311 160 1040 568;
-#X msg 466 135 0 0 0 0;
-#X obj 336 113 c.prepend set;
-#X obj 466 113 c.prepend set;
-#X obj 336 79 route windowsize canvassize;
-#X obj 57 52 c.canvasinfos;
-#X text -24 -31 c.canvasinfos (or patcherinfos) retrieves the name
-\, the path and coordinates of the canvas and the window.;
+#X msg 366 215 311 160 1040 568;
+#X msg 496 215 0 0 0 0;
+#X obj 366 193 c.prepend set;
+#X obj 496 193 c.prepend set;
+#X obj 366 159 route windowsize canvassize;
+#X obj 87 132 c.canvasinfos;
+#X text 6 49 c.canvasinfos (or patcherinfos) retrieves the name \,
+the path and coordinates of the canvas and the window.;
 #N canvas 281 319 656 383 subpatch2 0;
 #X obj 57 55 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
@@ -89,8 +89,8 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
 #X connect 13 1 4 0;
 #X connect 13 2 2 0;
 #X coords 0 -1 1 1 500 150 2 50 50;
-#X restore 592 115 pd subpatch2;
-#X text -22 -52 An object that retrieve the patcher informations.;
+#X restore 622 195 pd subpatch2;
+#X text 8 28 An object that retrieve the patcher informations.;
 #X connect 1 0 14 0;
 #X connect 2 0 7 0;
 #X connect 3 0 8 0;

@@ -15,6 +15,7 @@
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-fPIC" />
+					<Add directory="/usr/local/include/pd" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -32,6 +33,7 @@
 					<Add option="-fPIC" />
 					<Add option="-m32" />
 					<Add directory="../../../SDKs/pd-extended/pd/src" />
+					<Add directory="/usr/local/include/pd" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -49,6 +51,8 @@
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-fPIC" />
+					<Add option="-DPD_EXTENDED=1" />
+					<Add directory="/home/antoine/pd/pd-extended/src" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
