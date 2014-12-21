@@ -81,8 +81,6 @@
 		8FB8EB71190080E9005FAF6A /* c.patcherargs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6C190080E9005FAF6A /* c.patcherargs.cpp */; };
 		8FB8EB72190080E9005FAF6A /* c.patcherinfos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */; };
 		8FB8EB73190080E9005FAF6A /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6E190080E9005FAF6A /* c.prepend.cpp */; };
-		8FC1C0C019746D7700D588E0 /* c.io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FC1C0BF19746D7700D588E0 /* c.io.cpp */; };
-		8FC1C0C119746D7700D588E0 /* c.io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FC1C0BF19746D7700D588E0 /* c.io.cpp */; };
 		8FD167D1196FCA1D00D5104D /* cicm_wrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165C6196FCA1D00D5104D /* cicm_wrapper.h */; };
 		8FD167D2196FCA1D00D5104D /* cicm_wrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165C6196FCA1D00D5104D /* cicm_wrapper.h */; };
 		8FD167D3196FCA1D00D5104D /* ebox.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165C8196FCA1D00D5104D /* ebox.h */; };
@@ -153,8 +151,6 @@
 		8FD16824196FCA1D00D5104D /* epopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F8196FCA1D00D5104D /* epopup.h */; };
 		8FD16825196FCA1D00D5104D /* estruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F9196FCA1D00D5104D /* estruct.h */; };
 		8FD16826196FCA1D00D5104D /* estruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F9196FCA1D00D5104D /* estruct.h */; };
-		8FFFCBCE1971145B006BF3B9 /* c.informer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FFFCBCD1971145B006BF3B9 /* c.informer.cpp */; };
-		8FFFCBCF1971145B006BF3B9 /* c.informer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FFFCBCD1971145B006BF3B9 /* c.informer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -197,7 +193,6 @@
 		8FB8EB6C190080E9005FAF6A /* c.patcherargs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patcherargs.cpp; sourceTree = "<group>"; };
 		8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patcherinfos.cpp; sourceTree = "<group>"; };
 		8FB8EB6E190080E9005FAF6A /* c.prepend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.prepend.cpp; sourceTree = "<group>"; };
-		8FC1C0BF19746D7700D588E0 /* c.io.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.io.cpp; sourceTree = "<group>"; };
 		8FD165C6196FCA1D00D5104D /* cicm_wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cicm_wrapper.h; sourceTree = "<group>"; };
 		8FD165C8196FCA1D00D5104D /* ebox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ebox.h; sourceTree = "<group>"; };
 		8FD165C9196FCA1D00D5104D /* ebox_attr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ebox_attr.c; sourceTree = "<group>"; };
@@ -233,7 +228,6 @@
 		8FD165F7196FCA1D00D5104D /* epopup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = epopup.c; sourceTree = "<group>"; };
 		8FD165F8196FCA1D00D5104D /* epopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = epopup.h; sourceTree = "<group>"; };
 		8FD165F9196FCA1D00D5104D /* estruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = estruct.h; sourceTree = "<group>"; };
-		8FFFCBCD1971145B006BF3B9 /* c.informer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.informer.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -323,8 +317,6 @@
 		8FB8EB69190080E9005FAF6A /* Coffee */ = {
 			isa = PBXGroup;
 			children = (
-				8FFFCBCD1971145B006BF3B9 /* c.informer.cpp */,
-				8FC1C0BF19746D7700D588E0 /* c.io.cpp */,
 				8FB8EB6A190080E9005FAF6A /* c.loadmess.cpp */,
 				8F5DB22419630E41005DE808 /* c.mousestate.cpp */,
 				8FB8EB6B190080E9005FAF6A /* c.pak.cpp */,
@@ -502,9 +494,9 @@
 			productReference = 5913846F15DAA36D0029AD16 /* c.library.pd_darwin */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		8FAC0BA51969731800E09ACB /* c.library_extented */ = {
+		8FAC0BA51969731800E09ACB /* c.library_extended */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8FAC0BF91969731800E09ACB /* Build configuration list for PBXNativeTarget "c.library_extented" */;
+			buildConfigurationList = 8FAC0BF91969731800E09ACB /* Build configuration list for PBXNativeTarget "c.library_extended" */;
 			buildPhases = (
 				8FAC0BA61969731800E09ACB /* Sources */,
 				8FAC0BE21969731800E09ACB /* Frameworks */,
@@ -514,7 +506,7 @@
 			);
 			dependencies = (
 			);
-			name = c.library_extented;
+			name = c.library_extended;
 			productName = pd1;
 			productReference = 8FAC0BFB1969731800E09ACB /* c.library.pd_darwin */;
 			productType = "com.apple.product-type.library.dynamic";
@@ -540,7 +532,7 @@
 			projectRoot = "";
 			targets = (
 				5913846E15DAA36D0029AD16 /* c.library */,
-				8FAC0BA51969731800E09ACB /* c.library_extented */,
+				8FAC0BA51969731800E09ACB /* c.library_extended */,
 			);
 		};
 /* End PBXProject section */
@@ -606,8 +598,6 @@
 				8FD167DD196FCA1D00D5104D /* ebox_patcher.c in Sources */,
 				8FD167D5196FCA1D00D5104D /* ebox_attr.c in Sources */,
 				8FB8EB4B19007B04005FAF6A /* FFTConvolver.cpp in Sources */,
-				8FC1C0C019746D7700D588E0 /* c.io.cpp in Sources */,
-				8FFFCBCE1971145B006BF3B9 /* c.informer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,8 +661,6 @@
 				8FD167DE196FCA1D00D5104D /* ebox_patcher.c in Sources */,
 				8FD167D6196FCA1D00D5104D /* ebox_attr.c in Sources */,
 				8FAC0BE11969731800E09ACB /* FFTConvolver.cpp in Sources */,
-				8FC1C0C119746D7700D588E0 /* c.io.cpp in Sources */,
-				8FFFCBCF1971145B006BF3B9 /* c.informer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,7 +708,7 @@
 				EXECUTABLE_EXTENSION = pd_darwin;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = _APPLE_;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "";
 				"HEADER_SEARCH_PATHS[arch=*]" = "";
@@ -745,11 +733,14 @@
 				EXECUTABLE_EXTENSION = pd_darwin;
 				EXECUTABLE_PREFIX = "";
 				FRAMEWORK_SEARCH_PATHS = "";
-				GCC_PREPROCESSOR_DEFINITIONS = PD_EXTENDED;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					PD_EXTENDED,
+					_APPLE_,
+				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = "";
 				"HEADER_SEARCH_PATHS[arch=*]" = "";
-				INSTALL_PATH = "$SRCROOT/Package/CreamLibrary/externals/MacOs/pd-extented";
+				INSTALL_PATH = "$SRCROOT/Package/CreamLibrary/externals/MacOs/pd-extended";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (
 					"-undefined",
@@ -780,7 +771,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8FAC0BF91969731800E09ACB /* Build configuration list for PBXNativeTarget "c.library_extented" */ = {
+		8FAC0BF91969731800E09ACB /* Build configuration list for PBXNativeTarget "c.library_extended" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FAC0BFA1969731800E09ACB /* Release */,

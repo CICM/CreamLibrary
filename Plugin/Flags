@@ -1,1 +1,0 @@
-OTHER_CFLAGS = "-DPD -DUSEAPI_DUMMY -DHAVE_LIBDL -DHAVE_UNISTD_H -DHAVE_ALLOCA_H", WARNING_CFLAGS = "-Wno-unused-variable -Wno-parentheses -Wno-format" 

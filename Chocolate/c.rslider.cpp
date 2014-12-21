@@ -78,7 +78,7 @@ extern "C" void setup_c0x2erslider(void)
 {
 	t_eclass *c;
     
-	c = eclass_new("c.rslider", (method)rslider_new, (method)rslider_free, (short)sizeof(t_rslider), 0L, A_GIMME, 0);
+	c = eclass_new("c.rslider", (method)rslider_new, (method)rslider_free, (short)sizeof(t_rslider), CLASS_NOINLET, A_GIMME, 0);
     
 	eclass_init(c, 0);
     cream_initclass(c);
@@ -159,6 +159,7 @@ void *rslider_new(t_symbol *s, int argc, t_atom *argv)
     | EBOX_GROWINDI
     ;
 	ebox_new((t_ebox *)x, flags);
+    eobj_proxynew(x);
     eobj_proxynew(x);
     x->f_out_left = (t_outlet *)listout(x);
     x->f_out_right = (t_outlet *)floatout(x);

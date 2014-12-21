@@ -78,7 +78,7 @@ OouraFFT::OouraFFT() :
 void OouraFFT::init(size_t size)
 {
   assert(internal::IsPowerOf2(size));
-  
+
   if (_size != size)
   { 
     _ip.resize(2 + static_cast<int>(std::sqrt(static_cast<double>(size))));
@@ -744,7 +744,7 @@ AppleAccelerateFFT::~AppleAccelerateFFT()
 void AppleAccelerateFFT::init(size_t size)
 {
   assert(internal::IsPowerOf2(size));
-  
+
   if (_fftSetup)
   {
     vDSP_destroy_fftsetup(_fftSetup);

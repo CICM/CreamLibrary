@@ -145,7 +145,7 @@ void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
             }
         }
         x->f_convolver->reset();
-        x->f_convolver->init(512, temp, buffer_size);
+        x->f_convolver->init(1024, temp, buffer_size);
         
         free(temp);
         if(!dsp)
