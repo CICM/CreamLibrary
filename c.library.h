@@ -16,10 +16,10 @@ void cream_initclass(t_eclass* c);
 
 extern "C" void setup_c0x2elibrary(void);
 extern "C" void libpd_loadcream(void);
+
 // Caramel
 extern "C" void setup_c0x2econvolve_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
-//extern "C" void setup_c0x2efuzz_tilde(void);
 
 // Chocolate
 extern "C" void setup_c0x2ebang(void);
@@ -29,6 +29,7 @@ extern "C" void setup_c0x2ecolorpanel(void);
 extern "C" void setup_c0x2egain_tilde(void);
 extern "C" void setup_c0x2eincdec(void);
 extern "C" void setup_c0x2eknob(void);
+extern "C" void setup_c0x2ematrix(void);
 extern "C" void setup_c0x2emenu(void);
 extern "C" void setup_c0x2emeter_tilde(void);
 extern "C" void setup_c0x2enumber(void);
@@ -41,11 +42,9 @@ extern "C" void setup_c0x2escope_tilde(void);
 extern "C" void setup_c0x2eslider(void);
 extern "C" void setup_c0x2etab(void);
 extern "C" void setup_c0x2etoggle(void);
-extern "C" void setup_c0x2evoronoy(void);
 
 // Coffee
-//extern "C" void setup_c0x2einformer(void);
-//extern "C" void cio_setup(void);
+
 extern "C" void setup_c0x2eloadmess(void);
 extern "C" void setup_c0x2epak(void);
 extern "C" void setup_c0x2epatcherargs(void);

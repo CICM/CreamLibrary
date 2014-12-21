@@ -1,0 +1,111 @@
+#N canvas 144 92 688 660 10;
+#X obj 101 165 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+@fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X obj 3 11 c.patcherinfos;
+#X obj 4 2 c.loadmess;
+#X obj -2 -10 c.help.header;
+#N canvas 390 84 722 277 what 0;
+#X msg 595 99 attrprint;
+#X text 29 -5 - Look at the properties window to edit the attributes.
+Use the attrprint message to post the attributes characteristics.;
+#X text 29 96 - The inlets and outlets are hidden with the "run mode".
+;
+#X text 29 198 - Some objects are very similar to the vanilla ones
+but they're compatible with the preset and will be a part of a global
+system to write time events.;
+#X text 29 122 - Drag the border (bottom or right) or the corner (bottom-right)
+of the box to resize the objects. Sometimes the width or the height
+depends of the font size.;
+#X text 29 168 -The popup menu (for attributes and help) is only available
+with the "edit mode";
+#X text 29 35 "Name" is the message that the object is expecting to
+edit the attribute \, "Type" is the type of the values (float \, symbol
+\, etc...) and "Size" is the number of values the object is expecting.
+;
+#X obj 516 73 c.number @size 53 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min 64 @max (null) @minmax 64 (null) @decimal 6 @bgcolor 0.75
+0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 516 142 c.radio @size 64 8 @fontname Helvetica @fontweight normal
+@fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @nitems 1 @mode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5
+0.5 1 @itcolor 0.5 0.5 0.5 1;
+#X msg 516 102 size \$1 8;
+#X text 513 45 Example;
+#X obj 446 73 c.number @size 53 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min 1 @max (null) @minmax 1 (null) @decimal 6 @bgcolor 0.75
+0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X msg 446 102 nitems \$1;
+#X connect 0 0 8 0;
+#X connect 7 0 9 0;
+#X connect 9 0 8 0;
+#X connect 11 0 12 0;
+#X connect 12 0 8 0;
+#X restore 426 31 pd what you can do with GUI;
+#X obj 213 552 c.help.pub;
+#X text 0 36 c.matrix allows to create a breakpoint function and to
+use it for line.;
+#X obj 274 357 c.matrix @size 161 81 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @matrix 8 4 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1
+@accolor 0.5 0.5 0.5 1;
+#X msg 517 288 matrix 8 4;
+#X msg 473 256 matrix 4 2;
+#X obj 430 465 c.prepend set;
+#X msg 430 497 1 0 0 0 0 0 0 0;
+#X obj 422 133 c.number @size 53 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min 0 @max 3 @minmax 0 3 @decimal 0 @bgcolor 0.75 0.75 0.75
+1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X msg 422 169 getrow \$1;
+#X obj 501 133 c.number @size 53 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min 0 @max 8 @minmax 0 8 @decimal 0 @bgcolor 0.75 0.75 0.75
+1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X msg 501 169 getcolumn \$1;
+#X text 428 525 Row or column values;
+#X text 420 95 Output the row or column values;
+#X text 420 105 via the right outlet.;
+#X msg 165 115 0 1 1;
+#X msg 207 115 0 1 0;
+#X text 135 85 Set and output the value;
+#X text 135 95 of a cell (column \, row \, value).;
+#X text 246 145 Set and output the value;
+#X text 246 155 of a several cells (column \,;
+#X text 246 165 row \, value \, column \, row \,;
+#X text 246 175 value \, column \, row \, etc.).;
+#X msg 32 223 clear;
+#X obj 274 465 c.prepend set;
+#X msg 274 497 4 3 1;
+#X text 272 525 Cell value;
+#X msg 250 194 1 1 1 \, 2 0 1 \, 4 3 1;
+#X text 30 205 Clear the matrix.;
+#X text 75 146 Output all cells.;
+#X msg 22 297 set 0 1 1;
+#X msg 21 326 set 0 1 0;
+#X msg 22 353 set 1 1 1 \, 2 0 1 \, 4 3 1;
+#X text 22 267 Set without;
+#X text 22 277 output the values.;
+#X text 470 234 Resize the matrix (column \, row);
+#X connect 0 0 7 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 7 0 28 0;
+#X connect 7 1 10 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 10 0 11 0;
+#X connect 12 0 13 0;
+#X connect 13 0 7 0;
+#X connect 14 0 15 0;
+#X connect 15 0 7 0;
+#X connect 19 0 7 0;
+#X connect 20 0 7 0;
+#X connect 27 0 7 0;
+#X connect 28 0 29 0;
+#X connect 31 0 7 0;
+#X connect 34 0 7 0;
+#X connect 35 0 7 0;
+#X connect 36 0 7 0;

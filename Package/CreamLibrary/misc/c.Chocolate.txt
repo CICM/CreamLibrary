@@ -5,6 +5,7 @@ c.colorpanel-help.pd c.colorpanel A GUI to pick color.;
 c.gain~-help.pd c.gain~ A slider for signal.;
 c.incdec-help.pd c.incdec A GUI to increment and decrement a value.;
 c.knob-help.pd c.knob A knob.;
+c.matrix-help.pd c.matrix A matrix of toggle.;
 c.menu-help.pd c.menu A menu that display a list of items.;
 c.meter~-help.pd c.meter~ A peak programme meter for signal.;
 c.number-help.pd c.number A number box with another dragging behavior.;

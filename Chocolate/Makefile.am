@@ -13,6 +13,7 @@ c.colorpanel.cpp \
 c.gain_tilde.cpp \
 c.incdec.cpp \
 c.knob.cpp \
+c.matrix.cpp \
 c.menu.cpp \
 c.meter_tilde.cpp \
 c.number.cpp \
