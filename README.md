@@ -6,6 +6,8 @@
 
 Alpha 0.4 for Pure Data Vanilla and Pure Data Extended on Mac Os, Windows and Linux plateforms.
 
+![capture decran 2014-07-24 a 13 11 29](https://cloud.githubusercontent.com/assets/1409918/3687190/623be588-1323-11e4-9818-8b463e353e71.png)
+
 ##### Compilation :
 
 <p>Mac OsX : Use the XCode project (c.library.xcodeproj). </p>
