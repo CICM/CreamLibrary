@@ -88,3 +88,10 @@ xcshareddata/
 *.xcsettings
 *.plist
 *.xcscheme
+
+
+
+/Package/CreamLibrary/externals/MacOs/pd-vanilla/c.library.pd_darwin
+/Package/CreamLibrary/externals/Linux32/pd-vanilla/c.library.pd_linux
+/Package/CreamLibrary/externals/Windows/pd-vanilla/c.library.dll
+
