@@ -10,11 +10,11 @@
 *.lo
 *.o
 *.so
-*.pd_darwin
-*.pd_linux
+##*.pd_darwin
+##*.pd_linux
 *.l_ia64
 *.l_i386
-*.dll
+##*.dll
 .deps
 .libs
 *.lib
@@ -89,9 +89,5 @@ xcshareddata/
 *.plist
 *.xcscheme
 
-
-
-/Package/CreamLibrary/externals/MacOs/pd-vanilla/c.library.pd_darwin
-/Package/CreamLibrary/externals/Linux32/pd-vanilla/c.library.pd_linux
-/Package/CreamLibrary/externals/Windows/pd-vanilla/c.library.dll
+*/Package/CreamLibrary/externals
 
