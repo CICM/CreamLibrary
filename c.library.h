@@ -17,6 +17,10 @@ void cream_initclass(t_eclass* c);
 extern "C" void setup_c0x2elibrary(void);
 extern "C" void libpd_loadcream(void);
 
+// Cinnamon
+extern "C"  void setup_c0x2eatan_tilde(void);
+extern "C"  void setup_c0x2esin_tilde(void);
+
 // Caramel
 extern "C" void setup_c0x2econvolve_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
@@ -49,7 +53,7 @@ extern "C" void setup_c0x2eloadmess(void);
 extern "C" void setup_c0x2epak(void);
 extern "C" void setup_c0x2epatcherargs(void);
 extern "C" void setup_c0x2epatcherinfos(void);
-//extern "C" void setup_c0x2epatchermess(void);
+extern "C" void setup_c0x2epatchermess(void);
 extern "C" void setup_c0x2eprepend(void);
 extern "C" void setup_c0x2emousestate(void);
 

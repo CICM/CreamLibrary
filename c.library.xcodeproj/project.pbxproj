@@ -13,6 +13,10 @@
 		8F26F18B17E76274005FCB97 /* c.library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F26F18A17E76273005FCB97 /* c.library.cpp */; };
 		8F53164C1906F50A00734AD6 /* c.patchermess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F53164B1906F50A00734AD6 /* c.patchermess.cpp */; };
 		8F5DB22519630E41005DE808 /* c.mousestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F5DB22419630E41005DE808 /* c.mousestate.cpp */; };
+		8FA8BB311A47E6560001EB87 /* c.atan_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */; };
+		8FA8BB321A47E6560001EB87 /* c.atan_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */; };
+		8FA8BB341A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */; };
+		8FA8BB351A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */; };
 		8FAC0BA71969731800E09ACB /* c.gain_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3219007B04005FAF6A /* c.gain_tilde.cpp */; };
 		8FAC0BA81969731800E09ACB /* c.patcherinfos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */; };
 		8FAC0BAB1969731800E09ACB /* c.rslider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3C19007B04005FAF6A /* c.rslider.cpp */; };
@@ -162,6 +166,8 @@
 		8F26F18A17E76273005FCB97 /* c.library.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.library.cpp; sourceTree = "<group>"; };
 		8F53164B1906F50A00734AD6 /* c.patchermess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patchermess.cpp; sourceTree = "<group>"; };
 		8F5DB22419630E41005DE808 /* c.mousestate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.mousestate.cpp; sourceTree = "<group>"; };
+		8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.atan_tilde.cpp; sourceTree = "<group>"; };
+		8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.sin_tilde.cpp; sourceTree = "<group>"; };
 		8FAC0BFB1969731800E09ACB /* c.library.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = c.library.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB8EB2519007B04005FAF6A /* AudioFFT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioFFT.cpp; sourceTree = "<group>"; };
 		8FB8EB2619007B04005FAF6A /* AudioFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFFT.h; sourceTree = "<group>"; };
@@ -258,6 +264,7 @@
 			children = (
 				8F26F18A17E76273005FCB97 /* c.library.cpp */,
 				8FB8EB6719007B1E005FAF6A /* c.library.h */,
+				8FA8BB2F1A47E6560001EB87 /* Cinnamon */,
 				8FB8EB2419007B04005FAF6A /* Caramel */,
 				8FB8EB2D19007B04005FAF6A /* Chocolate */,
 				8FB8EB69190080E9005FAF6A /* Coffee */,
@@ -274,6 +281,15 @@
 				8FAC0BFB1969731800E09ACB /* c.library.pd_darwin */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8FA8BB2F1A47E6560001EB87 /* Cinnamon */ = {
+			isa = PBXGroup;
+			children = (
+				8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */,
+				8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */,
+			);
+			path = Cinnamon;
 			sourceTree = "<group>";
 		};
 		8FB8EB2419007B04005FAF6A /* Caramel */ = {
@@ -521,7 +537,7 @@
 		5913846615DAA36D0029AD16 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 			};
 			buildConfigurationList = 5913846915DAA36D0029AD16 /* Build configuration list for PBXProject "c.library" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -555,10 +571,12 @@
 				8FB8EB5819007B04005FAF6A /* c.number.cpp in Sources */,
 				8FD16805196FCA1D00D5104D /* egraphics.c in Sources */,
 				8FD167E9196FCA1D00D5104D /* eclass_attrsetter.c in Sources */,
+				8FA8BB341A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */,
 				8FB8EB73190080E9005FAF6A /* c.prepend.cpp in Sources */,
 				8FB8EB6F190080E9005FAF6A /* c.loadmess.cpp in Sources */,
 				8FD167D7196FCA1D00D5104D /* ebox_basic.c in Sources */,
 				8FB8EB4F19007B04005FAF6A /* c.bang.cpp in Sources */,
+				8FA8BB311A47E6560001EB87 /* c.atan_tilde.cpp in Sources */,
 				8FB8EB5A19007B04005FAF6A /* c.plane.cpp in Sources */,
 				8FB8EB6119007B04005FAF6A /* c.toggle.cpp in Sources */,
 				8FD167F5196FCA1D00D5104D /* ecommon.c in Sources */,
@@ -619,10 +637,12 @@
 				8FAC0BAE1969731800E09ACB /* c.number.cpp in Sources */,
 				8FD16806196FCA1D00D5104D /* egraphics.c in Sources */,
 				8FD167EA196FCA1D00D5104D /* eclass_attrsetter.c in Sources */,
+				8FA8BB351A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */,
 				8FAC0BB21969731800E09ACB /* c.prepend.cpp in Sources */,
 				8FAC0BB31969731800E09ACB /* c.loadmess.cpp in Sources */,
 				8FD167D8196FCA1D00D5104D /* ebox_basic.c in Sources */,
 				8FAC0BB41969731800E09ACB /* c.bang.cpp in Sources */,
+				8FA8BB321A47E6560001EB87 /* c.atan_tilde.cpp in Sources */,
 				8FAC0BB61969731800E09ACB /* c.plane.cpp in Sources */,
 				8FAC0BB91969731800E09ACB /* c.toggle.cpp in Sources */,
 				8FD167F6196FCA1D00D5104D /* ecommon.c in Sources */,
@@ -677,15 +697,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -699,7 +720,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../../../SDKs/MaxSDK-6.1.1/c74support";
 				"HEADER_SEARCH_PATHS[arch=*]" = "";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
 			};
@@ -708,6 +729,7 @@
 		5913847515DAA36D0029AD16 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;

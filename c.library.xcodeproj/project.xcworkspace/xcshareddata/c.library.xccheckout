@@ -10,33 +10,33 @@
 	<string>c.library</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6C683DA5-F36C-4727-AD4A-B5718E47EB99</key>
+		<key>6C120AF1B4B343B8EDAB86353328E4630D5184A2</key>
 		<string>https://github.com/CICM/CicmWrapper.git</string>
-		<key>D36417ED-1C4E-4B5D-BB82-9B274A4526AB</key>
+		<key>B38502B8F7695E1AF9019C5AA7A944CFDFFF5780</key>
 		<string>https://github.com/CICM/CreamLibrary.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>c.library.xcodeproj/project.xcworkspace</string>
+	<string>c.library.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6C683DA5-F36C-4727-AD4A-B5718E47EB99</key>
-		<string>../../ThirdParty/PureData</string>
-		<key>D36417ED-1C4E-4B5D-BB82-9B274A4526AB</key>
+		<key>6C120AF1B4B343B8EDAB86353328E4630D5184A2</key>
+		<string>../..ThirdParty/PureData</string>
+		<key>B38502B8F7695E1AF9019C5AA7A944CFDFFF5780</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/CICM/CreamLibrary.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>D36417ED-1C4E-4B5D-BB82-9B274A4526AB</string>
+	<string>B38502B8F7695E1AF9019C5AA7A944CFDFFF5780</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D36417ED-1C4E-4B5D-BB82-9B274A4526AB</string>
+			<string>B38502B8F7695E1AF9019C5AA7A944CFDFFF5780</string>
 			<key>IDESourceControlWCCName</key>
 			<string>CreamLibrary</string>
 		</dict>
@@ -44,7 +44,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6C683DA5-F36C-4727-AD4A-B5718E47EB99</string>
+			<string>6C120AF1B4B343B8EDAB86353328E4630D5184A2</string>
 			<key>IDESourceControlWCCName</key>
 			<string>PureData</string>
 		</dict>
