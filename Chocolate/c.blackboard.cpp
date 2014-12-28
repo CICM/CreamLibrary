@@ -200,8 +200,8 @@ void blackboard_getdrawparams(t_blacboard *x, t_object *patcherview, t_edrawpara
 
 void blackboard_oksize(t_blacboard *x, t_rect *newrect)
 {
-    newrect->width = pd_clip_min(newrect->width, 15.);
-    newrect->height = pd_clip_min(newrect->height, 15.);
+    newrect->width = pd_clip_min(newrect->width, 5.);
+    newrect->height = pd_clip_min(newrect->height, 5.);
 }
 
 void blackboard_output(t_blacboard *x)

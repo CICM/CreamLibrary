@@ -26,164 +26,96 @@
 
 #include "../c.library.h"
 
-#include <algorithm>
-#include <cstring>
-#include <numeric>
-#include <vector>
+t_eclass *atan_class;
+t_eclass *atan2_class;
+t_eclass *atanh_class;
 
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-
-#include "FFTConvolver.h"
-#include "Utilities.h"
-
-using namespace fftconvolver;
-
-typedef struct _convolve
+void *atan_new(t_symbol *s, int argc, t_atom *argv)
 {
-	t_edspobj     j_box;
-    FFTConvolver* f_convolver;
-    char          f_normalize;
-    t_symbol*     f_buffer_name;
-} t_convolve;
-
-t_eclass *convolve_class;
-
-void *convolve_new(t_symbol *s, int argc, t_atom *argv);
-void convolve_free(t_convolve *x);
-void convolve_dsp(t_convolve *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags);
-void convolve_set(t_convolve *x, t_symbol *s);
-void convolve_set_do(t_convolve *x, t_symbol *s, char dsp);
-void convolve_normalize(t_convolve *x, float f);
-
-extern "C"  void setup_c0x2econvolve_tilde(void)
-{
-	t_eclass *c;
-    
-	c = eclass_new("c.convolve~", (method)convolve_new, (method)convolve_free, (short)sizeof(t_convolve), 0L, A_GIMME, 0);
-    
-    eclass_dspinit(c);
-	cream_initclass(c);
-    
-    eclass_addmethod(c, (method) convolve_dsp,       "dsp",              A_NULL, 0);
-    eclass_addmethod(c, (method) convolve_set,       "set",              A_SYM,  0);
-    eclass_addmethod(c, (method) convolve_normalize, "normalize",        A_LONG, 0);
-    eclass_register(CLASS_OBJ, c);
-	convolve_class = c;
-}
-
-void *convolve_new(t_symbol *s, int argc, t_atom *argv)
-{
-	t_convolve *x =  NULL;
-
-	x = (t_convolve *)eobj_new(convolve_class);
+	t_edspobj *x = (t_edspobj *)eobj_new(atan_class);
     eobj_dspsetup((t_ebox *)x, 1, 1);
-    
-    x->f_buffer_name        = NULL;
-    x->f_convolver = new FFTConvolver();
-    if(argc && argv && atom_gettype(argv) == A_SYM)
-        x->f_buffer_name = atom_getsym(argv);
-    if(argc > 1 && argv && atom_gettype(argv+1) == A_SYM && atom_getsym(argv+1) == gensym("normalize"))
-        x->f_normalize = 1;
-    else if(argc > 1 && argv && atom_gettype(argv+1) == A_LONG && atom_getlong(argv+1) > 0)
-        x->f_normalize = 1;
-    else
-        x->f_normalize = 0;
-    
-    x->j_box.d_misc = E_NO_INPLACE;
-    
+    x->d_misc = E_NO_INPLACE;
 	return (x);
 }
 
-void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
+void atan_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
 {
-    t_garray *a = NULL;
-    x->f_buffer_name = s;
-    int buffer_size;
-    t_word* buffer;
-    float* temp;
-    if(!s)
-        return;
+    while(--sampleframes)
+    {
+        outs[0][sampleframes] = atanf(ins[0][sampleframes]);
+    }
+}
+
+void atan_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+{
+    object_method(dsp, gensym("dsp_add"), x, (method)atan_perform, 0, NULL);
+}
+
+void *atan2_new(t_symbol *s, int argc, t_atom *argv)
+{
+	t_edspobj *x = (t_edspobj *)eobj_new(atan2_class);
+    eobj_dspsetup((t_ebox *)x, 2, 1);
+    x->d_misc = E_NO_INPLACE;
+	return (x);
+}
+
+void atan2_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+{
+    while(--sampleframes)
+    {
+        outs[0][sampleframes] = atan2f(ins[0][sampleframes], ins[1][sampleframes]);
+    }
+}
+
+void atan2_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+{
+    object_method(dsp, gensym("dsp_add"), x, (method)atan2_perform, 0, NULL);
+}
+
+void *atanh_new(t_symbol *s, int argc, t_atom *argv)
+{
+	t_edspobj *x = (t_edspobj *)eobj_new(atan2_class);
+    eobj_dspsetup((t_ebox *)x, 2, 1);
+    x->d_misc = E_NO_INPLACE;
+	return (x);
+}
+
+void atanh_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+{
+    while(--sampleframes)
+    {
+        outs[0][sampleframes] = atanhf(ins[0][sampleframes]);
+    }
+}
+
+void atanh_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+{
+    object_method(dsp, gensym("dsp_add"), x, (method)atan2_perform, 0, NULL);
+}
+
+extern "C"  void setup_c0x2eatan_tilde(void)
+{
+	t_eclass *c;
+	c = eclass_new("c.atan~", (method)atan_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
+    eclass_dspinit(c);
+	cream_initclass(c);
+    eclass_addmethod(c, (method) atan_dsp,       "dsp",              A_NULL, 0);
+    eclass_register(CLASS_OBJ, c);
+	atan_class = c;
     
-    if (!(a = (t_garray *)pd_findbyclass(x->f_buffer_name, garray_class)))
-    {
-        object_error(x, "c.convolve~: %s no such array.", x->f_buffer_name->s_name);
-        return;
-    }
-    else if (!garray_getfloatwords(a, &buffer_size, &buffer))
-    {
-        object_error(x, "c.convolve~: %s array is empty.", x->f_buffer_name->s_name);
-        return;
-    }
-    else
-    {
-        int dsp_state;
-        if(!dsp)
-            dsp_state = canvas_suspend_dsp();
-        
-        temp = (float *)malloc(buffer_size * sizeof(float));
-        for(int i = 0; i < buffer_size; i++)
-        {
-            temp[i] = buffer[i].w_float;
-        }
-        if(x->f_normalize)
-        {
-            float max = 0;
-            for(int i = 0; i < buffer_size; i++)
-            {
-                if(fabs(temp[i]) > max)
-                    max = fabs(temp[i]);
-            }
-            if(max != 0)
-            {
-                max = 1.f / max;
-                for(int i = 0; i < buffer_size; i++)
-                {
-                    temp[i] *= max;
-                }
-            }
-        }
-        x->f_convolver->reset();
-        x->f_convolver->init(1024, temp, buffer_size);
-        
-        free(temp);
-        if(!dsp)
-            canvas_resume_dsp(dsp_state);
-    }
+    c = eclass_new("c.atan2~", (method)atan2_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
+    eclass_dspinit(c);
+	cream_initclass(c);
+    eclass_addmethod(c, (method) atan2_dsp,       "dsp",              A_NULL, 0);
+    eclass_register(CLASS_OBJ, c);
+	atan2_class = c;
     
-}
-
-void convolve_set(t_convolve *x, t_symbol *s)
-{
-    convolve_set_do(x, s, 0);
-}
-
-void convolve_free(t_convolve *x)
-{
-	eobj_dspfree((t_ebox *)x);
-}
-
-void convolve_normalize(t_convolve *x, float f)
-{
-    x->f_normalize = f;
-    if(x->f_normalize < 1)
-        x->f_normalize = 0;
-    else
-        x->f_normalize = 1;
-    convolve_set_do(x, x->f_buffer_name, 0);
-}
-
-void convolve_perform(t_convolve *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
-{
-    x->f_convolver->process(ins[0], outs[0], sampleframes);
-}
-
-void convolve_dsp(t_convolve *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
-{
-    convolve_set_do(x, x->f_buffer_name, 1);
-    if(x->f_buffer_name)
-        object_method(dsp, gensym("dsp_add"), x, (method)convolve_perform, 0, NULL);
+    c = eclass_new("c.atanh~", (method)atanh_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
+    eclass_dspinit(c);
+	cream_initclass(c);
+    eclass_addmethod(c, (method) atanh_dsp,       "dsp",              A_NULL, 0);
+    eclass_register(CLASS_OBJ, c);
+	atanh_class = c;
 }
 
 

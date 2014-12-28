@@ -26,96 +26,38 @@
 
 #include "../c.library.h"
 
-t_eclass *atan_class;
-t_eclass *atan2_class;
-t_eclass *atanh_class;
+t_eclass *sin_class;
 
-void *atan_new(t_symbol *s, int argc, t_atom *argv)
+void *sin_new(t_symbol *s, int argc, t_atom *argv)
 {
-	t_edspobj *x = (t_edspobj *)eobj_new(atan_class);
+	t_edspobj *x = (t_edspobj *)eobj_new(sin_class);
     eobj_dspsetup((t_ebox *)x, 1, 1);
     x->d_misc = E_NO_INPLACE;
 	return (x);
 }
 
-void atan_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+void sin_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
 {
     while(--sampleframes)
     {
-        outs[0][sampleframes] = atanf(ins[0][sampleframes]);
+        outs[0][sampleframes] = sinf(ins[0][sampleframes]);
     }
 }
 
-void atan_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+void sin_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
-    object_method(dsp, gensym("dsp_add"), x, (method)atan_perform, 0, NULL);
+    object_method(dsp, gensym("dsp_add"), x, (method)sin_perform, 0, NULL);
 }
 
-void *atan2_new(t_symbol *s, int argc, t_atom *argv)
-{
-	t_edspobj *x = (t_edspobj *)eobj_new(atan2_class);
-    eobj_dspsetup((t_ebox *)x, 2, 1);
-    x->d_misc = E_NO_INPLACE;
-	return (x);
-}
-
-void atan2_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
-{
-    while(--sampleframes)
-    {
-        outs[0][sampleframes] = atan2f(ins[0][sampleframes], ins[1][sampleframes]);
-    }
-}
-
-void atan2_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
-{
-    object_method(dsp, gensym("dsp_add"), x, (method)atan2_perform, 0, NULL);
-}
-
-void *atanh_new(t_symbol *s, int argc, t_atom *argv)
-{
-	t_edspobj *x = (t_edspobj *)eobj_new(atan2_class);
-    eobj_dspsetup((t_ebox *)x, 2, 1);
-    x->d_misc = E_NO_INPLACE;
-	return (x);
-}
-
-void atanh_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
-{
-    while(--sampleframes)
-    {
-        outs[0][sampleframes] = atanhf(ins[0][sampleframes]);
-    }
-}
-
-void atanh_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
-{
-    object_method(dsp, gensym("dsp_add"), x, (method)atan2_perform, 0, NULL);
-}
-
-extern "C"  void setup_c0x2eatan_tilde(void)
+extern "C"  void setup_c0x2esin_tilde(void)
 {
 	t_eclass *c;
-	c = eclass_new("c.atan~", (method)atan_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
+	c = eclass_new("c.sin~", (method)sin_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
     eclass_dspinit(c);
 	cream_initclass(c);
-    eclass_addmethod(c, (method) atan_dsp,       "dsp",              A_NULL, 0);
+    eclass_addmethod(c, (method) sin_dsp,       "dsp",              A_NULL, 0);
     eclass_register(CLASS_OBJ, c);
-	atan_class = c;
-    
-    c = eclass_new("c.atan2~", (method)atan2_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
-    eclass_dspinit(c);
-	cream_initclass(c);
-    eclass_addmethod(c, (method) atan2_dsp,       "dsp",              A_NULL, 0);
-    eclass_register(CLASS_OBJ, c);
-	atan2_class = c;
-    
-    c = eclass_new("c.atanh~", (method)atanh_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
-    eclass_dspinit(c);
-	cream_initclass(c);
-    eclass_addmethod(c, (method) atanh_dsp,       "dsp",              A_NULL, 0);
-    eclass_register(CLASS_OBJ, c);
-	atanh_class = c;
+	sin_class = c;
 }
 
 
