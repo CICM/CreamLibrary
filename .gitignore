@@ -45,16 +45,6 @@ aclocal.m4
 *.so
 *.so.*
 *.dylib
-#################
-## Juce
-#################
-#JuceLibraryCode/
-
-# Executables
-*.exe
-*.out
-*.app
-
 
 #################
 ## Visual Studio
@@ -90,44 +80,11 @@ xcshareddata/
 
 *.build/
 *.gcda
-
-# Mac crap
 .DS_Store
-
 *.mode1V3
 *.pbxuser
-
 *.xcbkptlist
 *.xcuserstate
 *.xcsettings
 *.plist
 *.xcscheme
-
-#################
-## VST
-#################
-
-ThirdParty/Vst3SDK/*
-!ThirdParty/Vst3SDK/readme.txt
-
-
-
-*.dll
-
-Package/CreamLibrary/externals/Linux64/pd-extented/c.library.pd_linux
-
-Package/CreamLibrary/externals/Windows/pd-extented/c.library.dll
-
-Package/CreamLibrary/externals/Linux32/pd-vanilla/c.library.pd_linux
-
-Package/CreamLibrary/externals/Linux32/pd-extented/c.library.pd_linux
-
-Package/CreamLibrary/c.library.pd_darwin
-
-c.library.cpp
-
-Coffee/c.loadmess.cpp
-
-Coffee/c.patcherargs.cpp
-
-Coffee/c.patcherinfos.cpp
