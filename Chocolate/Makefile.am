@@ -7,13 +7,11 @@ libChocolate_la_LIBADD =
 
 libChocolate_la_SOURCES = c.bang.cpp \
 c.blackboard.cpp \
-c.blackboard.cpp.save \
 c.breakpoints.cpp \
 c.colorpanel.cpp \
 c.gain_tilde.cpp \
 c.incdec.cpp \
 c.knob.cpp \
-c.matrix.cpp \
 c.matrix.cpp \
 c.menu.cpp \
 c.meter_tilde.cpp \
