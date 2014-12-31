@@ -160,7 +160,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5913846F15DAA36D0029AD16 /* c.library.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = c.library.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
+		5913846F15DAA36D0029AD16 /* cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		59FB02F717A7FAA9001E977D /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8F1E0E751A46FEF400551842 /* c.matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix.cpp; sourceTree = "<group>"; };
 		8F26F18A17E76273005FCB97 /* c.library.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.library.cpp; sourceTree = "<group>"; };
@@ -168,7 +168,7 @@
 		8F5DB22419630E41005DE808 /* c.mousestate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.mousestate.cpp; sourceTree = "<group>"; };
 		8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.atan_tilde.cpp; sourceTree = "<group>"; };
 		8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.sin_tilde.cpp; sourceTree = "<group>"; };
-		8FAC0BFB1969731800E09ACB /* c.library.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = c.library.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FAC0BFB1969731800E09ACB /* cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB8EB2519007B04005FAF6A /* AudioFFT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioFFT.cpp; sourceTree = "<group>"; };
 		8FB8EB2619007B04005FAF6A /* AudioFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFFT.h; sourceTree = "<group>"; };
 		8FB8EB2719007B04005FAF6A /* c.convolve_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.convolve_tilde.cpp; sourceTree = "<group>"; };
@@ -277,8 +277,8 @@
 		5913847015DAA36D0029AD16 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5913846F15DAA36D0029AD16 /* c.library.pd_darwin */,
-				8FAC0BFB1969731800E09ACB /* c.library.pd_darwin */,
+				5913846F15DAA36D0029AD16 /* cream.pd_darwin */,
+				8FAC0BFB1969731800E09ACB /* cream.pd_darwin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -497,9 +497,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		5913846E15DAA36D0029AD16 /* c.library */ = {
+		5913846E15DAA36D0029AD16 /* cream */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5913847315DAA36D0029AD16 /* Build configuration list for PBXNativeTarget "c.library" */;
+			buildConfigurationList = 5913847315DAA36D0029AD16 /* Build configuration list for PBXNativeTarget "cream" */;
 			buildPhases = (
 				5913846B15DAA36D0029AD16 /* Sources */,
 				5913846C15DAA36D0029AD16 /* Frameworks */,
@@ -509,14 +509,14 @@
 			);
 			dependencies = (
 			);
-			name = c.library;
+			name = cream;
 			productName = pd1;
-			productReference = 5913846F15DAA36D0029AD16 /* c.library.pd_darwin */;
+			productReference = 5913846F15DAA36D0029AD16 /* cream.pd_darwin */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		8FAC0BA51969731800E09ACB /* c.library_extended */ = {
+		8FAC0BA51969731800E09ACB /* cream_extended */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8FAC0BF91969731800E09ACB /* Build configuration list for PBXNativeTarget "c.library_extended" */;
+			buildConfigurationList = 8FAC0BF91969731800E09ACB /* Build configuration list for PBXNativeTarget "cream_extended" */;
 			buildPhases = (
 				8FAC0BA61969731800E09ACB /* Sources */,
 				8FAC0BE21969731800E09ACB /* Frameworks */,
@@ -526,9 +526,9 @@
 			);
 			dependencies = (
 			);
-			name = c.library_extended;
+			name = cream_extended;
 			productName = pd1;
-			productReference = 8FAC0BFB1969731800E09ACB /* c.library.pd_darwin */;
+			productReference = 8FAC0BFB1969731800E09ACB /* cream.pd_darwin */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -539,7 +539,7 @@
 			attributes = {
 				LastUpgradeCheck = 0610;
 			};
-			buildConfigurationList = 5913846915DAA36D0029AD16 /* Build configuration list for PBXProject "c.library" */;
+			buildConfigurationList = 5913846915DAA36D0029AD16 /* Build configuration list for PBXProject "cream" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -551,8 +551,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5913846E15DAA36D0029AD16 /* c.library */,
-				8FAC0BA51969731800E09ACB /* c.library_extended */,
+				5913846E15DAA36D0029AD16 /* cream */,
+				8FAC0BA51969731800E09ACB /* cream_extended */,
 			);
 		};
 /* End PBXProject section */
@@ -747,7 +747,7 @@
 					dynamic_lookup,
 				);
 				PRELINK_LIBS = "";
-				PRODUCT_NAME = c.library;
+				PRODUCT_NAME = cream;
 				USER_HEADER_SEARCH_PATHS = "/Developer/usr/include /usr/local/include";
 			};
 			name = Release;
@@ -775,7 +775,7 @@
 					dynamic_lookup,
 				);
 				PRELINK_LIBS = "";
-				PRODUCT_NAME = c.library;
+				PRODUCT_NAME = cream;
 				USER_HEADER_SEARCH_PATHS = "/Developer/usr/include /usr/local/include";
 			};
 			name = Release;
@@ -783,7 +783,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5913846915DAA36D0029AD16 /* Build configuration list for PBXProject "c.library" */ = {
+		5913846915DAA36D0029AD16 /* Build configuration list for PBXProject "cream" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5913847215DAA36D0029AD16 /* Release */,
@@ -791,7 +791,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5913847315DAA36D0029AD16 /* Build configuration list for PBXNativeTarget "c.library" */ = {
+		5913847315DAA36D0029AD16 /* Build configuration list for PBXNativeTarget "cream" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5913847515DAA36D0029AD16 /* Release */,
@@ -799,7 +799,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8FAC0BF91969731800E09ACB /* Build configuration list for PBXNativeTarget "c.library_extended" */ = {
+		8FAC0BF91969731800E09ACB /* Build configuration list for PBXNativeTarget "cream_extended" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FAC0BFA1969731800E09ACB /* Release */,
