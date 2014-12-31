@@ -17,15 +17,15 @@ Alpha 0.4 for Pure Data Vanilla and Pure Data Extended on Mac Os, Windows and Li
 
 ##### Installation :
 
-<p>In the "CreamLibrary" folder, go to the "externals" folder then copy the external that matchs with your OS and your Pure Data distribution and past the external at the root of the "CreamLibrary" folder. You can also skip this part and use directly the path of that match with your OS and your Pure Data distribution in the startup options.</P>
+<p>In the "cream" folder, go to the "externals" folder then copy the external that matchs with your OS and your Pure Data distribution and past the external at the root of the "cream" folder. You can also skip this part and use directly the path of that match with your OS and your Pure Data distribution in the startup options.</P>
 
-<p>Pure Data Vanilla : Copy the "CreamLibrary" folder in your Pure Data <a title="package folder" href="http://puredata.info/docs/faq/how-do-i-install-externals-and-help-files" target="_blank">package folder</a> and add "c.library" in startup options. With another folder than the default ones, add the folder in the path preferences (~/CreamLibrary/Package) and add "CreamLibrary/cream" in the startup options.</P>
+<p>Pure Data Vanilla : Copy the "cream" folder in your Pure Data <a title="package folder" href="http://puredata.info/docs/faq/how-do-i-install-externals-and-help-files" target="_blank">package folder</a> and add "c.library" in startup options. With another folder than the default ones, add the folder in the path preferences (~/cream/Package) and add "cream/cream" in the startup options.</P>
 
-<p>Pure Data Extended : Copy the "CreamLibrary" folder in your Pure Data <a title="package folder" href="http://puredata.info/docs/faq/how-do-i-install-externals-and-help-files" target="_blank">package folder</a> and add "-lib c.library" in startup options. With another folder than the default ones, add the folder in the path preferences (~/CreamLibrary/Package) and add "-lib CreamLibrary/cream" in the startup options.</P>
+<p>Pure Data Extended : Copy the "cream" folder in your Pure Data <a title="package folder" href="http://puredata.info/docs/faq/how-do-i-install-externals-and-help-files" target="_blank">package folder</a> and add "-lib c.library" in startup options. With another folder than the default ones, add the folder in the path preferences (~/cream/Package) and add "-lib cream/cream" in the startup options.</P>
 
-<p>Exemple of startup options for Pure Data Extended : "-lib CreamLibrary/cream" (if your external is at the root of the CreamLibrary folder), "-lib CreamLibrary/externals/MacOs/pd-extended/cream" (if you didn't move the external from the external folder on MacOs).</p>
+<p>Exemple of startup options for Pure Data Extended : "-lib cream/cream" (if your external is at the root of the cream folder), "-lib cream/externals/MacOs/pd-extended/cream" (if you didn't move the external from the external folder on MacOs).</p>
 
-<p>Uninstall : Remove the "CreamLibrary" folder and remove the startup options.</p>
+<p>Uninstall : Remove the "cream" folder and remove the startup options.</p>
 
 ##### Author :
 

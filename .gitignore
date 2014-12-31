@@ -24,7 +24,7 @@
 #################
 Makefile
 Makefile.in
-c.library-meta.pd
+cream-meta.pd
 README.txt
 config/*
 configure
