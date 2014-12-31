@@ -1,4 +1,4 @@
-c.library-help.pd c.library The Cream Library.;
+cream-help.pd c.library The Cream Library.;
 c.chocolate-help.pd c.chocolate The GUI part of the library.;
 c.caramel-help.pd c.caramel The DSP part of the library.;
 c.coffee-help.pd c.coffee The Patching/Data part of the library.;
