@@ -18,8 +18,6 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @interval
 0 0 0 1;
 #X obj 26 147 c.loadmess 20;
 #X obj 125 147 c.loadmess 0.2;
-#X text 9 375 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X obj 173 298 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
@@ -33,13 +31,14 @@ nbx for signal.;
 #X obj 8 24 c.patcherinfos;
 #X obj 9 15 c.loadmess;
 #X obj 3 3 c.help.header;
+#X obj 68 373 c.help.pub;
 #X connect 2 0 7 0;
 #X connect 3 0 7 0;
 #X connect 5 0 2 0;
 #X connect 6 0 3 0;
-#X connect 7 0 12 0;
-#X connect 7 1 11 0;
+#X connect 7 0 11 0;
+#X connect 7 1 10 0;
 #X connect 8 0 5 0;
 #X connect 9 0 6 0;
-#X connect 14 0 16 0;
-#X connect 15 0 14 0;
+#X connect 13 0 15 0;
+#X connect 14 0 13 0;

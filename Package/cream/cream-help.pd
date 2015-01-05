@@ -9,11 +9,9 @@
 #X obj 28 640 c.help.pub;
 #X obj 15 201 c.tab @size 398 371 @fontname Monaco @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @orientation 1 @toggle 0 @items c.bang c.blackboard c.breakpoints
-c.colorpanel c.gain~ c.incdec c.knob c.matrix c.menu c.meter~ c.number
-c.number~ c.plane c.preset c.radio c.rslider c.scope~ c.slider c.tab
-c.toggle @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
-0 0 0 1 @hocolor 0.5 0.5 0.5 1 @secolor 0.35 0.35 0.35 1;
+(null) @orientation 1 @toggle 0 @items c.convolve~ c.freeverb~ c.matrix~
+@bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1
+@hocolor 0.5 0.5 0.5 1 @secolor 0.35 0.35 0.35 1;
 #X obj 45 167 c.loadmess 0;
 #X obj 99 169 c.prepend append;
 #X text 35 65 The Cream library is a set of objects made with the CICM
@@ -21,7 +19,7 @@ Wrapper developed to facilitate the creation of signal objects and
 GUI and to improve user interactions. The GUI part of the library is
 Chocolate \, the DSP part of the library is Caramel and the Patching/Data
 part of the library is Coffee.;
-#N canvas 108 132 741 435 sel.c.txt 0;
+#N canvas 143 246 741 435 sel.c.txt 0;
 #X obj -556 -387 unpack s s;
 #X msg -412 -521 clear;
 #X obj -592 -600 inlet;
@@ -51,10 +49,8 @@ part of the library is Coffee.;
 #X obj -267 -387 t b b;
 #X obj -139 -416 c.loadmess;
 #X msg -158 -394 read c.parts.txt;
-#X obj -70 -467 c.prepend set;
-#X msg -26 -424 0;
-#X obj -256 -517 + 1;
 #X obj -264 -459 + 1;
+#X obj -254 -517 + 2;
 #X connect 0 1 3 0;
 #X connect 1 0 5 0;
 #X connect 2 0 9 0;
@@ -71,12 +67,12 @@ part of the library is Coffee.;
 #X connect 11 1 12 0;
 #X connect 12 1 16 0;
 #X connect 13 0 15 0;
-#X connect 15 1 31 0;
+#X connect 15 1 30 0;
 #X connect 16 0 14 0;
 #X connect 17 0 21 0;
 #X connect 18 0 26 0;
 #X connect 19 0 17 0;
-#X connect 20 0 32 0;
+#X connect 20 0 29 0;
 #X connect 20 1 24 1;
 #X connect 20 1 25 0;
 #X connect 20 2 19 0;
@@ -90,15 +86,14 @@ part of the library is Coffee.;
 #X connect 26 1 22 0;
 #X connect 27 0 28 0;
 #X connect 28 0 17 0;
-#X connect 29 0 30 0;
-#X connect 31 0 20 0;
-#X connect 32 0 18 0;
-#X restore 191 174 pd sel.c.txt;
+#X connect 29 0 18 0;
+#X connect 30 0 20 0;
+#X restore 187 170 pd sel.c.txt;
 #X obj 15 576 c.blackboard @size 398 39 @fontname Monaco @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
 #X obj 245 170 c.prepend text;
-#X msg 312 174 clear;
+#X msg 310 169 clear;
 #X obj 275 174 t list b;
 #N canvas 129 211 691 357 sel.c.text2 0;
 #X obj -326 -135 list split 1;

@@ -81,13 +81,12 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
 #X obj 134 96 c.loadmess 0.25;
 #X obj 34 96 c.loadmess 0.5;
-#X text 14 383 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X text 3 48 c.knob is a knob with a vertical or horizontal tracking
 mode and endless mode.;
 #X obj 8 25 c.patcherinfos;
 #X obj 9 16 c.loadmess;
 #X obj 3 4 c.help.header;
+#X obj 79 366 c.help.pub;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 3 0 5 0;
@@ -105,5 +104,5 @@ mode and endless mode.;
 #X connect 32 0 7 0;
 #X connect 33 0 18 0;
 #X connect 34 0 1 0;
-#X connect 37 0 39 0;
-#X connect 38 0 37 0;
+#X connect 36 0 38 0;
+#X connect 37 0 36 0;

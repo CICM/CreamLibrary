@@ -1,4 +1,4 @@
-#N canvas 297 100 896 499 10;
+#N canvas 297 100 896 520 10;
 #X msg 254 154 set \$1;
 #X msg 476 125 append 17;
 #X text 89 74 Selection;
@@ -20,7 +20,7 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 0 @max 3 @minmax 0 3 @decimal 0 @bgcolor 0.75 0.75 0.75
 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X msg 591 354 Jim Morisson;
+#X msg 591 354 Jimi Hendrix;
 #X obj 436 234 c.tab @size 314 32 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @orientation 0 @toggle 0 @items 'Jimi Hendrix' 'Janis Joplin'
@@ -56,8 +56,6 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X text 507 414 Don't forget that ' and " are the separators.;
 #X obj 591 322 c.prepend set;
 #X obj 192 377 c.prepend set Once upon a time;
-#X text 227 467 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X obj 254 89 c.loadmess 1;
 #X text 181 428 Selected item;
 #X msg 562 159 insert 1 Lou Reed;
@@ -70,6 +68,7 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X obj 10 25 c.patcherinfos;
 #X obj 11 16 c.loadmess;
 #X obj 5 4 c.help.header;
+#X obj 196 454 c.help.pub;
 #X connect 0 0 4 0;
 #X connect 1 0 9 0;
 #X connect 4 0 5 0;
@@ -84,11 +83,11 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X connect 13 0 9 0;
 #X connect 27 0 8 0;
 #X connect 28 0 12 0;
-#X connect 30 0 6 0;
+#X connect 29 0 6 0;
+#X connect 31 0 9 0;
 #X connect 32 0 9 0;
 #X connect 33 0 9 0;
-#X connect 34 0 9 0;
+#X connect 34 0 4 0;
 #X connect 35 0 4 0;
-#X connect 36 0 4 0;
-#X connect 38 0 40 0;
-#X connect 39 0 38 0;
+#X connect 37 0 39 0;
+#X connect 38 0 37 0;

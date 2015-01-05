@@ -8,8 +8,6 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 0 @max 1 @minmax 0 1 @decimal 6 @bgcolor 0.75 0.75 0.75
 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X obj 40 89 c.loadmess 0.3;
-#X text 15 383 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X obj 40 154 c.rslider @size 16 120 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @listmode 0 @min 0 @max 1 @bgcolor 0.75 0.75 0.75 1 @bdcolor
@@ -37,14 +35,15 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X obj 2 1 c.help.header;
 #X text 4 44 c.rslider is the chocolate range counterpart of the vanilla
 hslider or vslider.;
-#X connect 1 0 4 0;
+#X obj 93 361 c.help.pub;
+#X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X connect 4 0 0 0;
-#X connect 4 1 8 0;
-#X connect 5 0 11 0;
-#X connect 6 0 4 1;
-#X connect 7 0 6 0;
-#X connect 9 0 5 0;
-#X connect 11 0 10 0;
-#X connect 14 0 16 0;
-#X connect 15 0 14 0;
+#X connect 3 0 0 0;
+#X connect 3 1 7 0;
+#X connect 4 0 10 0;
+#X connect 5 0 3 1;
+#X connect 6 0 5 0;
+#X connect 8 0 4 0;
+#X connect 10 0 9 0;
+#X connect 13 0 15 0;
+#X connect 14 0 13 0;

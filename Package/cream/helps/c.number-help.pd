@@ -30,8 +30,6 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
 #X obj 43 64 c.loadmess -3.14169;
-#X text 17 318 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X text 11 -13 c.number is the chocolate counterpart of the vanilla
 nbx.;
 #X text 199 189 Double click to write the number.;
@@ -43,11 +41,12 @@ decrement by 1;
 #X obj 16 -37 c.patcherinfos;
 #X obj 17 -46 c.loadmess;
 #X obj 11 -58 c.help.header;
+#X obj 107 320 c.help.pub;
 #X connect 2 0 4 0;
 #X connect 4 0 5 0;
 #X connect 6 0 2 0;
 #X connect 12 0 4 0;
 #X connect 13 0 4 0;
 #X connect 13 0 6 0;
-#X connect 20 0 22 0;
-#X connect 21 0 20 0;
+#X connect 19 0 21 0;
+#X connect 20 0 19 0;

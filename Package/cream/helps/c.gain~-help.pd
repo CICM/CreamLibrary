@@ -58,13 +58,12 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X text 455 196 |;
 #X text 456 207 1 amp;
 #X obj 388 71 c.loadmess 1;
-#X text 16 396 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X text 5 47 c.gain~ is a slider that allows to control the volume
 of a signal with decibel.;
 #X obj 11 26 c.patcherinfos;
 #X obj 12 17 c.loadmess;
 #X obj 6 5 c.help.header;
+#X obj 120 396 c.help.pub;
 #X connect 0 0 5 0;
 #X connect 1 0 8 0;
 #X connect 1 1 19 0;
@@ -77,5 +76,5 @@ of a signal with decibel.;
 #X connect 17 0 2 0;
 #X connect 21 0 1 0;
 #X connect 30 0 0 0;
-#X connect 33 0 35 0;
-#X connect 34 0 33 0;
+#X connect 32 0 34 0;
+#X connect 33 0 32 0;

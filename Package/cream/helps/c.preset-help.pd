@@ -1,4 +1,4 @@
-#N canvas 140 195 1100 489 10;
+#N canvas 140 195 1117 500 10;
 #X text 385 106 Recall a preset;
 #X msg 488 103 store \$1;
 #X text 484 55 Store a preset;
@@ -92,8 +92,6 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X obj 381 78 c.loadmess 1;
 #X text -10 44 c.preset saves and recalls presets of the Chocolate
 externals in a pacther;
-#X text 1 433 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X text 696 90 Recall with interpolation;
 #X text 19 101 Object with a preset name are compatible.;
 #X text 19 114 Note that they can share the same preset;
@@ -105,6 +103,7 @@ externals in a pacther;
 #X obj -3 23 c.patcherinfos;
 #X obj -2 14 c.loadmess;
 #X obj -8 2 c.help.header;
+#X obj 8 429 c.help.pub;
 #X connect 1 0 18 0;
 #X connect 4 0 18 0;
 #X connect 8 0 1 0;
@@ -117,5 +116,5 @@ externals in a pacther;
 #X connect 35 0 18 0;
 #X connect 36 0 35 0;
 #X connect 37 0 10 0;
-#X connect 48 0 50 0;
-#X connect 49 0 48 0;
+#X connect 47 0 49 0;
+#X connect 48 0 47 0;

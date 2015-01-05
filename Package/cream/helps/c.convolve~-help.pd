@@ -1,43 +1,43 @@
 #N canvas 543 133 685 448 10;
-#X text 53 49 c.convolve~ uses the HiFi-LoFi convolution reverb implementation.
+#X text 8 49 c.convolve~ uses the HiFi-LoFi convolution reverb implementation.
 ;
-#X obj 462 236 table \$0-ir;
-#X obj 462 213 soundfiler;
-#X obj 462 99 openpanel;
-#X obj 462 160 pack s s;
-#X obj 462 119 t s b;
-#X obj 463 78 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#X obj 417 236 table \$0-ir;
+#X obj 417 213 soundfiler;
+#X obj 417 99 openpanel;
+#X obj 417 160 pack s s;
+#X obj 417 119 t s b;
+#X obj 418 78 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj 112 261 dac~;
-#X msg 557 211 \; pd dsp 1;
-#X msg 557 252 \; pd dsp 0;
-#X msg 462 182 read -resize \$1 \$2;
-#X obj 507 138 symbol \$0-ir;
-#X obj 112 129 phasor~ 1;
-#X obj 112 192 c.convolve~ \$0-ir normalize;
-#X text 81 95 set the buffer;
-#X msg 281 146 normalize \$1;
-#X obj 281 111 c.toggle @size 15 15 @fontname Helvetica @fontweight
+#X obj 67 261 dac~;
+#X msg 512 211 \; pd dsp 1;
+#X msg 512 252 \; pd dsp 0;
+#X msg 417 182 read -resize \$1 \$2;
+#X obj 462 138 symbol \$0-ir;
+#X obj 67 129 phasor~ 1;
+#X obj 67 192 c.convolve~ \$0-ir normalize;
+#X text 36 95 set the buffer;
+#X msg 236 146 normalize \$1;
+#X obj 236 111 c.toggle @size 15 15 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @crcolor 0.5
 0.5 0.5 1;
-#X text 236 82 normalize the ir;
-#X text 197 229 arg 1 : the buffer name;
-#X text 197 249 arg 2 (faculative) : normalize;
-#X text 494 76 load an ir;
-#X obj 193 122 symbol \$0-ir;
-#X obj 193 98 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#X text 191 82 normalize the ir;
+#X text 152 229 arg 1 : the buffer name;
+#X text 152 249 arg 2 (faculative) : normalize;
+#X text 449 76 load an ir;
+#X obj 148 122 symbol \$0-ir;
+#X obj 148 98 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X msg 193 145 set \$1;
-#X text 87 302 Sorry \, the implementation is not enough optimized
+#X msg 148 145 set \$1;
+#X text 42 302 Sorry \, the implementation is not enough optimized
 on Windows and Linux. I'm going to put mine for the next release but
 for the moment it's a little bit buggy.;
-#X obj 57 30 c.patcherinfos;
-#X obj 58 21 c.loadmess;
-#X obj 52 7 c.help.header;
-#X obj 206 379 c.help.pub;
+#X obj 12 30 c.patcherinfos;
+#X obj 13 21 c.loadmess;
+#X obj 7 7 c.help.header;
+#X obj 161 379 c.help.pub;
 #X connect 3 0 5 0;
 #X connect 4 0 10 0;
 #X connect 5 0 4 0;

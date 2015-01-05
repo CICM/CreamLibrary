@@ -15,6 +15,8 @@ dist_c.libraryhelp_DATA = \
  c.incdec-help.pd \
  c.knob-help.pd \
  c.loadmess-help.pd \
+ c.matrix-help.pd \
+ c.matrix-help.pd \
  c.menu-help.pd \
  c.meter~-help.pd \
  c.mousestate-help.pd \
@@ -27,6 +29,7 @@ dist_c.libraryhelp_DATA = \
  c.prepend-help.pd \
  c.preset-help.pd \
  c.radio-help.pd \
+ c.rslider-help.pd \
  c.scope~-help.pd \
  c.slider-help.pd \
  c.tab-help.pd \

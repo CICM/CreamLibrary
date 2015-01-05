@@ -44,11 +44,10 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X obj 377 291 c.prepend bound;
 #X text 2 44 c.plane allows you to move a point on a cartesian plane.
 ;
-#X text 13 463 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X obj 8 23 c.patcherinfos;
 #X obj 9 14 c.loadmess;
 #X obj 3 2 c.help.header;
+#X obj 137 458 c.help.pub;
 #X connect 0 0 10 0;
 #X connect 3 0 6 0;
 #X connect 4 0 5 0;
@@ -69,5 +68,5 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X connect 19 0 10 0;
 #X connect 20 0 21 0;
 #X connect 21 0 7 0;
-#X connect 24 0 26 0;
-#X connect 25 0 24 0;
+#X connect 23 0 25 0;
+#X connect 24 0 23 0;

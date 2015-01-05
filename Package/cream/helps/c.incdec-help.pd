@@ -39,11 +39,10 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X text 13 274 c.number output is connected;
 #X obj 62 157 c.loadmess 0.35;
 #X text 270 92 Set the value withpout output.;
-#X text 17 388 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X obj 11 27 c.patcherinfos;
 #X obj 12 18 c.loadmess;
 #X obj 6 6 c.help.header;
+#X obj 105 374 c.help.pub;
 #X connect 0 0 12 0;
 #X connect 4 0 12 0;
 #X connect 6 0 12 0;
@@ -55,5 +54,5 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X connect 16 0 0 0;
 #X connect 17 0 12 0;
 #X connect 20 0 14 0;
-#X connect 23 0 25 0;
-#X connect 24 0 23 0;
+#X connect 22 0 24 0;
+#X connect 23 0 22 0;

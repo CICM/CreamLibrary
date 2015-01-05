@@ -36,13 +36,12 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @interval
 1 0.6 0 0.8 @overcolor 1 0 0 0.8;
 #X obj 277 114 c.loadmess 0.1;
 #X obj 39 104 c.loadmess 0.3;
-#X text 14 378 Chocolate by Pierre Guillot | CICM - Université Paris
-8;
 #X text 3 49 c.meter~ is the chocolate counterpart of the vanilla vu.
 ;
 #X obj 7 30 c.patcherinfos;
 #X obj 8 11 c.loadmess;
 #X obj 4 5 c.help.header;
+#X obj 160 357 c.help.pub;
 #X connect 1 0 14 0;
 #X connect 5 0 1 0;
 #X connect 8 0 5 0;
@@ -52,5 +51,5 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @interval
 #X connect 14 0 12 0;
 #X connect 15 0 9 0;
 #X connect 16 0 8 0;
-#X connect 19 0 21 0;
-#X connect 20 0 19 0;
+#X connect 18 0 20 0;
+#X connect 19 0 18 0;
