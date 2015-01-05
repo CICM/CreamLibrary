@@ -1,7 +1,5 @@
 #N canvas 373 214 636 463 10;
-#X obj 4 4 cnv 40 552 40 empty empty c.gain~ 3 12 0 18 -228856 -33289
-0;
-#X obj 388 95 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 388 95 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 0 @max 8 @minmax 0 8 @decimal 6 @bgcolor 0.75 0.75 0.75
 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
@@ -13,18 +11,18 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @mode 0 @ramp 20 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5
 0.5 1 @kncolor 0.5 0.5 0.5 1;
-#X obj 108 339 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 108 339 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 93 113 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 93 113 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min -90 @max 18 @minmax -90 18 @decimal 6 @bgcolor 0.75 0.75
 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X msg 388 121 linear \$1;
 #X msg 295 349 \; pd dsp 1;
 #X msg 229 349 \; pd dsp 0;
-#X obj 308 231 c.number~ @size 53 14 @fontname Helvetica @fontweight
+#X obj 308 231 c.number~ @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @interval
 50 @decimal 6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
 0 0 0 1;
@@ -39,13 +37,13 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @interval
 #X text 115 154 - 18 dB;
 #X text 115 315 - -90 dB;
 #X text 115 182 - 0 dB;
-#X obj 14 101 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 14 101 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min -90 @max 18 @minmax -90 18 @decimal 6 @bgcolor 0.75 0.75
 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X msg 14 130 set \$1;
 #X text 448 93 Amplitude;
-#X obj 503 231 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 503 231 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
@@ -64,16 +62,20 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 8;
 #X text 5 47 c.gain~ is a slider that allows to control the volume
 of a signal with decibel.;
-#X text 6 26 A slider for signal.;
-#X connect 1 0 6 0;
+#X obj 11 26 c.patcherinfos;
+#X obj 12 17 c.loadmess;
+#X obj 6 5 c.help.header;
+#X connect 0 0 5 0;
+#X connect 1 0 8 0;
+#X connect 1 1 19 0;
 #X connect 2 0 9 0;
-#X connect 2 1 20 0;
-#X connect 3 0 10 0;
-#X connect 3 1 4 0;
-#X connect 5 0 3 0;
-#X connect 6 0 2 0;
-#X connect 11 0 3 0;
-#X connect 17 0 18 0;
-#X connect 18 0 3 0;
-#X connect 22 0 2 0;
-#X connect 31 0 1 0;
+#X connect 2 1 3 0;
+#X connect 4 0 2 0;
+#X connect 5 0 1 0;
+#X connect 10 0 2 0;
+#X connect 16 0 17 0;
+#X connect 17 0 2 0;
+#X connect 21 0 1 0;
+#X connect 30 0 0 0;
+#X connect 33 0 35 0;
+#X connect 34 0 33 0;

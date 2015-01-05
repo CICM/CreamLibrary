@@ -108,7 +108,7 @@ public:
     ~CombFilter(){};
 };
 
-inline float CombFilter::process(float anInput)
+inline float CombFilter::process(const float anInput)
 {
 	m_output = m_buffer[m_ramp];
 	m_filterstore = (m_output * m_damp2) + (m_filterstore * m_damp1);
@@ -140,7 +140,7 @@ public:
     ~AllpassFilter(){};
 };
 
-inline float AllpassFilter::process(float anInput)
+inline float AllpassFilter::process(const float anInput)
 {
 	m_output = -anInput + m_buffer[m_ramp];
 	m_buffer[m_ramp] = anInput + (m_buffer[m_ramp] * m_feedback);
@@ -233,7 +233,7 @@ void freeverb_free(t_freeverb *x);
 void freeverb_assist(t_freeverb *x, void *b, long m, long a, char *s);
 
 void freeverb_dsp(t_freeverb *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags);
-void freeverb_perform(t_freeverb *x, t_object *d, float **ins, long ni, float **outs, long no, long sf, long f,void *up);
+void freeverb_perform(t_freeverb *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sf, long f,void *up);
 void freeverb_roomsize(t_freeverb *x, float f);
 void freeverb_damp(t_freeverb *x, float f);
 void freeverb_freeze(t_freeverb *x, float f);
@@ -320,7 +320,7 @@ void freeverb_dsp(t_freeverb *x, t_object *dsp, short *count, double samplerate,
     object_method(dsp, gensym("dsp_add"), x, (method)freeverb_perform, 0, NULL);
 }
 
-void freeverb_perform(t_freeverb *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+void freeverb_perform(t_freeverb *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
     for(int i = 0; i < sampleframes; i++)
     {

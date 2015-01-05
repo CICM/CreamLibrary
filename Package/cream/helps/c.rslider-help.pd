@@ -1,6 +1,4 @@
 #N canvas 88 138 587 438 10;
-#X obj 3 1 cnv 40 552 40 empty empty c.rslider 3 12 0 18 -228856 -33289
-0;
 #X obj 40 318 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
@@ -16,9 +14,6 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @listmode 0 @min 0 @max 1 @bgcolor 0.75 0.75 0.75 1 @bdcolor
 0.5 0.5 0.5 1 @kncolor 0.5 0.5 0.5 1;
-#X text 5 23 A horizontal or vertical range slider.;
-#X text 4 44 c.slider is the chocolate range counterpart of the vanilla
-hslider or vslider.;
 #X obj 255 135 c.rslider @size 120 16 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @listmode 1 @min 0 @max 1 @bgcolor 0.75 0.75 0.75 1 @bdcolor
@@ -37,12 +32,19 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X obj 255 163 c.prepend set;
 #X text 161 261 Use shift to drag;
 #X text 161 274 the closest slider.;
-#X connect 2 0 5 0;
-#X connect 3 0 2 0;
-#X connect 5 0 1 0;
-#X connect 5 1 11 0;
-#X connect 8 0 14 0;
-#X connect 9 0 5 1;
-#X connect 10 0 9 0;
-#X connect 12 0 8 0;
-#X connect 14 0 13 0;
+#X obj 7 22 c.patcherinfos;
+#X obj 8 13 c.loadmess;
+#X obj 2 1 c.help.header;
+#X text 4 44 c.rslider is the chocolate range counterpart of the vanilla
+hslider or vslider.;
+#X connect 1 0 4 0;
+#X connect 2 0 1 0;
+#X connect 4 0 0 0;
+#X connect 4 1 8 0;
+#X connect 5 0 11 0;
+#X connect 6 0 4 1;
+#X connect 7 0 6 0;
+#X connect 9 0 5 0;
+#X connect 11 0 10 0;
+#X connect 14 0 16 0;
+#X connect 15 0 14 0;

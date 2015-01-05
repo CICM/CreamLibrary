@@ -1,6 +1,4 @@
 #N canvas 140 195 1100 489 10;
-#X obj -11 1 cnv 40 552 40 empty empty c.preset 3 12 0 18 -228856 -33289
-0;
 #X text 385 106 Recall a preset;
 #X msg 488 103 store \$1;
 #X text 484 55 Store a preset;
@@ -11,20 +9,20 @@
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 chococ.plane @bound -1 -1 1 1 @ptsize 5 @bgcolor 0.75 0.75 0.75 1 @bdcolor
 0.5 0.5 0.5 1 @ptcolor 0 0 0 1;
-#X obj 215 293 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 215 293 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 choconum @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 488 78 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 488 78 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 1 @max (null) @minmax 1 (null) @decimal 0 @bgcolor 0.75
 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X msg 637 153 clearall;
-#X obj 381 128 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 381 128 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 1 @max (null) @minmax 1 (null) @decimal 0 @bgcolor 0.75
 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 574 100 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 574 100 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 1 @max (null) @minmax 1 (null) @decimal 0 @bgcolor 0.75
 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
@@ -49,15 +47,15 @@ float -50.27 @choc.colorpanel c.colorpanel list 0 0 @chocoslidr c.slider
 float 0.162916 @chocodio c.radio list 1 1 1 0 0 0 0 0 @chocomenu c.menu
 float 0 @chocopoints c.breakpoints function 79.771 0.0466666 191.222
 0.95 343.512 0.0433333 578.244 0.861667 586.641 0 @index 1 @chococ.plane
-c.plane list -0.592593 -0.740741 @choconum c.number float -1.345 @choc.colorpanel
-c.colorpanel list 0 2 @chocoslidr c.slider float 0.725 @chocodio c.radio
-list 1 1 1 0 0 0 0 0 @chocomenu c.menu float 1 @chocopoints c.breakpoints
-function 0 0.933333 198.473 0 488.55 0.866667 832.061 0.766667 1000
-0 @index 2 @chococ.plane c.plane list -1 0.851852 @choconum c.number
-float 50.155 @choc.colorpanel c.colorpanel list 1 0 @chocoslidr c.slider
-float 0.175 @chocodio c.radio list 0 1 1 1 0 0 0 0 @chocomenu c.menu
-float 2 @chocopoints c.breakpoints function 0 0.933333 396.947 0 488.55
-0.866667 541.985 0 1000 1 ];
+c.plane list 0.92037 0.912963 @choconum c.number float -50.27 @choc.colorpanel
+c.colorpanel list 0 0 @chocoslidr c.slider float 0.162916 @chocodio
+c.radio list 1 1 1 0 0 0 0 0 @chocomenu c.menu float 0 @chocopoints
+c.breakpoints function 79.771 0.0466666 191.222 0.95 343.512 0.0433333
+578.244 0.861667 586.641 0 @index 2 @chococ.plane c.plane list -1 0.851852
+@choconum c.number float 50.155 @choc.colorpanel c.colorpanel list
+1 0 @chocoslidr c.slider float 0.175 @chocodio c.radio list 0 1 1 1
+0 0 0 0 @chocomenu c.menu float 2 @chocopoints c.breakpoints function
+0 0.933333 396.947 0 488.55 0.866667 541.985 0 1000 1 ];
 #X obj 366 185 r c.preset;
 #X obj 923 228 s c.preset;
 #X msg 923 180 read choco.preset;
@@ -74,7 +72,7 @@ chocodio @nitems 8 @mode 1 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5
 #X text 601 252 Click with alt on a preset to clear it.;
 #X text 724 319 Important : Current presets are saved with the patch.
 ;
-#X obj 283 397 c.menu @size 47 14 @fontname Helvetica @fontweight normal
+#X obj 283 397 c.menu @size 47 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 chocomenu @hover 0 @items cho co la te @states 0 0 0 0 @bgcolor 0.75
 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
@@ -87,7 +85,7 @@ chocopoints @absrange 0 1000 @ordrange 0 1 @outline Linear @bgcolor
 0 0 0 1 @textcolor 0 0 0 1 @points 79.771 0.0466666 191.222 0.95 343.512
 0.0433333 578.244 0.861667 586.641 0;
 #X msg 752 144 inter \$1;
-#X obj 752 116 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 752 116 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 1 @max (null) @minmax 1 (null) @decimal 6 @bgcolor 0.75
 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
@@ -104,16 +102,20 @@ externals in a pacther;
 #X text 864 122 a file in the patcher folder.;
 #X text 864 142 Use the message write or read to;
 #X text 864 152 open a dialog window.;
-#X text -8 23 A GUI to save and recall presets.;
-#X connect 2 0 19 0;
-#X connect 5 0 19 0;
-#X connect 9 0 2 0;
-#X connect 10 0 19 0;
-#X connect 11 0 19 0;
-#X connect 12 0 5 0;
-#X connect 20 0 19 0;
-#X connect 22 0 21 0;
-#X connect 23 0 21 0;
-#X connect 36 0 19 0;
-#X connect 37 0 36 0;
-#X connect 38 0 11 0;
+#X obj -3 23 c.patcherinfos;
+#X obj -2 14 c.loadmess;
+#X obj -8 2 c.help.header;
+#X connect 1 0 18 0;
+#X connect 4 0 18 0;
+#X connect 8 0 1 0;
+#X connect 9 0 18 0;
+#X connect 10 0 18 0;
+#X connect 11 0 4 0;
+#X connect 19 0 18 0;
+#X connect 21 0 20 0;
+#X connect 22 0 20 0;
+#X connect 35 0 18 0;
+#X connect 36 0 35 0;
+#X connect 37 0 10 0;
+#X connect 48 0 50 0;
+#X connect 49 0 48 0;

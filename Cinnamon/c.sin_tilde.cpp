@@ -32,7 +32,6 @@ void *sin_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_edspobj *x = (t_edspobj *)eobj_new(sin_class);
     eobj_dspsetup((t_ebox *)x, 1, 1);
-    x->d_misc = E_NO_INPLACE;
 	return (x);
 }
 

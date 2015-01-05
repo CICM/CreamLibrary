@@ -1,6 +1,4 @@
 #N canvas 277 200 558 514 10;
-#X obj 1 1 cnv 40 552 40 empty empty c.plane 3 12 0 18 -228856 -33289
-0;
 #X obj 95 174 r c.plane;
 #X obj 25 429 s x1;
 #X obj 220 428 s y1;
@@ -15,27 +13,27 @@
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @bound -1 -1 1 1 @ptsize 5 @bgcolor 0.75 0.75 0.75 1 @bdcolor
 0.5 0.5 0.5 1 @ptcolor 0 0 0 1;
-#X obj 82 129 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 82 129 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 25 129 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 25 129 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 402 180 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 402 180 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 377 154 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 377 154 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 452 231 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 452 231 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 427 205 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 427 205 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
@@ -48,24 +46,28 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 ;
 #X text 13 463 Chocolate by Pierre Guillot | CICM - Université Paris
 8;
-#X text 4 23 A plane and... a point.;
-#X connect 1 0 11 0;
-#X connect 4 0 7 0;
-#X connect 5 0 6 0;
+#X obj 8 23 c.patcherinfos;
+#X obj 9 14 c.loadmess;
+#X obj 3 2 c.help.header;
+#X connect 0 0 10 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 0;
+#X connect 5 0 11 0;
 #X connect 6 0 12 0;
-#X connect 7 0 13 0;
-#X connect 11 0 2 0;
-#X connect 11 1 3 0;
-#X connect 12 0 20 1;
-#X connect 13 0 20 0;
-#X connect 14 0 21 1;
-#X connect 15 0 21 0;
-#X connect 16 0 21 3;
-#X connect 17 0 21 2;
+#X connect 10 0 1 0;
+#X connect 10 1 2 0;
+#X connect 11 0 19 1;
+#X connect 12 0 19 0;
+#X connect 13 0 20 1;
+#X connect 14 0 20 0;
+#X connect 15 0 20 3;
+#X connect 16 0 20 2;
+#X connect 17 0 14 0;
+#X connect 17 0 13 0;
+#X connect 18 0 16 0;
 #X connect 18 0 15 0;
-#X connect 18 0 14 0;
-#X connect 19 0 17 0;
-#X connect 19 0 16 0;
-#X connect 20 0 11 0;
-#X connect 21 0 22 0;
-#X connect 22 0 8 0;
+#X connect 19 0 10 0;
+#X connect 20 0 21 0;
+#X connect 21 0 7 0;
+#X connect 24 0 26 0;
+#X connect 25 0 24 0;

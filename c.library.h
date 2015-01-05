@@ -24,6 +24,7 @@ extern "C"  void setup_c0x2esin_tilde(void);
 // Caramel
 extern "C" void setup_c0x2econvolve_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
+extern "C" void setup_c0x2ematrix_tilde(void);
 
 // Chocolate
 extern "C" void setup_c0x2ebang(void);
@@ -44,6 +45,7 @@ extern "C" void setup_c0x2eradio(void);
 extern "C" void setup_c0x2erslider(void);
 extern "C" void setup_c0x2escope_tilde(void);
 extern "C" void setup_c0x2eslider(void);
+extern "C" void setup_c0x2espectroscope_tilde(void);
 extern "C" void setup_c0x2etab(void);
 extern "C" void setup_c0x2etoggle(void);
 

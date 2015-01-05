@@ -1,37 +1,35 @@
 #N canvas 188 158 690 619 10;
-#X obj 5 6 cnv 40 552 40 empty empty c.menu 3 12 0 18 -228856 -33289
-0;
 #X msg 19 247 set \$1;
 #X msg 321 148 append 17;
 #X msg 19 247 set \$1;
 #X text 118 126 Selection;
 #X text 370 87 Edition;
 #X msg 202 192 Jimi Hendrix;
-#X obj 136 286 c.menu @size 100 14 @fontname Helvetica @fontweight
+#X obj 136 286 c.menu @size 100 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @hover 0 @items 'Jimi Hendrix' 'Janis Joplin' 'John Lennon'
 'Jim Morisson' @states 0 0 0 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5
 0.5 0.5 1 @textcolor 0 0 0 1;
 #X msg 136 159 set Janis Joplin;
-#X obj 136 384 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 136 384 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min (null) @max (null) @minmax (null) (null) @decimal 0 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 19 213 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 19 213 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 0 @max 3 @minmax 0 3 @decimal 0 @bgcolor 0.75 0.75 0.75
 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 80 190 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 80 190 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 0 @max 3 @minmax 0 3 @decimal 0 @bgcolor 0.75 0.75 0.75
 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X msg 231 383 Jim Morisson;
-#X obj 345 287 c.menu @size 99 14 @fontname Helvetica @fontweight normal
+#X obj 345 287 c.menu @size 99 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @hover 0 @items 'in America' 'in the West' @states 0 0 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X msg 492 254 clear;
-#X obj 345 384 c.number @size 53 14 @fontname Helvetica @fontweight
+#X obj 345 384 c.number @size 53 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @min 0 @max 4.29497e+09 @minmax 0 4.29497e+09 @decimal 0 @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
@@ -45,13 +43,13 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 0.5 0.5 1;
 #X msg 530 225 state 0 \$1;
 #X msg 399 151 setitem 2 in Mumbai;
-#X obj 122 453 c.menu @size 151 14 @fontname Helvetica @fontweight
+#X obj 122 453 c.menu @size 151 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @hover 0 @items 'Sunday Morning' 'I m Waiting For The Man' 'Femme Fatale'
 'Venus In Furs' 'Run Run Run' @states 0 0 0 0 0 @bgcolor 0.75 0.75
 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X text 191 419 Mousing : Click or Hover;
-#X obj 292 453 c.menu @size 175 14 @fontname Helvetica @fontweight
+#X obj 292 453 c.menu @size 175 17 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @hover 1 @items 'All Tomorrow' Heroin 'There She Goes' 'I ll Be Your miror'
 'The Black Angel Death Song' 'European Son' @states 0 0 0 0 0 0 @bgcolor
@@ -67,24 +65,28 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X obj 440 335 c.prepend set Once upon a time;
 #X text 106 584 Chocolate by Pierre Guillot | CICM - Université Paris
 8;
-#X text 8 28 A menu that display a list of items.;
-#X connect 1 0 7 0;
-#X connect 2 0 13 0;
-#X connect 6 0 7 0;
-#X connect 7 0 9 0;
-#X connect 7 1 32 0;
-#X connect 8 0 7 0;
-#X connect 10 0 1 0;
-#X connect 11 0 7 0;
-#X connect 13 0 15 0;
-#X connect 13 1 33 0;
-#X connect 14 0 13 0;
-#X connect 17 0 13 0;
-#X connect 18 0 13 0;
-#X connect 19 0 13 0;
-#X connect 20 0 21 0;
-#X connect 21 0 13 0;
-#X connect 22 0 13 0;
-#X connect 31 0 10 0;
-#X connect 32 0 12 0;
-#X connect 33 0 16 0;
+#X obj 11 27 c.patcherinfos;
+#X obj 12 18 c.loadmess;
+#X obj 6 6 c.help.header;
+#X connect 0 0 6 0;
+#X connect 1 0 12 0;
+#X connect 5 0 6 0;
+#X connect 6 0 8 0;
+#X connect 6 1 31 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X connect 10 0 6 0;
+#X connect 12 0 14 0;
+#X connect 12 1 32 0;
+#X connect 13 0 12 0;
+#X connect 16 0 12 0;
+#X connect 17 0 12 0;
+#X connect 18 0 12 0;
+#X connect 19 0 20 0;
+#X connect 20 0 12 0;
+#X connect 21 0 12 0;
+#X connect 30 0 9 0;
+#X connect 31 0 11 0;
+#X connect 32 0 15 0;
+#X connect 34 0 36 0;
+#X connect 35 0 34 0;

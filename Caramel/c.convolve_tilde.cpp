@@ -174,7 +174,7 @@ void convolve_normalize(t_convolve *x, float f)
     convolve_set_do(x, x->f_buffer_name, 0);
 }
 
-void convolve_perform(t_convolve *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+void convolve_perform(t_convolve *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
     x->f_convolver->process(ins[0], outs[0], sampleframes);
 }

@@ -1,4 +1,4 @@
-#N canvas 574 143 439 725 10;
+#N canvas 99 59 439 725 10;
 #X obj 14 39 c.patcherinfos;
 #X obj 14 22 loadbang;
 #X obj 15 161 c.tab @size 398 36 @fontname Monaco @fontweight normal
@@ -10,10 +10,10 @@
 #X obj 15 201 c.tab @size 398 371 @fontname Monaco @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 (null) @orientation 1 @toggle 0 @items c.bang c.blackboard c.breakpoints
-c.colorpanel c.gain~ c.incdec c.knob c.menu c.meter~ c.number c.number~
-c.plane c.preset c.radio c.scope~ c.slider c.tab c.toggle @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1 @hocolor
-0.5 0.5 0.5 1 @secolor 0.35 0.35 0.35 1;
+c.colorpanel c.gain~ c.incdec c.knob c.matrix c.menu c.meter~ c.number
+c.number~ c.plane c.preset c.radio c.rslider c.scope~ c.slider c.tab
+c.toggle @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
+0 0 0 1 @hocolor 0.5 0.5 0.5 1 @secolor 0.35 0.35 0.35 1;
 #X obj 45 167 c.loadmess 0;
 #X obj 99 169 c.prepend append;
 #X text 35 65 The Cream library is a set of objects made with the CICM

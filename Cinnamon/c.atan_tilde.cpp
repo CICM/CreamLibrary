@@ -34,11 +34,10 @@ void *atan_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_edspobj *x = (t_edspobj *)eobj_new(atan_class);
     eobj_dspsetup((t_ebox *)x, 1, 1);
-    x->d_misc = E_NO_INPLACE;
 	return (x);
 }
 
-void atan_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+void atan_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
     while(--sampleframes)
     {
@@ -55,11 +54,10 @@ void *atan2_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_edspobj *x = (t_edspobj *)eobj_new(atan2_class);
     eobj_dspsetup((t_ebox *)x, 2, 1);
-    x->d_misc = E_NO_INPLACE;
 	return (x);
 }
 
-void atan2_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+void atan2_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
     while(--sampleframes)
     {
@@ -76,11 +74,10 @@ void *atanh_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_edspobj *x = (t_edspobj *)eobj_new(atan2_class);
     eobj_dspsetup((t_ebox *)x, 2, 1);
-    x->d_misc = E_NO_INPLACE;
 	return (x);
 }
 
-void atanh_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+void atanh_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
     while(--sampleframes)
     {

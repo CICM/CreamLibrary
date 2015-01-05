@@ -37,8 +37,8 @@ typedef struct  _scope
     long        f_signal_size;
     int         f_mode;
 
-	float*      f_buffer_x;
-    float*      f_buffer_y;
+	t_sample*   f_buffer_x;
+    t_sample*   f_buffer_y;
     int         f_index;
 
 	t_rgba		f_color_background;
@@ -137,7 +137,6 @@ extern "C" void setup_c0x2escope_tilde(void)
 
 void *scope_new(t_symbol *s, int argc, t_atom *argv)
 {
-	int i;
 	t_scope *x =  NULL;
 	t_binbuf* d;
     long flags;
@@ -155,16 +154,11 @@ void *scope_new(t_symbol *s, int argc, t_atom *argv)
         ebox_new((t_ebox *)x, flags);
         eobj_dspsetup((t_ebox *)x, 2, 0);
 
-        x->f_buffer_x = (float *)calloc(80192, sizeof(float));
-        x->f_buffer_y = (float *)calloc(80192, sizeof(float));
+        x->f_buffer_x = (t_sample *)calloc(80192, sizeof(t_sample));
+        x->f_buffer_y = (t_sample *)calloc(80192, sizeof(t_sample));
+        
         x->f_mode     = 0;
         x->f_index    = 0;
-
-        for(i = 0; i < 80192; i++)
-        {
-            x->f_buffer_x[i] = 0.;
-            x->f_buffer_y[i] = 0.;
-        }
 
         x->f_clock          = clock_new(x,(t_method)scope_tick);
         x->f_startclock     = 0;
@@ -200,7 +194,7 @@ void scope_dsp(t_scope *x, t_object *dsp, short *count, double samplerate, long 
 	x->f_startclock = 1;
 }
 
-void scope_perform(t_scope *x, t_object *dsp, float **ins, long ni, float **outs, long no,long nsamples,long f,void *up)
+void scope_perform(t_scope *x, t_object *dsp, t_sample **ins, long ni, t_sample **outs, long no, long nsamples, long f,void *up)
 {
     int i;
     for(i = 0; i < nsamples; i++)

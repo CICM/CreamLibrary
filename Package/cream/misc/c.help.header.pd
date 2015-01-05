@@ -1,4 +1,4 @@
-#N canvas 540 57 738 451 10;
+#N canvas 25 100 742 532 10;
 #X obj 45 1 cnv 15 354 40 empty \$0-c.header empty 3 12 0 18 -212212
 -1 0;
 #X obj 455 5 inlet;
@@ -26,7 +26,9 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
 #X msg 502 58 read c.parts.txt;
 #X obj 456 435 s \$0-c.header;
 #X text 0 23 comment;
-#X msg 23 102 clear \, image 3 1 clogo2.gif;
+#X obj 45 232 sel header chocolate caramel coffee;
+#X msg 96 275 clear \, image 3 1 choco.gif;
+#X msg 116 315 clear \, image 3 1 caramel.gif;
 #X connect 1 0 19 0;
 #X connect 4 0 21 0;
 #X connect 5 1 6 0;
@@ -40,17 +42,21 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
 #X connect 12 0 13 1;
 #X connect 13 0 5 0;
 #X connect 14 0 11 0;
+#X connect 14 0 10 1;
 #X connect 14 1 17 0;
 #X connect 15 0 9 0;
 #X connect 16 0 18 0;
 #X connect 17 0 12 0;
 #X connect 18 0 13 0;
 #X connect 18 1 14 0;
-#X connect 19 0 23 0;
+#X connect 18 1 23 0;
 #X connect 19 1 10 0;
 #X connect 19 2 15 0;
 #X connect 19 3 20 0;
 #X connect 19 4 14 1;
 #X connect 20 0 9 0;
-#X connect 23 0 7 0;
+#X connect 23 1 24 0;
+#X connect 23 2 25 0;
+#X connect 24 0 7 0;
+#X connect 25 0 7 0;
 #X coords 0 -1 1 1 400 42 2 0 0;

@@ -37,9 +37,9 @@
 #X connect 11 2 10 0;
 #X restore 622 155 pd subpatch;
 #X msg 87 305 c.patcherinfos-help.pd;
-#X msg 226 275 /Users/Pierre/GitHub/CicmWrapper/CreamLibrary/Package/CreamLibrary/helps
+#X msg 226 275 /Users/Pierre/GitHub/CreamLibrary/Package/cream/helps
 ;
-#X msg 366 215 311 160 1040 568;
+#X msg 366 215 164 167 1371 579;
 #X msg 496 215 0 0 0 0;
 #X obj 366 193 c.prepend set;
 #X obj 496 193 c.prepend set;

@@ -65,7 +65,7 @@ void gain_bang(t_gain *x);
 void gain_output(t_gain *x);
 
 void gain_dsp(t_gain *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags);
-void gain_perform(t_gain *x, t_object *d, float **ins, long ni, float **outs, long no, long sf, long f,void *up);
+void gain_perform(t_gain *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sf, long f,void *up);
 
 t_pd_err gain_notify(t_gain *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
 t_pd_err gain_ramp_set(t_gain *x, t_object *attr, long argc, t_atom *argv);
@@ -273,7 +273,7 @@ void gain_dsp(t_gain *x, t_object *dsp, short *count, double samplerate, long ma
     object_method(dsp, gensym("dsp_add"), x, (method)gain_perform, 0, NULL);
 }
 
-void gain_perform(t_gain *x, t_object *d, float **ins, long ni, float **outs, long no, long sf, long f,void *up)
+void gain_perform(t_gain *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sf, long f,void *up)
 {
     int i;
     for(i = 0; i < sf; i++)
