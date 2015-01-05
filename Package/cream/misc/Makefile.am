@@ -11,12 +11,9 @@ dist_c.librarymisc_DATA = \
  c.Coffee.txt \
  c.help.header.pd \
  c.help.pub.pd \
- chocolate2.gif \
- chocolate.gif \
- Chocolate-help.pd \
  choco.preset \
- clogo.gif \
- Coffee-help.pd \
+ choco.gif \
+ caramel.gif \
  c.parts.txt \
  image1.gif \
  image2.gif
