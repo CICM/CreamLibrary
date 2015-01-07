@@ -26,6 +26,40 @@
 
 #include "../c.library.h"
 
+#ifdef __APPLE__
+#include <Accelerate/Accelerate.h>
+
+typedef unsigned long ulong;
+
+template <typename T> class FftForward
+{
+    const ulong         m_size;
+    DSPSplitComplex     m_complex;
+    FFTSetup            m_fft_setup;
+    
+    FftForward(const ulong size) :
+    m_size(size)
+    {
+        m_fft_setup = vDSP_create_fftsetup(14, 1 << 14);
+        m_complex.realp = new float[m_size];
+        m_complex.imagp = new float[m_size];
+    }
+
+    ~FftForward()
+    {
+        delete [] m_complex.realp;
+        delete [] m_complex.imagp;
+        vDSP_destroy_fftsetup(m_fft_setup);
+    }
+    
+    void process()
+    {
+        
+    }
+};
+
+#endif
+
 typedef struct  _spectroscope
 {
 	t_edspbox   j_box;
@@ -135,7 +169,7 @@ void *spectroscope_new(t_symbol *s, int argc, t_atom *argv)
 
         x->f_buffer_real = (t_sample *)calloc(80192, sizeof(t_sample));
         x->f_buffer_imag = (t_sample *)calloc(80192, sizeof(t_sample));
-        x->f_buffer_spectrum = (t_sample *)calloc(80192, sizeof(t_sample));
+        x->f_buffer_spectrum = (t_sample *)calloc(80192 * 2, sizeof(t_sample));
         
         x->f_clock          = clock_new(x,(t_method)spectroscope_tick);
         x->f_startclock     = 0;
@@ -201,8 +235,8 @@ void spectroscope_tick(t_spectroscope *x)
 {
     if(x->f_real_mode)
     {
-        memcpy(x->f_buffer_spectrum, x->f_buffer_real, x->f_buffer_size * sizeof(t_sample));
-        mayer_realfft(x->f_buffer_size, x->f_buffer_spectrum);
+        mayer_realfft(x->f_buffer_size, x->f_buffer_real);
+        vDSP_polar(x->f_buffer_real, 1, x->f_buffer_spectrum, 1, x->f_buffer_size * 0.5);
     }
     else
     {
@@ -273,9 +307,14 @@ void draw_spectrum(t_spectroscope *x, t_object *view, t_rect *rect)
 	t_elayer *g = ebox_start_layer((t_ebox *)x, csym_spectrum_layer, rect->width, rect->height);
 	if(g)
 	{
+        double width = rect->width / (float)(x->f_buffer_size - 1);
         egraphics_set_color_rgba(g, &x->f_color_spectrum);
         egraphics_set_line_width(g, 2);
-
+        egraphics_move_to(g, 0, x->f_buffer_spectrum[0] * rect->height);
+        for(int i = 1; i < x->f_buffer_size; i++)
+        {
+            egraphics_line_to(g, width * (float)(i), x->f_buffer_spectrum[i] * rect->height);
+        }
         egraphics_stroke(g);
 		ebox_end_layer((t_ebox *)x, csym_spectrum_layer);
 	}

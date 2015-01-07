@@ -31,6 +31,7 @@ extern "C" void setup_c0x2ebang(void);
 extern "C" void setup_c0x2eblackboard(void);
 extern "C" void setup_c0x2ebreakpoints(void);
 extern "C" void setup_c0x2ecolorpanel(void);
+extern "C" void setup_c0x2edsp_tilde(void);
 extern "C" void setup_c0x2egain_tilde(void);
 extern "C" void setup_c0x2eincdec(void);
 extern "C" void setup_c0x2eknob(void);

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		59FB02F817A7FAA9001E977D /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59FB02F717A7FAA9001E977D /* Accelerate.framework */; };
+		8F14049D1A5A9AF900DCC99B /* c.dsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F14049C1A5A9AF900DCC99B /* c.dsp.cpp */; };
+		8F14049E1A5A9AF900DCC99B /* c.dsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F14049C1A5A9AF900DCC99B /* c.dsp.cpp */; };
 		8F1E0E761A46FEF400551842 /* c.matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F1E0E751A46FEF400551842 /* c.matrix.cpp */; };
 		8F1E0E771A46FEF400551842 /* c.matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F1E0E751A46FEF400551842 /* c.matrix.cpp */; };
 		8F26F18B17E76274005FCB97 /* c.library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F26F18A17E76273005FCB97 /* c.library.cpp */; };
@@ -166,6 +168,7 @@
 /* Begin PBXFileReference section */
 		5913846F15DAA36D0029AD16 /* cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		59FB02F717A7FAA9001E977D /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		8F14049C1A5A9AF900DCC99B /* c.dsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.dsp.cpp; sourceTree = "<group>"; };
 		8F1E0E751A46FEF400551842 /* c.matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix.cpp; sourceTree = "<group>"; };
 		8F26F18A17E76273005FCB97 /* c.library.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.library.cpp; sourceTree = "<group>"; };
 		8F53164B1906F50A00734AD6 /* c.patchermess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patchermess.cpp; sourceTree = "<group>"; };
@@ -321,6 +324,7 @@
 				8FB8EB2F19007B04005FAF6A /* c.blackboard.cpp */,
 				8FB8EB3019007B04005FAF6A /* c.breakpoints.cpp */,
 				8FB8EB3119007B04005FAF6A /* c.colorpanel.cpp */,
+				8F14049C1A5A9AF900DCC99B /* c.dsp.cpp */,
 				8FB8EB3219007B04005FAF6A /* c.gain_tilde.cpp */,
 				8FB8EB3319007B04005FAF6A /* c.incdec.cpp */,
 				8FB8EB3419007B04005FAF6A /* c.knob.cpp */,
@@ -592,6 +596,7 @@
 				8FB8EB5919007B04005FAF6A /* c.number_tilde.cpp in Sources */,
 				8FB8EB5119007B04005FAF6A /* c.breakpoints.cpp in Sources */,
 				8F53164C1906F50A00734AD6 /* c.patchermess.cpp in Sources */,
+				8F14049D1A5A9AF900DCC99B /* c.dsp.cpp in Sources */,
 				8FA256691A57E3CA00CD0697 /* c.spectroscope_tilde.cpp in Sources */,
 				8FD167E7196FCA1D00D5104D /* eclass_attroptions.c in Sources */,
 				8FD1680F196FCA1D00D5104D /* egraphics_text.c in Sources */,
@@ -660,6 +665,7 @@
 				8FAC0BBA1969731800E09ACB /* c.number_tilde.cpp in Sources */,
 				8FAC0BBB1969731800E09ACB /* c.breakpoints.cpp in Sources */,
 				8FAC0BBC1969731800E09ACB /* c.patchermess.cpp in Sources */,
+				8F14049E1A5A9AF900DCC99B /* c.dsp.cpp in Sources */,
 				8FA2566A1A57E3CA00CD0697 /* c.spectroscope_tilde.cpp in Sources */,
 				8FD167E8196FCA1D00D5104D /* eclass_attroptions.c in Sources */,
 				8FD16810196FCA1D00D5104D /* egraphics_text.c in Sources */,
@@ -769,6 +775,7 @@
 		8FAC0BFA1969731800E09ACB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;

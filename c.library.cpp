@@ -50,6 +50,7 @@ extern "C" void setup_c0x2elibrary(void)
 	setup_c0x2eblackboard();
 	setup_c0x2ebreakpoints();
 	setup_c0x2ecolorpanel();
+    setup_c0x2edsp_tilde();
 	setup_c0x2egain_tilde();
 	setup_c0x2eincdec();
 	setup_c0x2eknob();
