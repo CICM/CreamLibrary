@@ -30,7 +30,7 @@ DISTBINDIR=$(DISTDIR)-$(OS)
 SUBDIRS=Coffee Caramel Chocolate
 
 SUBDIRS+= ThirdParty/PureData
-SUBDIRS+= Package/CreamLibrary
+SUBDIRS+= Package/Cream
 
 $(abs_builddir)/.libs/cream.@EXTENSION@: cream.la
 
