@@ -1,7 +1,12 @@
 
 Cream Library
 
-For an overview of Chocolate, Coffee and Caramel Libraries, please refer to the « c.library-help.pd ».
+For an overview of Chocolate, Coffee and Caramel Libraries, please refer to the « cream-help.pd ».
+
+------------------------
+Beta 0.4
+------------------------
+... sorry
 
 ------------------------
 Beta 0.3

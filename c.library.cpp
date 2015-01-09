@@ -35,6 +35,7 @@ extern "C" void setup_c0x2elibrary(void)
 	post("Cream Library by Pierre Guillot");
 	post("© 2013 - 2015  CICM | Paris 8 University");
     post("Version %s (%s) for %s",creamversion, __DATE__, pdversion);
+    post("");
     
     // Cinnamon
     setup_c0x2eatan_tilde();
