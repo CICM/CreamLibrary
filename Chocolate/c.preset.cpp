@@ -80,20 +80,14 @@ void preset_mousemove(t_preset *x, t_object *patcherview, t_pt pt, long modifier
 void preset_mousedown(t_preset *x, t_object *patcherview, t_pt pt, long modifiers);
 void preset_mouseleave(t_preset *x, t_object *patcherview, t_pt pt, long modifiers);
 
-t_symbol* s_preset;
-t_symbol* s_interpolate;
-t_symbol* s_null;
-t_symbol* s_nothing;
+t_symbol* s_preset = gensym("preset");
+t_symbol* s_interpolate = gensym("interpolate");
+t_symbol* s_null = gensym("(null)");
+t_symbol* s_nothing = gensym("''");
 
 extern "C" void setup_c0x2epreset(void)
 {
-	t_eclass *c;
-    s_preset = gensym("preset");
-    s_null   = gensym("(null)");
-    s_nothing = gensym("''");
-    s_interpolate = gensym("interpolate");
-
-	c = eclass_new("c.preset", (method)preset_new, (method)preset_free, (short)sizeof(t_preset), 0L, A_GIMME, 0);
+	t_eclass* c = eclass_new("c.preset", (method)preset_new, (method)preset_free, (short)sizeof(t_preset), 0L, A_GIMME, 0);
 
 	eclass_init(c, 0);
     cream_initclass(c);
@@ -269,12 +263,12 @@ void preset_float(t_preset *x, float f)
         return;
 
     x->f_binbuf_selected = index;
-
+    
     for (y = eobj_getcanvas(x)->gl_list; y; y = y->g_next)
     {
         z = (t_ebox *)y;
         mpreset = zgetfn(&y->g_pd, s_preset);
-        if(mpreset && z->b_objpreset_id != s_null && z->b_objpreset_id != s_nothing)
+        if(mpreset && z->b_objpreset_id && z->b_objpreset_id != s_null && z->b_objpreset_id != s_nothing)
         {
             sprintf(id, "@%s", z->b_objpreset_id->s_name);
             binbuf_get_attribute(b, gensym(id), &ac, &av);
@@ -338,7 +332,7 @@ void preset_interpolate(t_preset *x, float f)
         z = (t_ebox *)y;
         mpreset = zgetfn(&y->g_pd, s_preset);
         // We find a preset method so we can send preset //
-        if(mpreset && z->b_objpreset_id != s_null && z->b_objpreset_id != s_nothing)
+        if(mpreset && z->b_objpreset_id && z->b_objpreset_id != s_null && z->b_objpreset_id != s_nothing)
         {
             sprintf(id, "@%s", z->b_objpreset_id->s_name);
             realdo = -1;
