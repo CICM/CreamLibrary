@@ -7,7 +7,7 @@ AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_FILES([Coffee/Makefile Chocolate/Makefile Caramel/Makefile])
 AC_CONFIG_FILES([ThirdParty/PureData/Makefile ThirdParty/PureData/Sources/Makefile])
 AC_CONFIG_FILES([ThirdParty/PureData/Sources/ebox/Makefile ThirdParty/PureData/Sources/eclass/Makefile ThirdParty/PureData/Sources/ecommon/Makefile ThirdParty/PureData/Sources/egraphics/Makefile ThirdParty/PureData/Sources/eobj/Makefile ThirdParty/PureData/Sources/epopup/Makefile])
-AC_CONFIG_FILES([Package/CreamLibrary/Makefile Package/CreamLibrary/helps/Makefile Package/CreamLibrary/misc/Makefile])
+AC_CONFIG_FILES([Package/Cream/Makefile Package/Cream/helps/Makefile Package/Cream/misc/Makefile])
 AC_CONFIG_FILES([cream-meta.pd])
 
 AC_SUBST(PD_CPPFLAGS)

@@ -5,7 +5,6 @@ SUFFIXES = .pd
 c.librarymiscdir=$(pkglibdir)/misc
 
 dist_c.librarymisc_DATA = \
- Caramel-help.pd \
  c.Caramel.txt \
  c.Chocolate.txt \
  c.Coffee.txt \
