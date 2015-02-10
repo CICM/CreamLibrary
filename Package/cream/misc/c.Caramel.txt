@@ -1,3 +1,0 @@
-c.convolve~-help.pd c.convolve~ A zero latency convolution.;
-c.freeverb~-help.pd c.freeverb~ A freeverb implementation.;
-c.matrix~-help.pd c.matrix~ A matrix to route signals.;
