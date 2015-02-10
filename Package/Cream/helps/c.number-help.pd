@@ -1,0 +1,52 @@
+#N canvas 319 169 620 444 10;
+#X text 199 129 Drag the c.number.;
+#X text 199 169 Use shift to increase the precision.;
+#X msg 113 140 set \$1;
+#X text 199 229 Press esc to avoid the change.;
+#X obj 43 188 c.number @size 84 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 43 267 c.number @size 62 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 113 107 c.number @size 53 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X text 199 149 The precision depends on where the user drag.;
+#X obj 369 116 c.number @size 53 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min 3 @max (null) @minmax 3 (null) @decimal 6 @bgcolor 0.75
+0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X text 364 87 Minimum value;
+#X obj 466 117 c.number @size 53 17 @fontname Helvetica @fontweight
+normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
+(null) @min (null) @max -10 @minmax (null) -10 @decimal 6 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X text 461 88 Maximum value;
+#X obj 20 129 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+@fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X obj 43 64 c.loadmess -3.14169;
+#X text 11 -13 c.number is the chocolate counterpart of the vanilla
+nbx.;
+#X text 199 189 Double click to write the number.;
+#X text 199 209 Press enter or tab to valid the number.;
+#X text 199 248 Press the up arrow or the down arrow to increment or
+decrement by 1;
+#X text 200 291 Note that you need to keep the mouse over the object
+!;
+#X obj 16 -37 c.patcherinfos;
+#X obj 17 -46 c.loadmess;
+#X obj 11 -58 c.help.header;
+#X obj 107 320 c.help.pub;
+#X connect 2 0 4 0;
+#X connect 4 0 5 0;
+#X connect 6 0 2 0;
+#X connect 12 0 4 0;
+#X connect 13 0 4 0;
+#X connect 13 0 6 0;
+#X connect 19 0 21 0;
+#X connect 20 0 19 0;
