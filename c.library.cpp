@@ -43,6 +43,8 @@ extern "C" void setup_c0x2elibrary(void)
     
 	// Caramel
 	setup_c0x2econvolve_tilde();
+    setup_c0x2ecount_tilde();
+    setup_c0x2efft_tilde();
 	setup_c0x2efreeverb_tilde();
     setup_c0x2ematrix_tilde();
     

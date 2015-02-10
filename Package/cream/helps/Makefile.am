@@ -16,7 +16,7 @@ dist_c.libraryhelp_DATA = \
  c.knob-help.pd \
  c.loadmess-help.pd \
  c.matrix-help.pd \
- c.matrix-help.pd \
+ c.matrix~-help.pd \
  c.menu-help.pd \
  c.meter~-help.pd \
  c.mousestate-help.pd \

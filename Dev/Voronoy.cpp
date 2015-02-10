@@ -92,7 +92,6 @@ namespace Cicm
             {
                 points.push_back(VoronoyPoint(cos(_azimuth) * fabs(2. * _elevation / Pi), sin(_azimuth) * fabs(2. * _elevation / Pi)));
                 points_bottom.push_back(VoronoyPoint(cos(_azimuth) * (2. - fabs(2. * _elevation / Pi)), sin(_azimuth) * (2. - fabs(2. * _elevation / Pi))));
-                
             }
             else
             {
