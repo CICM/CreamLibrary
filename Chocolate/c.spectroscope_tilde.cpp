@@ -233,6 +233,7 @@ void spectroscope_dsp(t_spectroscope *x, t_object *dsp, short *count, double sam
 
 void spectroscope_tick(t_spectroscope *x)
 {
+#ifdef __APPLE__
     if(x->f_real_mode)
     {
         mayer_realfft(x->f_buffer_size, x->f_buffer_real);
@@ -242,6 +243,7 @@ void spectroscope_tick(t_spectroscope *x)
     {
         
     }
+#endif
     
     ebox_invalidate_layer((t_ebox *)x, csym_spectrum_layer);
     ebox_redraw((t_ebox *)x);
