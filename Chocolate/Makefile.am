@@ -9,6 +9,7 @@ libChocolate_la_SOURCES = c.bang.cpp \
 c.blackboard.cpp \
 c.breakpoints.cpp \
 c.colorpanel.cpp \
+c.dsp.cpp \
 c.gain_tilde.cpp \
 c.incdec.cpp \
 c.knob.cpp \
@@ -22,6 +23,7 @@ c.preset.cpp \
 c.radio.cpp \
 c.rslider.cpp \
 c.scope_tilde.cpp \
+c.spectroscope_tilde.cpp \
 c.slider.cpp \
 c.tab.cpp \
 c.toggle.cpp

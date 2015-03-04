@@ -5,7 +5,7 @@ pkglib_LTLIBRARIES = cream.la
 
 cream_la_CXXFLAGS = @PD_CPPFLAGS@ -s -O2 -fPIC -fpermissive 
 cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
-cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la
+cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la Cinnamon/libCinnamon.la
 cream_la_LIBADD += ThirdParty/PureData/Sources/libCicmWrapper.la
 
 cream_la_SOURCES = c.library.h \
@@ -27,7 +27,7 @@ ORIGDIR=pd-$(PACKAGE_NAME)_$(PACKAGE_VERSION)
 OS=$(shell uname -s)
 DISTBINDIR=$(DISTDIR)-$(OS)
 
-SUBDIRS=Coffee Caramel Chocolate
+SUBDIRS=Coffee Caramel Chocolate Cinnamon
 
 SUBDIRS+= ThirdParty/PureData
 SUBDIRS+= Package/Cream
