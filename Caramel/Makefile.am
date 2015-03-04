@@ -8,6 +8,8 @@ libCaramel_la_LIBADD =
 libCaramel_la_SOURCES = AudioFFT.cpp \
 AudioFFT.h \
 c.convolve_tilde.cpp \
+c.count_tilde.cpp \
+c.fft_tilde.cpp \
 c.freeverb_tilde.cpp \
 c.matrix_tilde.cpp \
 FFTConvolver.cpp \
