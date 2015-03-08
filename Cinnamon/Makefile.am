@@ -6,7 +6,7 @@ libCinnamon_la_CXXFLAGS = @PD_CPPFLAGS@ -s -O2 -fPIC -fpermissive
 libCinnamon_la_LIBADD = 
 
 libCinnamon_la_SOURCES = c.atan_tilde.cpp \
-c.sin_tilde.cpp \
+c.sin_tilde.cpp
 
 
 
