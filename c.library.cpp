@@ -43,8 +43,6 @@ extern "C" void setup_c0x2elibrary(void)
     
 	// Caramel
 	setup_c0x2econvolve_tilde();
-    setup_c0x2ecount_tilde();
-    setup_c0x2efft_tilde();
 	setup_c0x2efreeverb_tilde();
     setup_c0x2ematrix_tilde();
     
@@ -53,7 +51,6 @@ extern "C" void setup_c0x2elibrary(void)
 	setup_c0x2eblackboard();
 	setup_c0x2ebreakpoints();
 	setup_c0x2ecolorpanel();
-    setup_c0x2edsp_tilde();
 	setup_c0x2egain_tilde();
 	setup_c0x2eincdec();
 	setup_c0x2eknob();
@@ -68,7 +65,6 @@ extern "C" void setup_c0x2elibrary(void)
 	setup_c0x2erslider();
 	setup_c0x2escope_tilde();
 	setup_c0x2eslider();
-    setup_c0x2espectroscope_tilde();
 	setup_c0x2etab();
 	setup_c0x2etoggle();
 

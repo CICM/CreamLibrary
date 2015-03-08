@@ -8,19 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		59FB02F817A7FAA9001E977D /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59FB02F717A7FAA9001E977D /* Accelerate.framework */; };
-		8F14049D1A5A9AF900DCC99B /* c.dsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F14049C1A5A9AF900DCC99B /* c.dsp.cpp */; };
-		8F14049E1A5A9AF900DCC99B /* c.dsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F14049C1A5A9AF900DCC99B /* c.dsp.cpp */; };
 		8F1E0E761A46FEF400551842 /* c.matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F1E0E751A46FEF400551842 /* c.matrix.cpp */; };
 		8F1E0E771A46FEF400551842 /* c.matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F1E0E751A46FEF400551842 /* c.matrix.cpp */; };
 		8F26F18B17E76274005FCB97 /* c.library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F26F18A17E76273005FCB97 /* c.library.cpp */; };
 		8F53164C1906F50A00734AD6 /* c.patchermess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F53164B1906F50A00734AD6 /* c.patchermess.cpp */; };
 		8F5DB22519630E41005DE808 /* c.mousestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F5DB22419630E41005DE808 /* c.mousestate.cpp */; };
-		8F6728A91A77E98B009A955F /* c.fft_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F6728A81A77E98B009A955F /* c.fft_tilde.cpp */; };
-		8F6728AA1A77E98B009A955F /* c.fft_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F6728A81A77E98B009A955F /* c.fft_tilde.cpp */; };
 		8FA255E31A56E57C00CD0697 /* c.matrix_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */; };
 		8FA255E41A56E57C00CD0697 /* c.matrix_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */; };
-		8FA256691A57E3CA00CD0697 /* c.spectroscope_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA256681A57E3CA00CD0697 /* c.spectroscope_tilde.cpp */; };
-		8FA2566A1A57E3CA00CD0697 /* c.spectroscope_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA256681A57E3CA00CD0697 /* c.spectroscope_tilde.cpp */; };
 		8FA8BB311A47E6560001EB87 /* c.atan_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */; };
 		8FA8BB321A47E6560001EB87 /* c.atan_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */; };
 		8FA8BB341A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */; };
@@ -165,21 +159,16 @@
 		8FD16824196FCA1D00D5104D /* epopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F8196FCA1D00D5104D /* epopup.h */; };
 		8FD16825196FCA1D00D5104D /* estruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F9196FCA1D00D5104D /* estruct.h */; };
 		8FD16826196FCA1D00D5104D /* estruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165F9196FCA1D00D5104D /* estruct.h */; };
-		8FD7F26E1A77D9EB003B568F /* c.count_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FD7F26D1A77D9EB003B568F /* c.count_tilde.cpp */; };
-		8FD7F26F1A77D9EB003B568F /* c.count_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FD7F26D1A77D9EB003B568F /* c.count_tilde.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5913846F15DAA36D0029AD16 /* cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		59FB02F717A7FAA9001E977D /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		8F14049C1A5A9AF900DCC99B /* c.dsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.dsp.cpp; sourceTree = "<group>"; };
 		8F1E0E751A46FEF400551842 /* c.matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix.cpp; sourceTree = "<group>"; };
 		8F26F18A17E76273005FCB97 /* c.library.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.library.cpp; sourceTree = "<group>"; };
 		8F53164B1906F50A00734AD6 /* c.patchermess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patchermess.cpp; sourceTree = "<group>"; };
 		8F5DB22419630E41005DE808 /* c.mousestate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.mousestate.cpp; sourceTree = "<group>"; };
-		8F6728A81A77E98B009A955F /* c.fft_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.fft_tilde.cpp; sourceTree = "<group>"; };
 		8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix_tilde.cpp; sourceTree = "<group>"; };
-		8FA256681A57E3CA00CD0697 /* c.spectroscope_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.spectroscope_tilde.cpp; sourceTree = "<group>"; };
 		8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.atan_tilde.cpp; sourceTree = "<group>"; };
 		8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.sin_tilde.cpp; sourceTree = "<group>"; };
 		8FAC0BFB1969731800E09ACB /* cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -251,7 +240,6 @@
 		8FD165F7196FCA1D00D5104D /* epopup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = epopup.c; sourceTree = "<group>"; };
 		8FD165F8196FCA1D00D5104D /* epopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = epopup.h; sourceTree = "<group>"; };
 		8FD165F9196FCA1D00D5104D /* estruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = estruct.h; sourceTree = "<group>"; };
-		8FD7F26D1A77D9EB003B568F /* c.count_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.count_tilde.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -311,8 +299,6 @@
 			isa = PBXGroup;
 			children = (
 				8FB8EB2719007B04005FAF6A /* c.convolve_tilde.cpp */,
-				8FD7F26D1A77D9EB003B568F /* c.count_tilde.cpp */,
-				8F6728A81A77E98B009A955F /* c.fft_tilde.cpp */,
 				8FB8EB2819007B04005FAF6A /* c.freeverb_tilde.cpp */,
 				8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */,
 				8FB8EB2519007B04005FAF6A /* AudioFFT.cpp */,
@@ -332,7 +318,6 @@
 				8FB8EB2F19007B04005FAF6A /* c.blackboard.cpp */,
 				8FB8EB3019007B04005FAF6A /* c.breakpoints.cpp */,
 				8FB8EB3119007B04005FAF6A /* c.colorpanel.cpp */,
-				8F14049C1A5A9AF900DCC99B /* c.dsp.cpp */,
 				8FB8EB3219007B04005FAF6A /* c.gain_tilde.cpp */,
 				8FB8EB3319007B04005FAF6A /* c.incdec.cpp */,
 				8FB8EB3419007B04005FAF6A /* c.knob.cpp */,
@@ -347,7 +332,6 @@
 				8FB8EB3C19007B04005FAF6A /* c.rslider.cpp */,
 				8FB8EB3D19007B04005FAF6A /* c.scope_tilde.cpp */,
 				8FB8EB3E19007B04005FAF6A /* c.slider.cpp */,
-				8FA256681A57E3CA00CD0697 /* c.spectroscope_tilde.cpp */,
 				8FB8EB3F19007B04005FAF6A /* c.tab.cpp */,
 				8FB8EB4019007B04005FAF6A /* c.toggle.cpp */,
 			);
@@ -584,7 +568,6 @@
 			files = (
 				8FB8EB5319007B04005FAF6A /* c.gain_tilde.cpp in Sources */,
 				8FB8EB72190080E9005FAF6A /* c.patcherinfos.cpp in Sources */,
-				8F6728A91A77E98B009A955F /* c.fft_tilde.cpp in Sources */,
 				8FB8EB5D19007B04005FAF6A /* c.rslider.cpp in Sources */,
 				8FD167EB196FCA1D00D5104D /* eclass_basic.c in Sources */,
 				8FD1680D196FCA1D00D5104D /* egraphics_matrix.c in Sources */,
@@ -605,8 +588,6 @@
 				8FB8EB5919007B04005FAF6A /* c.number_tilde.cpp in Sources */,
 				8FB8EB5119007B04005FAF6A /* c.breakpoints.cpp in Sources */,
 				8F53164C1906F50A00734AD6 /* c.patchermess.cpp in Sources */,
-				8F14049D1A5A9AF900DCC99B /* c.dsp.cpp in Sources */,
-				8FA256691A57E3CA00CD0697 /* c.spectroscope_tilde.cpp in Sources */,
 				8FD167E7196FCA1D00D5104D /* eclass_attroptions.c in Sources */,
 				8FD1680F196FCA1D00D5104D /* egraphics_text.c in Sources */,
 				8FB8EB6019007B04005FAF6A /* c.tab.cpp in Sources */,
@@ -635,7 +616,6 @@
 				8FB8EB5C19007B04005FAF6A /* c.radio.cpp in Sources */,
 				8FD1680B196FCA1D00D5104D /* egraphics_forms.c in Sources */,
 				8FD167D9196FCA1D00D5104D /* ebox_draw.c in Sources */,
-				8FD7F26E1A77D9EB003B568F /* c.count_tilde.cpp in Sources */,
 				8FD167ED196FCA1D00D5104D /* eclass_widget.c in Sources */,
 				8FD167DB196FCA1D00D5104D /* ebox_handle.c in Sources */,
 				8FD16809196FCA1D00D5104D /* egraphics_color.c in Sources */,
@@ -655,7 +635,6 @@
 			files = (
 				8FAC0BA71969731800E09ACB /* c.gain_tilde.cpp in Sources */,
 				8FAC0BA81969731800E09ACB /* c.patcherinfos.cpp in Sources */,
-				8F6728AA1A77E98B009A955F /* c.fft_tilde.cpp in Sources */,
 				8FAC0BAB1969731800E09ACB /* c.rslider.cpp in Sources */,
 				8FD167EC196FCA1D00D5104D /* eclass_basic.c in Sources */,
 				8FD1680E196FCA1D00D5104D /* egraphics_matrix.c in Sources */,
@@ -676,8 +655,6 @@
 				8FAC0BBA1969731800E09ACB /* c.number_tilde.cpp in Sources */,
 				8FAC0BBB1969731800E09ACB /* c.breakpoints.cpp in Sources */,
 				8FAC0BBC1969731800E09ACB /* c.patchermess.cpp in Sources */,
-				8F14049E1A5A9AF900DCC99B /* c.dsp.cpp in Sources */,
-				8FA2566A1A57E3CA00CD0697 /* c.spectroscope_tilde.cpp in Sources */,
 				8FD167E8196FCA1D00D5104D /* eclass_attroptions.c in Sources */,
 				8FD16810196FCA1D00D5104D /* egraphics_text.c in Sources */,
 				8FAC0BC11969731800E09ACB /* c.tab.cpp in Sources */,
@@ -706,7 +683,6 @@
 				8FAC0BDB1969731800E09ACB /* c.radio.cpp in Sources */,
 				8FD1680C196FCA1D00D5104D /* egraphics_forms.c in Sources */,
 				8FD167DA196FCA1D00D5104D /* ebox_draw.c in Sources */,
-				8FD7F26F1A77D9EB003B568F /* c.count_tilde.cpp in Sources */,
 				8FD167EE196FCA1D00D5104D /* eclass_widget.c in Sources */,
 				8FD167DC196FCA1D00D5104D /* ebox_handle.c in Sources */,
 				8FD1680A196FCA1D00D5104D /* egraphics_color.c in Sources */,
