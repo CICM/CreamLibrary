@@ -1,21 +1,17 @@
 #N canvas 185 306 636 463 10;
 #X msg 295 349 \; pd dsp 1;
 #X msg 229 349 \; pd dsp 0;
-#X text 5 47 c.gain~ is a slider that allows to control the volume
-of a signal with decibel.;
 #X obj 11 26 c.patcherinfos;
 #X obj 12 17 c.loadmess;
 #X obj 6 5 c.help.header;
 #X obj 120 396 c.help.pub;
 #X obj 275 240 c.dsp~ @size 30 30 @fontname Helvetica @fontweight normal
-@fontslant roman @fontsize 11 @receive (null) @send (null) @local 0
-@bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @logocolor 0 0.6 0
-0.8;
+@fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @logocolor 0 0.6 0 0.8;
 #X text 334 127 Open the audio settings.;
 #X text 314 244 Click to swith dsp on/off.;
 #X msg 317 156 start;
 #X msg 327 186 stop;
-#X msg 345 209 startwindow;
 #X msg 275 126 settings;
 #X obj 81 214 c.meter~ @size 13 85 @fontname Helvetica @fontweight
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @interval
@@ -30,15 +26,15 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @interval
 normal @fontslant roman @fontsize 11 @receive (null) @send (null) @interval
 50 @decimal 6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
 0 0 0 1;
-#X connect 3 0 5 0;
-#X connect 4 0 3 0;
-#X connect 10 0 7 0;
-#X connect 11 0 7 0;
-#X connect 12 0 7 0;
-#X connect 13 0 7 0;
-#X connect 15 0 16 0;
-#X connect 16 0 17 1;
-#X connect 17 0 14 0;
-#X connect 17 0 19 0;
-#X connect 18 0 15 0;
-#X connect 18 0 17 0;
+#X text 5 47 c.dsp~ controles the dsp state.;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 9 0 6 0;
+#X connect 10 0 6 0;
+#X connect 11 0 6 0;
+#X connect 13 0 14 0;
+#X connect 14 0 15 1;
+#X connect 15 0 12 0;
+#X connect 15 0 17 0;
+#X connect 16 0 13 0;
+#X connect 16 0 15 0;

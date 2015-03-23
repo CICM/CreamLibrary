@@ -306,19 +306,15 @@ void matrixctrl_list(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av)
 void matrixctrl_output(t_matrixctrl *x, int i, int j)
 {
     t_atom av[3];
-    if(ebox_isdrawable((t_ebox *)x))
+    if(i < x->f_size.x && j < x->f_size.y)
     {
-        if(i < x->f_size.x && j < x->f_size.y)
-        {
-            atom_setfloat(av, i);
-            atom_setfloat(av+1, j);
-            atom_setfloat(av+2,  x->f_values[j * (long)x->f_size.x + i]);
-        }
-        outlet_list(x->f_out_cell, &s_list, 3, av);
-        if(ebox_getsender((t_ebox *) x))
-            pd_list(ebox_getsender((t_ebox *) x), &s_list, 3, av);
+        atom_setfloat(av, i);
+        atom_setfloat(av+1, j);
+        atom_setfloat(av+2,  x->f_values[j * (long)x->f_size.x + i]);
     }
-}
+    outlet_list(x->f_out_cell, &s_list, 3, av);
+    if(ebox_getsender((t_ebox *) x))
+        pd_list(ebox_getsender((t_ebox *) x), &s_list, 3, av);}
 
 void matrixctrl_free(t_matrixctrl *x)
 {

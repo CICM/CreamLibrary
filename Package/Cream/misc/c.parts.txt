@@ -8,6 +8,7 @@ c.bang-help.pd c.bang A bang... that's all.;
 c.blackboard-help.pd c.blackboard A blackboard to draw.;
 c.breakpoints-help.pd c.breakpoints A GUI to edit a breakpoint function.;
 c.colorpanel-help.pd c.colorpanel A GUI to pick color.;
+c.dsp~-help.pd c.dsp A dsp controler.;
 c.gain~-help.pd c.gain~ A slider for signal.;
 c.incdec-help.pd c.incdec A GUI to increment and decrement a value.;
 c.knob-help.pd c.knob A knob.;

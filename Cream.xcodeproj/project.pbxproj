@@ -13,6 +13,8 @@
 		8F26F18B17E76274005FCB97 /* c.library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F26F18A17E76273005FCB97 /* c.library.cpp */; };
 		8F53164C1906F50A00734AD6 /* c.patchermess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F53164B1906F50A00734AD6 /* c.patchermess.cpp */; };
 		8F5DB22519630E41005DE808 /* c.mousestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F5DB22419630E41005DE808 /* c.mousestate.cpp */; };
+		8F93C5BF1ABFCD4400140C8A /* c.dsp_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F93C5BE1ABFCD4400140C8A /* c.dsp_tilde.cpp */; };
+		8F93C5C01ABFCD4400140C8A /* c.dsp_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F93C5BE1ABFCD4400140C8A /* c.dsp_tilde.cpp */; };
 		8FA255E31A56E57C00CD0697 /* c.matrix_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */; };
 		8FA255E41A56E57C00CD0697 /* c.matrix_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */; };
 		8FA8BB311A47E6560001EB87 /* c.atan_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */; };
@@ -168,6 +170,7 @@
 		8F26F18A17E76273005FCB97 /* c.library.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.library.cpp; sourceTree = "<group>"; };
 		8F53164B1906F50A00734AD6 /* c.patchermess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patchermess.cpp; sourceTree = "<group>"; };
 		8F5DB22419630E41005DE808 /* c.mousestate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.mousestate.cpp; sourceTree = "<group>"; };
+		8F93C5BE1ABFCD4400140C8A /* c.dsp_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.dsp_tilde.cpp; sourceTree = "<group>"; };
 		8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix_tilde.cpp; sourceTree = "<group>"; };
 		8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.atan_tilde.cpp; sourceTree = "<group>"; };
 		8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.sin_tilde.cpp; sourceTree = "<group>"; };
@@ -318,6 +321,7 @@
 				8FB8EB2F19007B04005FAF6A /* c.blackboard.cpp */,
 				8FB8EB3019007B04005FAF6A /* c.breakpoints.cpp */,
 				8FB8EB3119007B04005FAF6A /* c.colorpanel.cpp */,
+				8F93C5BE1ABFCD4400140C8A /* c.dsp_tilde.cpp */,
 				8FB8EB3219007B04005FAF6A /* c.gain_tilde.cpp */,
 				8FB8EB3319007B04005FAF6A /* c.incdec.cpp */,
 				8FB8EB3419007B04005FAF6A /* c.knob.cpp */,
@@ -586,6 +590,7 @@
 				8FD167F5196FCA1D00D5104D /* ecommon.c in Sources */,
 				8FD16813196FCA1D00D5104D /* eobj_basic.c in Sources */,
 				8FB8EB5919007B04005FAF6A /* c.number_tilde.cpp in Sources */,
+				8F93C5BF1ABFCD4400140C8A /* c.dsp_tilde.cpp in Sources */,
 				8FB8EB5119007B04005FAF6A /* c.breakpoints.cpp in Sources */,
 				8F53164C1906F50A00734AD6 /* c.patchermess.cpp in Sources */,
 				8FD167E7196FCA1D00D5104D /* eclass_attroptions.c in Sources */,
@@ -653,6 +658,7 @@
 				8FD167F6196FCA1D00D5104D /* ecommon.c in Sources */,
 				8FD16814196FCA1D00D5104D /* eobj_basic.c in Sources */,
 				8FAC0BBA1969731800E09ACB /* c.number_tilde.cpp in Sources */,
+				8F93C5C01ABFCD4400140C8A /* c.dsp_tilde.cpp in Sources */,
 				8FAC0BBB1969731800E09ACB /* c.breakpoints.cpp in Sources */,
 				8FAC0BBC1969731800E09ACB /* c.patchermess.cpp in Sources */,
 				8FD167E8196FCA1D00D5104D /* eclass_attroptions.c in Sources */,
