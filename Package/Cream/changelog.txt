@@ -6,7 +6,10 @@ For an overview of Chocolate, Coffee and Caramel Libraries, please refer to the 
 ------------------------
 Beta 0.4
 ------------------------
-... sorry
+
+c.matrix~
+c.matrix
+c.dsp~
 
 ------------------------
 Beta 0.3
@@ -29,7 +32,7 @@ A lot of stuff can't enum everything, look at the commit...
 Chocolate :
 - c.rslider
 - c.blackboard updated
-- c.function updated
+- c.breakpoint updated
 - c.preset updated
 
 Caramel :
@@ -44,7 +47,7 @@ Chocolate :
 - c.bang
 - c.blackbloard
 - c.colorpanel
-- c.function
+- c.breakpoint
 - c.incdec
 - c.knob
 - c.menu
