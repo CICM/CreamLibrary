@@ -42,22 +42,22 @@ typedef struct _bang
 
 t_eclass *bang_class;
 
-void *bang_new(t_symbol *s, int argc, t_atom *argv);
-void bang_free(t_bang *x);
-void bang_assist(t_bang *x, void *b, long m, long a, char *s);
+static void *bang_new(t_symbol *s, int argc, t_atom *argv);
+static void bang_free(t_bang *x);
+static void bang_assist(t_bang *x, void *b, long m, long a, char *s);
 
-void bang_output(t_bang *x, t_symbol* s, long argc, t_atom* argv);
+static void bang_output(t_bang *x, t_symbol* s, long argc, t_atom* argv);
 
-t_pd_err bang_notify(t_bang *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
+static t_pd_err bang_notify(t_bang *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
 
-void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params);
-void bang_oksize(t_bang *x, t_rect *newrect);
+static void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params);
+static void bang_oksize(t_bang *x, t_rect *newrect);
 
-void bang_paint(t_bang *x, t_object *view);
-void draw_background(t_bang *x,  t_object *view, t_rect *rect);
+static void bang_paint(t_bang *x, t_object *view);
+static void draw_background(t_bang *x,  t_object *view, t_rect *rect);
 
-void bang_mousedown(t_bang *x, t_object *patcherview, t_pt pt, long modifiers);
-void bang_mouseup(t_bang *x, t_object *patcherview, t_pt pt, long modifiers);
+static void bang_mousedown(t_bang *x, t_object *patcherview, t_pt pt, long modifiers);
+static void bang_mouseup(t_bang *x, t_object *patcherview, t_pt pt, long modifiers);
 
 extern "C" void setup_c0x2ebang(void)
 {
@@ -109,7 +109,7 @@ extern "C" void setup_c0x2ebang(void)
 	bang_class = c;
 }
 
-void *bang_new(t_symbol *s, int argc, t_atom *argv)
+static void *bang_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_bang *x =  NULL;
 	t_binbuf* d;
@@ -130,7 +130,7 @@ void *bang_new(t_symbol *s, int argc, t_atom *argv)
 	return (x);
 }
 
-void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params)
+static void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params)
 {
 	params->d_borderthickness   = 2;
 	params->d_cornersize        = 2;
@@ -138,7 +138,7 @@ void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params)
     params->d_boxfillcolor      = x->f_color_border;
 }
 
-void bang_oksize(t_bang *x, t_rect *newrect)
+static void bang_oksize(t_bang *x, t_rect *newrect)
 {
     newrect->width = pd_clip_min(newrect->width, 16.);
     newrect->height = pd_clip_min(newrect->height, 16.);
@@ -148,7 +148,7 @@ void bang_oksize(t_bang *x, t_rect *newrect)
         newrect->height++;
 }
 
-void bang_output(t_bang *x, t_symbol* s, long argc, t_atom* argv)
+static void bang_output(t_bang *x, t_symbol* s, long argc, t_atom* argv)
 {
     x->f_active = 1;
     ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
@@ -160,18 +160,18 @@ void bang_output(t_bang *x, t_symbol* s, long argc, t_atom* argv)
     clock_delay(x->f_clock, 100);
 }
 
-void bang_free(t_bang *x)
+static void bang_free(t_bang *x)
 {
 	ebox_free((t_ebox *)x);
     clock_free(x->f_clock);
 }
 
-void bang_assist(t_bang *x, void *b, long m, long a, char *s)
+static void bang_assist(t_bang *x, void *b, long m, long a, char *s)
 {
 	;
 }
 
-t_pd_err bang_notify(t_bang *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+static t_pd_err bang_notify(t_bang *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
 	if (msg == gensym("attr_modified"))
 	{
@@ -184,14 +184,14 @@ t_pd_err bang_notify(t_bang *x, t_symbol *s, t_symbol *msg, void *sender, void *
 	return 0;
 }
 
-void bang_paint(t_bang *x, t_object *view)
+static void bang_paint(t_bang *x, t_object *view)
 {
 	t_rect rect;
 	ebox_get_rect_for_view((t_ebox *)x, &rect);
     draw_background(x, view, &rect);
 }
 
-void draw_background(t_bang *x, t_object *view, t_rect *rect)
+static void draw_background(t_bang *x, t_object *view, t_rect *rect)
 {
     float size;
 	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
@@ -213,7 +213,7 @@ void draw_background(t_bang *x, t_object *view, t_rect *rect)
 	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0., 0.);
 }
 
-void bang_mousedown(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
+static void bang_mousedown(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_active = 1;
     ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
@@ -223,60 +223,12 @@ void bang_mousedown(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
         pd_bang(ebox_getsender((t_ebox *) x));
 }
 
-void bang_mouseup(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
+static void bang_mouseup(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_active = 0;
     ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
     ebox_redraw((t_ebox *)x);
 }
-/*
-// Fonction qui dessine l'arrière plan de l'objet
-void draw_background(t_bang *x, t_object *view, t_rect *rect)
-{
-    // Le rayon du cercle inscrit de l'objet
-    float radius = rect->width * 0.5;
-    
-    // Creation d'un nouveau calque défini par le symbol "background_layer"
-	//t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
-    t_jgraphics *g = jbox_start_layer((t_object *)x, view, gensym("background_layer"), rect->width, rect->height);
-    
-    // Si le calque est nouveau ou a été invalidé, il est possible de le redéfinir
-	if (g)
-	{
-        // Definition de la couleur utilisée
-        //egraphics_set_color_rgba(g, &x->f_color_background);
-        jgraphics_set_source_jrgba(g, &x->f_color_background);
-        
-        // Création d'un cercle
-        //egraphics_arc(g, radius, radius, radius * 0.9, 0, EPD_2PI);
-        jgraphics_arc(g, radius, radius, radius * 0.9, 0, EPD_2PI);
-        
-        // Ajout du cercle dans le calque en remplissant
-        //egraphics_fill(g);
-         jgraphics_fill(g);
-        
-        ebox_end_layer((t_ebox*)x, gensym("background_layer"));
-        //jbox_end_layer((t_jbox*)x, view, gensym("background_layer"));
-	}
-    
-    // Dessin du calque
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0., 0.);
-    // jbox_paint_layer((t_jbox *)x, view,  gensym("background_layer"), 0., 0.);
-}
-
-// Fonction appelée au click de la souris
-void mouse_down(t_bang *x, t_object *view, t_pt pt, long modifiers)
-{
-    // Invalidation du calque de l'arrière plan de l'objet
-    //ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
-    jbox_invalidate_layer((t_object *)x, NULL, gensym("background_layer"));
-    
-    // Notification à l'objet de redessiner
-    //ebox_redraw((t_ebox *)x);
-    jbox_redraw((t_jbox *)x);
-    
-    outlet_bang(x->f_out);
-}*/
 
 
 
