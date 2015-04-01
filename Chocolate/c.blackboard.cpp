@@ -48,7 +48,7 @@ typedef struct  _blacboard
     
     t_rgba		f_color_background;
 	t_rgba		f_color_border;
-    char*       f_instructions[MAX_COMMANDS];
+    char**      f_instructions;
     int         f_ninstructions;
 } t_blacboard;
 
@@ -178,6 +178,7 @@ void *blackboard_new(t_symbol *s, int argc, t_atom *argv)
     x->f_color      = gensym("#000000");
     x->f_fill       = 0;
     x->f_ninstructions = 0;
+    x->f_instructions = (char **)malloc(MAXPDSTRING * sizeof(char*));
     for(int i = 0; i < MAX_COMMANDS; i++)
     {
         x->f_instructions[i] = (char *)malloc(MAXPDSTRING * sizeof(char));
@@ -225,6 +226,7 @@ void blackboard_free(t_blacboard *x)
     {
         free(x->f_instructions[i]);
     }
+    free(x->f_instructions);
 }
 
 void blackboard_assist(t_blacboard *x, void *b, long m, long a, char *s)
