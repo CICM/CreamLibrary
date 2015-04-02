@@ -14,7 +14,7 @@ extern "C"
 
 void cream_initclass(t_eclass* c);
 
-extern "C" void setup_c0x2elibrary(void);
+extern "C" void cream_setup(void);
 extern "C" void libpd_loadcream(void);
 
 // Cinnamon
