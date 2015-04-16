@@ -334,7 +334,7 @@ void tab_delete(t_tab *x, t_symbol *s, int argc, t_atom *argv)
                 x->f_items[i] = x->f_items[i+1];
             x->f_items_size--;
             for(i = x->f_items_size; i < MAXITEMS; i++)
-                x->f_items[i] = gensym("(null)");
+                x->f_items[i] = s_null;
         }
         tab_sizemustchange(x);
     }
@@ -345,7 +345,7 @@ void tab_clear(t_tab *x, t_symbol *s, int argc, t_atom *argv)
     int i;
     for(i = 0; i < MAXITEMS; i++)
     {
-        x->f_items[i] = gensym("(null)");
+        x->f_items[i] = s_null;
     }
     x->f_items_size = 0;
     tab_sizemustchange(x);
@@ -356,7 +356,7 @@ void tab_clean(t_tab *x)
     int i, j;
     for(i = 0; i < x->f_items_size; i++)
     {
-        if(x->f_items[i] == gensym("(null)"))
+        if(x->f_items[i] == s_null)
         {
             for(j = i; j < x->f_items_size; j++)
                 x->f_items[j] = x->f_items[j+1];
@@ -591,7 +591,7 @@ void draw_text(t_tab *x, t_object *view, t_rect *rect)
             ratio = rect->width / (float)x->f_items_size;
         for(i = 0; i < x->f_items_size; i++)
         {
-            if(x->f_items[i] != gensym("(null)"))
+            if(x->f_items[i] != s_null)
             {
                 if(x->f_orientation)
                 {

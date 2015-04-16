@@ -33,7 +33,6 @@ typedef struct _preset
 	t_ebox      j_box;
 
     t_binbuf**  f_binbuf;
-    int         f_nbinbufs;
     int         f_binbuf_selected;
     int         f_binbuf_hover;
     float       f_point_size;
@@ -45,8 +44,8 @@ typedef struct _preset
     t_rgba		f_color_button_selected;
     t_rgba		f_color_text;
 
-    t_symbol**  f_preset;
-    char        f_init;
+    t_symbol*   f_canvas_link;
+
 } t_preset;
 
 t_eclass *preset_class;
@@ -82,7 +81,6 @@ void preset_mouseleave(t_preset *x, t_object *patcherview, t_pt pt, long modifie
 
 t_symbol* s_preset = gensym("preset");
 t_symbol* s_interpolate = gensym("interpolate");
-t_symbol* s_null = gensym("(null)");
 t_symbol* s_nothing = gensym("''");
 
 extern "C" void setup_c0x2epreset(void)
@@ -158,34 +156,32 @@ extern "C" void setup_c0x2epreset(void)
 void *preset_new(t_symbol *s, int argc, t_atom *argv)
 {
     int i;
-	t_preset *x =  NULL;
 	t_binbuf* d;
     long flags;
 	if (!(d = binbuf_via_atoms(argc,argv)))
 		return NULL;
 
-	x = (t_preset *)eobj_new(preset_class);
-    x->f_init = 0;
-    flags = 0
-    | EBOX_GROWINDI
-    ;
-	ebox_new((t_ebox *)x, flags);
-
-    x->f_binbuf = (t_binbuf **)malloc(MAXBINBUF * sizeof(t_binbuf *));
-    for(i = 0; i < MAXBINBUF; i++)
+	t_preset *x = (t_preset *)eobj_new(preset_class);
+    if(x)
     {
-        x->f_binbuf[i]  = binbuf_new();
+        x->f_binbuf = (t_binbuf **)malloc(MAXBINBUF * sizeof(t_binbuf *));
+        for(i = 0; i < MAXBINBUF; i++)
+        {
+            x->f_binbuf[i]  = binbuf_new();
+        }
+        flags = 0
+        | EBOX_GROWINDI
+        ;
+        ebox_new((t_ebox *)x, flags);
+        
+        x->f_binbuf_selected = 0;
+        x->f_binbuf_hover    = 0;
+        
+        preset_init(x, d);
+        ebox_attrprocess_viabinbuf(x, d);
+        ebox_ready((t_ebox *)x);
     }
-
-
-    x->f_nbinbufs = 0;
-    x->f_binbuf_selected = 0;
-    x->f_binbuf_hover    = 0;
-
-    preset_init(x, d);
-	ebox_attrprocess_viabinbuf(x, d);
-	ebox_ready((t_ebox *)x);
-    x->f_init = 1;
+    
 	return (x);
 }
 
@@ -242,51 +238,44 @@ void preset_store(t_preset *x, float f)
 
 void preset_float(t_preset *x, float f)
 {
-    long ac = 0;
-    t_atom* av = NULL;
-    t_gobj *y = NULL;
-    t_ebox *z = NULL;
-    t_gotfn mpreset = NULL;
-    char id[MAXPDSTRING];
-    int index = (int)f;
-    t_binbuf* b = NULL;
-
-    if(!x->f_init)
-        return;
-
-    if(index < 1)
-        index = 1;
-    else if(index > MAXBINBUF)
-        index = MAXBINBUF;
-
-    b = x->f_binbuf[index-1];
-    if(binbuf_getnatom(b) == 0 || binbuf_getvec(b) == NULL)
-        return;
-
-    x->f_binbuf_selected = index;
-    
-    for (y = eobj_getcanvas(x)->gl_list; y; y = y->g_next)
+    t_canvas *cnv = eobj_getcanvas(x);
+    if(cnv && !cnv->gl_loading)
     {
-        z = (t_ebox *)y;
-        mpreset = zgetfn(&y->g_pd, s_preset);
-        if(mpreset && z->b_objpreset_id && z->b_objpreset_id != s_null && z->b_objpreset_id != s_nothing)
+        x->f_binbuf_selected = pd_clip_minmax(f, 1, MAXBINBUF) - 1;
+        t_binbuf* b = x->f_binbuf[x->f_binbuf_selected-1];
+        if(b && binbuf_getnatom(b) && binbuf_getvec(b))
         {
-            sprintf(id, "@%s", z->b_objpreset_id->s_name);
-            binbuf_get_attribute(b, gensym(id), &ac, &av);
-            if(ac > 1 && av && atom_gettype(av) == A_SYM && atom_gettype(av+1) == A_SYM)
+            t_gobj *y = eobj_getcanvas(x)->gl_list;
+            for(; y; y = y->g_next)
             {
-                if(eobj_getclassname(z) == atom_getsym(av))
-                    pd_typedmess((t_pd *)z, atom_getsym(av+1), ac-2, av+2);
-                free(av);
-                av = NULL;
-                ac = 0;
+                t_ebox * z = (t_ebox *)y;
+                t_gotfn mpreset = zgetfn(&y->g_pd, s_preset);
+                if(mpreset && z->b_objpreset_id && z->b_objpreset_id != s_null && z->b_objpreset_id != s_nothing)
+                {
+                    char id[MAXPDSTRING];
+                    sprintf(id, "@%s", z->b_objpreset_id->s_name);
+                    long ac = 0;
+                    t_atom* av = NULL;
+                    binbuf_get_attribute(b, gensym(id), &ac, &av);
+                    if(ac > 1 && av && atom_gettype(av) == A_SYM && atom_gettype(av+1) == A_SYM)
+                    {
+                        if(eobj_getclassname(z) == atom_getsym(av))
+                        {
+                            pd_typedmess((t_pd *)z, atom_getsym(av+1), ac-2, av+2);
+                        }
+                    }
+                    if(ac && av)
+                    {
+                        free(av);
+                    }
+                }
+                mpreset = NULL;
             }
+            
+            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_redraw((t_ebox *)x);
         }
-        mpreset = NULL;
     }
-    
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
-    ebox_redraw((t_ebox *)x);
 }
 
 void preset_interpolate(t_preset *x, float f)
@@ -301,9 +290,6 @@ void preset_interpolate(t_preset *x, float f)
     char id[MAXPDSTRING];
     int i, j, indexdo, indexup, realdo, realup;
     float ratio;
-
-    if(!x->f_init)
-        return;
 
     max = -1;
     for(i = MAXBINBUF-1; i >= 0; i--)
@@ -444,6 +430,7 @@ void preset_interpolate(t_preset *x, float f)
         }
         mpreset = NULL;
     }
+    
     ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
     ebox_redraw((t_ebox *)x);
 }
@@ -454,14 +441,13 @@ void preset_clear(t_preset *x, float f)
 
     if (index < 1 || index > MAXBINBUF)
         return;
-    if(!x->f_init)
-        return;
 
-    if (x->f_binbuf_selected == index)
+    if(x->f_binbuf_selected == index)
     {
         x->f_binbuf_selected = 0;
     }
     binbuf_clear(x->f_binbuf[index-1]);
+    
     ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
     ebox_redraw((t_ebox *)x);
 }
@@ -471,8 +457,7 @@ void preset_clearall(t_preset *x)
 	int i;
     for(i = 0; i < MAXBINBUF; i++)
         binbuf_clear(x->f_binbuf[i]);
-    if(!x->f_init)
-        return;
+
     x->f_binbuf_selected = 0;
     ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
     ebox_redraw((t_ebox *)x);
@@ -521,7 +506,6 @@ void preset_paint(t_preset *x, t_object *view)
 	ebox_get_rect_for_view((t_ebox *)x, &rect);
     x->f_point_size = ebox_getfontsize((t_ebox *)x);
     draw_background(x, view, &rect);
-    x->f_init = 1;
 
 #ifdef __APPLE__
     x->j_box.b_font.c_size += 3;

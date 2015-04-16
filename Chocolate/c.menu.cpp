@@ -301,7 +301,7 @@ void menu_delete(t_menu *x, t_symbol *s, int argc, t_atom *argv)
                 x->f_items[i] = x->f_items[i+1];
             x->f_items_size--;
             for(i = x->f_items_size; i < MAXITEMS; i++)
-                x->f_items[i] = gensym("(null)");
+                x->f_items[i] = s_null;
             
             ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
             
@@ -316,7 +316,7 @@ void menu_clear(t_menu *x, t_symbol *s, int argc, t_atom *argv)
     int i;
     for(i = 0; i < MAXITEMS; i++)
     {
-        x->f_items[i] = gensym("(null)");
+        x->f_items[i] = s_null;
     }
     x->f_items_size = 0;
     ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
@@ -349,7 +349,7 @@ void menu_clean(t_menu *x)
     int i, j;
     for(i = 0; i < x->f_items_size; i++)
     {
-        if(x->f_items[i] == gensym("(null)"))
+        if(x->f_items[i] == s_null)
         {
             for(j = i; j < x->f_items_size; j++)
                 x->f_items[j] = x->f_items[j+1];
@@ -487,7 +487,7 @@ void draw_background(t_menu *x, t_object *view, t_rect *rect)
 	if(g && jtl)
 	{
         
-        if(x->f_items_size == 0 || (x->f_items_size == 1 && x->f_items[0] == gensym("(null)")))
+        if(x->f_items_size == 0 || (x->f_items_size == 1 && x->f_items[0] == s_null))
         {
             ;
         }
@@ -541,7 +541,7 @@ void draw_selection(t_menu *x, t_object *view, t_rect *rect)
         for(i = 0; i < x->f_items_size; i++)
         {
             egraphics_line_fast(g, 0., x->f_close_height * (i + 1), rect->width - x->f_close_height, x->f_close_height * (i + 1));
-            if(x->f_items[i] != gensym("(null)"))
+            if(x->f_items[i] != s_null)
             {
                 if(x->f_states[i])
                     etext_layout_settextcolor(jtl, &x->f_color_border);
@@ -563,7 +563,7 @@ void draw_selection(t_menu *x, t_object *view, t_rect *rect)
         egraphics_set_line_width(g, 2);
         egraphics_line_fast(g, 0., x->f_close_height, rect->width, x->f_close_height);
         
-        if(x->f_items_size > x->f_item_selected &&  x->f_items[x->f_item_selected] != gensym("(null)"))
+        if(x->f_items_size > x->f_item_selected &&  x->f_items[x->f_item_selected] != s_null)
         {
             egraphics_circle(g, rect->width - x->f_close_height * 0.5 + 1.5, x->f_close_height * (x->f_item_selected + 1.5), x->f_close_height * 0.25);
             egraphics_stroke(g);

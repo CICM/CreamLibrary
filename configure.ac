@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 ## replace the email below with authors' emails
-AC_INIT([cream], 0.3-git, musique@univ-paris8.fr,[cream],[https://github.com/CICM/CreamLibrary])
+AC_INIT([Cream], 0.3-git, musique@univ-paris8.fr,[Cream],[https://github.com/CICM/CreamLibrary])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR(config)

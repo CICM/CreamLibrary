@@ -27,6 +27,8 @@ extern "C" void libpd_loadcream(void)
 
 extern "C" void cream_setup(void)
 {
+    epd_init_symbols();
+    
     post("Cream Library by Pierre Guillot");
     post("© 2013 - 2015  CICM | Paris 8 University");
     post("Version %s (%s) for %s",creamversion, __DATE__, pdversion);
@@ -73,7 +75,7 @@ extern "C" void cream_setup(void)
     setup_c0x2emousestate();
     setup_c0x2epatchermess();
     
-    pd_library_add_folder("cream", "misc");
-    pd_library_add_folder("cream", "helps");
+    pd_library_add_folder("Cream", "misc");
+    pd_library_add_folder("Cream", "helps");
 }
 

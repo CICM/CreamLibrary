@@ -613,7 +613,7 @@ t_pd_err number_min_set(t_number *x, t_object *attr, long ac, t_atom *av)
     }
     else
     {
-        atom_setsym(&x->f_min, gensym("(null)"));
+        atom_setsym(&x->f_min, s_null);
     }
     ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
     ebox_redraw((t_ebox *)x);
@@ -638,7 +638,7 @@ t_pd_err number_max_set(t_number *x, t_object *attr, long ac, t_atom *av)
     }
     else
     {
-        atom_setsym(&x->f_max, gensym("(null)"));
+        atom_setsym(&x->f_max, s_null);
     }
 
     ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
@@ -659,8 +659,8 @@ t_pd_err number_minmax_set(t_number *x, t_object *attr, long ac, t_atom *av)
     }
     else
     {
-        atom_setsym(&x->f_min, gensym("(null)"));
-        atom_setsym(&x->f_max, gensym("(null)"));
+        atom_setsym(&x->f_min, s_null);
+        atom_setsym(&x->f_max, s_null);
     }
     
     ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
