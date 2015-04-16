@@ -1,26 +1,26 @@
-#N canvas 521 98 625 321 10;
-#X obj 86 123 delay 500;
-#X obj 86 93 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#N canvas 518 103 569 318 10;
+#X obj 57 121 delay 500;
+#X obj 57 91 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj 86 189 delay 500;
-#X obj 86 159 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#X obj 57 187 delay 500;
+#X obj 57 157 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj 214 189 delay 500;
-#X obj 214 159 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#X obj 185 187 delay 500;
+#X obj 185 157 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj 214 123 delay 500;
-#X obj 214 93 c.bang @size 17 17 @fontname Helvetica @fontweight normal
+#X obj 185 121 delay 500;
+#X obj 185 91 c.bang @size 17 17 @fontname Helvetica @fontweight normal
 @fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X text 42 52 c.bang do nothing more than vanilla bang for the moment...
+#X text 13 50 c.bang do nothing more than vanilla bang for the moment...
 ;
-#X obj 47 30 c.patcherinfos;
-#X obj 48 21 c.loadmess;
-#X obj 165 248 c.help.pub;
-#X obj 42 9 c.help.header;
+#X obj 18 28 c.patcherinfos;
+#X obj 19 19 c.loadmess;
+#X obj 136 246 c.help.pub;
+#X obj 13 7 c.help.header;
 #N canvas 388 93 722 277 what 0;
 #X msg 595 99 attrprint;
 #X text 29 -5 - Look at the properties window to edit the attributes.
@@ -59,7 +59,7 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X connect 9 0 8 0;
 #X connect 11 0 12 0;
 #X connect 12 0 8 0;
-#X restore 390 125 pd what you can do with GUI;
+#X restore 361 123 pd what you can do with GUI;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 5 0;

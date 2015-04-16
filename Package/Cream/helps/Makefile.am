@@ -10,6 +10,7 @@ dist_c.libraryhelp_DATA = \
  c.breakpoints-help.pd \
  c.colorpanel-help.pd \
  c.convolve~-help.pd \
+ c.dsp~-help.pd \
  c.freeverb~-help.pd \
  c.gain~-help.pd \
  c.incdec-help.pd \
