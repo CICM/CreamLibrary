@@ -1,38 +1,42 @@
-### Cream Library for <a title="Pure Data" href="http://msp.ucsd.edu/" target="_blank">Pure Data </a>
+## [Cream Library](http://www.mshparisnord.fr/hoalibrary/en/publications/ "Publication") for Pure Data
 
-<p>A set of  PD externals for those who like vanilla... but also want some chocolate, coffee, caramel or cinnamon.</p> <p>The Cream Library uses <a title="CICM Wrapper" href="https://github.com/CICM/CicmWrapper" target="_blank">CICM Wrapper</a> developed to facilitate the creation of signal objects and GUI and to improve user interactions.</p> <p>Copyright (C) 2013-2015 Pierre Guillot, CICM - Université Paris 8</p>
+A set of  PD externals for those who like vanilla... but also want some chocolate, coffee, caramel or cinnamon.  
+The Cream Library uses [Cream Library](https://github.com/CICM/CicmWrapper" "CICM Wrapper") developed to facilitate the creation of signal objects and GUI and to improve user interactions.
 
-##### Version :
+### Compatibilty :
 
-Alpha 0.4 for Pure Data Vanilla and Pure Data Extended on Mac Os, Windows and Linux plateforms.
+The lastest release has been tested [Pure Data Vanilla](http://msp.ucsd.edu/software.html "PD-Vanilla") (0.46.6 - 32/64 bits) & [Pure Data Extended](https://puredata.info/ "PD-Extended") (0.43.4) on Linux, Mac Os, Windows .
 
-![capture decran 2014-07-24 a 13 11 29](https://cloud.githubusercontent.com/assets/1409918/3687190/623be588-1323-11e4-9818-8b463e353e71.png)
+### Installation :  
 
-##### Compilation :
+With Pure Data Vanilla, copy the <em>Cream</em> folder in your package folder and add <em>cream</em> in the PD's statup window if you use the default package folder\*, otherwise add <em>Cream/cream</em>.  
+With Pure Data Extended, copy the <em>Cream</em> folder in your package folder and add <em>-lib externals/"system"/pd-extended/cream</em> in the statup falgs if you use the default package folder\*, otherwise add <em>-lib Cream/externals/"system"/pd-extended/cream</em> with <em>"system"</em> replaced by <em>Linux</em>, <em>MacOs</em> or <em>Windows</em>.  
 
-<p>Mac OsX : Use the XCode project (cream.xcodeproj). </p>
-<p>Windows : Use the Visual Studio project (c.library.vcxproj).</p>
-<p>Linux   : Use the Code Block project (c.library.cbp).</p>
-<p>All     : Use the makefile.</p>
+\* The default package folder are generally <em>/usr/local/lib/pd-externals</em> on Linux, <em>/Library/Pd</em>  on Mac Os and <em>C:\Program Files\Common Files\Pd</em>  on Windows.  
 
-##### Installation :
+### Documentation :
 
-<p>In the "Cream" folder, go to the "externals" folder then copy the external that matchs with your OS and your Pure Data distribution and past the external at the root of the "Cream" folder. You can also skip this part and use directly the path that match with your OS and your Pure Data distribution in the startup options.</P>
+Helps and tutorials are availables in the <em>Cream</em> folder of the <em>help browser</em>.
 
-<p>Pure Data Vanilla : Copy the "Cream" folder in your Pure Data <a title="package folder" href="http://puredata.info/docs/faq/how-do-i-install-externals-and-help-files" target="_blank">package folder</a> and add "cream" in startup options. With another folder than the default ones add "Cream/cream" in the startup options.</P>
+### Compilation : 
 
-<p>Pure Data Extended : Copy the "Cream" folder in your Pure Data <a title="package folder" href="http://puredata.info/docs/faq/how-do-i-install-externals-and-help-files" target="_blank">package folder</a> and add "-lib cream" in startup options. With another folder than the default ones add "-lib Cream/cream" in the startup options.</P>
+	./autogen.sh (if needed)
+	./configure
+	make
+	make install (optional)
 
-<p>Exemple of startup options for Pure Data Extended : "-lib Cream/cream" (if your external is at the root of the cream folder), "-lib Cream/externals/MacOs/pd-extended/cream" (if you didn't move the external from the external folder on MacOs).</p>
+XCode, CodeBlock and Visual Studio projects are also available.
 
-<p>Uninstall : Remove the "cream" folder and remove the startup options.</p>
+### Dependencies : 
 
-##### Author :
+[Cicm Wrapper](https://github.com/CICM/CicmWrapper "Cicm Wrapper").
 
-Pierre Guillot
+### Authors :
 
-##### Licence : 
+Pierre Guillot  
 
-The Cream Library in under the <a title="GNU" href="http://www.gnu.org/copyleft/gpl.html" target="_blank">GNU Public License</a>. If you'd like to avoid the restrictions of the GPL and use the Cream Library for a closed-source product, you contact the <a title="CICM" href="http://cicm.mshparisnord.org/" target="_blank">CICM</a>.
+### Licence : 
+
+The Cream Library in under the <a title="GNU" href="http://www.gnu.org/copyleft/gpl.html" target="_blank">GNU Public License</a>. If you'd like to avoid the restrictions of the GPL and use Cream Library for a closed-source product, you contact the <a title="CICM" href="http://cicm.mshparisnord.org/" target="_blank">CICM</a>.
 
 
