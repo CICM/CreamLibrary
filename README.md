@@ -1,7 +1,7 @@
 ## [Cream Library](http://www.mshparisnord.fr/hoalibrary/en/publications/ "Publication") for Pure Data
 
 A set of  PD externals for those who like vanilla... but also want some chocolate, coffee, caramel or cinnamon.  
-The Cream Library uses [Cream Library](https://github.com/CICM/CicmWrapper" "CICM Wrapper") developed to facilitate the creation of signal objects and GUI and to improve user interactions.
+The Cream Library uses the [CICM Library](https://github.com/CICM/CicmWrapper" "CICM Wrapper") developed to facilitate the creation of signal objects and GUI and to improve user interactions.
 
 ### Compatibilty :
 
