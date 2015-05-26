@@ -194,7 +194,7 @@ void slider_set(t_slider *x, float f)
     else
         x->f_value = pd_clip_minmax(f, x->f_max, x->f_min);
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -205,14 +205,14 @@ void slider_float(t_slider *x, float f)
     else
         x->f_value = pd_clip_minmax(f, x->f_max, x->f_min);
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     slider_output(x);
 }
 
 void slider_bang(t_slider *x)
 {
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     slider_output(x);
 }
@@ -236,11 +236,11 @@ void slider_assist(t_slider *x, void *b, long m, long a, char *s)
 
 t_pd_err slider_notify(t_slider *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("kncolor"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("kncolor"))
 		{
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
         ebox_redraw((t_ebox *)x);
 	}
@@ -256,7 +256,7 @@ void slider_paint(t_slider *x, t_object *view)
 
 void draw_background(t_slider *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     
 	if (g)
 	{
@@ -271,9 +271,9 @@ void draw_background(t_slider *x, t_object *view, t_rect *rect)
         {
             egraphics_line_fast(g, 0, (1. - value) * rect->height, rect->width, (1. - value) * rect->height);
         }
-        ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
 void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -317,7 +317,7 @@ void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long modifier
             else
                 x->f_value = pd_clip_minmax(pt.y / x->j_box.b_rect.height * ratio + x->f_max, x->f_max, x->f_min);
         }
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
         slider_output(x);
     }
@@ -375,7 +375,7 @@ void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long modifier
         }
     }
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     slider_output(x);
 }

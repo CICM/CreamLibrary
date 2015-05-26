@@ -277,15 +277,15 @@ void meter_assist(t_meter *x, void *b, long m, long a, char *s)
 
 t_pd_err meter_notify(t_meter *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor)
 		{
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
 		else if( s == gensym("coldcolor") || s == gensym("tepidcolor") || s == gensym("warmcolor") || s == gensym("hotcolor") || s == gensym("overcolor"))
 		{
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, gensym("leds_layer"));
 		}
 		ebox_redraw((t_ebox *)x);
@@ -304,7 +304,7 @@ void meter_paint(t_meter *x, t_object *view)
 void draw_background(t_meter *x,  t_object *view, t_rect *rect)
 {
 	int i;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
  
 	if (g)
 	{
@@ -327,9 +327,9 @@ void draw_background(t_meter *x,  t_object *view, t_rect *rect)
                 egraphics_stroke(g);
             }
         }
-		ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0.f, 0.f);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0.f, 0.f);
 }
 
 

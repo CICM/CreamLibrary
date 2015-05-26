@@ -90,7 +90,7 @@ static void dsp_tilde_assist(t_dsp_tilde *x, void *b, long m, long a, char *s)
 
 static void draw_background(t_dsp_tilde *x,  t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
  
 	if (g)
 	{
@@ -113,9 +113,9 @@ static void draw_background(t_dsp_tilde *x,  t_object *view, t_rect *rect)
         egraphics_arc(g, round(rect->width * 0.5f - 0.5f), round(rect->width * 0.5f - 0.5f), round(rect->width * 0.35f - 0.5f), EPD_PI, EPD_2PI);
         egraphics_stroke(g);
         
-		ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0.f, 0.f);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0.f, 0.f);
 }
 
 static void dsp_tilde_paint(t_dsp_tilde *x, t_object *view)
@@ -136,7 +136,7 @@ static void dsp_tilde_anything(t_dsp_tilde *x, t_symbol* s, long argc, t_atom* a
     if(s == gensym("dsp") && argc && atom_gettype(argv) == A_FLOAT)
     {
         x->f_state = atom_getfloat(argv);
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -150,7 +150,7 @@ static void dsp_tilde_start(t_dsp_tilde *x)
 {
     canvas_resume_dsp(1);
     x->f_state = 1;
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -159,7 +159,7 @@ static void dsp_tilde_stop(t_dsp_tilde *x)
 {
     canvas_suspend_dsp();
     x->f_state = 0;
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 

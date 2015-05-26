@@ -246,7 +246,7 @@ void menu_append(t_menu *x, t_symbol *s, int argc, t_atom *argv)
         
         ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
         
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -270,7 +270,7 @@ void menu_insert(t_menu *x, t_symbol *s, int argc, t_atom *argv)
         
         ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
         
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -285,7 +285,7 @@ void menu_setitem(t_menu *x, t_symbol *s, int argc, t_atom *argv)
         
         ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
         
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -305,7 +305,7 @@ void menu_delete(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             
             ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
             
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -321,7 +321,7 @@ void menu_clear(t_menu *x, t_symbol *s, int argc, t_atom *argv)
     x->f_items_size = 0;
     ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -338,7 +338,7 @@ void menu_state(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             
             ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
             
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -369,7 +369,7 @@ void menu_setfloat(t_menu *x, t_floatarg f)
         x->f_item_selected = f;
         ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
         
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -381,7 +381,7 @@ void menu_setsymbol(t_menu *x, t_symbol* s)
         x->f_item_selected = i;
     ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -449,12 +449,12 @@ void menu_oksize(t_menu *x, t_rect *newrect)
 
 t_pd_err menu_notify(t_menu *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("textcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant") || s == gensym("states"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("textcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant") || s == gensym("states"))
 		{
             ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
         if(s == gensym("fontsize") || s == gensym("items"))
         {
@@ -482,7 +482,7 @@ void menu_paint(t_menu *x, t_object *view)
 void draw_background(t_menu *x, t_object *view, t_rect *rect)
 {
     float width;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     t_etext *jtl = etext_layout_create();
 	if(g && jtl)
 	{
@@ -521,10 +521,10 @@ void draw_background(t_menu *x, t_object *view, t_rect *rect)
         egraphics_line_to(g, width + x->f_close_height * 0.5 + 1, x->f_close_height * 0.9);
         egraphics_fill(g);
         
-		ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
     etext_layout_destroy(jtl);
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"),  0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer,  0., 0.);
 }
 
 void draw_selection(t_menu *x, t_object *view, t_rect *rect)

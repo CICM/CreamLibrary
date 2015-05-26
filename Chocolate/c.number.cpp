@@ -255,11 +255,11 @@ void number_assist(t_number *x, void *b, long m, long a, char *s)
 
 t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("textcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("textcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
 		{
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
 		}
         if(s == gensym("fontsize") || s == gensym("fontname"))
@@ -302,7 +302,7 @@ void number_paint(t_number *x, t_object *view)
 void draw_background(t_number *x, t_object *view, t_rect *rect)
 {
     float width;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
 	t_etext *jtl = etext_layout_create();
 
 #ifdef __APPLE__
@@ -331,9 +331,9 @@ void draw_background(t_number *x, t_object *view, t_rect *rect)
         egraphics_line_to(g, width,  rect->height );
         egraphics_stroke(g);
 
-		ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
     etext_layout_destroy(jtl);
 }
 

@@ -222,7 +222,7 @@ void matrixctrl_clear(t_matrixctrl *x)
            }
         }
     }
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -274,7 +274,7 @@ void matrixctrl_set(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av)
             }
         }
         
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -298,7 +298,7 @@ void matrixctrl_list(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av)
             }
         }
         
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -329,7 +329,7 @@ void matrixctrl_assist(t_matrixctrl *x, void *b, long m, long a, char *s)
 
 t_pd_err matrixctrl_notify(t_matrixctrl *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
         ebox_redraw((t_ebox *)x);
 	}
@@ -345,7 +345,7 @@ void matrixctrl_paint(t_matrixctrl *x, t_object *view)
 
 void draw_background(t_matrixctrl *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     int i, j, incx, incY;
     int block_width = rect->width / x->f_size.x;
     int block_height = rect->height / x->f_size.y;
@@ -367,9 +367,9 @@ void draw_background(t_matrixctrl *x, t_object *view, t_rect *rect)
             }
         }
         
-        ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0, 0);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0, 0);
 }
 
 void matrixctrl_mousedown(t_matrixctrl *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -379,7 +379,7 @@ void matrixctrl_mousedown(t_matrixctrl *x, t_object *patcherview, t_pt pt, long 
     if(x->f_selected.x >= 0 && x->f_selected.x < x->f_size.x && x->f_selected.y >= 0 && x->f_selected.y < x->f_size.y)
     {
         x->f_values[(long)x->f_selected.y * (long)x->f_size.x + (long)x->f_selected.x] = !x->f_values[(long)x->f_selected.y * (long)x->f_size.x + (long)x->f_selected.x];
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
         matrixctrl_output(x, x->f_selected.x, x->f_selected.y);
     }
@@ -397,7 +397,7 @@ void matrixctrl_mousedrag(t_matrixctrl *x, t_object *patcherview, t_pt pt, long 
         if(x->f_selected.x >= 0 && x->f_selected.x < x->f_size.x && x->f_selected.y >= 0 && x->f_selected.y < x->f_size.y)
         {
             x->f_values[(long)x->f_selected.y * (long)x->f_size.x + (long)x->f_selected.x] = !x->f_values[(long)x->f_selected.y * (long)x->f_size.x + (long)x->f_selected.x];
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
             matrixctrl_output(x, x->f_selected.x, x->f_selected.y);
         }
@@ -442,7 +442,7 @@ t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, long ac, t_atom 
         x->f_size.y = (int)pd_clip_min(atom_getfloat(av+1), 1);
         x->f_values = (char *)malloc(x->f_size.x * x->f_size.y * sizeof(char));
         memset(x->f_values, 0, x->f_size.x * x->f_size.y * sizeof(char));
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
     return 0;

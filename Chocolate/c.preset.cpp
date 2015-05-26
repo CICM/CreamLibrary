@@ -272,7 +272,7 @@ void preset_float(t_preset *x, float f)
                 mpreset = NULL;
             }
             
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -431,7 +431,7 @@ void preset_interpolate(t_preset *x, float f)
         mpreset = NULL;
     }
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -448,7 +448,7 @@ void preset_clear(t_preset *x, float f)
     }
     binbuf_clear(x->f_binbuf[index-1]);
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -459,7 +459,7 @@ void preset_clearall(t_preset *x)
         binbuf_clear(x->f_binbuf[i]);
 
     x->f_binbuf_selected = 0;
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -484,11 +484,11 @@ void preset_assist(t_preset *x, void *b, long m, long a, char *s)
 
 t_pd_err preset_notify(t_preset *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("btcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("btcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
 		{
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
         ebox_redraw((t_ebox *)x);
 	}
@@ -519,7 +519,7 @@ void draw_background(t_preset *x, t_object *view, t_rect *rect)
 	int i, xc, yc;
     char number[256];
     t_rgba color;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     t_etext *jtl = etext_layout_create();
 
 	if (g && jtl)
@@ -558,9 +558,9 @@ void draw_background(t_preset *x, t_object *view, t_rect *rect)
             i++;
         }
 
-        ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
 void preset_mousemove(t_preset *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -571,7 +571,7 @@ void preset_mousemove(t_preset *x, t_object *patcherview, t_pt pt, long modifier
     index = (int)((pt.y) / (x->f_point_size * 2.5)) * n_row_button;
     index += pd_clip_max((pt.x) / (x->f_point_size * 2.5) + 1, n_row_button);
     x->f_binbuf_hover = index;
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -594,7 +594,7 @@ void preset_mousedown(t_preset *x, t_object *patcherview, t_pt pt, long modifier
 void preset_mouseleave(t_preset *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_binbuf_hover = 0;
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -670,7 +670,7 @@ void preset_read(t_preset *x, t_symbol *s, long argc, t_atom *argv)
         else
         {
             preset_init(x, d);
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
             post("preset : read %s.", atom_getsym(argv)->s_name);
         }

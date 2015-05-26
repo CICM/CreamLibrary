@@ -301,11 +301,11 @@ void rslider_assist(t_rslider *x, void *b, long m, long a, char *s)
 
 t_pd_err rslider_notify(t_rslider *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("kncolor"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("kncolor"))
 		{
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_invalidate_layer((t_ebox *)x, gensym("knob_layer"));
 		}
         ebox_redraw((t_ebox *)x);
@@ -323,7 +323,7 @@ void rslider_paint(t_rslider *x, t_object *view)
 
 void draw_background(t_rslider *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     
 	if (g)
 	{
@@ -338,9 +338,9 @@ void draw_background(t_rslider *x, t_object *view, t_rect *rect)
             egraphics_line_fast(g, rect->width * 0.5, -2, rect->width * 0.5, rect->height  + 4);
         }
         egraphics_stroke(g);
-        ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
 void draw_knob(t_rslider *x, t_object *view, t_rect *rect)

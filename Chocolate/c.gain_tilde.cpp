@@ -292,12 +292,12 @@ void gain_perform(t_gain *x, t_object *d, t_sample **ins, long ni, t_sample **ou
 
 t_pd_err gain_notify(t_gain *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("kncolor"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("kncolor"))
 		{
             ebox_invalidate_layer((t_ebox *)x, gensym("knob_layer"));
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
         ebox_redraw((t_ebox *)x);
 	}
@@ -315,7 +315,7 @@ void gain_paint(t_gain *x, t_object *view)
 void draw_background(t_gain *x, t_object *view, t_rect *rect)
 {
     float ratio;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     
 	if (g)
 	{
@@ -348,9 +348,9 @@ void draw_background(t_gain *x, t_object *view, t_rect *rect)
             egraphics_line_fast(g, rect->width * 0.5, pd_clip_min(rect->width * 0.1, 2), rect->width * 0.5, rect->height -pd_clip_min(rect->width * 0.1, 2));
             
         }
-        ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
 void draw_knob(t_gain *x, t_object *view, t_rect *rect)

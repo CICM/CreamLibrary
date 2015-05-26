@@ -52,10 +52,6 @@ typedef struct  _tab
 
 t_eclass *tab_class;
 
-void *tab_new(t_symbol *s, int argc, t_atom *argv);
-void tab_free(t_tab *x);
-void tab_assist(t_tab *x, void *b, long m, long a, char *s);
-
 t_pd_err tab_notify(t_tab *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
 
 void tab_append(t_tab *x, t_symbol *s, int argc, t_atom *argv);
@@ -85,16 +81,39 @@ void tab_mousemove(t_tab *x, t_object *patcherview, t_pt pt, long modifiers);
 
 void tab_preset(t_tab *x, t_binbuf *b);
 
+static void *tab_new(t_symbol *s, int argc, t_atom *argv)
+{
+    t_tab *x = (t_tab *)eobj_new(tab_class);
+    t_binbuf* d = binbuf_via_atoms(argc,argv);
+    
+    if(x && d)
+    {
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
+        
+        x->f_out_index  = floatout(x);
+        x->f_out_item   = listout(x);
+        x->f_out_hover  = floatout(x);
+        
+        x->f_item_selected = -1;
+        x->f_item_hover    = -1;
+        x->f_items_size = 0;
+        x->j_box.b_rect.width = 100;
+        ebox_attrprocess_viabinbuf(x, d);
+        ebox_ready((t_ebox *)x);
+    }
+    
+    return (x);
+}
+
 extern "C" void setup_c0x2etab(void)
 {
 	t_eclass *c;
 
-	c = eclass_new("c.tab", (method)tab_new, (method)tab_free, (short)sizeof(t_tab), 0L, A_GIMME, 0);
+	c = eclass_new("c.tab", (method)tab_new, (method)ebox_free, (short)sizeof(t_tab), 0L, A_GIMME, 0);
 
     eclass_init(c, 0);
     cream_initclass(c);
 
-	eclass_addmethod(c, (method) tab_assist,          "assist",           A_NULL, 0);
 	eclass_addmethod(c, (method) tab_paint,           "paint",            A_NULL, 0);
 	eclass_addmethod(c, (method) tab_notify,          "notify",           A_NULL, 0);
     eclass_addmethod(c, (method) tab_getdrawparams,   "getdrawparams",    A_NULL, 0);
@@ -172,47 +191,6 @@ extern "C" void setup_c0x2etab(void)
 	tab_class = c;
 }
 
-void *tab_new(t_symbol *s, int argc, t_atom *argv)
-{
-	t_tab *x =  NULL;
-	t_binbuf* d;
-    long flags;
-
-	if (!(d = binbuf_via_atoms(argc,argv)))
-		return NULL;
-
-	x = (t_tab *)eobj_new(tab_class);
-
-    flags = 0
-    | EBOX_GROWINDI
-    ;
-
-	ebox_new((t_ebox *)x, flags);
-
-    x->f_out_index  = floatout(x);
-    x->f_out_item   = listout(x);
-    x->f_out_hover  = floatout(x);
-
-    x->f_item_selected = -1;
-    x->f_item_hover    = -1;
-    x->f_items_size = 0;
-    x->j_box.b_rect.width = 100;
-	ebox_attrprocess_viabinbuf(x, d);
-	ebox_ready((t_ebox *)x);
-
-	return (x);
-}
-
-void tab_free(t_tab *x)
-{
-	ebox_free((t_ebox *)x);
-}
-
-void tab_assist(t_tab *x, void *b, long m, long a, char *s)
-{
-	;
-}
-
 // MENU GESTION //
 
 void tab_sizemustchange(t_tab *x)
@@ -225,9 +203,9 @@ void tab_sizemustchange(t_tab *x)
             object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
         else
         {
-            ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
-            ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -237,9 +215,9 @@ void tab_sizemustchange(t_tab *x)
             object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
         else
         {
-            ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
-            ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -316,9 +294,9 @@ void tab_setitem(t_tab *x, t_symbol *s, int argc, t_atom *argv)
         if(atom_getfloat(argv) >= 0 && atom_getfloat(argv) < x->f_items_size)
             x->f_items[atom_getint(argv)] = item;
 
-        ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-        ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -375,9 +353,9 @@ void tab_setfloat(t_tab *x, t_floatarg f)
     if(f >= 0 && f < x->f_items_size)
     {
         x->f_item_selected = f;
-        ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-        ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -390,9 +368,9 @@ void tab_setsymbol(t_tab *x, t_symbol* s)
     i = tab_symbol_exist(x, s);
     if(i != -1)
         x->f_item_selected = i;
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -419,9 +397,9 @@ void tab_symbol(t_tab *x, t_symbol *s, long argc, t_atom *argv)
     {
         if(i != -1)
             x->f_item_selected = i;
-        ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-        ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
         tab_output(x);
     }
@@ -483,13 +461,13 @@ void tab_oksize(t_tab *x, t_rect *newrect)
 
 t_pd_err tab_notify(t_tab *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("textcolor") || s == gensym("orientation") || s == gensym("hocolor") || s == gensym("secolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("textcolor") || s == gensym("orientation") || s == gensym("hocolor") || s == gensym("secolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
 		{
-            ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-            ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
         if(s == gensym("fontsize") || s == gensym("orientation") || s == gensym("items"))
         {
@@ -514,7 +492,7 @@ void tab_paint(t_tab *x, t_object *view)
 void draw_selection(t_tab *x, t_object *view, t_rect *rect)
 {
     float ratio;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("selection_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_selection_layer, rect->width, rect->height);
     t_etext *jtl = etext_layout_create();
 	if(g && jtl)
 	{
@@ -543,17 +521,17 @@ void draw_selection(t_tab *x, t_object *view, t_rect *rect)
                 egraphics_rectangle(g, ratio * x->f_item_selected - 1, -2, ratio+2, rect->height+4);
             egraphics_fill(g);
         }
-		ebox_end_layer((t_ebox*)x, gensym("selection_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_selection_layer);
 	}
     etext_layout_destroy(jtl);
-	ebox_paint_layer((t_ebox *)x, gensym("selection_layer"),  0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_selection_layer,  0., 0.);
 }
 
 void draw_background(t_tab *x, t_object *view, t_rect *rect)
 {
     int i;
     float ratio;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     t_etext *jtl = etext_layout_create();
 	if(g && jtl)
 	{
@@ -571,17 +549,17 @@ void draw_background(t_tab *x, t_object *view, t_rect *rect)
             else
                 egraphics_line_fast(g, ratio * i, -2, ratio * i, rect->height + 4);
         }
-		ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
     etext_layout_destroy(jtl);
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"),  0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer,  0., 0.);
 }
 
 void draw_text(t_tab *x, t_object *view, t_rect *rect)
 {
     int i;
     float ratio;
-    t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("text_layer"), rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_text_layer, rect->width, rect->height);
     t_etext *jtl = etext_layout_create();
 	if (g && jtl)
 	{
@@ -615,9 +593,9 @@ void draw_text(t_tab *x, t_object *view, t_rect *rect)
             }
         }
 
-        ebox_end_layer((t_ebox*)x, gensym("text_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_text_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("text_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
 }
 
 void tab_mousedown(t_tab *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -632,9 +610,9 @@ void tab_mousedown(t_tab *x, t_object *patcherview, t_pt pt, long modifiers)
         index = (pt.x) / (x->j_box.b_rect.width / (float)x->f_items_size);
     }
     x->f_item_selected = pd_clip_minmax(index, 0, x->f_items_size-1);
-    ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     tab_output(x);
 }
@@ -644,9 +622,9 @@ void tab_mouseup(t_tab *x, t_object *patcherview, t_pt pt, long modifiers)
     if(!x->f_toggle)
     {
         x->f_item_selected = -1;
-        ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-        ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-        ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -654,9 +632,9 @@ void tab_mouseup(t_tab *x, t_object *patcherview, t_pt pt, long modifiers)
 void tab_mouseleave(t_tab *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_item_hover = -1;
-    ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     outlet_float(x->f_out_hover, x->f_item_hover);
 }
@@ -673,16 +651,16 @@ void tab_mousemove(t_tab *x, t_object *patcherview, t_pt pt, long modifiers)
         index = (pt.x) / (x->j_box.b_rect.width / (float)x->f_items_size);
     }
     x->f_item_hover = pd_clip_minmax(index, 0, x->f_items_size-1);
-    ebox_invalidate_layer((t_ebox *)x, gensym("selection_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     outlet_float(x->f_out_hover, x->f_item_hover);
 }
 
 void tab_preset(t_tab *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sf", gensym("float"), (float)x->f_item_selected);
+    binbuf_addv(b, "sf", &s_float, (float)x->f_item_selected);
 }
 
 

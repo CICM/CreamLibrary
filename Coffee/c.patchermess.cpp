@@ -138,7 +138,7 @@ void doselect(t_canvas *canvas, int pos_x, int pos_y, int pos_w, int pos_h)
 void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv)
 {
     t_canvas *canvas = eobj_getcanvas(x);
-    if(argc && argv && canvas && glist_isvisible(canvas))
+    if(argc && argv && canvas)
     {
         if(s == pm_sym_select && canvas->gl_editor && argc > 3 && atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_FLOAT && atom_gettype(argv+3) == A_FLOAT)
         {

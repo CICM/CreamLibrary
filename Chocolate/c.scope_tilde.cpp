@@ -238,9 +238,9 @@ void scope_assist(t_scope *x, void *b, long m, long a, char *s)
 t_pd_err scope_notify(t_scope *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
     int max;
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("sicolor") || s == gensym("range") || s == gensym("xymode"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("sicolor") || s == gensym("range") || s == gensym("xymode"))
 		{
             if(x->f_range[0] > x->f_range[1])
             {
@@ -248,7 +248,7 @@ t_pd_err scope_notify(t_scope *x, t_symbol *s, t_symbol *msg, void *sender, void
                 x->f_range[0] = x->f_range[1];
                 x->f_range[1] = max;
             }
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, gensym("signal_layer"));
 		}
 		ebox_redraw((t_ebox *)x);
@@ -270,7 +270,7 @@ void scope_paint(t_scope *x, t_object *view)
 void draw_background(t_scope *x,  t_object *view, t_rect *rect)
 {
 	int i;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
 
 	if (g)
 	{
@@ -283,9 +283,9 @@ void draw_background(t_scope *x,  t_object *view, t_rect *rect)
         {
             egraphics_line_fast(g, rect->width * (1. / 6.) * (float)i, -2, rect->width * (1. / 6.) * (float)i, rect->height + 4);
         }
-		ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0.f, 0.f);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0.f, 0.f);
 }
 
 

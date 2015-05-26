@@ -62,4 +62,15 @@ extern "C" void setup_c0x2epatchermess(void);
 extern "C" void setup_c0x2eprepend(void);
 extern "C" void setup_c0x2emousestate(void);
 
+static t_symbol* cream_sym_attr_modified        = gensym("attr_modified");
+
+static t_symbol* cream_sym_background_layer     = gensym("background_layer");
+static t_symbol* cream_sym_text_layer           = gensym("text_layer");
+static t_symbol* cream_sym_selection_layer      = gensym("selection_layer");
+
+static t_symbol* cream_sym_bacolor              = gensym("bacolor");
+static t_symbol* cream_sym_bgcolor              = gensym("bgcolor");
+static t_symbol* cream_sym_bdcolor 				= gensym("bdcolor");
+static t_symbol* cream_sym_crcolor 				= gensym("crcolor");
+
 #endif

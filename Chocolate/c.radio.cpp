@@ -291,11 +291,11 @@ void radio_assist(t_radio *x, void *b, long m, long a, char *s)
 
 t_pd_err radio_notify(t_radio *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("itcolor"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("itcolor"))
 		{
-			ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_invalidate_layer((t_ebox *)x, gensym("items_layer"));
 		}
         
@@ -315,7 +315,7 @@ void radio_paint(t_radio *x, t_object *view)
 void draw_background(t_radio *x, t_object *view, t_rect *rect)
 {
 	int i;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     
 	if (g)
 	{
@@ -369,9 +369,9 @@ void draw_background(t_radio *x, t_object *view, t_rect *rect)
             }
         }
         
-        ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
 void draw_items(t_radio *x, t_object *view, t_rect *rect)
@@ -512,7 +512,7 @@ t_pd_err radio_nitems_set(t_radio *x, t_object *attr, long ac, t_atom *av)
             for(i = 0; i < x->f_nitems; i++)
                 x->f_items[i] = 0;
             
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_invalidate_layer((t_ebox *)x, gensym("items_layer"));
             atom_setfloat(argv, x->j_box.b_rect.width);
             atom_setfloat(argv+1, x->j_box.b_rect.height);
@@ -532,7 +532,7 @@ t_pd_err radio_mode_set(t_radio *x, t_object *attr, long ac, t_atom *av)
             x->f_mode = pd_clip_minmax(atom_getfloat(av), 0, 1);
             for(i = 0; i < x->f_nitems; i++)
                 x->f_items[i] = 0;
-            ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_invalidate_layer((t_ebox *)x, gensym("items_layer"));
             ebox_redraw((t_ebox *)x);
         }

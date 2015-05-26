@@ -200,37 +200,36 @@ extern "C" void setup_c0x2ebreakpoints(void)
 
 void *breakpoints_new(t_symbol *s, int argc, t_atom *argv)
 {
-	t_breakpoints *x =  NULL;
-	t_binbuf* d;
-    long flags;
-	if (!(d = binbuf_via_atoms(argc,argv)))
-		return NULL;
-
-	x = (t_breakpoints *)eobj_new(breakpoints_class);
-    x->f_outline_mode = 0;
-    flags = 0
-    | EBOX_GROWINDI
-    ;
-	ebox_new((t_ebox *)x, flags);
-
-    x->f_out_float = (t_outlet *)floatout(x);
-    x->f_out_list = (t_outlet *)listout(x);
-    x->f_out_function = (t_outlet *)listout(x);
-
-    x->f_number_of_points = 0;
-    x->f_point_hover    = -1;
-    x->f_point_selected = -1;
-    x->f_output_inc     = -1;
-    x->f_output_nextprev = 0;
-    x->f_point_last_created = -1;
-    x->f_mouse.x = -666666;
-    x->f_mouse.y = -666666;
+    t_binbuf* d = binbuf_via_atoms(argc,argv);
+	t_breakpoints *x = (t_breakpoints *)eobj_new(breakpoints_class);
+    if(x && d)
+    {
+        x->f_outline_mode = 0;
+        long flags = 0
+        | EBOX_GROWINDI
+        ;
+        ebox_new((t_ebox *)x, flags);
+        
+        x->f_out_float = (t_outlet *)floatout(x);
+        x->f_out_list = (t_outlet *)listout(x);
+        x->f_out_function = (t_outlet *)listout(x);
+        
+        x->f_number_of_points = 0;
+        x->f_point_hover    = -1;
+        x->f_point_selected = -1;
+        x->f_output_inc     = -1;
+        x->f_output_nextprev = 0;
+        x->f_point_last_created = -1;
+        x->f_mouse.x = -666666;
+        x->f_mouse.y = -666666;
+        
+        x->f_clock = clock_new(x, (t_method)breakpoints_inc);
+        
+        ebox_attrprocess_viabinbuf(x, d);
+        breakpoints_init(x, d);
+        ebox_ready((t_ebox *)x);
+    }
     
-    x->f_clock = clock_new(x, (t_method)breakpoints_inc);
-
-    ebox_attrprocess_viabinbuf(x, d);
-    breakpoints_init(x, d);
-	ebox_ready((t_ebox *)x);
     return (x);
 }
 
@@ -607,12 +606,12 @@ t_pd_err breakpoints_notify(t_breakpoints *x, t_symbol *s, t_symbol *msg, void *
 {
     int i, j;
     float max;
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
-		if(s == gensym("bgcolor") || s == gensym("bdcolor") || s == gensym("ptcolor") || s == gensym("licolor") || s == gensym("textcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("ptcolor") || s == gensym("licolor") || s == gensym("textcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
 		{
 			ebox_invalidate_layer((t_ebox *)x, gensym("points_layer"));
-            ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
 		}
         if(s == gensym("absrange") || s == gensym("ordrange"))
         {
@@ -680,7 +679,7 @@ void breakpoints_paint(t_breakpoints *x, t_object *view)
 void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
 {
     char number[512];
-    t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("text_layer"), rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_text_layer, rect->width, rect->height);
     t_etext *jtl = etext_layout_create();
 	if(g && jtl)
 	{
@@ -697,21 +696,21 @@ void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
         }
         else
         {
-            ebox_end_layer((t_ebox*)x, gensym("text_layer"));
-            ebox_paint_layer((t_ebox *)x, gensym("text_layer"), 0., 0.);
+            ebox_end_layer((t_ebox*)x, cream_sym_text_layer);
+            ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
             return;
         }
         etext_layout_set(jtl, number, &x->j_box.b_font, 5, height * 0.5, rect->width, 0, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
         etext_layout_settextcolor(jtl, &x->f_color_text);
         etext_layout_draw(jtl, g);
 
-        ebox_end_layer((t_ebox*)x, gensym("text_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_text_layer);
 	}
     if(jtl)
     {
        etext_layout_destroy(jtl);
     }
-	ebox_paint_layer((t_ebox *)x, gensym("text_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
 }
 
 void draw_points(t_breakpoints *x, t_object *view, t_rect *rect)
@@ -820,7 +819,7 @@ void breakpoints_mousemove(t_breakpoints *x, t_object *patcherview, t_pt pt, lon
         }
     }
     ebox_invalidate_layer((t_ebox *)x, gensym("points_layer"));
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -842,7 +841,7 @@ void breakpoints_mousedown(t_breakpoints *x, t_object *patcherview, t_pt pt, lon
     x->f_mouse.x = abs;
     x->f_mouse.y = ord;
 
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
     if(modifiers == EMOD_SHIFT)
     {
         atom_setfloat(av, abs);
@@ -886,7 +885,7 @@ void breakpoints_mousedrag(t_breakpoints *x, t_object *patcherview, t_pt pt, lon
 
     x->f_mouse.x = abs;
     x->f_mouse.y = ord;
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
     if(x->f_point_selected != -1)
     {
         atom_setfloat(av, x->f_point_selected);
@@ -904,7 +903,7 @@ void breakpoints_mouseleave(t_breakpoints *x, t_object *patcherview, t_pt pt, lo
     x->f_mouse.x = -666666;
     x->f_mouse.y = -666666;
 
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
     ebox_invalidate_layer((t_ebox *)x, gensym("points_layer"));
     ebox_redraw((t_ebox *)x);
 }
@@ -921,7 +920,7 @@ void breakpoints_mouseup(t_breakpoints *x, t_object *patcherview, t_pt pt, long 
     x->f_mouse.y = ord;
     x->f_point_selected    = -1;
 
-    ebox_invalidate_layer((t_ebox *)x, gensym("text_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
     ebox_invalidate_layer((t_ebox *)x, gensym("points_layer"));
     ebox_redraw((t_ebox *)x);
 }

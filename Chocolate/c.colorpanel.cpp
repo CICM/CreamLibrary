@@ -310,7 +310,7 @@ void colorpanel_assist(t_colorpanel *x, void *b, long m, long a, char *s)
 
 t_pd_err colorpanel_notify(t_colorpanel *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == gensym("attr_modified"))
+	if (msg == cream_sym_attr_modified)
 	{
         ebox_redraw((t_ebox *)x);
 	}
@@ -328,7 +328,7 @@ void colorpanel_paint(t_colorpanel *x, t_object *view)
 
 void draw_background(t_colorpanel *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("background_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     int i, j, incx, incY;
     int block_width = rect->width / (float)x->f_matrix_sizes.x;
     int block_height = rect->height / (float)x->f_matrix_sizes.y;
@@ -344,9 +344,9 @@ void draw_background(t_colorpanel *x, t_object *view, t_rect *rect)
             }
         }
         
-        ebox_end_layer((t_ebox*)x, gensym("background_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("background_layer"), 0, 0);
+	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0, 0);
 }
 
 void draw_picked(t_colorpanel *x, t_object *view, t_rect *rect)
@@ -469,7 +469,7 @@ void colorpanel_computecolors(t_colorpanel *x)
         }
     }
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("background_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_invalidate_layer((t_ebox *)x, gensym("hover_layer"));
     ebox_invalidate_layer((t_ebox *)x, gensym("picked_layer"));
     ebox_redraw((t_ebox *)x);
