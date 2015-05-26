@@ -242,7 +242,7 @@ void preset_float(t_preset *x, float f)
     if(cnv && !cnv->gl_loading)
     {
         x->f_binbuf_selected = pd_clip_minmax(f, 1, MAXBINBUF) - 1;
-        t_binbuf* b = x->f_binbuf[x->f_binbuf_selected-1];
+        t_binbuf* b = x->f_binbuf[x->f_binbuf_selected];
         if(b && binbuf_getnatom(b) && binbuf_getvec(b))
         {
             t_gobj *y = eobj_getcanvas(x)->gl_list;
@@ -311,7 +311,7 @@ void preset_interpolate(t_preset *x, float f)
         return;
     }
 
-    x->f_binbuf_selected = indexup;
+    x->f_binbuf_selected = indexdo;
 
     // Look for all the objects in a canvas //
     for (y = eobj_getcanvas(x)->gl_list; y; y = y->g_next)
@@ -524,9 +524,9 @@ void draw_background(t_preset *x, t_object *view, t_rect *rect)
 
 	if (g && jtl)
 	{
-        for (xc = x->f_point_size * 1.25, yc = x->f_point_size * 1.25, i = 1;  yc + x->f_point_size / 2. < rect->height; )
+        for(xc = x->f_point_size * 1.25, yc = x->f_point_size * 1.25, i = 1;  yc + x->f_point_size / 2. < rect->height; )
         {
-            if(x->f_binbuf_selected == i)
+            if(x->f_binbuf_selected == i-1 && binbuf_getnatom(x->f_binbuf[i-1]))
                 color = rgba_addContrast(x->f_color_button_selected, 0.1);
             else if(!binbuf_getnatom(x->f_binbuf[i-1]))
                 color = rgba_addContrast(x->f_color_button_empty, 0.1);
