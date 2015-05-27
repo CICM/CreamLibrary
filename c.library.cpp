@@ -79,3 +79,7 @@ extern "C" void cream_setup(void)
     pd_library_add_folder("Cream", "helps");
 }
 
+extern "C" void Cream_setup(void)
+{
+	cream_setup();
+}

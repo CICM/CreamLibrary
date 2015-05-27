@@ -1,21 +1,21 @@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I m4
 
-pkglib_LTLIBRARIES = cream.la
+pkglib_LTLIBRARIES = Cream.la
 
-cream_la_CXXFLAGS = @PD_CPPFLAGS@ -s -O2 -fPIC -fpermissive 
-cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
-cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la Cinnamon/libCinnamon.la
-cream_la_LIBADD += ThirdParty/PureData/Sources/libCicmWrapper.la
+Cream_la_CXXFLAGS = @PD_CPPFLAGS@ -s -O2 -fPIC -fpermissive 
+Cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
+Cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la Cinnamon/libCinnamon.la
+Cream_la_LIBADD += ThirdParty/PureData/Sources/libCicmWrapper.la
 
-cream_la_SOURCES = c.library.h \
+Cream_la_SOURCES = c.library.h \
  c.library.cpp
 
 ALL_CFLAGS = -I"$(PD_INCLUDE)"
 
-creamdir=$(pkglibdir)
+Creamdir=$(pkglibdir)
 
-dist_cream_DATA = \
+dist_Cream_DATA = \
 	cream-meta.pd \
 	LICENSE.txt \
 	README.txt
