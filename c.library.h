@@ -72,5 +72,20 @@ static t_symbol* cream_sym_bacolor              = gensym("bacolor");
 static t_symbol* cream_sym_bgcolor              = gensym("bgcolor");
 static t_symbol* cream_sym_bdcolor 				= gensym("bdcolor");
 static t_symbol* cream_sym_crcolor 				= gensym("crcolor");
+static t_symbol* cream_sym_btcolor              = gensym("btcolor");
+
+static t_symbol* cream_sym_fontsize             = gensym("fontsize");
+static t_symbol* cream_sym_fontname             = gensym("fontname");
+static t_symbol* cream_sym_fontweight           = gensym("fontweight");
+static t_symbol* cream_sym_fontslant            = gensym("fontslant");
+
+static t_symbol* cream_sym_preset               = gensym("preset");
+static t_symbol* cream_sym_atpreset             = gensym("@preset");
+static t_symbol* cream_sym_atindex              = gensym("@index");
+static t_symbol* cream_sym_interpolate          = gensym("interpolate");
+
+static t_symbol* cream_sym_nothing              = gensym("''");
+static t_symbol* cream_sym_left_bracket         = gensym("[");
+static t_symbol* cream_sym_right_bracket        = gensym("]");
 
 #endif
