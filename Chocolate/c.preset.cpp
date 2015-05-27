@@ -46,37 +46,26 @@ typedef struct _preset
 
 t_eclass *preset_class;
 
-void preset_store(t_preset *x, float f);
-void preset_float(t_preset *x, float f);
 void preset_interpolate(t_preset *x, float f);
-void preset_clear(t_preset *x, float f);
-void preset_clearall(t_preset *x);
-void preset_inc(t_preset *x);
-void preset_dec(t_preset *x);
-void preset_save(t_preset *x, t_binbuf *d);
-void preset_init(t_preset *x, t_binbuf *d);
 
-void preset_store(t_preset *x, float f)
+static void preset_store(t_preset *x, float f)
 {
-    t_binbuf *b;
-    char id[MAXPDSTRING];
-    t_gobj *y = NULL;
-    t_ebox *z = NULL;
-    t_gotfn mpreset = NULL;
-    t_atom av[2];
-
-    int index = (int)(f - 1);
-
-    if(index >= 0 && index < _preset::maxbinbufs)
+    int index = (int)f;
+    if(index > 1 && index < _preset::maxbinbufs)
     {
-        b = x->f_binbuf[index];
+        char id[MAXPDSTRING];
+        t_atom av[2];
+        
+        t_binbuf *b = x->f_binbuf[index];
         if(binbuf_getnatom(b))
-            binbuf_clear(b);
-
-        for(y = eobj_getcanvas(x)->gl_list; y; y = y->g_next)
         {
-            z = (t_ebox *)y;
-            mpreset = zgetfn(&y->g_pd, cream_sym_preset);
+            binbuf_clear(b);
+        }
+        
+        for(t_gobj *y = eobj_getcanvas(x)->gl_list; y; y = y->g_next)
+        {
+            t_ebox *z = (t_ebox *)y;
+            t_gotfn mpreset = zgetfn(&y->g_pd, cream_sym_preset);
             if(mpreset && z->b_objpreset_id)
             {
                 if(z->b_objpreset_id != s_null && z->b_objpreset_id != cream_sym_nothing)
@@ -93,7 +82,7 @@ void preset_store(t_preset *x, float f)
     }
 }
 
-void preset_float(t_preset *x, float f)
+static void preset_float(t_preset *x, float f)
 {
     t_canvas *cnv = eobj_getcanvas(x);
     if(cnv && !cnv->gl_loading)
@@ -102,19 +91,18 @@ void preset_float(t_preset *x, float f)
         t_binbuf* b = x->f_binbuf[x->f_binbuf_selected];
         if(b && binbuf_getnatom(b) && binbuf_getvec(b))
         {
-            t_gobj *y = eobj_getcanvas(x)->gl_list;
-            for(; y; y = y->g_next)
+            char id[MAXPDSTRING];
+            for(t_gobj *y = eobj_getcanvas(x)->gl_list; y; y = y->g_next)
             {
                 t_ebox * z = (t_ebox *)y;
                 t_gotfn mpreset = zgetfn(&y->g_pd, cream_sym_preset);
                 if(mpreset && z->b_objpreset_id && z->b_objpreset_id != s_null && z->b_objpreset_id != cream_sym_nothing)
                 {
-                    char id[MAXPDSTRING];
-                    sprintf(id, "@%s", z->b_objpreset_id->s_name);
                     long ac = 0;
                     t_atom* av = NULL;
+                    sprintf(id, "@%s", z->b_objpreset_id->s_name);
                     binbuf_get_attribute(b, gensym(id), &ac, &av);
-                    if(ac > 1 && av && atom_gettype(av) == A_SYM && atom_gettype(av+1) == A_SYM)
+                    if(ac && av && atom_gettype(av) == A_SYM && atom_gettype(av+1) == A_SYM)
                     {
                         if(eobj_getclassname(z) == atom_getsym(av))
                         {
@@ -292,29 +280,28 @@ void preset_interpolate(t_preset *x, float f)
     ebox_redraw((t_ebox *)x);
 }
 
-void preset_clear(t_preset *x, float f)
+static void preset_clear(t_preset *x, float f)
 {
     int index = (int)f;
-
-    if (index < 1 || index > _preset::maxbinbufs)
-        return;
-
-    if(x->f_binbuf_selected == index)
+    if(index > 1 && index < _preset::maxbinbufs)
     {
-        x->f_binbuf_selected = 0;
+        if(x->f_binbuf_selected == index)
+        {
+            x->f_binbuf_selected = 0;
+        }
+        binbuf_clear(x->f_binbuf[index-1]);
+        
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_redraw((t_ebox *)x);
     }
-    binbuf_clear(x->f_binbuf[index-1]);
-    
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-    ebox_redraw((t_ebox *)x);
 }
 
-void preset_clearall(t_preset *x)
+static void preset_clearall(t_preset *x)
 {
-	int i;
-    for(i = 0; i < _preset::maxbinbufs; i++)
+    for(int i = 0; i < _preset::maxbinbufs; i++)
+    {
         binbuf_clear(x->f_binbuf[i]);
-
+    }
     x->f_binbuf_selected = 0;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
@@ -450,7 +437,7 @@ static void preset_mouseleave(t_preset *x, t_object *patcherview, t_pt pt, long 
     ebox_redraw((t_ebox *)x);
 }
 
-void preset_save(t_preset *x, t_binbuf *d)
+static void preset_save(t_preset *x, t_binbuf *d)
 {
     binbuf_addv(d, "ss", cream_sym_atpreset, cream_sym_left_bracket);
     for(int i = 0; i < _preset::maxbinbufs; i++)
@@ -464,13 +451,13 @@ void preset_save(t_preset *x, t_binbuf *d)
     binbuf_addv(d, "s", cream_sym_right_bracket);
 }
 
-void preset_init(t_preset *x, t_binbuf *d)
+static void preset_init(t_preset *x, t_binbuf *d)
 {
-	int i, check;
+	int check;
     long index;
-    long ac = binbuf_getnatom(d);
+    int ac = binbuf_getnatom(d);
     t_atom* av = binbuf_getvec(d);
-    for(i = 0; i < ac; i++)
+    for(int i = 0; i < ac; i++)
     {
         if(atom_gettype(av+i) == A_SYM && atom_getsym(av+i) == cream_sym_atpreset)
         {
