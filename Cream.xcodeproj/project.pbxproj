@@ -164,7 +164,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5913846F15DAA36D0029AD16 /* cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
+		5913846F15DAA36D0029AD16 /* Cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		59FB02F717A7FAA9001E977D /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		8F1E0E751A46FEF400551842 /* c.matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix.cpp; sourceTree = "<group>"; };
 		8F26F18A17E76273005FCB97 /* c.library.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.library.cpp; sourceTree = "<group>"; };
@@ -174,7 +174,7 @@
 		8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix_tilde.cpp; sourceTree = "<group>"; };
 		8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.atan_tilde.cpp; sourceTree = "<group>"; };
 		8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.sin_tilde.cpp; sourceTree = "<group>"; };
-		8FAC0BFB1969731800E09ACB /* cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FAC0BFB1969731800E09ACB /* Cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB8EB2519007B04005FAF6A /* AudioFFT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioFFT.cpp; sourceTree = "<group>"; };
 		8FB8EB2619007B04005FAF6A /* AudioFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFFT.h; sourceTree = "<group>"; };
 		8FB8EB2719007B04005FAF6A /* c.convolve_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.convolve_tilde.cpp; sourceTree = "<group>"; };
@@ -283,8 +283,8 @@
 		5913847015DAA36D0029AD16 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5913846F15DAA36D0029AD16 /* cream.pd_darwin */,
-				8FAC0BFB1969731800E09ACB /* cream.pd_darwin */,
+				5913846F15DAA36D0029AD16 /* Cream.pd_darwin */,
+				8FAC0BFB1969731800E09ACB /* Cream.pd_darwin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -519,7 +519,7 @@
 			);
 			name = cream;
 			productName = pd1;
-			productReference = 5913846F15DAA36D0029AD16 /* cream.pd_darwin */;
+			productReference = 5913846F15DAA36D0029AD16 /* Cream.pd_darwin */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 		8FAC0BA51969731800E09ACB /* cream_extended */ = {
@@ -536,7 +536,7 @@
 			);
 			name = cream_extended;
 			productName = pd1;
-			productReference = 8FAC0BFB1969731800E09ACB /* cream.pd_darwin */;
+			productReference = 8FAC0BFB1969731800E09ACB /* Cream.pd_darwin */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -761,7 +761,7 @@
 					dynamic_lookup,
 				);
 				PRELINK_LIBS = "";
-				PRODUCT_NAME = cream;
+				PRODUCT_NAME = Cream;
 				USER_HEADER_SEARCH_PATHS = "/Developer/usr/include /usr/local/include";
 			};
 			name = Release;
@@ -792,7 +792,7 @@
 					dynamic_lookup,
 				);
 				PRELINK_LIBS = "";
-				PRODUCT_NAME = cream;
+				PRODUCT_NAME = Cream;
 				USER_HEADER_SEARCH_PATHS = "/Developer/usr/include /usr/local/include";
 			};
 			name = Release;
