@@ -20,6 +20,8 @@ AM_INIT_AUTOMAKE([1.10 foreign])
 AC_ARG_WITH([pd],       [  --with-pd=</path/to/pd> where to look for pd-headers and and -libs])
 AC_ARG_WITH([extension],[  --with-extension=<ext>  enforce a certain extension for the dynamic library (e.g. dll)])
 
+AX_FAT_BINARY()
+
 ARCH=$(uname -m)
 KERN=$(uname -s)
 
