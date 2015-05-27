@@ -48,7 +48,6 @@ extern "C" void setup_c0x2eradio(void);
 extern "C" void setup_c0x2erslider(void);
 extern "C" void setup_c0x2escope_tilde(void);
 extern "C" void setup_c0x2eslider(void);
-extern "C" void setup_c0x2espectroscope_tilde(void);
 extern "C" void setup_c0x2etab(void);
 extern "C" void setup_c0x2etoggle(void);
 
