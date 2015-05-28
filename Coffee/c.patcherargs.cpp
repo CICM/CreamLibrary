@@ -29,7 +29,6 @@
 typedef struct  _patcherargs
 {
 	t_eobj      j_box;
-    t_canvas*   f_canvas;
 	t_outlet*   f_out_args;
     t_outlet*   f_out_attrs;
     t_outlet*   f_out_done;
@@ -38,21 +37,135 @@ typedef struct  _patcherargs
     long        f_argc;
 
     long        f_n_attrs;
-    t_symbol*   f_attr_name[256];
-    t_atom*     f_attr_vals[256];
-    long        f_attr_size[256];
+    t_symbol**  f_attr_name;
+    t_atom**    f_attr_vals;
+    long*       f_attr_size;
     double      f_time;
+    char        f_init;
 
 } t_patcherargs;
 
 t_eclass *patcherargs_class;
 
-void *patcherargs_new(t_symbol *s, int argc, t_atom *argv);
-void patcherargs_output(t_patcherargs *x);
-void patcherargs_free(t_patcherargs *x);
-void patcherargs_assist(t_patcherargs *x, void *b, long m, long a, char *s);
-void patcherargs_click(t_patcherargs *x);
-void patcherargs_bang(t_patcherargs *x);
+static char patcherargs_initialize(t_patcherargs *x)
+{
+    t_canvas* cnv = eobj_getcanvas(x);
+    if(cnv)
+    {
+        t_binbuf *b = cnv->gl_obj.te_binbuf;
+        if(b)
+        {
+            int ac      = binbuf_getnatom(b);
+            t_atom* av  = binbuf_getvec(b);
+            if(atom_gettype(av) == A_SYM && atom_getsym(av) == gensym("pd"))
+            {
+                ac--;
+                av++;
+            }
+            int argc = atoms_get_attributes_offset(ac, av);
+            if(argc > x->f_argc)
+            {
+                x->f_argc = argc;
+                x->f_args = (t_atom *)realloc(x->f_args, x->f_argc * sizeof(t_atom));
+            }
+            memcpy(x->f_args, av, argc * sizeof(t_atom));
+            
+            for(int i = 0; i < x->f_n_attrs; i++)
+            {
+                long nattr;
+                t_atom* attrs;
+                atoms_get_attribute(ac-argc, av+argc, x->f_attr_name[i], &nattr, &attrs);
+                if(nattr && attrs)
+                {
+                    x->f_attr_size[i] = nattr;
+                    x->f_attr_vals[i] = (t_atom *)realloc(x->f_attr_vals[i], nattr * sizeof(t_atom *));
+                    memcpy(x->f_attr_vals[i], attrs, nattr * sizeof(t_atom *));
+                    free(attrs);
+                }
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+
+static void patcherargs_output(t_patcherargs *x)
+{
+    if(!x->f_init)
+    {
+        x->f_init = patcherargs_initialize(x);
+    }
+    outlet_list(x->f_out_args, &s_list, x->f_argc, x->f_args);
+    for(int i = 0; i < x->f_n_attrs; i++)
+    {
+        outlet_anything(x->f_out_attrs, gensym(x->f_attr_name[i]->s_name+1), x->f_attr_size[i], x->f_attr_vals[i]);
+    }
+    outlet_bang(x->f_out_done);
+}
+
+static void patcherargs_click(t_patcherargs *x)
+{
+    if(clock_gettimesince(x->f_time) < 250.)
+        patcherargs_output(x);
+    x->f_time = clock_getsystime();
+}
+
+static void patcherargs_free(t_patcherargs *x)
+{
+    int i;
+    if(x->f_argc && x->f_args)
+    {
+        free(x->f_args);
+    }
+    if(x->f_n_attrs)
+    {
+        for(i = 0; i < x->f_n_attrs; i++)
+        {
+            if(x->f_attr_size[i] && x->f_attr_vals[i])
+            {
+                free(x->f_attr_vals[i]);
+            }
+        }
+        free(x->f_attr_name);
+        free(x->f_attr_size);
+        free(x->f_attr_vals);
+    }
+    eobj_free(x);
+}
+
+static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
+{
+    int i;
+    t_patcherargs *x =  NULL;
+    
+    x = (t_patcherargs *)eobj_new(patcherargs_class);
+    if(x)
+    {
+        x->f_argc = atoms_get_attributes_offset(argc, argv);
+        x->f_args = (t_atom *)malloc(x->f_argc * sizeof(t_atom));
+        memcpy(x->f_args, argv, x->f_argc * sizeof(t_atom));
+        
+        x->f_n_attrs = atoms_get_keys(argc-x->f_argc, argv+x->f_argc, &x->f_attr_name);
+        if(x->f_n_attrs)
+        {
+            x->f_attr_vals = (t_atom **)malloc(x->f_n_attrs * sizeof(t_atom *));
+            x->f_attr_size = (long *)malloc(x->f_n_attrs * sizeof(long));
+            for(i = 0; i < x->f_n_attrs; i++)
+            {
+                atoms_get_attribute(argc-x->f_argc, argv+x->f_argc, x->f_attr_name[i], &x->f_attr_size[i], &x->f_attr_vals[i]);
+            }
+        }
+
+        x->f_out_args = (t_outlet *)listout(x);
+        x->f_out_attrs = (t_outlet *)listout(x);
+        x->f_out_done = (t_outlet *)bangout(x);
+        x->f_time = clock_getsystime();
+        x->f_init = patcherargs_initialize(x);
+    }
+    
+    return (x);
+}
+
 
 extern "C" void setup_c0x2epatcherargs(void)
 {
@@ -67,159 +180,6 @@ extern "C" void setup_c0x2epatcherargs(void)
 
     eclass_register(CLASS_OBJ, c);
 	patcherargs_class = c;
-}
-
-void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
-{
-    int i;
-	t_patcherargs *x =  NULL;
-
-    x = (t_patcherargs *)eobj_new(patcherargs_class);
-    if(x)
-    {
-        // ARGUMENTS //
-        for(i = 0; i < argc; i++)
-        {
-            if(atom_gettype(argv+i) == A_SYM && atom_getsym(argv+i)->s_name[0] == '@')
-            {
-                break;
-            }
-        }
-        x->f_argc = pd_clip_min(i, 0);
-        x->f_args = (t_atom *)calloc(x->f_argc, sizeof(t_atom));
-        for(i = 0; i < x->f_argc; i++)
-        {
-            x->f_args[i] = argv[i];
-        }
-
-        // ATTRIBUTES //
-        x->f_n_attrs = 0;
-        for(i = x->f_argc; i < argc; i++)
-        {
-            if(atom_gettype(argv+i) == A_SYM && atom_getsym(argv+i)->s_name[0] == '@')
-            {
-                if(x->f_n_attrs < 256)
-                {
-                    x->f_attr_name[x->f_n_attrs] = atom_getsym(argv+i);
-                    x->f_n_attrs++;
-                }
-            }
-        }
-        for(i = 0; i < x->f_n_attrs; i++)
-        {
-            atoms_get_attribute(argc-x->f_argc, argv+x->f_argc, x->f_attr_name[i], &x->f_attr_size[i], &x->f_attr_vals[i]);
-        }
-
-        if(canvas_getcurrent())
-        {
-            x->f_canvas = glist_getcanvas(canvas_getcurrent());
-        }
-        else
-            x->f_canvas = NULL;
-
-        x->f_out_args = (t_outlet *)listout(x);
-        x->f_out_attrs = (t_outlet *)listout(x);
-        x->f_out_done = (t_outlet *)bangout(x);
-        x->f_time = clock_getsystime();
-    }
-
-    return (x);
-}
-
-void patcherargs_click(t_patcherargs *x)
-{
-    if(clock_gettimesince(x->f_time) < 250.)
-        patcherargs_output(x);
-    x->f_time = clock_getsystime();
-}
-
-void patcherargs_output(t_patcherargs *x)
-{
-    int i, size = 0, ac = 0;
-    t_binbuf *b = NULL;
-    t_atom  *av = NULL;
-    t_atom  *argv = NULL;
-    long argc = 0;
-    if(x->f_canvas)
-    {
-        b = x->f_canvas->gl_obj.te_binbuf;
-
-        if(b)
-        {
-            ac = binbuf_getnatom(b);
-            av = binbuf_getvec(b);
-            if(atom_gettype(av) == A_SYM && atom_getsym(av) == gensym("pd"))
-            {
-                ac--;
-                av++;
-            }
-            for(i = 0; i < ac; i++)
-            {
-                if(atom_gettype(av+i) == A_SYM && strchr(atom_getsym(av+i)->s_name,'@'))
-                {
-                    break;
-                }
-            }
-            size = i;
-        }
-        if(size > 0 && size >= x->f_argc)
-        {
-			outlet_list(x->f_out_args, &s_list, size, av);
-        }
-        else if(size > 0)
-        {
-			for(i = 0; i < size; i++)
-				x->f_args[i] = av[i];
-			outlet_list(x->f_out_args, &s_list, x->f_argc, x->f_args);
-        }
-		else
-		{
-			outlet_list(x->f_out_args, &s_list,x->f_argc, x->f_args);
-		}
-		for(i = 0; i < x->f_n_attrs; i++)
-		{
-			if(size > 0 && ac && av)
-				atoms_get_attribute(ac, av, x->f_attr_name[i], &argc, &argv);
-			if(argc && argv)
-			{
-				outlet_anything(x->f_out_attrs, gensym(x->f_attr_name[i]->s_name+1), argc, argv);
-				free(argv);
-				argc = 0;
-			}
-			else
-			{
-				outlet_anything(x->f_out_attrs, gensym(x->f_attr_name[i]->s_name+1), x->f_attr_size[i], x->f_attr_vals[i]);
-			}
-		}
-    }
-    else
-    {
-        outlet_list(x->f_out_args, &s_list, x->f_argc, x->f_args);
-        for(i = 0; i < x->f_n_attrs; i++)
-            outlet_list(x->f_out_attrs, &s_list, x->f_attr_size[i], x->f_attr_vals[i]);
-    }
-    outlet_bang(x->f_out_done);
-}
-
-void patcherargs_free(t_patcherargs *x)
-{
-    int i;
-    if(x->f_argc)
-        free(x->f_args);
-    if(x->f_n_attrs)
-    {
-        for(i = 0; i < x->f_n_attrs; i++)
-        {
-            if(x->f_attr_size[i])
-                free(x->f_attr_vals[i]);
-        }
-    }
-    eobj_free(x);
-}
-
-void patcherargs_assist(t_patcherargs *x, void *b, long m, long a, char *s)
-{
-	;
 }
 
 
