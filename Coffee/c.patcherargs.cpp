@@ -32,7 +32,7 @@ typedef struct  _patcherargs
 	t_outlet*   f_out_args;
     t_outlet*   f_out_attrs;
     t_outlet*   f_out_done;
-
+    t_canvas*   f_cnv;
     t_atom*     f_args;
     long        f_argc;
 
@@ -49,7 +49,7 @@ t_eclass *patcherargs_class;
 
 static char patcherargs_initialize(t_patcherargs *x)
 {
-    t_canvas* cnv = eobj_getcanvas(x);
+    t_canvas* cnv = x->f_cnv;
     if(cnv)
     {
         t_binbuf *b = cnv->gl_obj.te_binbuf;
@@ -63,6 +63,7 @@ static char patcherargs_initialize(t_patcherargs *x)
                 av++;
             }
             int argc = atoms_get_attributes_offset(ac, av);
+            
             if(argc > x->f_argc)
             {
                 x->f_argc = argc;
@@ -74,17 +75,16 @@ static char patcherargs_initialize(t_patcherargs *x)
             {
                 long nattr;
                 t_atom* attrs;
-                atoms_get_attribute(ac-argc, av+argc, x->f_attr_name[i], &nattr, &attrs);
-                if(nattr && attrs)
+                if(!atoms_get_attribute(ac-argc, av+argc, x->f_attr_name[i], &nattr, &attrs))
                 {
                     x->f_attr_size[i] = nattr;
-                    x->f_attr_vals[i] = (t_atom *)realloc(x->f_attr_vals[i], nattr * sizeof(t_atom *));
-                    memcpy(x->f_attr_vals[i], attrs, nattr * sizeof(t_atom *));
+                    x->f_attr_vals[i] = (t_atom *)realloc(x->f_attr_vals[i], nattr * sizeof(t_atom));
+                    memcpy(x->f_attr_vals[i], attrs, nattr * sizeof(t_atom));
                     free(attrs);
                 }
             }
+            return 1;
         }
-        return 1;
     }
     return 0;
 }
@@ -160,6 +160,13 @@ static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
         x->f_out_attrs = (t_outlet *)listout(x);
         x->f_out_done = (t_outlet *)bangout(x);
         x->f_time = clock_getsystime();
+        if(canvas_getcurrent())
+        {
+            x->f_cnv = glist_getcanvas(canvas_getcurrent());
+        }
+        else
+            x->f_cnv = NULL;
+        
         x->f_init = patcherargs_initialize(x);
     }
     
