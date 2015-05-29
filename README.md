@@ -22,7 +22,7 @@ Helps and tutorials are availables in the <em>Cream</em> folder of the <em>help 
 ### Compilation : 
 
 	./autogen.sh (if needed)
-	./configure or ./configure "CFLAS=PD_EXTENDED"
+	./configure or ./configure --with-pdextended
 	make
 	make install (optional)
 
