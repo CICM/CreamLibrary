@@ -10,6 +10,9 @@ AC_CONFIG_FILES([ThirdParty/PureData/Sources/ebox/Makefile ThirdParty/PureData/S
 AC_CONFIG_FILES([Package/Cream/Makefile Package/Cream/helps/Makefile Package/Cream/misc/Makefile])
 AC_CONFIG_FILES([cream-meta.pd])
 
+AC_ARG_WITH([pdextended], [AS_HELP_STRING([--with-pdextended], [use PD-Extended instead of PD-Vanilla])], [], [with_pdextended=no])
+AS_IF([test "x$with_pdextended" != xno],  AC_DEFINE(PD_EXTENDED,[],[Use PD-Extended]), [])
+
 AC_SUBST(PD_CPPFLAGS)
 AC_SUBST(PD_LDFLAGS)
 
