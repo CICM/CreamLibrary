@@ -24,27 +24,23 @@
  *
  */
 
-#ifdef _WINDOWS
-#define round(val)  floor(val + 0.5)
-#endif
-
 #include "../c.library.h"
 
 typedef struct  _matrixctrl
 {
 	t_ebox      j_box;
-    
+
     t_outlet*   f_out_cell;
     t_outlet*   f_out_colrow;
-    
+
     char*       f_values;
     t_pt        f_size;
     t_pt        f_selected;
-    
+
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
     t_rgba      f_color_on;
-    
+
 } t_matrixctrl;
 
 t_eclass *matrixctrl_class;
@@ -78,11 +74,11 @@ void matrixctrl_preset(t_matrixctrl *x, t_binbuf *b);
 extern "C" void setup_c0x2ematrix(void)
 {
 	t_eclass *c;
-    
+
 	c = eclass_new("c.matrix", (method)matrixctrl_new, (method)matrixctrl_free, (short)sizeof(t_matrixctrl), 0L, A_GIMME, 0);
 	eclass_init(c, 0);
     cream_initclass(c);
-	
+
 	eclass_addmethod(c, (method) matrixctrl_assist,          "assist",           A_NULL, 0);
 	eclass_addmethod(c, (method) matrixctrl_paint,           "paint",            A_NULL, 0);
 	eclass_addmethod(c, (method) matrixctrl_notify,          "notify",           A_NULL, 0);
@@ -94,44 +90,44 @@ extern "C" void setup_c0x2ematrix(void)
     eclass_addmethod(c, (method) matrixctrl_clear,           "clear",            A_NULL, 0);
     eclass_addmethod(c, (method) matrixctrl_getrow,          "getrow",           A_FLOAT,0);
     eclass_addmethod(c, (method) matrixctrl_getcolumn,       "getcolumn",        A_FLOAT,0);
-    
+
     eclass_addmethod(c, (method) matrixctrl_mousedown,       "mousedown",        A_NULL, 0);
     eclass_addmethod(c, (method) matrixctrl_mousedrag,       "mousedrag",        A_NULL, 0);
     eclass_addmethod(c, (method) matrixctrl_mouseleave,      "mouseleave",       A_NULL, 0);
-    
+
     eclass_addmethod(c, (method) matrixctrl_preset,          "preset",           A_NULL, 0);
-    
+
     CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
 	CLASS_ATTR_DEFAULT              (c, "size", 0, "105 53");
-	
+
     CLASS_ATTR_FLOAT_ARRAY          (c, "matrix", 0, t_matrixctrl, f_size, 2);
 	CLASS_ATTR_LABEL                (c, "matrix", 0, "Matrix Size");
     CLASS_ATTR_ACCESSORS			(c, "matrix", NULL, matrixctrl_matrix_set);
 	CLASS_ATTR_ORDER                (c, "matrix", 0, "1");
 	CLASS_ATTR_DEFAULT              (c, "matrix", 0, "8 4");
     CLASS_ATTR_SAVE                 (c, "matrix", 0);
-    
+
     CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_matrixctrl, f_color_background);
 	CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
 	CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
     CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
-    
+
 	CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_matrixctrl, f_color_border);
 	CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
 	CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
-    
+
     CLASS_ATTR_RGBA                 (c, "accolor", 0, t_matrixctrl, f_color_on);
 	CLASS_ATTR_LABEL                (c, "accolor", 0, "Active Cell Color");
 	CLASS_ATTR_ORDER                (c, "accolor", 0, "3");
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "accolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "accolor", 0, "color");
-    
+
     eclass_register(CLASS_BOX, c);
 	matrixctrl_class = c;
 }
@@ -143,25 +139,25 @@ void *matrixctrl_new(t_symbol *s, int argc, t_atom *argv)
     long flags;
 	if (!(d = binbuf_via_atoms(argc,argv)))
 		return NULL;
-    
+
 	x = (t_matrixctrl *)eobj_new(matrixctrl_class);
-    
+
     x->f_size.x = 8;
     x->f_size.y = 4;
     x->f_values = (char *)malloc(x->f_size.x * x->f_size.y * sizeof(char));
     memset(x->f_values, 0, x->f_size.x * x->f_size.y * sizeof(char));
-    
+
     x->f_selected.x = -1;
     x->f_selected.y = -1;
-    
+
     flags = 0
     | EBOX_GROWINDI
     ;
 	ebox_new((t_ebox *)x, flags);
-    
+
     x->f_out_cell   = (t_outlet *)listout(x);
     x->f_out_colrow = (t_outlet *)listout(x);
-    
+
 	ebox_attrprocess_viabinbuf(x, d);
 	ebox_ready((t_ebox *)x);
 	return (x);
@@ -180,7 +176,7 @@ void matrixctrl_oksize(t_matrixctrl *x, t_rect *newrect)
 	float ratio;
     newrect->width = pd_clip_min(newrect->width, 30.);
     newrect->height = pd_clip_min(newrect->height, 10.);
-    
+
     ratio = (newrect->width - 1.) / (float)x->f_size.x;
     if(ratio - (int)ratio != 0)
     {
@@ -193,7 +189,7 @@ void matrixctrl_oksize(t_matrixctrl *x, t_rect *newrect)
         ratio = round(ratio);
         newrect->height = ratio * (float)x->f_size.y + 1.;
     }
-    
+
     newrect->width = pd_clip_min(newrect->width, 30.);
     newrect->height = pd_clip_min(newrect->height, 10.);
 }
@@ -273,7 +269,7 @@ void matrixctrl_set(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av)
                 }
             }
         }
-        
+
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
@@ -297,7 +293,7 @@ void matrixctrl_list(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av)
                 }
             }
         }
-        
+
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
@@ -366,7 +362,7 @@ void draw_background(t_matrixctrl *x, t_object *view, t_rect *rect)
                 egraphics_stroke(g);
             }
         }
-        
+
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
 	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0, 0);
@@ -424,7 +420,7 @@ void matrixctrl_preset(t_matrixctrl *x, t_binbuf *b)
             ac += 3;
         }
     }
-    
+
     binbuf_addv(b, "s", gensym("list"));
     binbuf_add(b, x->f_size.x * x->f_size.y * 3, av);
     free(av);
