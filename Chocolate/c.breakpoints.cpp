@@ -366,13 +366,13 @@ static void breakpoints_remove(t_breakpoints *x, t_symbol* s, int argc, t_atom* 
 
 static void breakpoints_move(t_breakpoints *x, t_symbol* s, int argc, t_atom* argv)
 {
-    if(argc && argv)
+    if(argv && argc > 2 && atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_FLOAT)
     {
-        if(argc == 3 && atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_FLOAT)
+        int index = atom_getfloat(argv);
+        if(index >= 0 && index < x->f_npoints)
         {
-            int index = pd_clip_minmax(atom_getfloat(argv), 0, x->f_npoints-1);
-            float abs = atom_getfloat(argv);
-            float ord = pd_clip_minmax(atom_getfloat(argv+1), x->f_range_ordinate[0], x->f_range_ordinate[1]);
+            float abs = atom_getfloat(argv+1);
+            float ord = pd_clip_minmax(atom_getfloat(argv+2), x->f_range_ordinate[0], x->f_range_ordinate[1]);
             if(index == 0)
             {
                 if(x->f_npoints > 1)
@@ -678,7 +678,6 @@ static void breakpoints_mousedrag(t_breakpoints *x, t_object *patcherview, t_pt 
     float height = sys_fontheight(ebox_getfontsize((t_ebox *)x)) + 2;
     abs = ((pt.x - 3.) / (x->f_size.x - 4.)) * (x->f_range_abscissa[1] - x->f_range_abscissa[0]) + x->f_range_abscissa[0];
     ord = ((x->f_size.y - (pt.y - 4.) - 4.) / (x->f_size.y - 4. - height)) * (x->f_range_ordinate[1] - x->f_range_ordinate[0]) + x->f_range_ordinate[0];
-    
     
     x->f_mouse.x = abs;
     x->f_mouse.y = ord;
