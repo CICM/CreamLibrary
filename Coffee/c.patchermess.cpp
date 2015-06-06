@@ -26,6 +26,9 @@
 
 #include "../c.library.h"
 
+#ifdef PD_EXTENDED
+EXTERN t_canvas* canvas_list;
+#endif
 t_canvas *sys_getcanvaslist()
 {
 #ifdef PD_EXTENDED
