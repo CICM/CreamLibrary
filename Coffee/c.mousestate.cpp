@@ -44,63 +44,12 @@ typedef struct  _mousestate
 
 t_eclass *mousestate_class;
 
-void *mousestate_new(t_symbol *s, int argc, t_atom *argv);
-void mousestate_free(t_mousestate *x);
-void mousestate_assist(t_mousestate *x, void *b, long m, long a, char *s);
-void mousestate_tick(t_mousestate *x);
-void mousestate_poll(t_mousestate *x);
-void mousestate_nopoll(t_mousestate *x);
-void mousestate_mode(t_mousestate *x, float f);
-void mousestate_zero(t_mousestate *x);
-void mousestate_reset(t_mousestate *x);
-
-extern "C" void setup_c0x2emousestate(void)
-{
-	t_eclass *c;
-    
-	c = eclass_new("c.mousestate", (method)mousestate_new, (method)mousestate_free, (short)sizeof(t_mousestate), 0L, A_GIMME, 0);
-    cream_initclass(c);
-    
-    eclass_addmethod(c, (method) mousestate_assist,     "assist",          A_NULL, 0);
-    eclass_addmethod(c, (method) mousestate_poll,       "poll",            A_NULL, 0);
-    eclass_addmethod(c, (method) mousestate_nopoll,     "nopoll",          A_NULL, 0);
-    eclass_addmethod(c, (method) mousestate_reset,      "reset",           A_NULL, 0);
-    eclass_addmethod(c, (method) mousestate_zero,       "zero",            A_NULL, 0);
-    eclass_addmethod(c, (method) mousestate_mode,       "mode",            A_FLOAT, 0);
-
-    eclass_register(CLASS_OBJ, c);
-	mousestate_class = c;
-}
-
-void *mousestate_new(t_symbol *s, int argc, t_atom *argv)
-{
-	t_mousestate *x =  NULL;
-	t_binbuf* d;
-    
-    if (!(d = binbuf_via_atoms(argc,argv)))
-        return NULL;
-    
-    x = (t_mousestate *)eobj_new(mousestate_class);
-    x->l_mouse_pressed = (t_outlet *)floatout(x);
-    x->l_mouse_x       = (t_outlet *)floatout(x);
-    x->l_mouse_y       = (t_outlet *)floatout(x);
-    x->l_mouse_deltax  = (t_outlet *)floatout(x);
-    x->l_mouse_deltay  = (t_outlet *)floatout(x);
-    x->l_mouse_modifier= (t_outlet *)floatout(x);
-    x->l_mode          = 0;
-    x->l_zero          = 0;
-    x->l_mouse         = eobj_get_mouse_global_position((t_object *)x);
-    x->l_clock         = clock_new(x, (t_method)mousestate_tick);
-    
-    return (x);
-}
-
-void mousestate_reset(t_mousestate *x)
+static void mousestate_reset(t_mousestate *x)
 {
     x->l_zero = 0;
 }
 
-void mousestate_zero(t_mousestate *x)
+static void mousestate_zero(t_mousestate *x)
 {
     if(x->l_mode == 1)
         x->l_mouse_zero = eobj_get_mouse_canvas_position(x);
@@ -109,7 +58,7 @@ void mousestate_zero(t_mousestate *x)
     x->l_zero = 1;
 }
 
-void mousestate_mode(t_mousestate *x, float f)
+static void mousestate_mode(t_mousestate *x, float f)
 {
     int mode;
     if(f == 0)
@@ -133,7 +82,7 @@ void mousestate_mode(t_mousestate *x, float f)
     }
 }
 
-void mousestate_tick(t_mousestate *x)
+static void mousestate_tick(t_mousestate *x)
 {
     t_pt mouse;
     if(x->l_mode == 1)
@@ -157,7 +106,7 @@ void mousestate_tick(t_mousestate *x)
     clock_delay(x->l_clock, 20);
 }
 
-void mousestate_poll(t_mousestate *x)
+static void mousestate_poll(t_mousestate *x)
 {
     t_pt mouse;
     if(x->l_mode == 1)
@@ -181,21 +130,52 @@ void mousestate_poll(t_mousestate *x)
     clock_set(x->l_clock, 20);
 }
 
-void mousestate_nopoll(t_mousestate *x)
+static void mousestate_nopoll(t_mousestate *x)
 {
     clock_unset(x->l_clock);
 }
 
-void mousestate_free(t_mousestate *x)
+static void mousestate_free(t_mousestate *x)
 {
     eobj_nopoll_mouse(x);
     clock_free(x->l_clock);
-	eobj_free(x);
+    eobj_free(x);
 }
 
-void mousestate_assist(t_mousestate *x, void *b, long m, long a, char *s)
+static void *mousestate_new(t_symbol *s, int argc, t_atom *argv)
 {
-	;
+    t_mousestate *x = (t_mousestate *)eobj_new(mousestate_class);
+    if(x)
+    {
+        x->l_mouse_pressed = (t_outlet *)floatout(x);
+        x->l_mouse_x       = (t_outlet *)floatout(x);
+        x->l_mouse_y       = (t_outlet *)floatout(x);
+        x->l_mouse_deltax  = (t_outlet *)floatout(x);
+        x->l_mouse_deltay  = (t_outlet *)floatout(x);
+        x->l_mouse_modifier= (t_outlet *)floatout(x);
+        x->l_mode          = 0;
+        x->l_zero          = 0;
+        x->l_mouse         = eobj_get_mouse_global_position((t_object *)x);
+        x->l_clock         = clock_new(x, (t_method)mousestate_tick);
+    }
+    return (x);
+}
+
+extern "C" void setup_c0x2emousestate(void)
+{
+	t_eclass *c;
+    
+	c = eclass_new("c.mousestate", (method)mousestate_new, (method)mousestate_free, (short)sizeof(t_mousestate), 0L, A_GIMME, 0);
+    cream_initclass(c);
+    
+    eclass_addmethod(c, (method) mousestate_poll,       "poll",            A_NULL, 0);
+    eclass_addmethod(c, (method) mousestate_nopoll,     "nopoll",          A_NULL, 0);
+    eclass_addmethod(c, (method) mousestate_reset,      "reset",           A_NULL, 0);
+    eclass_addmethod(c, (method) mousestate_zero,       "zero",            A_NULL, 0);
+    eclass_addmethod(c, (method) mousestate_mode,       "mode",            A_FLOAT, 0);
+
+    eclass_register(CLASS_OBJ, c);
+	mousestate_class = c;
 }
 
 

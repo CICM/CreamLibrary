@@ -37,39 +37,67 @@ typedef struct  _pak
 
 t_eclass *pak_class;
 
-void *pak_new(t_symbol *s, int argc, t_atom *argv);
-void pak_anything(t_pak *x, t_symbol *s, int argc, t_atom *argv);
-void pak_list(t_pak *x, t_symbol *s, int argc, t_atom *argv);
-void pak_float(t_pak *x, float f);
-void pak_symbol(t_pak *x, t_symbol *s);
-void pak_free(t_pak *x);
-void pak_assist(t_pak *x, void *b, long m, long a, char *s);
-
-void pak_output(t_pak *x);
-
-extern "C" void setup_c0x2epak(void)
+static void pak_output(t_pak *x)
 {
-	t_eclass *c;
-    
-	c = eclass_new("c.pak", (method)pak_new, (method)pak_free, (short)sizeof(t_pak), CLASS_NOINLET, A_GIMME, 0);
-    cream_initclass(c);
-    
-    eclass_addmethod(c, (method)pak_anything,    "anything",       A_GIMME, 0);
-    eclass_addmethod(c, (method)pak_list,        "list",           A_GIMME, 0);
-    eclass_addmethod(c, (method)pak_float,       "float",          A_FLOAT, 0);
-    eclass_addmethod(c, (method)pak_symbol,      "symbol",         A_SYMBOL,0);
-    eclass_addmethod(c, (method)pak_output,      "bang",           A_NULL,  0);
-    
-    eclass_register(CLASS_OBJ, c);
-	pak_class = c;
+    outlet_list(x->f_out, &s_list, x->f_argc, x->f_argv);
 }
 
-void *pak_new(t_symbol *s, int argc, t_atom *argv)
+static void pak_list(t_pak *x, t_symbol *s, int argc, t_atom *argv)
+{
+    int index = eobj_getproxy((t_ebox *)x);
+    if(argc && x->f_selectors[index] == 0 && atom_gettype(argv) == A_FLOAT)
+    {
+        atom_setfloat(x->f_argv+index, atom_getfloat(argv));
+        pak_output(x);
+    }
+    else if(argc && x->f_selectors[index] == 1 && atom_gettype(argv) == A_SYM)
+    {
+        atom_setsym(x->f_argv+index, atom_getsym(argv));
+        pak_output(x);
+    }
+}
+
+static void pak_float(t_pak *x, float f)
+{
+    int index = eobj_getproxy((t_ebox *)x);
+    if(x->f_selectors[index] == 0)
+    {
+        atom_setfloat(x->f_argv+index, f);
+        pak_output(x);
+    }
+}
+
+static void pak_anything(t_pak *x, t_symbol *s, int argc, t_atom *argv)
+{
+    int index = eobj_getproxy((t_ebox *)x);
+    if(x->f_selectors[index] == 1)
+    {
+        atom_setsym(x->f_argv+index, s);
+        pak_output(x);
+    }
+}
+
+static void pak_symbol(t_pak *x, t_symbol *s)
+{
+    int index = eobj_getproxy((t_ebox *)x);
+    if(x->f_selectors[index] == 1)
+    {
+        atom_setsym(x->f_argv+index, s);
+        pak_output(x);
+    }
+}
+
+static void pak_free(t_pak *x)
+{
+    eobj_free(x);
+    free(x->f_selectors);
+    free(x->f_argv);
+}
+
+static void *pak_new(t_symbol *s, int argc, t_atom *argv)
 {
     int i;
-	t_pak *x =  NULL;
-    
-    x = (t_pak *)eobj_new(pak_class);
+    t_pak *x = (t_pak *)eobj_new(pak_class);
     if(x)
     {
         if(argc < 2)
@@ -166,66 +194,20 @@ void *pak_new(t_symbol *s, int argc, t_atom *argv)
     return (x);
 }
 
-void pak_list(t_pak *x, t_symbol *s, int argc, t_atom *argv)
+extern "C" void setup_c0x2epak(void)
 {
-    int index = eobj_getproxy((t_ebox *)x);
-    if(argc && x->f_selectors[index] == 0 && atom_gettype(argv) == A_FLOAT)
-    {
-        atom_setfloat(x->f_argv+index, atom_getfloat(argv));
-        pak_output(x);
-    }
-    else if(argc && x->f_selectors[index] == 1 && atom_gettype(argv) == A_SYM)
-    {
-        atom_setsym(x->f_argv+index, atom_getsym(argv));
-        pak_output(x);
-    }
+	t_eclass *c;
+    
+	c = eclass_new("c.pak", (method)pak_new, (method)pak_free, (short)sizeof(t_pak), CLASS_NOINLET, A_GIMME, 0);
+    cream_initclass(c);
+    
+    eclass_addmethod(c, (method)pak_anything,    "anything",       A_GIMME, 0);
+    eclass_addmethod(c, (method)pak_list,        "list",           A_GIMME, 0);
+    eclass_addmethod(c, (method)pak_float,       "float",          A_FLOAT, 0);
+    eclass_addmethod(c, (method)pak_symbol,      "symbol",         A_SYMBOL,0);
+    eclass_addmethod(c, (method)pak_output,      "bang",           A_NULL,  0);
+    
+    eclass_register(CLASS_OBJ, c);
+	pak_class = c;
 }
-
-void pak_float(t_pak *x, float f)
-{
-    int index = eobj_getproxy((t_ebox *)x);
-    if(x->f_selectors[index] == 0)
-    {
-        atom_setfloat(x->f_argv+index, f);
-        pak_output(x);
-    }
-}
-
-void pak_anything(t_pak *x, t_symbol *s, int argc, t_atom *argv)
-{
-    int index = eobj_getproxy((t_ebox *)x);
-    if(x->f_selectors[index] == 1)
-    {
-        atom_setsym(x->f_argv+index, s);
-        pak_output(x);
-    }
-}
-
-void pak_symbol(t_pak *x, t_symbol *s)
-{
-    int index = eobj_getproxy((t_ebox *)x);
-    if(x->f_selectors[index] == 1)
-    {
-        atom_setsym(x->f_argv+index, s);
-        pak_output(x);
-    }
-}
-
-void pak_output(t_pak *x)
-{
-    outlet_list(x->f_out, &s_list, x->f_argc, x->f_argv);
-}
-
-void pak_free(t_pak *x)
-{
-    eobj_free(x);
-	free(x->f_selectors);
-    free(x->f_argv);
-}
-
-void pak_assist(t_pak *x, void *b, long m, long a, char *s)
-{
-	;
-}
-
 

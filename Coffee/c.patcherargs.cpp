@@ -136,9 +136,7 @@ static void patcherargs_free(t_patcherargs *x)
 static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
 {
     int i;
-    t_patcherargs *x =  NULL;
-    
-    x = (t_patcherargs *)eobj_new(patcherargs_class);
+    t_patcherargs *x = (t_patcherargs *)eobj_new(patcherargs_class);
     if(x)
     {
         x->f_argc = atoms_get_attributes_offset(argc, argv);
