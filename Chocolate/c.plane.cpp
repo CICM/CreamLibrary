@@ -228,7 +228,7 @@ t_pd_err plane_notify(t_plane *x, t_symbol *s, t_symbol *msg, void *sender, void
 {
 	if (msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("ptcolor") || s == gensym("ptsize"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_ptcolor || s == gensym("ptsize"))
 		{
 			ebox_invalidate_layer((t_ebox *)x, gensym("point_layer"));
 		}

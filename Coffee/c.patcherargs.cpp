@@ -68,7 +68,14 @@ static char patcherargs_initialize(t_patcherargs *x)
             {
                 x->f_argc = argc;
                 x->f_args = (t_atom *)realloc(x->f_args, x->f_argc * sizeof(t_atom));
+                if(!x->f_args)
+                {
+                    x->f_argc = 0;
+                    pd_error(x, "can't allocate memory");
+                    return 0;
+                }
             }
+            
             memcpy(x->f_args, av, argc * sizeof(t_atom));
             
             for(int i = 0; i < x->f_n_attrs; i++)

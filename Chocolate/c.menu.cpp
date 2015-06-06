@@ -451,12 +451,12 @@ t_pd_err menu_notify(t_menu *x, t_symbol *s, t_symbol *msg, void *sender, void *
 {
 	if (msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("textcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant") || s == gensym("states"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant || s == gensym("states"))
 		{
             ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
-        if(s == gensym("fontsize") || s == gensym("items"))
+        if(s == cream_sym_fontsize || s == gensym("items"))
         {
             object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
         }

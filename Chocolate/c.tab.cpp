@@ -463,13 +463,13 @@ t_pd_err tab_notify(t_tab *x, t_symbol *s, t_symbol *msg, void *sender, void *da
 {
 	if (msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("textcolor") || s == gensym("orientation") || s == gensym("hocolor") || s == gensym("secolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == gensym("orientation") || s == gensym("hocolor") || s == gensym("secolor") || s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant)
 		{
             ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
             ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
-        if(s == gensym("fontsize") || s == gensym("orientation") || s == gensym("items"))
+        if(s == cream_sym_fontsize || s == gensym("orientation") || s == gensym("items"))
         {
             object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
         }
@@ -651,6 +651,7 @@ void tab_mousemove(t_tab *x, t_object *patcherview, t_pt pt, long modifiers)
         index = (pt.x) / (x->j_box.b_rect.width / (float)x->f_items_size);
     }
     x->f_item_hover = pd_clip_minmax(index, 0, x->f_items_size-1);
+
     ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);

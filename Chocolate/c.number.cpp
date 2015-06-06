@@ -257,12 +257,12 @@ t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sender, vo
 {
 	if (msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("textcolor") || s == gensym("fontsize") || s == gensym("fontname") || s == gensym("fontweight") || s == gensym("fontslant"))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
 		}
-        if(s == gensym("fontsize") || s == gensym("fontname"))
+        if(s == cream_sym_fontsize || s == cream_sym_fontname)
         {
             object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
         }

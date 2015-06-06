@@ -72,12 +72,16 @@ static t_symbol* cream_sym_attr_modified        = gensym("attr_modified");
 static t_symbol* cream_sym_background_layer     = gensym("background_layer");
 static t_symbol* cream_sym_text_layer           = gensym("text_layer");
 static t_symbol* cream_sym_selection_layer      = gensym("selection_layer");
+static t_symbol* cream_sym_points_layer         = gensym("points_layer");
 
 static t_symbol* cream_sym_bacolor              = gensym("bacolor");
 static t_symbol* cream_sym_bgcolor              = gensym("bgcolor");
 static t_symbol* cream_sym_bdcolor 				= gensym("bdcolor");
 static t_symbol* cream_sym_crcolor 				= gensym("crcolor");
 static t_symbol* cream_sym_btcolor              = gensym("btcolor");
+static t_symbol* cream_sym_textcolor            = gensym("textcolor");
+static t_symbol* cream_sym_ptcolor              = gensym("ptcolor");
+static t_symbol* cream_sym_licolor              = gensym("licolor");
 
 static t_symbol* cream_sym_fontsize             = gensym("fontsize");
 static t_symbol* cream_sym_fontname             = gensym("fontname");
@@ -88,6 +92,14 @@ static t_symbol* cream_sym_preset               = gensym("preset");
 static t_symbol* cream_sym_atpreset             = gensym("@preset");
 static t_symbol* cream_sym_atindex              = gensym("@index");
 static t_symbol* cream_sym_interpolate          = gensym("interpolate");
+static t_symbol* cream_sym_absrange             = gensym("absrange");
+static t_symbol* cream_sym_ordrange             = gensym("ordrange");
+static t_symbol* cream_sym_atpoints             = gensym("@points");
+static t_symbol* cream_sym_function             = gensym("function");
+static t_symbol* cream_sym_Linear               = gensym("Linear");
+static t_symbol* cream_sym_Cosine               = gensym("Cosine");
+static t_symbol* cream_sym_Cubic                = gensym("Cubic");
+static t_symbol* cream_sym_outline              = gensym("outline");
 
 static t_symbol* cream_sym_nothing              = gensym("''");
 static t_symbol* cream_sym_left_bracket         = gensym("[");
