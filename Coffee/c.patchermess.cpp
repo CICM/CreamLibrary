@@ -26,43 +26,6 @@
 
 #include "../c.library.h"
 
-#ifdef PD_EXTENDED
-EXTERN t_canvas* canvas_list;
-#endif
-t_canvas *sys_getcanvaslist()
-{
-#ifdef PD_EXTENDED
-    return canvas_list;
-#else
-    return pd_this->pd_canvaslist;
-#endif
-}
-
-void sys_setcanvaslist(t_canvas* canvas)
-{
-#ifdef PD_EXTENDED
-    canvas_list = canvas;
-#else
-    pd_this->pd_canvaslist = canvas;
-#endif
-}
-
-void canvas_removefromlist(t_canvas *x)
-{
-    t_canvas *z;
-    if (x == sys_getcanvaslist())
-    {
-        sys_setcanvaslist(x->gl_next);
-    }
-    else
-    {
-        for (z = sys_getcanvaslist(); z->gl_next != x; z = z->gl_next)
-            ;
-        z->gl_next = x->gl_next;
-    }
-}
-
-
 typedef struct  _patchermess
 {
 	t_eobj      j_box;
@@ -71,7 +34,6 @@ typedef struct  _patchermess
     int         f_argc;
     t_atom*     f_argv;
 } t_patchermess;
-
 
 t_eclass *patchermess_class;
 
