@@ -61,6 +61,12 @@ extern "C" void setup_c0x2epatchermess(void);
 extern "C" void setup_c0x2eprepend(void);
 extern "C" void setup_c0x2emousestate(void);
 
+static t_symbol* cream_sym_goppos               = gensym("goppos");
+static t_symbol* cream_sym_gopsize              = gensym("gopsize");
+static t_symbol* cream_sym_select               = gensym("select");
+static t_symbol* cream_sym_delete               = gensym("delete");
+static t_symbol* cream_sym_past                 = gensym("paste");
+
 static t_symbol* cream_sym_attr_modified        = gensym("attr_modified");
 
 static t_symbol* cream_sym_background_layer     = gensym("background_layer");

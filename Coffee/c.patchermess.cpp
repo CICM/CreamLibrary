@@ -37,53 +37,9 @@ typedef struct  _patchermess
 
 t_eclass *patchermess_class;
 
-void *patchermess_new(t_symbol *s, int argc, t_atom *argv);
-void patchermess_free(t_patchermess *x);
-void patchermess_assist(t_patchermess *x, void *b, long m, long a, char *s);
-void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv);
-
-extern "C" void setup_c0x2epatchermess(void)
+static void doselect(t_canvas *canvas, int pos_x, int pos_y, int pos_w, int pos_h)
 {
-	t_eclass *c;
-    
-	c = eclass_new("c.patchermess", (method)patchermess_new, (method)patchermess_free, (short)sizeof(t_patchermess), 0L, A_GIMME, 0);
-    class_addcreator((t_newmethod)patchermess_new, gensym("c.canvasmess"), A_GIMME, 0);
-    cream_initclass(c);
-    
-    eclass_addmethod(c, (method)patchermess_anything, "anything", A_GIMME, 0);
-    
-    eclass_register(CLASS_OBJ, c);
-	patchermess_class = c;
-}
-
-void *patchermess_new(t_symbol *s, int argc, t_atom *argv)
-{
-	t_patchermess *x =  NULL;
-    
-    x = (t_patchermess *)eobj_new(patchermess_class);
-    if(x)
-    {
-        if(canvas_getcurrent())
-        {
-            x->f_canvas = glist_getcanvas(canvas_getcurrent());
-        }
-        else
-            x->f_canvas = NULL;
-        
-    }
-    
-    return (x);
-}
-
-t_symbol* pm_sym_goppos = gensym("goppos");
-t_symbol* pm_sym_gopsize = gensym("gopsize");
-t_symbol* pm_sym_select = gensym("select");
-t_symbol* pm_sym_delete = gensym("delete");
-t_symbol* pm_sym_past = gensym("paste");
-
-void doselect(t_canvas *canvas, int pos_x, int pos_y, int pos_w, int pos_h)
-{
-   t_gobj *y;
+    t_gobj *y;
     for(y = canvas->gl_list; y; y = y->g_next)
     {
         if(!glist_isselected(canvas, y))
@@ -100,16 +56,16 @@ void doselect(t_canvas *canvas, int pos_x, int pos_y, int pos_w, int pos_h)
     }
 }
 
-void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv)
+static void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv)
 {
     t_canvas *canvas = eobj_getcanvas(x);
     if(argc && argv && canvas)
     {
-        if(s == pm_sym_select && canvas->gl_editor && argc > 3 && atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_FLOAT && atom_gettype(argv+3) == A_FLOAT)
+        if(s == cream_sym_select && canvas->gl_editor && argc > 3 && atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_FLOAT && atom_gettype(argv+3) == A_FLOAT)
         {
             doselect(canvas, atom_getfloat(argv), atom_getfloat(argv+1), atom_getfloat(argv+2) - atom_getfloat(argv), atom_getfloat(argv+3) - atom_getfloat(argv+1));
         }
-        else if(s == pm_sym_delete && canvas->gl_editor && argc > 3 && atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_FLOAT && atom_gettype(argv+3) == A_FLOAT)
+        else if(s == cream_sym_delete && canvas->gl_editor && argc > 3 && atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_FLOAT && atom_gettype(argv+3) == A_FLOAT)
         {
             t_gobj *y;
             t_atom av[3];
@@ -143,7 +99,7 @@ void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv
                 canvas->gl_dirty = 0;
             }
         }
-        else if(s == pm_sym_past && canvas->gl_editor && atom_gettype(argv) == A_SYM)
+        else if(s == cream_sym_past && canvas->gl_editor && atom_gettype(argv) == A_SYM)
         {
             unsigned int edit = canvas->gl_edit;
             unsigned int dirty = canvas->gl_dirty;
@@ -160,10 +116,10 @@ void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv
                 {
                     newcnv = (t_canvas *)s__X.s_thing;
                     vmess((t_pd *)newcnv, gensym("pop"), "i", 1);
-    
+                    
                     pd_typedmess((t_pd *)newcnv, gensym("selectall"), 0, NULL);
                     pd_typedmess((t_pd *)newcnv, gensym("copy"), 0, NULL);
-                    pd_typedmess((t_pd *)canvas, pm_sym_past, 0, NULL);
+                    pd_typedmess((t_pd *)canvas, cream_sym_past, 0, NULL);
                     canvas_free(newcnv);
                     t_atom av;
                     atom_setfloat(&av, edit);
@@ -178,7 +134,7 @@ void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv
             }
             
         }
-        else if(s == pm_sym_goppos && (canvas->gl_isgraph || canvas->gl_goprect))
+        else if(s == cream_sym_goppos && (canvas->gl_isgraph || canvas->gl_goprect))
         {
             t_atom av[9];
             atom_setfloat(av, canvas->gl_x1);
@@ -194,7 +150,7 @@ void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv
                 atom_setfloat(av+8, atom_getfloat(argv+1));
             pd_typedmess((t_pd *)canvas, gensym("coords"), 9, av);
         }
-        else if(s == pm_sym_gopsize && (canvas->gl_isgraph || canvas->gl_goprect))
+        else if(s == cream_sym_gopsize && (canvas->gl_isgraph || canvas->gl_goprect))
         {
             t_atom av[9];
             atom_setfloat(av, canvas->gl_x1);
@@ -217,14 +173,34 @@ void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv
     }
 }
 
-void patchermess_free(t_patchermess *x)
+static void *patchermess_new(t_symbol *s, int argc, t_atom *argv)
 {
-    eobj_free(x);
+    t_patchermess *x = (t_patchermess *)eobj_new(patchermess_class);
+    if(x)
+    {
+        if(canvas_getcurrent())
+        {
+            x->f_canvas = glist_getcanvas(canvas_getcurrent());
+        }
+        else
+        {
+            x->f_canvas = NULL;
+        }
+    }
+    return (x);
 }
 
-void patchermess_assist(t_patchermess *x, void *b, long m, long a, char *s)
+extern "C" void setup_c0x2epatchermess(void)
 {
-	;
+	t_eclass *c;
+    
+	c = eclass_new("c.patchermess", (method)patchermess_new, (method)eobj_free, (short)sizeof(t_patchermess), 0L, A_GIMME, 0);
+    class_addcreator((t_newmethod)patchermess_new, gensym("c.canvasmess"), A_GIMME, 0);
+    cream_initclass(c);
+    eclass_addmethod(c, (method)patchermess_anything, "anything", A_GIMME, 0);
+    eclass_register(CLASS_OBJ, c);
+	patchermess_class = c;
 }
+
 
 
