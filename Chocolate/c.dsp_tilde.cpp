@@ -148,7 +148,9 @@ static void dsp_tilde_open(t_dsp_tilde *x)
 
 static void dsp_tilde_start(t_dsp_tilde *x)
 {
-    canvas_resume_dsp(1);
+    t_atom av;
+    atom_setfloat(&av, 1);
+    pd_typedmess((t_pd *)gensym("pd")->s_thing, gensym("dsp"), 1, &av);
     x->f_state = 1;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
@@ -157,7 +159,9 @@ static void dsp_tilde_start(t_dsp_tilde *x)
 
 static void dsp_tilde_stop(t_dsp_tilde *x)
 {
-    canvas_suspend_dsp();
+    t_atom av;
+    atom_setfloat(&av, 0);
+    pd_typedmess((t_pd *)gensym("pd")->s_thing, gensym("dsp"), 1, &av);
     x->f_state = 0;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
