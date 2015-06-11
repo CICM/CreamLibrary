@@ -11,6 +11,7 @@ dist_c.libraryhelp_DATA = \
  c.colorpanel-help.pd \
  c.convolve~-help.pd \
  c.dsp~-help.pd \
+ c.fir~-help.pd \
  c.freeverb~-help.pd \
  c.gain~-help.pd \
  c.incdec-help.pd \

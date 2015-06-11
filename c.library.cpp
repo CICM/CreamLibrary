@@ -40,6 +40,7 @@ extern "C" void cream_setup(void)
     
     // Caramel
     setup_c0x2econvolve_tilde();
+    setup_c0x2efir_tilde();
     setup_c0x2efreeverb_tilde();
     setup_c0x2ematrix_tilde();
     

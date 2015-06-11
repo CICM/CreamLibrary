@@ -160,6 +160,7 @@ void convolve_set(t_convolve *x, t_symbol *s)
 
 void convolve_free(t_convolve *x)
 {
+    delete x->f_convolver;
 	eobj_dspfree((t_ebox *)x);
 }
 

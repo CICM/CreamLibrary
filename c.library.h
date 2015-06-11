@@ -23,8 +23,7 @@ extern "C"  void setup_c0x2esin_tilde(void);
 
 // Caramel
 extern "C" void setup_c0x2econvolve_tilde(void);
-extern "C" void setup_c0x2ecount_tilde(void);
-extern "C" void setup_c0x2efft_tilde(void);
+extern "C" void setup_c0x2efir_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
 extern "C" void setup_c0x2ematrix_tilde(void);
 
