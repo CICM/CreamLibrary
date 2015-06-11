@@ -37,7 +37,7 @@ void *sin_new(t_symbol *s, int argc, t_atom *argv)
 
 void sin_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
 {
-    while(--sampleframes)
+    while(--sampleframes >= 0)
     {
         outs[0][sampleframes] = sinf(ins[0][sampleframes]);
     }

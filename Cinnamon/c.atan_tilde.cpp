@@ -39,7 +39,7 @@ void *atan_new(t_symbol *s, int argc, t_atom *argv)
 
 void atan_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
-    while(--sampleframes)
+    while(--sampleframes >= 0)
     {
         outs[0][sampleframes] = atanf(ins[0][sampleframes]);
     }
@@ -59,7 +59,7 @@ void *atan2_new(t_symbol *s, int argc, t_atom *argv)
 
 void atan2_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
-    while(--sampleframes)
+    while(--sampleframes >= 0)
     {
         outs[0][sampleframes] = atan2f(ins[0][sampleframes], ins[1][sampleframes]);
     }
@@ -79,7 +79,7 @@ void *atanh_new(t_symbol *s, int argc, t_atom *argv)
 
 void atanh_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
-    while(--sampleframes)
+    while(--sampleframes >= 0)
     {
         outs[0][sampleframes] = atanhf(ins[0][sampleframes]);
     }
@@ -99,14 +99,14 @@ extern "C"  void setup_c0x2eatan_tilde(void)
     eclass_addmethod(c, (method) atan_dsp,       "dsp",              A_NULL, 0);
     eclass_register(CLASS_OBJ, c);
 	atan_class = c;
-    
+
     c = eclass_new("c.atan2~", (method)atan2_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
     eclass_dspinit(c);
 	cream_initclass(c);
     eclass_addmethod(c, (method) atan2_dsp,       "dsp",              A_NULL, 0);
     eclass_register(CLASS_OBJ, c);
 	atan2_class = c;
-    
+
     c = eclass_new("c.atanh~", (method)atanh_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
     eclass_dspinit(c);
 	cream_initclass(c);
