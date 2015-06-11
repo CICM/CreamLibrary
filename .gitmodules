@@ -1,6 +1,3 @@
 [submodule "ThirdParty/PureData"]
 	path = ThirdParty/PureData
 	url = https://pierreguillot@github.com/CICM/CicmWrapper.git
-[submodule "ThirdParty/LibPd"]
-	path = ThirdParty/LibPd
-	url = https://github.com/libpd/libpd.git
