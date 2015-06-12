@@ -220,14 +220,14 @@ void number_float(t_number *x, t_floatarg f)
 {
     x->f_value = f;
     number_output(x);
-    ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 void number_set(t_number *x, t_floatarg f)
 {
     x->f_value = f;
-    ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -260,7 +260,7 @@ t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sender, vo
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-			ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
 		}
         if(s == cream_sym_fontsize || s == cream_sym_fontname)
         {
@@ -340,7 +340,7 @@ void draw_background(t_number *x, t_object *view, t_rect *rect)
 void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
 {
     float width;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("value_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_value_layer, rect->width, rect->height);
 	t_etext *jtl = etext_layout_create();
 #ifdef __APPLE__
     width = sys_fontwidth(ebox_getfontsize((t_ebox *)x)) + 8;
@@ -408,16 +408,16 @@ void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
 #endif
 
         etext_layout_draw(jtl, g);
-		ebox_end_layer((t_ebox*)x, gensym("value_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
         etext_layout_destroy(jtl);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("value_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_value_layer, 0., 0.);
 }
 
 void draw_value_text(t_number *x,  t_object *view, t_rect *rect)
 {
     float width;
-    t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("value_layer"), rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_value_layer, rect->width, rect->height);
 	t_etext *jtl = etext_layout_create();
 #ifdef __APPLE__
     width = sys_fontwidth(ebox_getfontsize((t_ebox *)x)) + 8;
@@ -435,10 +435,10 @@ void draw_value_text(t_number *x,  t_object *view, t_rect *rect)
         etext_layout_set(jtl, number, &x->j_box.b_font, width, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
 
         etext_layout_draw(jtl, g);
-		ebox_end_layer((t_ebox*)x, gensym("value_layer"));
+		ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
         etext_layout_destroy(jtl);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("value_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_value_layer, 0., 0.);
 }
 
 void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -491,7 +491,7 @@ void number_mousedrag(t_number *x, t_object *patcherview, t_pt pt, long modifier
     
     x->f_value = value;
     number_output(x);
-    ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -501,7 +501,7 @@ void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long modifiers
     {
         x->f_mode = 1;
         strcpy(x->f_textvalue, "");
-        ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -542,7 +542,7 @@ void number_key(t_number *x, t_object *patcherview, char textcharacter, long mod
         }
     }
 
-    ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -560,7 +560,7 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
         else
             strcpy(x->f_textvalue, "");
 
-        ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
     else if (textcharacter == EKEY_TAB || textcharacter == EKEY_ENTER)
@@ -569,7 +569,7 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
         x->f_value = atof(x->f_textvalue);
 
         number_output(x);
-        ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
     else if (textcharacter == EKEY_ESC)
@@ -577,7 +577,7 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
         x->f_mode = 0;
         strcpy(x->f_textvalue, "");
 
-        ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -586,7 +586,7 @@ void number_deserted(t_number *x)
 {
     x->f_mode = 0;
     strcpy(x->f_textvalue, "");
-    ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -615,7 +615,7 @@ t_pd_err number_min_set(t_number *x, t_object *attr, long ac, t_atom *av)
     {
         atom_setsym(&x->f_min, s_null);
     }
-    ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
 }
@@ -641,7 +641,7 @@ t_pd_err number_max_set(t_number *x, t_object *attr, long ac, t_atom *av)
         atom_setsym(&x->f_max, s_null);
     }
 
-    ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
 }
@@ -663,7 +663,7 @@ t_pd_err number_minmax_set(t_number *x, t_object *attr, long ac, t_atom *av)
         atom_setsym(&x->f_max, s_null);
     }
     
-    ebox_invalidate_layer((t_ebox *)x, gensym("value_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
 }
