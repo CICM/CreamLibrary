@@ -105,8 +105,6 @@
 		8FD167DA196FCA1D00D5104D /* ebox_draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 8FD165CB196FCA1D00D5104D /* ebox_draw.c */; };
 		8FD167DB196FCA1D00D5104D /* ebox_handle.c in Sources */ = {isa = PBXBuildFile; fileRef = 8FD165CC196FCA1D00D5104D /* ebox_handle.c */; };
 		8FD167DC196FCA1D00D5104D /* ebox_handle.c in Sources */ = {isa = PBXBuildFile; fileRef = 8FD165CC196FCA1D00D5104D /* ebox_handle.c */; };
-		8FD167DD196FCA1D00D5104D /* ebox_patcher.c in Sources */ = {isa = PBXBuildFile; fileRef = 8FD165CD196FCA1D00D5104D /* ebox_patcher.c */; };
-		8FD167DE196FCA1D00D5104D /* ebox_patcher.c in Sources */ = {isa = PBXBuildFile; fileRef = 8FD165CD196FCA1D00D5104D /* ebox_patcher.c */; };
 		8FD167DF196FCA1D00D5104D /* ebox_window.c in Sources */ = {isa = PBXBuildFile; fileRef = 8FD165CE196FCA1D00D5104D /* ebox_window.c */; };
 		8FD167E0196FCA1D00D5104D /* ebox_window.c in Sources */ = {isa = PBXBuildFile; fileRef = 8FD165CE196FCA1D00D5104D /* ebox_window.c */; };
 		8FD167E1196FCA1D00D5104D /* eclass.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD165D0196FCA1D00D5104D /* eclass.h */; };
@@ -217,7 +215,6 @@
 		8FD165CA196FCA1D00D5104D /* ebox_basic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ebox_basic.c; sourceTree = "<group>"; };
 		8FD165CB196FCA1D00D5104D /* ebox_draw.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ebox_draw.c; sourceTree = "<group>"; };
 		8FD165CC196FCA1D00D5104D /* ebox_handle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ebox_handle.c; sourceTree = "<group>"; };
-		8FD165CD196FCA1D00D5104D /* ebox_patcher.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ebox_patcher.c; sourceTree = "<group>"; };
 		8FD165CE196FCA1D00D5104D /* ebox_window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ebox_window.c; sourceTree = "<group>"; };
 		8FD165D0196FCA1D00D5104D /* eclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eclass.h; sourceTree = "<group>"; };
 		8FD165D1196FCA1D00D5104D /* eclass_attrgetter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = eclass_attrgetter.c; sourceTree = "<group>"; };
@@ -394,7 +391,6 @@
 				8FD165CA196FCA1D00D5104D /* ebox_basic.c */,
 				8FD165CB196FCA1D00D5104D /* ebox_draw.c */,
 				8FD165CC196FCA1D00D5104D /* ebox_handle.c */,
-				8FD165CD196FCA1D00D5104D /* ebox_patcher.c */,
 				8FD165CE196FCA1D00D5104D /* ebox_window.c */,
 			);
 			path = ebox;
@@ -633,7 +629,6 @@
 				8FB8EB5519007B04005FAF6A /* c.knob.cpp in Sources */,
 				8FD167E5196FCA1D00D5104D /* eclass_attrnew.c in Sources */,
 				8FD16815196FCA1D00D5104D /* eobj_dsp.c in Sources */,
-				8FD167DD196FCA1D00D5104D /* ebox_patcher.c in Sources */,
 				8FD167D5196FCA1D00D5104D /* ebox_attr.c in Sources */,
 				8FB8EB4B19007B04005FAF6A /* FFTConvolver.cpp in Sources */,
 			);
@@ -702,7 +697,6 @@
 				8FAC0BE01969731800E09ACB /* c.knob.cpp in Sources */,
 				8FD167E6196FCA1D00D5104D /* eclass_attrnew.c in Sources */,
 				8FD16816196FCA1D00D5104D /* eobj_dsp.c in Sources */,
-				8FD167DE196FCA1D00D5104D /* ebox_patcher.c in Sources */,
 				8FD167D6196FCA1D00D5104D /* ebox_attr.c in Sources */,
 				8FAC0BE11969731800E09ACB /* FFTConvolver.cpp in Sources */,
 			);
