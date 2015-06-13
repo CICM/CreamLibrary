@@ -54,8 +54,8 @@ void rslider_free(t_rslider *x);
 void rslider_assist(t_rslider *x, void *b, long m, long a, char *s);
 
 void rslider_float(t_rslider *x, float f);
-void rslider_set(t_rslider *x, t_symbol* s, long argc, t_atom* argv);
-void rslider_list(t_rslider *x, t_symbol* s, long argc, t_atom* argv);
+void rslider_set(t_rslider *x, t_symbol* s, int argc, t_atom *argv);
+void rslider_list(t_rslider *x, t_symbol* s, int argc, t_atom *argv);
 
 void rslider_bang(t_rslider *x);
 void rslider_output(t_rslider *x);
@@ -202,13 +202,13 @@ void rslider_oksize(t_rslider *x, t_rect *newrect)
     }
 }
 
-void rslider_list(t_rslider *x, t_symbol* s, long argc, t_atom* argv)
+void rslider_list(t_rslider *x, t_symbol* s, int argc, t_atom *argv)
 {
     rslider_set(x, s, argc, argv);
     rslider_output(x);
 }
 
-void rslider_set(t_rslider *x, t_symbol* s, long argc, t_atom* argv)
+void rslider_set(t_rslider *x, t_symbol* s, int argc, t_atom *argv)
 {
     if(argc > 0 && atom_gettype(argv) == A_FLOAT)
     {

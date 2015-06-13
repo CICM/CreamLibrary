@@ -47,14 +47,14 @@ void radio_free(t_radio *x);
 void radio_assist(t_radio *x, void *b, long m, long a, char *s);
 
 void radio_float(t_radio *x, float f);
-void radio_set(t_radio *x, t_symbol* s, long argc, t_atom* argv);
-void radio_list(t_radio *x, t_symbol* s, long argc, t_atom* argv);
+void radio_set(t_radio *x, t_symbol* s, int argc, t_atom *argv);
+void radio_list(t_radio *x, t_symbol* s, int argc, t_atom *argv);
 void radio_bang(t_radio *x);
 void radio_output(t_radio *x);
 
 t_pd_err radio_notify(t_radio *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
-t_pd_err radio_nitems_set(t_radio *x, t_object *attr, long ac, t_atom *av);
-t_pd_err radio_mode_set(t_radio *x, t_object *attr, long ac, t_atom *av);
+t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av);
+t_pd_err radio_mode_set(t_radio *x, t_object *attr, int ac, t_atom *av);
 
 void radio_preset(t_radio *x, t_binbuf *b);
 
@@ -188,7 +188,7 @@ void radio_oksize(t_radio *x, t_rect *newrect)
         newrect->height++;
 }
 
-void radio_set(t_radio *x, t_symbol* s, long argc, t_atom* argv)
+void radio_set(t_radio *x, t_symbol* s, int argc, t_atom *argv)
 {
     int i;
     if(argc && argv)
@@ -230,7 +230,7 @@ void radio_float(t_radio *x, float f)
     radio_output(x);
 }
 
-void radio_list(t_radio *x, t_symbol* s, long argc, t_atom* argv)
+void radio_list(t_radio *x, t_symbol* s, int argc, t_atom *argv)
 {
     int i;
     if(argc && argv && x->f_mode)
@@ -500,7 +500,7 @@ void radio_preset(t_radio *x, t_binbuf *b)
     }
 }
 
-t_pd_err radio_nitems_set(t_radio *x, t_object *attr, long ac, t_atom *av)
+t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av)
 {
 	int i;
     t_atom argv[2];
@@ -522,7 +522,7 @@ t_pd_err radio_nitems_set(t_radio *x, t_object *attr, long ac, t_atom *av)
     return 0;
 }
 
-t_pd_err radio_mode_set(t_radio *x, t_object *attr, long ac, t_atom *av)
+t_pd_err radio_mode_set(t_radio *x, t_object *attr, int ac, t_atom *av)
 {
 	int i;
     if(ac && av && atom_gettype(av) == A_FLOAT)

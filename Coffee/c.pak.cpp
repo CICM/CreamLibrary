@@ -105,8 +105,8 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
             argc = 2;
         }
         x->f_argc = argc;
-        x->f_argv = (t_atom *)calloc(x->f_argc, sizeof(t_atom));
-        x->f_selectors = (char *)calloc(x->f_argc, sizeof(char));
+        x->f_argv = (t_atom *)calloc((size_t)x->f_argc, sizeof(t_atom));
+        x->f_selectors = (char *)calloc((size_t)x->f_argc, sizeof(char));
         eobj_proxynew(x);
         eobj_proxynew(x);
         if(argc > 0 &&atom_gettype(argv) == A_SYM && (atom_getsym(argv) == gensym("f") || atom_getsym(argv) == gensym("float")))

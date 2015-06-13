@@ -78,7 +78,7 @@ static void *fir_new(t_symbol *s, int argc, t_atom *argv)
 	return (x);
 }
 
-extern void fir_set_do(t_fir *x, t_symbol *s, char dsp)
+static void fir_set_do(t_fir *x, t_symbol *s, char dsp)
 {
     t_garray *a = NULL;
     if(s)
@@ -105,11 +105,11 @@ extern void fir_set_do(t_fir *x, t_symbol *s, char dsp)
         {
             if(x->f_size != size && x->f_buffer)
             {
-                x->f_buffer = (t_sample *)realloc(x->f_buffer, size * sizeof(t_sample));
+                x->f_buffer = (t_sample *)realloc(x->f_buffer, (size_t)size * sizeof(t_sample));
             }
             else
             {
-                x->f_buffer = (t_sample *)malloc(size * sizeof(t_sample));
+                x->f_buffer = (t_sample *)malloc((size_t)size * sizeof(t_sample));
             }
             if(x->f_buffer)
             {
@@ -160,12 +160,12 @@ extern void fir_set_do(t_fir *x, t_symbol *s, char dsp)
     x->f_name = s;
 }
 
-extern void fir_set(t_fir *x, t_symbol *s)
+static void fir_set(t_fir *x, t_symbol *s)
 {
     fir_set_do(x, s, 0);
 }
 
-extern void fir_free(t_fir *x)
+static void fir_free(t_fir *x)
 {
     if(x->f_buffer)
     {
@@ -178,7 +178,7 @@ extern void fir_free(t_fir *x)
 	eobj_dspfree((t_ebox *)x);
 }
 
-extern void fir_normalize(t_fir *x, float f)
+static void fir_normalize(t_fir *x, float f)
 {
     if(bool(f) != x->f_normalize)
     {
@@ -187,7 +187,7 @@ extern void fir_normalize(t_fir *x, float f)
     }
 }
 
-extern void fir_perform(t_fir *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
+static void fir_perform(t_fir *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
     const long buffersize  = x->f_size;
     const t_sample* buffer = x->f_buffer;
@@ -198,41 +198,41 @@ extern void fir_perform(t_fir *x, t_object *d, t_sample **ins, long ni, t_sample
         const t_sample* in = ins[0];
         if(g)
         {
-            for(long i = sampleframes>>3; i; --i, in += 8, out += 8)
+            for(long j = sampleframes>>3; j; --j, in += 8, out += 8)
             {
                 const t_sample f0 = in[0] * g, f1 = in[1] * g, f2 = in[2] * g, f3 = in[3] * g;
                 const t_sample f4 = in[4] * g, f5 = in[5] * g, f6 = in[6] * g, f7 = in[7] * g;
                 out[0] += f0; out[1] += f1; out[2] += f2; out[3] += f3;
                 out[4] += f4; out[5] += f5; out[6] += f6; out[7] += f7;
             }
-            for(long i = sampleframes&7; i; --i, in++, out++)
+            for(long j = sampleframes&7; j; --j, in++, out++)
             {
                 out[0] += g * in[0];
             }
         }
     }
     t_sample*  temp  = x->f_temp;
-    memcpy(outs[0], temp, sampleframes * sizeof(t_sample));
-    memcpy(temp, temp+sampleframes, (buffersize - 1) * sizeof(t_sample));
-    memset(temp+(buffersize - 1), 0, sampleframes * sizeof(t_sample));
+    memcpy(outs[0], temp, (size_t)sampleframes * sizeof(t_sample));
+    memcpy(temp, temp+sampleframes, (size_t)(buffersize - 1) * sizeof(t_sample));
+    memset(temp+(buffersize - 1), 0, (size_t)sampleframes * sizeof(t_sample));
 }
 
-extern void fir_dsp(t_fir *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+static void fir_dsp(t_fir *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
     fir_set_do(x, x->f_name, 1);
     if(x->f_name && x->f_buffer)
     {
         if(x->f_temp)
         {
-            x->f_temp = (t_sample *)realloc(x->f_temp ,(maxvectorsize + x->f_size - 1) * sizeof(t_sample));
+            x->f_temp = (t_sample *)realloc(x->f_temp , (size_t)(maxvectorsize + x->f_size - 1) * sizeof(t_sample));
         }
         else
         {
-            x->f_temp = (t_sample *)malloc((maxvectorsize + x->f_size - 1) * sizeof(t_sample));
+            x->f_temp = (t_sample *)malloc((size_t)(maxvectorsize + x->f_size - 1) * sizeof(t_sample));
         }
         if(x->f_temp)
         {
-            memset(x->f_temp, 0, (maxvectorsize + x->f_size - 1) * sizeof(t_sample));
+            memset(x->f_temp, 0, (size_t)(maxvectorsize + x->f_size - 1) * sizeof(t_sample));
             object_method(dsp, gensym("dsp_add"), x, (method)fir_perform, 0, NULL);
         }
         else

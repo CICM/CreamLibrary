@@ -73,7 +73,7 @@ extern "C" void setup_c0x2epatcherinfos(void)
 	patcherinfos_class = c;
 }
 
-void canvas_setgraph(t_glist *x, int flag, int nogoprect)
+static void canvas_setgraph(t_glist *x, int flag, int nogoprect)
 {
     if (!flag && glist_isgraph(x))
     {
@@ -118,7 +118,7 @@ void canvas_dialog_alias(t_glist *x, t_symbol *s, int argc, t_atom *argv)
     t_patcherinfos *z = NULL;
     
     t_float xperpix, yperpix, x1, y1, x2, y2, xpix, ypix, xmargin, ymargin;
-    int graphme, redraw = 0;
+    int graphme;
     
     xperpix = atom_getfloatarg(0, argc, argv);
     yperpix = atom_getfloatarg(1, argc, argv);
@@ -154,8 +154,6 @@ void canvas_dialog_alias(t_glist *x, t_symbol *s, int argc, t_atom *argv)
     }
     else
     {
-        if (xperpix != glist_dpixtodx(x, 1) || yperpix != glist_dpixtody(x, 1))
-            redraw = 1;
         if (xperpix > 0)
         {
             x->gl_x1 = 0;
@@ -214,7 +212,7 @@ void *patcherinfos_new(t_symbol *s, int argc, t_atom *argv)
         if(canvas_getcurrent())
         {
             x->f_canvas = glist_getcanvas(canvas_getcurrent());
-            for(int i = 0; i < x->f_canvas->gl_pd->c_size - 90; i++)
+            for(size_t i = 0; i < x->f_canvas->gl_pd->c_size - 90; i++)
             {
                 if(x->f_canvas->gl_obj.te_g.g_pd->c_methods[i].me_name == gensym("donecanvasdialog"))
                 {

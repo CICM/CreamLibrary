@@ -51,14 +51,14 @@ void matrixctrl_assist(t_matrixctrl *x, void *b, long m, long a, char *s);
 
 void matrixctrl_bang(t_matrixctrl *x);
 void matrixctrl_clear(t_matrixctrl *x);
-void matrixctrl_set(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av);
-void matrixctrl_list(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av);
+void matrixctrl_set(t_matrixctrl *x, t_symbol *s, int ac, t_atom *av);
+void matrixctrl_list(t_matrixctrl *x, t_symbol *s, int ac, t_atom *av);
 void matrixctrl_getrow(t_matrixctrl *x, float f);
 void matrixctrl_getcolumn(t_matrixctrl *x, float f);
 void matrixctrl_output(t_matrixctrl *x, int i, int j);
 
 t_pd_err matrixctrl_notify(t_matrixctrl *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
-t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, long ac, t_atom *av);
+t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, int ac, t_atom *av);
 
 void matrixctrl_getdrawparams(t_matrixctrl *x, t_object *patcherview, t_edrawparams *params);
 void matrixctrl_oksize(t_matrixctrl *x, t_rect *newrect);
@@ -252,7 +252,7 @@ void matrixctrl_getcolumn(t_matrixctrl *x, float f)
     }
 }
 
-void matrixctrl_set(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av)
+void matrixctrl_set(t_matrixctrl *x, t_symbol *s, int ac, t_atom *av)
 {
     if(ac && av)
     {
@@ -275,7 +275,7 @@ void matrixctrl_set(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av)
     }
 }
 
-void matrixctrl_list(t_matrixctrl *x, t_symbol *s, long ac, t_atom *av)
+void matrixctrl_list(t_matrixctrl *x, t_symbol *s, int ac, t_atom *av)
 {
     if(ac && av)
     {
@@ -426,7 +426,7 @@ void matrixctrl_preset(t_matrixctrl *x, t_binbuf *b)
     free(av);
 }
 
-t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, long ac, t_atom *av)
+t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac > 1 && av && atom_gettype(av) == A_FLOAT && atom_gettype(av+1) == A_FLOAT)
     {

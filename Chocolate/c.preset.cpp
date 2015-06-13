@@ -98,7 +98,7 @@ static void preset_float(t_preset *x, float f)
                 t_gotfn mpreset = zgetfn(&y->g_pd, cream_sym_preset);
                 if(mpreset && z->b_objpreset_id && z->b_objpreset_id != s_null && z->b_objpreset_id != cream_sym_nothing)
                 {
-                    long ac = 0;
+                    int ac = 0;
                     t_atom* av = NULL;
                     sprintf(id, "@%s", z->b_objpreset_id->s_name);
                     binbuf_get_attribute(b, gensym(id), &ac, &av);
@@ -130,7 +130,7 @@ void preset_interpolate(t_preset *x, float f)
     t_gotfn mpreset = NULL;
     t_gotfn minterp = NULL;
 
-    long acdo, acup, ac, max;
+    int acdo, acup, ac, max;
     t_atom *avdo, *avup, *av;
     char id[MAXPDSTRING];
     int i, j, indexdo, indexup, realdo, realup;
@@ -237,7 +237,7 @@ void preset_interpolate(t_preset *x, float f)
                 {
                     ratio = (float)(f - (realdo + 1)) / (float)(realup - realdo);
                     ac = acdo;
-                    av = (t_atom *)calloc(ac, sizeof(t_atom));
+                    av = (t_atom *)calloc((size_t)ac, sizeof(t_atom));
                     atom_setsym(av+1, atom_getsym(avdo+1));
                     for(j = 2; j < ac; j++)
                     {
@@ -497,7 +497,7 @@ static void preset_init(t_preset *x, t_binbuf *d)
 
 }
 
-static void preset_read(t_preset *x, t_symbol *s, long argc, t_atom *argv)
+static void preset_read(t_preset *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_binbuf *d = binbuf_new();
     if(d && argv && argc && atom_gettype(argv) == A_SYM)
@@ -520,7 +520,7 @@ static void preset_read(t_preset *x, t_symbol *s, long argc, t_atom *argv)
     }
 }
 
-static void preset_write(t_preset *x, t_symbol *s, long argc, t_atom *argv)
+static void preset_write(t_preset *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_binbuf *d = binbuf_new();
     if(d && argv && argc && atom_gettype(argv) == A_SYM)

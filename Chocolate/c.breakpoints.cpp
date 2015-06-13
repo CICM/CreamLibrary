@@ -158,7 +158,7 @@ static void breakpoints_getlist(t_breakpoints *x)
 {
     if(x->f_npoints)
     {
-        t_atom* av = (t_atom *)malloc(x->f_npoints * 2 * sizeof(t_atom));
+        t_atom* av = (t_atom *)malloc((size_t)(x->f_npoints * 2) * sizeof(t_atom));
         if(av)
         {
             for(int i = 0, j = 0; i < x->f_npoints; j += 2, i++)
@@ -273,7 +273,7 @@ static void breakpoints_add(t_breakpoints *x, t_symbol* s, int argc, t_atom* arg
             }
             else if(abs >= x->f_points[x->f_npoints-1].x)
             {
-                x->f_points = (t_pt *)realloc(x->f_points, (x->f_npoints + 1) * sizeof(t_pt));
+                x->f_points = (t_pt *)realloc(x->f_points, (size_t)(x->f_npoints + 1) * sizeof(t_pt));
                 if(x->f_points)
                 {
                     x->f_points[x->f_npoints].x = abs;
@@ -290,10 +290,10 @@ static void breakpoints_add(t_breakpoints *x, t_symbol* s, int argc, t_atom* arg
             }
             else if(abs <= x->f_points[0].x)
             {
-                x->f_points = (t_pt *)realloc(x->f_points, (x->f_npoints + 1) * sizeof(t_pt));
+                x->f_points = (t_pt *)realloc(x->f_points, (size_t)(x->f_npoints + 1) * sizeof(t_pt));
                 if(x->f_points)
                 {
-                    memcpy(x->f_points+1, x->f_points, (x->f_npoints) * sizeof(t_pt));
+                    memcpy(x->f_points+1, x->f_points,(size_t) (x->f_npoints) * sizeof(t_pt));
                     x->f_points[0].x = abs;
                     x->f_points[0].y = ord;
                     x->f_npoints++;
@@ -318,10 +318,10 @@ static void breakpoints_add(t_breakpoints *x, t_symbol* s, int argc, t_atom* arg
                         break;
                     }
                 }
-                x->f_points = (t_pt *)realloc(x->f_points, (x->f_npoints + 1) * sizeof(t_pt));
+                x->f_points = (t_pt *)realloc(x->f_points, (size_t)(x->f_npoints + 1) * sizeof(t_pt));
                 if(x->f_points)
                 {
-                    memcpy(x->f_points+index+1, x->f_points+index, (x->f_npoints - index) * sizeof(t_pt));
+                    memcpy(x->f_points+index+1, x->f_points+index, (size_t)(x->f_npoints - index) * sizeof(t_pt));
                     x->f_points[index].x = abs;
                     x->f_points[index].y = ord;
                     x->f_npoints++;
@@ -347,8 +347,16 @@ static void breakpoints_remove(t_breakpoints *x, t_symbol* s, int argc, t_atom* 
         if(argc == 1 && atom_gettype(argv) == A_FLOAT)
         {
             int index = pd_clip_minmax(atom_getfloat(argv), 0, x->f_npoints-1);
-            memcpy(x->f_points+index, x->f_points+index+1, (x->f_npoints - index - 1) * sizeof(t_pt));
-            x->f_points = (t_pt *)realloc(x->f_points, (x->f_npoints - 1) * sizeof(t_pt));
+            if(x->f_npoints > 1)
+            {
+                memcpy(x->f_points+index, x->f_points+index+1, (size_t)(x->f_npoints - index - 1) * sizeof(t_pt));
+                x->f_points = (t_pt *)realloc(x->f_points, (size_t)(x->f_npoints - 1) * sizeof(t_pt));
+            }
+            else
+            {
+                free(x->f_points);
+                x->f_points = NULL;
+            }
             if(x->f_points)
             {
                 x->f_npoints--;
@@ -721,7 +729,7 @@ static void breakpoints_mouseup(t_breakpoints *x, t_object *patcherview, t_pt pt
     ebox_redraw((t_ebox *)x);
 }
 
-void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
+static void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
 {
     char number[512];
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_text_layer, rect->width, rect->height);
@@ -758,7 +766,7 @@ void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
     ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
 }
 
-void draw_points(t_breakpoints *x, t_object *view, t_rect *rect)
+static void draw_points(t_breakpoints *x, t_object *view, t_rect *rect)
 {
     int i;
     float abs, ord;

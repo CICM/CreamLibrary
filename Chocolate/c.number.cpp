@@ -60,9 +60,9 @@ void number_float(t_number *x, t_floatarg f);
 void number_set(t_number *x, t_floatarg f);
 void number_output(t_number *x);
 t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
-t_pd_err number_min_set(t_number *x, t_object *attr, long ac, t_atom *av);
-t_pd_err number_max_set(t_number *x, t_object *attr, long ac, t_atom *av);
-t_pd_err number_minmax_set(t_number *x, t_object *attr, long ac, t_atom *av);
+t_pd_err number_min_set(t_number *x, t_object *attr, int ac, t_atom *av);
+t_pd_err number_max_set(t_number *x, t_object *attr, int ac, t_atom *av);
+t_pd_err number_minmax_set(t_number *x, t_object *attr, int ac, t_atom *av);
 
 void number_getdrawparams(t_number *x, t_object *patcherview, t_edrawparams *params);
 void number_oksize(t_number *x, t_rect *newrect);
@@ -356,7 +356,7 @@ void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
         char number[256];
 
         sprintf(number, "%i", (int)x->f_value);
-        size = strlen(number);
+        size = (int)strlen(number);
         // TRONQUER LE NOMBRE ENTIER
         if(size > x->f_max_decimal+1)
         {
@@ -595,7 +595,7 @@ void number_preset(t_number *x, t_binbuf *b)
     binbuf_addv(b, "sf", gensym("float"), x->f_value);
 }
 
-t_pd_err number_min_set(t_number *x, t_object *attr, long ac, t_atom *av)
+t_pd_err number_min_set(t_number *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -620,7 +620,7 @@ t_pd_err number_min_set(t_number *x, t_object *attr, long ac, t_atom *av)
     return 0;
 }
 
-t_pd_err number_max_set(t_number *x, t_object *attr, long ac, t_atom *av)
+t_pd_err number_max_set(t_number *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -646,7 +646,7 @@ t_pd_err number_max_set(t_number *x, t_object *attr, long ac, t_atom *av)
     return 0;
 }
 
-t_pd_err number_minmax_set(t_number *x, t_object *attr, long ac, t_atom *av)
+t_pd_err number_minmax_set(t_number *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac == 1)
     {

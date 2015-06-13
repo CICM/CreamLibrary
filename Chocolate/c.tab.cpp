@@ -62,7 +62,7 @@ void tab_clear(t_tab *x, t_symbol *s, int argc, t_atom *argv);
 void tab_clean(t_tab *x);
 
 void tab_float(t_tab *x, t_floatarg f);
-void tab_symbol(t_tab *x, t_symbol *s, long argc, t_atom *argv);
+void tab_symbol(t_tab *x, t_symbol *s, int argc, t_atom *argv);
 void tab_set(t_tab *x, t_symbol *s, int argc, t_atom *argv);
 void tab_output(t_tab *x);
 
@@ -193,7 +193,7 @@ extern "C" void setup_c0x2etab(void)
 
 // MENU GESTION //
 
-void tab_sizemustchange(t_tab *x)
+static void tab_sizemustchange(t_tab *x)
 {
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
@@ -223,7 +223,7 @@ void tab_sizemustchange(t_tab *x)
     }
 }
 
-t_symbol* tab_atoms_to_sym(t_atom* argv, long argc)
+static t_symbol* tab_atoms_to_sym(t_atom* argv, long argc)
 {
     int i;
     char temp[MAXPDSTRING];
@@ -238,7 +238,7 @@ t_symbol* tab_atoms_to_sym(t_atom* argv, long argc)
     return gensym(text);
 }
 
-long tab_symbol_exist(t_tab *x, t_symbol* s)
+static long tab_symbol_exist(t_tab *x, t_symbol* s)
 {
     long i;
     long j = -1;
@@ -346,7 +346,7 @@ void tab_clean(t_tab *x)
 
 // MENU SELECTION AND OUTPUT
 
-void tab_setfloat(t_tab *x, t_floatarg f)
+static void tab_setfloat(t_tab *x, t_floatarg f)
 {
     if(!x->f_toggle)
         return;
@@ -360,7 +360,7 @@ void tab_setfloat(t_tab *x, t_floatarg f)
     }
 }
 
-void tab_setsymbol(t_tab *x, t_symbol* s)
+static void tab_setsymbol(t_tab *x, t_symbol* s)
 {
     long i;
     if(!x->f_toggle)
@@ -389,7 +389,7 @@ void tab_float(t_tab *x, t_floatarg f)
     }
 }
 
-void tab_symbol(t_tab *x, t_symbol *s, long argc, t_atom *argv)
+void tab_symbol(t_tab *x, t_symbol *s, int argc, t_atom *argv)
 {
     int i;
     i = tab_symbol_exist(x, s);

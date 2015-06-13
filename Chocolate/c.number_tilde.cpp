@@ -57,7 +57,7 @@ static void number_tilde_output(t_number_tilde *x)
 static void number_tilde_perform(t_number_tilde *x, t_object *dsp, t_sample **ins, long ni, t_sample **outs, long no, long nsamples, long f,void *up)
 {
     x->f_peak_value = ins[0][0];
-    memcpy(outs[0], ins[0], nsamples * sizeof(t_sample));
+    memcpy(outs[0], ins[0], (size_t)nsamples * sizeof(t_sample));
     if(x->f_startclock)
     {
         x->f_startclock = 0;
@@ -137,7 +137,7 @@ static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
         float peak;
         char number[256];
         sprintf(number, "%i", (int)x->f_peak_value);
-        size = strlen(number);
+        size = (int)strlen(number);
         // TRONQUER LE NOMBRE ENTIER
         if(size > x->f_max_decimal+1)
         {

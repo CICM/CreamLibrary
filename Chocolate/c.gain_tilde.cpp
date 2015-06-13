@@ -68,7 +68,7 @@ void gain_dsp(t_gain *x, t_object *dsp, short *count, double samplerate, long ma
 void gain_perform(t_gain *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sf, long f,void *up);
 
 t_pd_err gain_notify(t_gain *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
-t_pd_err gain_ramp_set(t_gain *x, t_object *attr, long argc, t_atom *argv);
+t_pd_err gain_ramp_set(t_gain *x, t_object *attr, int argc, t_atom *argv);
 
 void gain_preset(t_gain *x, t_binbuf *b);
 
@@ -449,7 +449,7 @@ void gain_dblclick(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
     gain_float(x, 0.);
 }
 
-t_pd_err gain_ramp_set(t_gain *x, t_object *attr, long argc, t_atom *argv)
+t_pd_err gain_ramp_set(t_gain *x, t_object *attr, int argc, t_atom *argv)
 {
     if(argc && argv && atom_gettype(argv) == A_FLOAT)
     {

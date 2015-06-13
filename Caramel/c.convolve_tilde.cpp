@@ -48,31 +48,9 @@ typedef struct _convolve
     t_symbol*     f_buffer_name;
 } t_convolve;
 
-t_eclass *convolve_class;
+static t_eclass *convolve_class;
 
-void *convolve_new(t_symbol *s, int argc, t_atom *argv);
-void convolve_free(t_convolve *x);
-void convolve_dsp(t_convolve *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags);
-void convolve_set(t_convolve *x, t_symbol *s);
-void convolve_set_do(t_convolve *x, t_symbol *s, char dsp);
-void convolve_normalize(t_convolve *x, float f);
-
-extern "C"  void setup_c0x2econvolve_tilde(void)
-{
-	t_eclass *c;
-    
-	c = eclass_new("c.convolve~", (method)convolve_new, (method)convolve_free, (short)sizeof(t_convolve), 0L, A_GIMME, 0);
-    
-    eclass_dspinit(c);
-	cream_initclass(c);
-        eclass_addmethod(c, (method) convolve_dsp,       "dsp",              A_NULL, 0);
-    eclass_addmethod(c, (method) convolve_set,       "set",              A_SYM,  0);
-    eclass_addmethod(c, (method) convolve_normalize, "normalize",        A_LONG, 0);
-    eclass_register(CLASS_OBJ, c);
-	convolve_class = c;
-}
-
-void *convolve_new(t_symbol *s, int argc, t_atom *argv)
+static void *convolve_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_convolve *x =  NULL;
 
@@ -95,7 +73,7 @@ void *convolve_new(t_symbol *s, int argc, t_atom *argv)
 	return (x);
 }
 
-void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
+static void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
 {
     t_garray *a = NULL;
     x->f_buffer_name = s;
@@ -121,7 +99,7 @@ void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
         if(!dsp)
             dsp_state = canvas_suspend_dsp();
         
-        temp = (float *)malloc(buffer_size * sizeof(float));
+        temp = (float *)malloc((size_t)buffer_size * sizeof(float));
         for(int i = 0; i < buffer_size; i++)
         {
             temp[i] = buffer[i].w_float;
@@ -144,7 +122,7 @@ void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
             }
         }
         x->f_convolver->reset();
-        x->f_convolver->init(1024, temp, buffer_size);
+        x->f_convolver->init(1024, temp, (size_t)buffer_size);
         
         free(temp);
         if(!dsp)
@@ -153,18 +131,18 @@ void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
     
 }
 
-void convolve_set(t_convolve *x, t_symbol *s)
+static void convolve_set(t_convolve *x, t_symbol *s)
 {
     convolve_set_do(x, s, 0);
 }
 
-void convolve_free(t_convolve *x)
+static void convolve_free(t_convolve *x)
 {
     delete x->f_convolver;
 	eobj_dspfree((t_ebox *)x);
 }
 
-void convolve_normalize(t_convolve *x, float f)
+static void convolve_normalize(t_convolve *x, float f)
 {
     x->f_normalize = f;
     if(x->f_normalize < 1)
@@ -174,16 +152,31 @@ void convolve_normalize(t_convolve *x, float f)
     convolve_set_do(x, x->f_buffer_name, 0);
 }
 
-void convolve_perform(t_convolve *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
+static void convolve_perform(t_convolve *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
-    x->f_convolver->process(ins[0], outs[0], sampleframes);
+    x->f_convolver->process(ins[0], outs[0], (size_t)sampleframes);
 }
 
-void convolve_dsp(t_convolve *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+static void convolve_dsp(t_convolve *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
     convolve_set_do(x, x->f_buffer_name, 1);
     if(x->f_buffer_name)
         object_method(dsp, gensym("dsp_add"), x, (method)convolve_perform, 0, NULL);
+}
+
+extern "C"  void setup_c0x2econvolve_tilde(void)
+{
+    t_eclass *c;
+    
+    c = eclass_new("c.convolve~", (method)convolve_new, (method)convolve_free, (short)sizeof(t_convolve), 0L, A_GIMME, 0);
+    
+    eclass_dspinit(c);
+    cream_initclass(c);
+    eclass_addmethod(c, (method) convolve_dsp,       "dsp",              A_NULL, 0);
+    eclass_addmethod(c, (method) convolve_set,       "set",              A_SYM,  0);
+    eclass_addmethod(c, (method) convolve_normalize, "normalize",        A_LONG, 0);
+    eclass_register(CLASS_OBJ, c);
+    convolve_class = c;
 }
 
 

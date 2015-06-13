@@ -89,10 +89,10 @@ static void *loadmess_new(t_symbol *s, int argc, t_atom *argv)
         if(argc && argv)
         {
             x->l_argc = argc;
-            x->l_argv = (t_atom *)malloc(x->l_argc * sizeof(t_atom));
+            x->l_argv = (t_atom *)malloc((size_t)x->l_argc * sizeof(t_atom));
             if(x->l_argv)
             {
-                memcpy(x->l_argv, argv, sizeof(t_atom) * x->l_argc);
+                memcpy(x->l_argv, argv, sizeof(t_atom) * (size_t)x->l_argc);
                 if(x->l_argc == 1)
                 {
                     if(atom_gettype(argv) == A_FLOAT)

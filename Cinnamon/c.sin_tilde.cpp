@@ -26,16 +26,16 @@
 
 #include "../c.library.h"
 
-t_eclass *sin_class;
+static t_eclass *sin_class;
 
-void *sin_new(t_symbol *s, int argc, t_atom *argv)
+static void *sin_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_edspobj *x = (t_edspobj *)eobj_new(sin_class);
     eobj_dspsetup((t_ebox *)x, 1, 1);
 	return (x);
 }
 
-void sin_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
+static void sin_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, long no, long sampleframes, long f,void *up)
 {
     while(--sampleframes >= 0)
     {
@@ -43,7 +43,7 @@ void sin_perform(t_edspobj *x, t_object *d, float **ins, long ni, float **outs, 
     }
 }
 
-void sin_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+static void sin_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
     object_method(dsp, gensym("dsp_add"), x, (method)sin_perform, 0, NULL);
 }

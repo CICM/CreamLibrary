@@ -39,7 +39,7 @@ typedef struct  _patcherargs
     long        f_n_attrs;
     t_symbol**  f_attr_name;
     t_atom**    f_attr_vals;
-    long*       f_attr_size;
+    int*        f_attr_size;
     double      f_time;
     char        f_init;
 
@@ -67,7 +67,7 @@ static char patcherargs_initialize(t_patcherargs *x)
             if(argc > x->f_argc)
             {
                 x->f_argc = argc;
-                x->f_args = (t_atom *)realloc(x->f_args, x->f_argc * sizeof(t_atom));
+                x->f_args = (t_atom *)realloc(x->f_args, (size_t)x->f_argc * sizeof(t_atom));
                 if(!x->f_args)
                 {
                     x->f_argc = 0;
@@ -76,17 +76,17 @@ static char patcherargs_initialize(t_patcherargs *x)
                 }
             }
             
-            memcpy(x->f_args, av, argc * sizeof(t_atom));
+            memcpy(x->f_args, av, (size_t)argc * sizeof(t_atom));
             
             for(int i = 0; i < x->f_n_attrs; i++)
             {
-                long nattr;
+                int nattr;
                 t_atom* attrs;
                 if(!atoms_get_attribute(ac-argc, av+argc, x->f_attr_name[i], &nattr, &attrs))
                 {
                     x->f_attr_size[i] = nattr;
-                    x->f_attr_vals[i] = (t_atom *)realloc(x->f_attr_vals[i], nattr * sizeof(t_atom));
-                    memcpy(x->f_attr_vals[i], attrs, nattr * sizeof(t_atom));
+                    x->f_attr_vals[i] = (t_atom *)realloc(x->f_attr_vals[i], (size_t)nattr * sizeof(t_atom));
+                    memcpy(x->f_attr_vals[i], attrs, (size_t)nattr * sizeof(t_atom));
                     free(attrs);
                 }
             }
@@ -147,14 +147,14 @@ static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
     if(x)
     {
         x->f_argc = atoms_get_attributes_offset(argc, argv);
-        x->f_args = (t_atom *)malloc(x->f_argc * sizeof(t_atom));
-        memcpy(x->f_args, argv, x->f_argc * sizeof(t_atom));
+        x->f_args = (t_atom *)malloc((size_t)x->f_argc * sizeof(t_atom));
+        memcpy(x->f_args, argv, (size_t)x->f_argc * sizeof(t_atom));
         
         x->f_n_attrs = atoms_get_keys(argc-x->f_argc, argv+x->f_argc, &x->f_attr_name);
         if(x->f_n_attrs)
         {
-            x->f_attr_vals = (t_atom **)malloc(x->f_n_attrs * sizeof(t_atom *));
-            x->f_attr_size = (long *)malloc(x->f_n_attrs * sizeof(long));
+            x->f_attr_vals = (t_atom **)malloc((size_t)x->f_n_attrs * sizeof(t_atom *));
+            x->f_attr_size = (int *)malloc((size_t)x->f_n_attrs * sizeof(int));
             for(i = 0; i < x->f_n_attrs; i++)
             {
                 atoms_get_attribute(argc-x->f_argc, argv+x->f_argc, x->f_attr_name[i], &x->f_attr_size[i], &x->f_attr_vals[i]);

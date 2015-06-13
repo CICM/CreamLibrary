@@ -59,8 +59,8 @@ void menu_assist(t_menu *x, void *b, long m, long a, char *s);
 
 
 t_pd_err menu_notify(t_menu *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
-t_pd_err menu_states_set(t_menu *x, t_object *attr, long ac, t_atom *av);
-t_pd_err menu_items_set(t_menu *x, t_object *attr, long ac, t_atom *av);
+t_pd_err menu_states_set(t_menu *x, t_object *attr, int ac, t_atom *av);
+t_pd_err menu_items_set(t_menu *x, t_object *attr, int ac, t_atom *av);
 t_pd_err menu_items_get(t_menu *x, t_object *attr, long* ac, t_atom **av);
 
 void menu_append(t_menu *x, t_symbol *s, int argc, t_atom *argv);
@@ -205,7 +205,7 @@ void menu_assist(t_menu *x, void *b, long m, long a, char *s)
 
 // MENU GESTION //
 
-t_symbol* menu_atoms_to_sym(t_atom* argv, long argc)
+static t_symbol* menu_atoms_to_sym(t_atom* argv, long argc)
 {
     int i;
     char temp[MAXPDSTRING];
@@ -220,7 +220,7 @@ t_symbol* menu_atoms_to_sym(t_atom* argv, long argc)
     return gensym(text);
 }
 
-long menu_symbol_exist(t_menu *x, t_symbol* s)
+static long menu_symbol_exist(t_menu *x, t_symbol* s)
 {
     long i;
     long j = -1;
@@ -362,7 +362,7 @@ void menu_clean(t_menu *x)
 
 // MENU SELECTION AND OUTPUT
 
-void menu_setfloat(t_menu *x, t_floatarg f)
+static void menu_setfloat(t_menu *x, t_floatarg f)
 {
     if(f >= 0 && f < x->f_items_size)
     {
@@ -374,7 +374,7 @@ void menu_setfloat(t_menu *x, t_floatarg f)
     }
 }
 
-void menu_setsymbol(t_menu *x, t_symbol* s)
+static void menu_setsymbol(t_menu *x, t_symbol* s)
 {
     long i = menu_symbol_exist(x, s);
     if(i != -1)
@@ -394,7 +394,7 @@ void menu_float(t_menu *x, t_floatarg f)
 void menu_symbol(t_menu *x, t_symbol *s, int argc, t_atom *argv)
 {
     int i;
-    t_atom* av = (t_atom *)calloc(argc + 1, sizeof(t_atom));
+    t_atom* av = (t_atom *)calloc((size_t)(argc + 1), sizeof(t_atom));
     atom_setsym(av, s);
     for(i = 0; i < argc; i++)
         av[i+1] = argv[i];
@@ -617,7 +617,7 @@ void menu_mousemove(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
     }
 }
 
-t_pd_err menu_states_set(t_menu *x, t_object *attr, long ac, t_atom *av)
+t_pd_err menu_states_set(t_menu *x, t_object *attr, int ac, t_atom *av)
 {
     int i;
     if(ac && av)
@@ -639,7 +639,7 @@ void menu_preset(t_menu *x, t_binbuf *b)
     binbuf_addv(b, "sf", gensym("float"), (float)x->f_item_selected);
 }
 
-t_pd_err menu_items_set(t_menu *x, t_object *attr, long ac, t_atom *av)
+t_pd_err menu_items_set(t_menu *x, t_object *attr, int ac, t_atom *av)
 {
     char text[MAXPDSTRING];
     menu_clear(x, NULL, 0, NULL);
@@ -662,7 +662,7 @@ t_pd_err menu_items_get(t_menu *x, t_object *attr, long* ac, t_atom **av)
 {
     int i;
     *ac = x->f_items_size;
-    av[0] = (t_atom *)calloc(*ac, sizeof(t_atom));
+    av[0] = (t_atom *)calloc((size_t)(*ac), sizeof(t_atom));
     for(i = 0; i < *ac; i++)
     {
         atom_setsym(av[0]+i, x->f_items[i]);

@@ -40,7 +40,7 @@ typedef struct _bang
     
 } t_bang;
 
-t_eclass *bang_class;
+static t_eclass *bang_class;
 
 static void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params)
 {
@@ -60,7 +60,7 @@ static void bang_oksize(t_bang *x, t_rect *newrect)
         newrect->height++;
 }
 
-static void bang_output(t_bang *x, t_symbol* s, long argc, t_atom* argv)
+static void bang_output(t_bang *x, t_symbol* s, int argc, t_atom *argv)
 {
     x->f_active = 1;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
@@ -74,7 +74,7 @@ static void bang_output(t_bang *x, t_symbol* s, long argc, t_atom* argv)
 
 static t_pd_err bang_notify(t_bang *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == cream_sym_attr_modified)
+	if(msg == cream_sym_attr_modified)
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_bacolor)
 		{

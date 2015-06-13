@@ -41,7 +41,7 @@ void *matrix_new(t_symbol *s, int argc, t_atom *argv);
 void matrix_free(t_matrix_tilde *x);
 void matrix_assist(t_matrix_tilde *x, void *b, long m, long a, char *s);
 
-void matrix_list(t_matrix_tilde *x, t_symbol *s, long ac, t_atom *av);
+void matrix_list(t_matrix_tilde *x, t_symbol *s, int ac, t_atom *av);
 
 void matrix_dsp(t_matrix_tilde *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags);
 void matrix_perform(t_matrix_tilde *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sf, long f,void *up);
@@ -78,7 +78,7 @@ void *matrix_new(t_symbol *s, int argc, t_atom *argv)
         {
             x->f_outputs = pd_clip_min(atom_getlong(argv+1), 1);
         }
-        x->f_values = (t_sample *)malloc(x->f_inputs * x->f_outputs * sizeof(t_sample));
+        x->f_values = (t_sample *)malloc((size_t)(x->f_inputs * x->f_outputs) * sizeof(t_sample));
         eobj_dspsetup((t_ebox *)x, x->f_inputs, x->f_outputs);
         x->j_box.d_misc = E_NO_INPLACE;
     }
@@ -93,7 +93,7 @@ void matrix_free(t_matrix_tilde *x)
     free(x->f_values);
 }
 
-void matrix_list(t_matrix_tilde *x, t_symbol *s, long ac, t_atom *av)
+void matrix_list(t_matrix_tilde *x, t_symbol *s, int ac, t_atom *av)
 {
     if(ac && av)
     {
@@ -130,7 +130,7 @@ void matrix_perform(t_matrix_tilde *x, t_object *d, t_sample **ins, long ninputs
     while(noutputs--)
     {
         long nins = ninputs;
-        memset(outs[noutputs], 0, sampleframes * sizeof(t_sample));
+        memset(outs[noutputs], 0, (size_t)sampleframes * sizeof(t_sample));
         while(nins--)
         {
             long frames = sampleframes;

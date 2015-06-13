@@ -56,7 +56,7 @@ static void doselect(t_canvas *canvas, int pos_x, int pos_y, int pos_w, int pos_
     }
 }
 
-static void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_atom* argv)
+static void patchermess_anything(t_patchermess *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_canvas *canvas = eobj_getcanvas(x);
     if(argc && argv && canvas)
@@ -108,7 +108,7 @@ static void patchermess_anything(t_patchermess *x, t_symbol *s, long argc, t_ato
             int fd = canvas_open(canvas, atom_getsym(argv)->s_name, ".pd", dirbuf, &nameptr, MAXPDSTRING, 0);
             if(fd >= 0)
             {
-                unsigned int dsp = canvas_suspend_dsp();
+                int dsp = canvas_suspend_dsp();
                 t_pd *boundx = s__X.s_thing;
                 s__X.s_thing = 0;
                 binbuf_evalfile(gensym(nameptr), gensym(dirbuf));

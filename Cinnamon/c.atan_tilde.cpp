@@ -26,18 +26,18 @@
 
 #include "../c.library.h"
 
-t_eclass *atan_class;
-t_eclass *atan2_class;
-t_eclass *atanh_class;
+static t_eclass *atan_class;
+static t_eclass *atan2_class;
+static t_eclass *atanh_class;
 
-void *atan_new(t_symbol *s, int argc, t_atom *argv)
+static void *atan_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_edspobj *x = (t_edspobj *)eobj_new(atan_class);
     eobj_dspsetup((t_ebox *)x, 1, 1);
 	return (x);
 }
 
-void atan_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
+static void atan_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
     while(--sampleframes >= 0)
     {
@@ -45,19 +45,19 @@ void atan_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample *
     }
 }
 
-void atan_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+static void atan_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
     object_method(dsp, gensym("dsp_add"), x, (method)atan_perform, 0, NULL);
 }
 
-void *atan2_new(t_symbol *s, int argc, t_atom *argv)
+static void *atan2_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_edspobj *x = (t_edspobj *)eobj_new(atan2_class);
     eobj_dspsetup((t_ebox *)x, 2, 1);
 	return (x);
 }
 
-void atan2_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
+static void atan2_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
 {
     while(--sampleframes >= 0)
     {
@@ -65,27 +65,19 @@ void atan2_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample 
     }
 }
 
-void atan2_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+static void atan2_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
     object_method(dsp, gensym("dsp_add"), x, (method)atan2_perform, 0, NULL);
 }
 
-void *atanh_new(t_symbol *s, int argc, t_atom *argv)
+static void *atanh_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_edspobj *x = (t_edspobj *)eobj_new(atan2_class);
     eobj_dspsetup((t_ebox *)x, 2, 1);
 	return (x);
 }
 
-void atanh_perform(t_edspobj *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)
-{
-    while(--sampleframes >= 0)
-    {
-        outs[0][sampleframes] = atanhf(ins[0][sampleframes]);
-    }
-}
-
-void atanh_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+static void atanh_dsp(t_edspobj *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
     object_method(dsp, gensym("dsp_add"), x, (method)atan2_perform, 0, NULL);
 }

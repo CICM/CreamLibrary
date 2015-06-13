@@ -131,7 +131,7 @@ static void dsp_tilde_paint(t_dsp_tilde *x, t_object *view)
     draw_background(x, view, &rect);
 }
 
-static void dsp_tilde_anything(t_dsp_tilde *x, t_symbol* s, long argc, t_atom* argv)
+static void dsp_tilde_anything(t_dsp_tilde *x, t_symbol* s, int argc, t_atom *argv)
 {
     if(s == gensym("dsp") && argc && atom_gettype(argv) == A_FLOAT)
     {

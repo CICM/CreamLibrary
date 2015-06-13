@@ -49,13 +49,13 @@ void *plane_new(t_symbol *s, int argc, t_atom *argv);
 void plane_free(t_plane *x);
 void plane_assist(t_plane *x, void *b, long m, long a, char *s);
 
-void plane_set(t_plane *x, t_symbol *s, long ac, t_atom *av);
-void plane_list(t_plane *x, t_symbol *s, long ac, t_atom *av);
+void plane_set(t_plane *x, t_symbol *s, int ac, t_atom *av);
+void plane_list(t_plane *x, t_symbol *s, int ac, t_atom *av);
 void plane_output(t_plane *x);
 
 t_pd_err plane_notify(t_plane *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
 
-t_pd_err plane_bound_set(t_plane *x, t_object *attr, long ac, t_atom *av);
+t_pd_err plane_bound_set(t_plane *x, t_object *attr, int ac, t_atom *av);
 
 void plane_getdrawparams(t_plane *x, t_object *patcherview, t_edrawparams *params);
 void plane_oksize(t_plane *x, t_rect *newrect);
@@ -169,7 +169,7 @@ void plane_oksize(t_plane *x, t_rect *newrect)
     newrect->height = pd_clip_min(newrect->height, 15.);
 }
 
-void plane_set(t_plane *x, t_symbol *s, long ac, t_atom *av)
+void plane_set(t_plane *x, t_symbol *s, int ac, t_atom *av)
 {
     if(ac && av)
     {
@@ -192,7 +192,7 @@ void plane_set(t_plane *x, t_symbol *s, long ac, t_atom *av)
     }
 }
 
-void plane_list(t_plane *x, t_symbol *s, long ac, t_atom *av)
+void plane_list(t_plane *x, t_symbol *s, int ac, t_atom *av)
 {
     plane_set(x, NULL, ac, av);
     plane_output(x);
@@ -238,7 +238,7 @@ t_pd_err plane_notify(t_plane *x, t_symbol *s, t_symbol *msg, void *sender, void
 	return 0;
 }
 
-t_pd_err plane_bound_set(t_plane *x, t_object *attr, long ac, t_atom *av)
+t_pd_err plane_bound_set(t_plane *x, t_object *attr, int ac, t_atom *av)
 {
 	t_atom argv[2];
     

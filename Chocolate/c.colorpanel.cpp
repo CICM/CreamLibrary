@@ -55,16 +55,16 @@ void *colorpanel_new(t_symbol *s, int argc, t_atom *argv);
 void colorpanel_free(t_colorpanel *x);
 void colorpanel_assist(t_colorpanel *x, void *b, long m, long a, char *s);
 
-void colorpanel_set(t_colorpanel *x, t_symbol *s, long ac, t_atom *av);
-void colorpanel_list(t_colorpanel *x, t_symbol *s, long ac, t_atom *av);
+void colorpanel_set(t_colorpanel *x, t_symbol *s, int ac, t_atom *av);
+void colorpanel_list(t_colorpanel *x, t_symbol *s, int ac, t_atom *av);
 void colorpanel_output(t_colorpanel *x);
 
 t_pd_err colorpanel_notify(t_colorpanel *x, t_symbol *s, t_symbol *msg, void *sender, void *data);
-t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av);
-t_pd_err colorpanel_reverse_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av);
-t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av);
-t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av);
-t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av);
+t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av);
+t_pd_err colorpanel_reverse_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av);
+t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av);
+t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av);
+t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av);
 
 void colorpanel_getdrawparams(t_colorpanel *x, t_object *patcherview, t_edrawparams *params);
 void colorpanel_oksize(t_colorpanel *x, t_rect *newrect);
@@ -236,7 +236,7 @@ void colorpanel_oksize(t_colorpanel *x, t_rect *newrect)
     newrect->height = pd_clip_min(newrect->height, 10.);
 }
 
-void colorpanel_set(t_colorpanel *x, t_symbol *s, long ac, t_atom *av)
+void colorpanel_set(t_colorpanel *x, t_symbol *s, int ac, t_atom *av)
 {
     if(ac > 1 && av)
     {
@@ -250,7 +250,7 @@ void colorpanel_set(t_colorpanel *x, t_symbol *s, long ac, t_atom *av)
     }
 }
 
-void colorpanel_list(t_colorpanel *x, t_symbol *s, long ac, t_atom *av)
+void colorpanel_list(t_colorpanel *x, t_symbol *s, int ac, t_atom *av)
 {
     if(ac > 1 && av)
     {
@@ -417,7 +417,7 @@ void colorpanel_preset(t_colorpanel *x, t_binbuf *b)
    binbuf_addv(b, "sff", gensym("list"), x->f_color_picked.x, x->f_color_picked.y);
 }
 
-void colorpanel_computecolors(t_colorpanel *x)
+static void colorpanel_computecolors(t_colorpanel *x)
 {
     int i, j;
     t_hsla color_ref;
@@ -471,7 +471,7 @@ void colorpanel_computecolors(t_colorpanel *x)
     ebox_redraw((t_ebox *)x);
 }
 
-t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av)
+t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     int i;
     if(ac > 1 && av && atom_gettype(av) == A_FLOAT && atom_gettype(av+1) == A_FLOAT)
@@ -494,7 +494,7 @@ t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, long ac, t_atom 
     return 0;
 }
 
-t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av)
+t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -504,7 +504,7 @@ t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, long ac, t_a
     return 0;
 }
 
-t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av)
+t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -514,7 +514,7 @@ t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av
     return 0;
 }
 
-t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av)
+t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -524,7 +524,7 @@ t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, long ac, t_at
     return 0;
 }
 
-t_pd_err colorpanel_reverse_set(t_colorpanel *x, t_object *attr, long ac, t_atom *av)
+t_pd_err colorpanel_reverse_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
