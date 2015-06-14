@@ -59,11 +59,11 @@ static void *convolve_new(t_symbol *s, int argc, t_atom *argv)
     
     x->f_buffer_name        = NULL;
     x->f_convolver = new FFTConvolver();
-    if(argc && argv && atom_gettype(argv) == A_SYM)
-        x->f_buffer_name = atom_getsym(argv);
-    if(argc > 1 && argv && atom_gettype(argv+1) == A_SYM && atom_getsym(argv+1) == gensym("normalize"))
+    if(argc && argv && atom_gettype(argv) == A_SYMBOL)
+        x->f_buffer_name = atom_getsymbol(argv);
+    if(argc > 1 && argv && atom_gettype(argv+1) == A_SYMBOL && atom_getsymbol(argv+1) == gensym("normalize"))
         x->f_normalize = 1;
-    else if(argc > 1 && argv && atom_gettype(argv+1) == A_LONG && atom_getlong(argv+1) > 0)
+    else if(argc > 1 && argv && atom_gettype(argv+1) == A_FLOAT && atom_getlong(argv+1) > 0)
         x->f_normalize = 1;
     else
         x->f_normalize = 0;
@@ -85,12 +85,12 @@ static void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
     
     if (!(a = (t_garray *)pd_findbyclass(x->f_buffer_name, garray_class)))
     {
-        object_error(x, "c.convolve~: %s no such array.", x->f_buffer_name->s_name);
+        pd_error(x, "c.convolve~: %s no such array.", x->f_buffer_name->s_name);
         return;
     }
     else if (!garray_getfloatwords(a, &buffer_size, &buffer))
     {
-        object_error(x, "c.convolve~: %s array is empty.", x->f_buffer_name->s_name);
+        pd_error(x, "c.convolve~: %s array is empty.", x->f_buffer_name->s_name);
         return;
     }
     else
@@ -99,7 +99,7 @@ static void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
         if(!dsp)
             dsp_state = canvas_suspend_dsp();
         
-        temp = (float *)malloc((size_t)buffer_size * sizeof(float));
+        temp = (float *)getbytes((size_t)buffer_size * sizeof(float));
         for(int i = 0; i < buffer_size; i++)
         {
             temp[i] = buffer[i].w_float;
@@ -173,8 +173,8 @@ extern "C"  void setup_c0x2econvolve_tilde(void)
     eclass_dspinit(c);
     cream_initclass(c);
     eclass_addmethod(c, (method) convolve_dsp,       "dsp",              A_NULL, 0);
-    eclass_addmethod(c, (method) convolve_set,       "set",              A_SYM,  0);
-    eclass_addmethod(c, (method) convolve_normalize, "normalize",        A_LONG, 0);
+    eclass_addmethod(c, (method) convolve_set,       "set",              A_SYMBOL,  0);
+    eclass_addmethod(c, (method) convolve_normalize, "normalize",        A_FLOAT, 0);
     eclass_register(CLASS_OBJ, c);
     convolve_class = c;
 }

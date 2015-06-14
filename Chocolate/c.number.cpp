@@ -25,7 +25,7 @@
  */
 
 #include "../c.library.h"
-
+#include <stdlib.h>
 typedef struct  _number
 {
 	t_ebox      j_box;
@@ -79,7 +79,7 @@ void number_mousedrag(t_number *x, t_object *patcherview, t_pt pt, long modifier
 
 void number_key(t_number *x, t_object *patcherview, char textcharacter, long modifiers);
 void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, long modifiers);
-void number_deserted(t_number *x);
+void number_mouseleave(t_number *x);
 
 void number_preset(t_number *x, t_binbuf *b);
 
@@ -106,7 +106,7 @@ extern "C" void setup_c0x2enumber(void)
     eclass_addmethod(c, (method) number_dblclick,         "dblclick",        A_NULL, 0);
     eclass_addmethod(c, (method) number_key,              "key",             A_NULL, 0);
     eclass_addmethod(c, (method) number_keyfilter,        "keyfilter",       A_NULL, 0);
-    eclass_addmethod(c, (method) number_deserted,         "deserted",        A_NULL, 0);
+    eclass_addmethod(c, (method) number_mouseleave,         "mouseleave",        A_NULL, 0);
 
     eclass_addmethod(c, (method) number_preset,           "preset",          A_NULL, 0);
 
@@ -582,7 +582,7 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
     }
 }
 
-void number_deserted(t_number *x)
+void number_mouseleave(t_number *x)
 {
     x->f_mode = 0;
     strcpy(x->f_textvalue, "");

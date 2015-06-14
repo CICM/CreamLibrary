@@ -50,9 +50,9 @@ static void pak_list(t_pak *x, t_symbol *s, int argc, t_atom *argv)
         atom_setfloat(x->f_argv+index, atom_getfloat(argv));
         pak_output(x);
     }
-    else if(argc && x->f_selectors[index] == 1 && atom_gettype(argv) == A_SYM)
+    else if(argc && x->f_selectors[index] == 1 && atom_gettype(argv) == A_SYMBOL)
     {
-        atom_setsym(x->f_argv+index, atom_getsym(argv));
+        atom_setsym(x->f_argv+index, atom_getsymbol(argv));
         pak_output(x);
     }
 }
@@ -109,7 +109,7 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
         x->f_selectors = (char *)calloc((size_t)x->f_argc, sizeof(char));
         eobj_proxynew(x);
         eobj_proxynew(x);
-        if(argc > 0 &&atom_gettype(argv) == A_SYM && (atom_getsym(argv) == gensym("f") || atom_getsym(argv) == gensym("float")))
+        if(argc > 0 &&atom_gettype(argv) == A_SYMBOL && (atom_getsymbol(argv) == gensym("f") || atom_getsymbol(argv) == gensym("float")))
         {
             x->f_selectors[0] = 0;
             atom_setfloat(x->f_argv, 0.);
@@ -119,22 +119,22 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
             x->f_selectors[0] = 0;
             atom_setfloat(x->f_argv, atom_getfloat(argv));
         }
-        else if(argc > 0 && atom_gettype(argv) == A_SYM && (atom_getsym(argv) == gensym("s") || atom_getsym(argv) == gensym("symbol")))
+        else if(argc > 0 && atom_gettype(argv) == A_SYMBOL && (atom_getsymbol(argv) == gensym("s") || atom_getsymbol(argv) == gensym("symbol")))
         {
             x->f_selectors[0] = 1;
             atom_setsym(x->f_argv, gensym("symbol"));
         }
-        else if(argc > 0 && atom_gettype(argv) == A_SYM)
+        else if(argc > 0 && atom_gettype(argv) == A_SYMBOL)
         {
             x->f_selectors[0] = 1;
-            atom_setsym(x->f_argv, atom_getsym(argv));
+            atom_setsym(x->f_argv, atom_getsymbol(argv));
         }
         else
         {
             x->f_selectors[0] = 0;
             atom_setfloat(x->f_argv, 0.);
         }
-        if(argc > 1 && atom_gettype(argv+1) == A_SYM && (atom_getsym(argv+1) == gensym("f") || atom_getsym(argv+1) == gensym("float")))
+        if(argc > 1 && atom_gettype(argv+1) == A_SYMBOL && (atom_getsymbol(argv+1) == gensym("f") || atom_getsymbol(argv+1) == gensym("float")))
         {
             x->f_selectors[1] = 0;
             atom_setfloat(x->f_argv+1, 0.);
@@ -144,15 +144,15 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
             x->f_selectors[1] = 0;
             atom_setfloat(x->f_argv+1, atom_getfloat(argv+1));
         }
-        else if(argc > 1 && atom_gettype(argv+1) == A_SYM && (atom_getsym(argv+1) == gensym("s") || atom_getsym(argv+1) == gensym("symbol")))
+        else if(argc > 1 && atom_gettype(argv+1) == A_SYMBOL && (atom_getsymbol(argv+1) == gensym("s") || atom_getsymbol(argv+1) == gensym("symbol")))
         {
             x->f_selectors[1] = 1;
             atom_setsym(x->f_argv+1, gensym("symbol"));
         }
-        else if(argc > 1 && atom_gettype(argv+1) == A_SYM)
+        else if(argc > 1 && atom_gettype(argv+1) == A_SYMBOL)
         {
             x->f_selectors[1] = 1;
-            atom_setsym(x->f_argv+1, atom_getsym(argv+1));
+            atom_setsym(x->f_argv+1, atom_getsymbol(argv+1));
         }
         else
         {
@@ -162,7 +162,7 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
         for(i = 2; i < x->f_argc; i++)
         {
             eobj_proxynew(x);
-            if(atom_gettype(argv+i) == A_SYM && (atom_getsym(argv+i) == gensym("f") || atom_getsym(argv+i) == gensym("float")))
+            if(atom_gettype(argv+i) == A_SYMBOL && (atom_getsymbol(argv+i) == gensym("f") || atom_getsymbol(argv+i) == gensym("float")))
             {
                 x->f_selectors[i] = 0;
                 atom_setfloat(x->f_argv+i, 0.);
@@ -172,15 +172,15 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
                 x->f_selectors[i] = 0;
                 atom_setfloat(x->f_argv+i, atom_getfloat(argv));
             }
-            else if(atom_gettype(argv+i) == A_SYM && (atom_getsym(argv+i) == gensym("s") || atom_getsym(argv+i) == gensym("symbol")))
+            else if(atom_gettype(argv+i) == A_SYMBOL && (atom_getsymbol(argv+i) == gensym("s") || atom_getsymbol(argv+i) == gensym("symbol")))
             {
                 x->f_selectors[i] = 1;
                 atom_setsym(x->f_argv+i, gensym("symbol"));
             }
-            else if(atom_gettype(argv+i) == A_SYM)
+            else if(atom_gettype(argv+i) == A_SYMBOL)
             {
                 x->f_selectors[i] = 1;
-                atom_setsym(x->f_argv+i, atom_getsym(argv+i));
+                atom_setsym(x->f_argv+i, atom_getsymbol(argv+i));
             }
             else
             {

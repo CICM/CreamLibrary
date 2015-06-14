@@ -57,7 +57,7 @@ static char patcherargs_initialize(t_patcherargs *x)
         {
             int ac      = binbuf_getnatom(b);
             t_atom* av  = binbuf_getvec(b);
-            if(atom_gettype(av) == A_SYM && atom_getsym(av) == gensym("pd"))
+            if(atom_gettype(av) == A_SYMBOL && atom_getsymbol(av) == gensym("pd"))
             {
                 ac--;
                 av++;
@@ -147,14 +147,14 @@ static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
     if(x)
     {
         x->f_argc = atoms_get_attributes_offset(argc, argv);
-        x->f_args = (t_atom *)malloc((size_t)x->f_argc * sizeof(t_atom));
+        x->f_args = (t_atom *)getbytes((size_t)x->f_argc * sizeof(t_atom));
         memcpy(x->f_args, argv, (size_t)x->f_argc * sizeof(t_atom));
         
         x->f_n_attrs = atoms_get_keys(argc-x->f_argc, argv+x->f_argc, &x->f_attr_name);
         if(x->f_n_attrs)
         {
-            x->f_attr_vals = (t_atom **)malloc((size_t)x->f_n_attrs * sizeof(t_atom *));
-            x->f_attr_size = (int *)malloc((size_t)x->f_n_attrs * sizeof(int));
+            x->f_attr_vals = (t_atom **)getbytes((size_t)x->f_n_attrs * sizeof(t_atom *));
+            x->f_attr_size = (int *)getbytes((size_t)x->f_n_attrs * sizeof(int));
             for(i = 0; i < x->f_n_attrs; i++)
             {
                 atoms_get_attribute(argc-x->f_argc, argv+x->f_argc, x->f_attr_name[i], &x->f_attr_size[i], &x->f_attr_vals[i]);

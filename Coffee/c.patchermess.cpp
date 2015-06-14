@@ -99,13 +99,13 @@ static void patchermess_anything(t_patchermess *x, t_symbol *s, int argc, t_atom
                 canvas->gl_dirty = 0;
             }
         }
-        else if(s == cream_sym_past && canvas->gl_editor && atom_gettype(argv) == A_SYM)
+        else if(s == cream_sym_past && canvas->gl_editor && atom_gettype(argv) == A_SYMBOL)
         {
             unsigned int edit = canvas->gl_edit;
             unsigned int dirty = canvas->gl_dirty;
             t_canvas* newcnv = NULL;
             char dirbuf[MAXPDSTRING], *nameptr;
-            int fd = canvas_open(canvas, atom_getsym(argv)->s_name, ".pd", dirbuf, &nameptr, MAXPDSTRING, 0);
+            int fd = canvas_open(canvas, atom_getsymbol(argv)->s_name, ".pd", dirbuf, &nameptr, MAXPDSTRING, 0);
             if(fd >= 0)
             {
                 int dsp = canvas_suspend_dsp();

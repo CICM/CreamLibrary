@@ -102,11 +102,11 @@ static void preset_float(t_preset *x, float f)
                     t_atom* av = NULL;
                     sprintf(id, "@%s", z->b_objpreset_id->s_name);
                     binbuf_get_attribute(b, gensym(id), &ac, &av);
-                    if(ac && av && atom_gettype(av) == A_SYM && atom_gettype(av+1) == A_SYM)
+                    if(ac && av && atom_gettype(av) == A_SYMBOL && atom_gettype(av+1) == A_SYMBOL)
                     {
-                        if(eobj_getclassname(z) == atom_getsym(av))
+                        if(eobj_getclassname(z) == atom_getsymbol(av))
                         {
-                            pd_typedmess((t_pd *)z, atom_getsym(av+1), ac-2, av+2);
+                            pd_typedmess((t_pd *)z, atom_getsymbol(av+1), ac-2, av+2);
                         }
                     }
                     if(ac && av)
@@ -180,10 +180,10 @@ void preset_interpolate(t_preset *x, float f)
                 {
                     // We get the preset //
                     binbuf_get_attribute(x->f_binbuf[j], gensym(id), &acdo, &avdo);
-                    if(acdo >= 2 && avdo && atom_gettype(avdo) == A_SYM && atom_gettype(avdo+1) == A_SYM)
+                    if(acdo >= 2 && avdo && atom_gettype(avdo) == A_SYMBOL && atom_gettype(avdo+1) == A_SYMBOL)
                     {
                         // If the object is in the preset we record the preset else we skip this preset //
-                        if(eobj_getclassname(z) == atom_getsym(avdo))
+                        if(eobj_getclassname(z) == atom_getsymbol(avdo))
                         {
                             realdo = j;
                             break;
@@ -205,10 +205,10 @@ void preset_interpolate(t_preset *x, float f)
                 {
                     // We get the preset //
                     binbuf_get_attribute(x->f_binbuf[j], gensym(id), &acup, &avup);
-                    if(acup >= 2 && avup && atom_gettype(avup) == A_SYM && atom_gettype(avup+1) == A_SYM)
+                    if(acup >= 2 && avup && atom_gettype(avup) == A_SYMBOL && atom_gettype(avup+1) == A_SYMBOL)
                     {
                         // If the object is in the preset we record the preset else we skip this preset //
-                        if(eobj_getclassname(z)== atom_getsym(avup))
+                        if(eobj_getclassname(z)== atom_getsymbol(avup))
                         {
                             realup = j;
                             break;
@@ -223,7 +223,7 @@ void preset_interpolate(t_preset *x, float f)
             }
 
             // If we have the 2 presets with the same selector for this object then we make an interpolation //
-            if(acdo && acup && atom_getsym(avdo+1) == atom_getsym(avup+1))
+            if(acdo && acup && atom_getsymbol(avdo+1) == atom_getsymbol(avup+1))
             {
                 minterp = zgetfn(&y->g_pd, cream_sym_interpolate);
                 if(minterp)
@@ -238,7 +238,7 @@ void preset_interpolate(t_preset *x, float f)
                     ratio = (float)(f - (realdo + 1)) / (float)(realup - realdo);
                     ac = acdo;
                     av = (t_atom *)calloc((size_t)ac, sizeof(t_atom));
-                    atom_setsym(av+1, atom_getsym(avdo+1));
+                    atom_setsym(av+1, atom_getsymbol(avdo+1));
                     for(j = 2; j < ac; j++)
                     {
                         if(j < acup)
@@ -258,19 +258,19 @@ void preset_interpolate(t_preset *x, float f)
                         }
                     }
 
-                    pd_typedmess((t_pd *)z, atom_getsym(av+1), ac-2, av+2);
+                    pd_typedmess((t_pd *)z, atom_getsymbol(av+1), ac-2, av+2);
                     free(av);
                 }
             }
             // If we have only the smallest preset for this object //
             else if(acdo)
             {
-                pd_typedmess((t_pd *)z, atom_getsym(avdo+1), acdo-2, avdo+2);
+                pd_typedmess((t_pd *)z, atom_getsymbol(avdo+1), acdo-2, avdo+2);
             }
             // If we have only the highest preset for this object //
             else if(acup)
             {
-                pd_typedmess((t_pd *)z, atom_getsym(avup+1), acup-2, avup+2);
+                pd_typedmess((t_pd *)z, atom_getsymbol(avup+1), acup-2, avup+2);
             }
         }
         mpreset = NULL;
@@ -459,14 +459,14 @@ static void preset_init(t_preset *x, t_binbuf *d)
     t_atom* av = binbuf_getvec(d);
     for(int i = 0; i < ac; i++)
     {
-        if(atom_gettype(av+i) == A_SYM && atom_getsym(av+i) == cream_sym_atpreset)
+        if(atom_gettype(av+i) == A_SYMBOL && atom_getsymbol(av+i) == cream_sym_atpreset)
         {
             for(;i < ac; i++)
             {
-                if(atom_gettype(av+i) == A_SYM && atom_getsym(av+i) == cream_sym_atindex)
+                if(atom_gettype(av+i) == A_SYMBOL && atom_getsymbol(av+i) == cream_sym_atindex)
                 {
                     i++;
-                    if(i+1 < ac && atom_gettype(av+i) == A_LONG)
+                    if(i+1 < ac && atom_gettype(av+i) == A_FLOAT)
                     {
                         index = atom_getlong(av+i);
                         binbuf_clear(x->f_binbuf[index]);
@@ -474,12 +474,12 @@ static void preset_init(t_preset *x, t_binbuf *d)
                         check = 1;
                         for(; i < ac && check; i++)
                         {
-                            if(atom_gettype(av+i) == A_SYM && atom_getsym(av+i) == cream_sym_atindex)
+                            if(atom_gettype(av+i) == A_SYMBOL && atom_getsymbol(av+i) == cream_sym_atindex)
                             {
                                 i -=  2;
                                 check = 0;
                             }
-                            else if(atom_gettype(av+i) == A_SYM && atom_getsym(av+i) == cream_sym_right_bracket)
+                            else if(atom_gettype(av+i) == A_SYMBOL && atom_getsymbol(av+i) == cream_sym_right_bracket)
                             {
                                 return;
                             }
@@ -500,18 +500,18 @@ static void preset_init(t_preset *x, t_binbuf *d)
 static void preset_read(t_preset *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_binbuf *d = binbuf_new();
-    if(d && argv && argc && atom_gettype(argv) == A_SYM)
+    if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
     {
-        if(binbuf_read(d, atom_getsym(argv)->s_name, "", 0))
+        if(binbuf_read(d, atom_getsymbol(argv)->s_name, "", 0))
         {
-            object_error(x, "preset : %s read failed", atom_getsym(argv)->s_name);
+            pd_error(x, "preset : %s read failed", atom_getsymbol(argv)->s_name);
         }
         else
         {
             preset_init(x, d);
             ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
-            post("preset : read %s.", atom_getsym(argv)->s_name);
+            post("preset : read %s.", atom_getsymbol(argv)->s_name);
         }
     }
     if(d)
@@ -523,16 +523,16 @@ static void preset_read(t_preset *x, t_symbol *s, int argc, t_atom *argv)
 static void preset_write(t_preset *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_binbuf *d = binbuf_new();
-    if(d && argv && argc && atom_gettype(argv) == A_SYM)
+    if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
     {
         preset_save(x, d);
-        if(binbuf_write(d, atom_getsym(argv)->s_name, "", 0))
+        if(binbuf_write(d, atom_getsymbol(argv)->s_name, "", 0))
         {
-            object_error(x, "preset : %s write failed", atom_getsym(argv)->s_name);
+            pd_error(x, "preset : %s write failed", atom_getsymbol(argv)->s_name);
         }
         else
         {
-            post("preset : write %s.", atom_getsym(argv)->s_name);
+            post("preset : write %s.", atom_getsymbol(argv)->s_name);
         }
     }
     if(d)
@@ -547,7 +547,7 @@ static void *preset_new(t_symbol *s, int argc, t_atom *argv)
     t_binbuf* d = binbuf_via_atoms(argc,argv);
     if(x && d)
     {
-        x->f_binbuf = (t_binbuf **)malloc(_preset::maxbinbufs * sizeof(t_binbuf *));
+        x->f_binbuf = (t_binbuf **)getbytes(_preset::maxbinbufs * sizeof(t_binbuf *));
         for(int i = 0; i < _preset::maxbinbufs; i++)
         {
             x->f_binbuf[i]  = binbuf_new();

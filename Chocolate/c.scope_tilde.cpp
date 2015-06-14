@@ -215,7 +215,7 @@ void scope_tick(t_scope *x)
 	ebox_invalidate_layer((t_ebox *)x, gensym("signal_layer"));
 	ebox_redraw((t_ebox *)x);
 
-	if(!sys_getdspstate())
+	if(!canvas_dspstate)
     {
         x->f_startclock = 0;
         clock_unset(x->f_clock);

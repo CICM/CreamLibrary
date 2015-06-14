@@ -253,7 +253,7 @@ void meter_tick(t_meter *x)
 	ebox_invalidate_layer((t_ebox *)x, gensym("leds_layer"));
 	ebox_redraw((t_ebox *)x);
     
-	if(sys_getdspstate())
+	if(canvas_dspstate)
 		clock_delay(x->f_clock, x->f_interval);
 }
 

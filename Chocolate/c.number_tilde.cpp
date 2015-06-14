@@ -73,7 +73,7 @@ static void number_tilde_dsp(t_number_tilde *x, t_object *dsp, short *count, dou
 
 static void number_tilde_tick(t_number_tilde *x)
 {
-	if(sys_getdspstate())
+	if(canvas_dspstate)
     {
         number_tilde_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);

@@ -61,13 +61,13 @@ static void *fir_new(t_symbol *s, int argc, t_atom *argv)
         x->f_size       = 0;
         if(argc && argv)
         {
-            if(atom_gettype(argv) == A_SYM)
+            if(atom_gettype(argv) == A_SYMBOL)
             {
-                x->f_name = atom_getsym(argv);
+                x->f_name = atom_getsymbol(argv);
             }
             if(argc > 1)
             {
-                if((atom_gettype(argv+1) == A_SYM && atom_getsym(argv+1) == gensym("normalize")) || (atom_gettype(argv+1) == A_LONG && atom_getlong(argv+1) != 0))
+                if((atom_gettype(argv+1) == A_SYMBOL && atom_getsymbol(argv+1) == gensym("normalize")) || (atom_gettype(argv+1) == A_FLOAT && atom_getlong(argv+1) != 0))
                 {
                      x->f_normalize = 1;
                 }
@@ -93,12 +93,12 @@ static void fir_set_do(t_fir *x, t_symbol *s, char dsp)
         }
         if(!(a = (t_garray *)pd_findbyclass(x->f_name, garray_class)))
         {
-            object_error(x, "c.fir~: %s no such array.", x->f_name->s_name);
+            pd_error(x, "c.fir~: %s no such array.", x->f_name->s_name);
             return;
         }
         else if(!garray_getfloatwords(a, &size, &buffer))
         {
-            object_error(x, "c.fir~: %s array is empty.", x->f_name->s_name);
+            pd_error(x, "c.fir~: %s array is empty.", x->f_name->s_name);
             return;
         }
         else
@@ -109,7 +109,7 @@ static void fir_set_do(t_fir *x, t_symbol *s, char dsp)
             }
             else
             {
-                x->f_buffer = (t_sample *)malloc((size_t)size * sizeof(t_sample));
+                x->f_buffer = (t_sample *)getbytes((size_t)size * sizeof(t_sample));
             }
             if(x->f_buffer)
             {
@@ -139,7 +139,7 @@ static void fir_set_do(t_fir *x, t_symbol *s, char dsp)
             else
             {
                 x->f_size = 0;
-                object_error(x, "c.fir~: can't allocate buffer memory.");
+                pd_error(x, "c.fir~: can't allocate buffer memory.");
                 return;
             }
         }
@@ -228,7 +228,7 @@ static void fir_dsp(t_fir *x, t_object *dsp, short *count, double samplerate, lo
         }
         else
         {
-            x->f_temp = (t_sample *)malloc((size_t)(maxvectorsize + x->f_size - 1) * sizeof(t_sample));
+            x->f_temp = (t_sample *)getbytes((size_t)(maxvectorsize + x->f_size - 1) * sizeof(t_sample));
         }
         if(x->f_temp)
         {
@@ -237,7 +237,7 @@ static void fir_dsp(t_fir *x, t_object *dsp, short *count, double samplerate, lo
         }
         else
         {
-            object_error(x, "c.fir~ : can't allocate memory.");
+            pd_error(x, "c.fir~ : can't allocate memory.");
         }
     }
 }
@@ -251,8 +251,8 @@ extern "C"  void setup_c0x2efir_tilde(void)
     eclass_dspinit(c);
     cream_initclass(c);
     eclass_addmethod(c, (method) fir_dsp,       "dsp",              A_NULL, 0);
-    eclass_addmethod(c, (method) fir_set,       "set",              A_SYM,  0);
-    eclass_addmethod(c, (method) fir_normalize, "normalize",        A_LONG, 0);
+    eclass_addmethod(c, (method) fir_set,       "set",              A_SYMBOL,  0);
+    eclass_addmethod(c, (method) fir_normalize, "normalize",        A_FLOAT, 0);
     eclass_register(CLASS_OBJ, c);
     fir_class = c;
 }

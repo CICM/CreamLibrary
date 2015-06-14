@@ -6,7 +6,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_FILES([Coffee/Makefile Chocolate/Makefile Caramel/Makefile Cinnamon/Makefile])
 AC_CONFIG_FILES([ThirdParty/PureData/Makefile ThirdParty/PureData/Sources/Makefile])
-AC_CONFIG_FILES([ThirdParty/PureData/Sources/ebox/Makefile ThirdParty/PureData/Sources/eclass/Makefile ThirdParty/PureData/Sources/ecommon/Makefile ThirdParty/PureData/Sources/egraphics/Makefile ThirdParty/PureData/Sources/eobj/Makefile ThirdParty/PureData/Sources/epopup/Makefile])
 AC_CONFIG_FILES([Package/Cream/Makefile Package/Cream/helps/Makefile Package/Cream/misc/Makefile])
 AC_CONFIG_FILES([cream-meta.pd])
 

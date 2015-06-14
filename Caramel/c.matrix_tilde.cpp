@@ -70,15 +70,15 @@ void *matrix_new(t_symbol *s, int argc, t_atom *argv)
     {
         x->f_inputs     = 1;
         x->f_outputs    = 1;
-        if(argc && atom_gettype(argv) == A_LONG)
+        if(argc && atom_gettype(argv) == A_FLOAT)
         {
             x->f_inputs = pd_clip_min(atom_getlong(argv), 1);
         }
-        if(argc > 1 && atom_gettype(argv+1) == A_LONG)
+        if(argc > 1 && atom_gettype(argv+1) == A_FLOAT)
         {
             x->f_outputs = pd_clip_min(atom_getlong(argv+1), 1);
         }
-        x->f_values = (t_sample *)malloc((size_t)(x->f_inputs * x->f_outputs) * sizeof(t_sample));
+        x->f_values = (t_sample *)getbytes((size_t)(x->f_inputs * x->f_outputs) * sizeof(t_sample));
         eobj_dspsetup((t_ebox *)x, x->f_inputs, x->f_outputs);
         x->j_box.d_misc = E_NO_INPLACE;
     }

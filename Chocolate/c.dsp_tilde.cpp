@@ -123,7 +123,7 @@ static void dsp_tilde_paint(t_dsp_tilde *x, t_object *view)
     t_rect rect;
     if(!x->f_init)
     {
-        x->f_state = sys_getdspstate();
+        x->f_state = canvas_dspstate;
         x->f_init = 1;
     }
     
@@ -169,7 +169,7 @@ static void dsp_tilde_stop(t_dsp_tilde *x)
 
 static void dsp_tilde_mousedown(t_dsp_tilde *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    if(sys_getdspstate())
+    if(canvas_dspstate)
     {
         dsp_tilde_stop(x);
     }

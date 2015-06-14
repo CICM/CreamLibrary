@@ -75,7 +75,7 @@ void *prepend_new(t_symbol *s, int argc, t_atom *argv)
     x = (t_prepend *)eobj_new(prepend_class);
     if(x)
     {
-        x->f_argv = (t_atom *)malloc(_prepend::maxsize * sizeof(t_atom));
+        x->f_argv = (t_atom *)getbytes(_prepend::maxsize * sizeof(t_atom));
         prepend_set(x, gensym("set"), argc, argv);
         x->f_out = (t_outlet *)listout(x);
     }
@@ -88,10 +88,10 @@ void prepend_set(t_prepend *x, t_symbol *s, int argc, t_atom *argv)
     int i;
     if(argc && argv)
     {
-        if(atom_gettype(argv) == A_SYM)
+        if(atom_gettype(argv) == A_SYMBOL)
         {
             x->f_argc = argc - 1;
-            x->f_selector = atom_getsym(argv);
+            x->f_selector = atom_getsymbol(argv);
             for(i = 0; i < x->f_argc; i++)
             {
                 x->f_argv[i] = argv[i+1];

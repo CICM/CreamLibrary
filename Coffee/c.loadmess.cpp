@@ -31,7 +31,7 @@ typedef struct  _loadmess
 	t_eobj      l_box;
 	t_outlet*   l_out;
     t_atom*     l_argv;
-	long        l_argc;
+	size_t      l_argc;
     double      l_time;
 } t_loadmess;
 
@@ -53,9 +53,9 @@ static void loadmess_output(t_loadmess *x)
     else
     {
         if(atom_gettype(x->l_argv) == A_FLOAT)
-            outlet_list(x->l_out, &s_list, x->l_argc, x->l_argv);
+            outlet_list(x->l_out, &s_list, (long)x->l_argc, x->l_argv);
         else if (atom_gettype(x->l_argv) == A_SYMBOL)
-            outlet_anything(x->l_out, atom_getsym(x->l_argv), x->l_argc-1, x->l_argv+1);
+            outlet_anything(x->l_out, atom_getsymbol(x->l_argv), (long)x->l_argc-1, x->l_argv+1);
     }
 }
 
@@ -75,7 +75,7 @@ static void loadmess_free(t_loadmess *x)
 {
     if(x->l_argv)
     {
-        free(x->l_argv);
+        freebytes(x->l_argv, (size_t)x->l_argc * sizeof(t_atom));
     }
     eobj_free(x);
 }
@@ -88,11 +88,11 @@ static void *loadmess_new(t_symbol *s, int argc, t_atom *argv)
         x->l_time = clock_getsystime();
         if(argc && argv)
         {
-            x->l_argc = argc;
-            x->l_argv = (t_atom *)malloc((size_t)x->l_argc * sizeof(t_atom));
+            x->l_argc = (size_t)argc;
+            x->l_argv = (t_atom *)getbytes(x->l_argc * sizeof(t_atom));
             if(x->l_argv)
             {
-                memcpy(x->l_argv, argv, sizeof(t_atom) * (size_t)x->l_argc);
+                memcpy(x->l_argv, argv, sizeof(t_atom) * x->l_argc);
                 if(x->l_argc == 1)
                 {
                     if(atom_gettype(argv) == A_FLOAT)

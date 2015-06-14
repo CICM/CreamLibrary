@@ -158,7 +158,7 @@ static void breakpoints_getlist(t_breakpoints *x)
 {
     if(x->f_npoints)
     {
-        t_atom* av = (t_atom *)malloc((size_t)(x->f_npoints * 2) * sizeof(t_atom));
+        t_atom* av = (t_atom *)getbytes((size_t)(x->f_npoints * 2) * sizeof(t_atom));
         if(av)
         {
             for(int i = 0, j = 0; i < x->f_npoints; j += 2, i++)
@@ -257,7 +257,7 @@ static void breakpoints_add(t_breakpoints *x, t_symbol* s, int argc, t_atom* arg
             float ord = pd_clip_minmax(atom_getfloat(argv+1), x->f_range_ordinate[0], x->f_range_ordinate[1]);
             if(!x->f_points)
             {
-                x->f_points = (t_pt *)malloc(sizeof(t_pt));
+                x->f_points = (t_pt *)getbytes(sizeof(t_pt));
                 if(x->f_points)
                 {
                     x->f_npoints = 1;
@@ -460,7 +460,7 @@ static void breakpoints_init(t_breakpoints *x, t_binbuf *d)
     breakpoints_erase(x);
     for(int i = 0; i < ac; i++)
     {
-        if(atom_gettype(av+i) == A_SYM && atom_getsym(av+i) == cream_sym_atpoints)
+        if(atom_gettype(av+i) == A_SYMBOL && atom_getsymbol(av+i) == cream_sym_atpoints)
         {
             for(i = i+1;i < ac-1; i += 2)
             {
@@ -502,11 +502,11 @@ static void breakpoints_save(t_breakpoints *x, t_binbuf *d)
 static void breakpoints_read(t_breakpoints *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_binbuf *d = binbuf_new();
-    if(d && argv && argc && atom_gettype(argv) == A_SYM)
+    if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
     {
-        if(binbuf_read(d, atom_getsym(argv)->s_name, "", 0))
+        if(binbuf_read(d, atom_getsymbol(argv)->s_name, "", 0))
         {
-            object_error(x, "breakpoints : %s read failed", atom_getsym(argv)->s_name);
+            pd_error(x, "breakpoints : %s read failed", atom_getsymbol(argv)->s_name);
         }
         else
         {
@@ -520,12 +520,12 @@ static void breakpoints_read(t_breakpoints *x, t_symbol *s, int argc, t_atom *ar
 static void breakpoints_write(t_breakpoints *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_binbuf *d = binbuf_new();
-    if(d && argv && argc && atom_gettype(argv) == A_SYM)
+    if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
     {
         breakpoints_save(x, d);
-        if(binbuf_write(d, atom_getsym(argv)->s_name, "", 0))
+        if(binbuf_write(d, atom_getsymbol(argv)->s_name, "", 0))
         {
-            object_error(x, "breakpoints : %s write failed", atom_getsym(argv)->s_name);
+            pd_error(x, "breakpoints : %s write failed", atom_getsymbol(argv)->s_name);
         }
     }
     if(d)

@@ -127,9 +127,9 @@ static void blackboard_color(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
 {
     t_rgb color_rgb = {0., 0., 0.};
     t_hsl color_hsl = {0., 0., 0.};
-    if(argc > 1 && atom_gettype(argv) == A_SYM)
+    if(argc > 1 && atom_gettype(argv) == A_SYMBOL)
     {
-        if(atom_getsym(argv) == gensym("rgba") || atom_getsym(argv) == gensym("rgb"))
+        if(atom_getsymbol(argv) == gensym("rgba") || atom_getsymbol(argv) == gensym("rgb"))
         {
             if(atom_gettype(argv+1) == A_FLOAT)
                 color_rgb.red = atom_getfloat(argv+1);
@@ -139,7 +139,7 @@ static void blackboard_color(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
                 color_rgb.blue = atom_getfloat(argv+3);
             x->f_color = gensym(rgb_to_hex(color_rgb));
         }
-        else if(atom_getsym(argv) == gensym("hsla") || atom_getsym(argv) == gensym("hsl"))
+        else if(atom_getsymbol(argv) == gensym("hsla") || atom_getsymbol(argv) == gensym("hsl"))
         {
             if(atom_gettype(argv+1) == A_FLOAT)
                 color_hsl.hue = atom_getfloat(argv+1);
@@ -149,10 +149,10 @@ static void blackboard_color(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
                 color_hsl.lightness = atom_getfloat(argv+3);
             x->f_color = gensym(hsl_to_hex(color_hsl));
         }
-        else if(atom_getsym(argv) == gensym("hex") || atom_getsym(argv) == gensym("hexa"))
+        else if(atom_getsymbol(argv) == gensym("hex") || atom_getsymbol(argv) == gensym("hexa"))
         {
-            if(atom_gettype(argv+1) == A_SYM)
-                x->f_color = atom_getsym(argv+1);
+            if(atom_gettype(argv+1) == A_SYMBOL)
+                x->f_color = atom_getsymbol(argv+1);
         }
     }
 }
@@ -166,7 +166,7 @@ static void blackboard_line(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
 {
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
-        object_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
+        pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
         return;
     }
     
@@ -188,7 +188,7 @@ static void blackboard_path(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
 
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
-        object_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
+        pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
         return;
     }
     
@@ -227,7 +227,7 @@ static void blackboard_rect(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
 {
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
-        object_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
+        pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
         return;
     }
     
@@ -250,7 +250,7 @@ static void blackboard_oval(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
 {
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
-        object_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
+        pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
         return;
     }
 
@@ -273,7 +273,7 @@ static void blackboard_arc(t_blackboard *x, t_symbol *s, int argc, t_atom *argv)
 {
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
-        object_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
+        pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
         return;
     }
     
@@ -301,15 +301,15 @@ static void blackboard_image(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
     
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
-        object_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
+        pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
         return;
     }
 
     if(argc > 2 && argv)
     {
-        if(atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_SYM)
+        if(atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT && atom_gettype(argv+2) == A_SYMBOL)
         {
-            sprintf(path, "%s",atom_getsym(argv+2)->s_name);
+            sprintf(path, "%s",atom_getsymbol(argv+2)->s_name);
             if(access(path, O_RDONLY) != -1)
             {
                 sprintf(x->f_instructions[x->f_ninstructions], "create image %d %d -anchor nw -image [image create photo -file %s]", (int)atom_getfloat(argv), (int)atom_getfloat(argv+1), path);
@@ -318,7 +318,7 @@ static void blackboard_image(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
                 ebox_redraw((t_ebox *)x);
                 return;
             }
-            sprintf(path, "%s/%s", canvas_getdir(x->j_box.b_obj.o_canvas)->s_name, atom_getsym(argv+2)->s_name);
+            sprintf(path, "%s/%s", canvas_getdir(x->j_box.b_obj.o_canvas)->s_name, atom_getsymbol(argv+2)->s_name);
             if(access(path, O_RDONLY) != -1)
             {
                 sprintf(x->f_instructions[x->f_ninstructions], "create image %d %d -anchor nw -image [image create photo -file %s]", (int)atom_getfloat(argv), (int)atom_getfloat(argv+1), path);
@@ -327,7 +327,7 @@ static void blackboard_image(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
                 ebox_redraw((t_ebox *)x);
                 return;
             }
-			sprintf(name, "%s", atom_getsym(argv+2)->s_name);
+			sprintf(name, "%s", atom_getsymbol(argv+2)->s_name);
 			if(!strncmp(name+strlen(name)-4, ".gif", 4))
 			{
 				strncpy(name+strlen(name)-4, "\0", 4);
@@ -354,7 +354,7 @@ static void blackboard_text(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
     
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
-        object_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
+        pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
         return;
     }
     
@@ -463,10 +463,10 @@ static void *blackboard_new(t_symbol *s, int argc, t_atom *argv)
         x->f_color      = gensym("#000000");
         x->f_fill       = 0;
         x->f_ninstructions = 0;
-        x->f_instructions = (char **)malloc(_blackboard::maxcmd * sizeof(char*));
+        x->f_instructions = (char **)getbytes(_blackboard::maxcmd * sizeof(char*));
         for(int i = 0; i < _blackboard::maxcmd; i++)
         {
-            x->f_instructions[i] = (char *)malloc(MAXPDSTRING * sizeof(char));
+            x->f_instructions[i] = (char *)getbytes(MAXPDSTRING * sizeof(char));
         }
         
         ebox_attrprocess_viabinbuf(x, d);

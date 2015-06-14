@@ -273,9 +273,9 @@ void *freeverb_new(t_symbol *s, int argc, t_atom *argv)
         else
             x->f_freeverb = new Freeverb(1);
     }
-    else if(argc && argv && atom_gettype(argv) == A_SYM)
+    else if(argc && argv && atom_gettype(argv) == A_SYMBOL)
     {
-        if(atom_getsym(argv) == gensym("right"))
+        if(atom_getsymbol(argv) == gensym("right"))
             x->f_freeverb = new Freeverb(1);
         else
             x->f_freeverb = new Freeverb(0);
