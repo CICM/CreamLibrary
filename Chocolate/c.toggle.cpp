@@ -163,8 +163,8 @@ extern "C" void setup_c0x2etoggle(void)
     
     c = eclass_new("c.toggle", (method)toggle_new, (method)ebox_free, (short)sizeof(t_toggle), 0L, A_GIMME, 0);
     
-    eclass_init(c, 0);
-    cream_initclass(c);
+    eclass_guiinit(c, 0);
+
     
     eclass_addmethod(c, (method) toggle_paint,           "paint",            A_NULL, 0);
     eclass_addmethod(c, (method) toggle_notify,          "notify",           A_NULL, 0);

@@ -580,8 +580,8 @@ extern "C" void setup_c0x2epreset(void)
 {
     t_eclass* c = eclass_new("c.preset", (method)preset_new, (method)preset_free, (short)sizeof(t_preset), 0L, A_GIMME, 0);
     
-    eclass_init(c, 0);
-    cream_initclass(c);
+    eclass_guiinit(c, 0);
+
     
     eclass_addmethod(c, (method) preset_paint,           "paint",            A_NULL, 0);
     eclass_addmethod(c, (method) preset_notify,          "notify",           A_NULL, 0);

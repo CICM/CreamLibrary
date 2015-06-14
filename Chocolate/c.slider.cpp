@@ -73,8 +73,7 @@ extern "C" void setup_c0x2eslider(void)
     
 	c = eclass_new("c.slider", (method)slider_new, (method)slider_free, (short)sizeof(t_slider), 0L, A_GIMME, 0);
     
-	eclass_init(c, 0);
-    cream_initclass(c);
+	eclass_guiinit(c, 0);
 	
 	eclass_addmethod(c, (method) slider_assist,          "assist",           A_NULL, 0);
 	eclass_addmethod(c, (method) slider_paint,           "paint",            A_NULL, 0);

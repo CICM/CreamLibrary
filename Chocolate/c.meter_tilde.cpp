@@ -77,8 +77,8 @@ extern "C" void setup_c0x2emeter_tilde(void)
 	c = eclass_new("c.meter~", (method)meter_new, (method)meter_free, (short)sizeof(t_meter), 0L, A_GIMME, 0);
 
 	eclass_dspinit(c);
-	eclass_init(c, 0);
-    cream_initclass(c);
+	eclass_guiinit(c, 0);
+
 	
 	eclass_addmethod(c, (method) meter_dsp,             "dsp",              A_NULL, 0);
 	eclass_addmethod(c, (method) meter_assist,          "assist",           A_NULL, 0);

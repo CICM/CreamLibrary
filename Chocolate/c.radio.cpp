@@ -73,8 +73,8 @@ extern "C" void setup_c0x2eradio(void)
     
 	c = eclass_new("c.radio", (method)radio_new, (method)radio_free, (short)sizeof(t_radio), 0L, A_GIMME, 0);
     
-	eclass_init(c, 0);
-    cream_initclass(c);
+	eclass_guiinit(c, 0);
+
 	
 	eclass_addmethod(c, (method) radio_assist,          "assist",           A_NULL, 0);
 	eclass_addmethod(c, (method) radio_paint,           "paint",            A_NULL, 0);

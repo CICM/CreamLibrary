@@ -73,8 +73,8 @@ extern "C" void setup_c0x2eknob(void)
     
 	c = eclass_new("c.knob", (method)knob_new, (method)knob_free, (short)sizeof(t_knob), 0L, A_GIMME, 0);
     
-	eclass_init(c, 0);
-    cream_initclass(c);
+	eclass_guiinit(c, 0);
+
 	
 	eclass_addmethod(c, (method) knob_assist,          "assist",           A_NULL, 0);
 	eclass_addmethod(c, (method) knob_paint,           "paint",            A_NULL, 0);

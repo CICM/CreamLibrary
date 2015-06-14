@@ -95,10 +95,8 @@ extern "C" void setup_c0x2emenu(void)
     
 	c = eclass_new("c.menu", (method)menu_new, (method)menu_free, (short)sizeof(t_menu), 0L, A_GIMME, 0);
     
-    eclass_init(c, 0);
-    cream_initclass(c);
-
-	eclass_addmethod(c, (method) menu_assist,          "assist",           A_NULL, 0);
+    eclass_guiinit(c, 0);
+    eclass_addmethod(c, (method) menu_assist,          "assist",           A_NULL, 0);
 	eclass_addmethod(c, (method) menu_paint,           "paint",            A_NULL, 0);
 	eclass_addmethod(c, (method) menu_notify,          "notify",           A_NULL, 0);
     eclass_addmethod(c, (method) menu_getdrawparams,   "getdrawparams",    A_NULL, 0);

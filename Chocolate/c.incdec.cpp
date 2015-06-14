@@ -70,10 +70,8 @@ extern "C" void setup_c0x2eincdec(void)
 
 	c = eclass_new("c.incdec", (method)incdec_new, (method)incdec_free, (short)sizeof(t_incdec), 0L, A_GIMME, 0);
 
-	eclass_init(c, 0);
-    cream_initclass(c);
-
-	eclass_addmethod(c, (method) incdec_assist,          "assist",           A_NULL, 0);
+	eclass_guiinit(c, 0);
+    eclass_addmethod(c, (method) incdec_assist,          "assist",           A_NULL, 0);
 	eclass_addmethod(c, (method) incdec_paint,           "paint",            A_NULL, 0);
 	eclass_addmethod(c, (method) incdec_notify,          "notify",           A_NULL, 0);
     eclass_addmethod(c, (method) incdec_getdrawparams,   "getdrawparams",    A_NULL, 0);

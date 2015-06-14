@@ -111,10 +111,8 @@ extern "C" void setup_c0x2etab(void)
 
 	c = eclass_new("c.tab", (method)tab_new, (method)ebox_free, (short)sizeof(t_tab), 0L, A_GIMME, 0);
 
-    eclass_init(c, 0);
-    cream_initclass(c);
-
-	eclass_addmethod(c, (method) tab_paint,           "paint",            A_NULL, 0);
+    eclass_guiinit(c, 0);
+    eclass_addmethod(c, (method) tab_paint,           "paint",            A_NULL, 0);
 	eclass_addmethod(c, (method) tab_notify,          "notify",           A_NULL, 0);
     eclass_addmethod(c, (method) tab_getdrawparams,   "getdrawparams",    A_NULL, 0);
     eclass_addmethod(c, (method) tab_oksize,          "oksize",           A_NULL, 0);

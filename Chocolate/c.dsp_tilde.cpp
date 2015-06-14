@@ -185,8 +185,8 @@ extern "C" void setup_c0x2edsp_tilde(void)
     
     c = eclass_new("c.dsp~", (method)dsp_tilde_new, (method)dsp_tilde_free, (short)sizeof(t_dsp_tilde), CLASS_NOINLET, A_GIMME, 0);
     
-    eclass_init(c, 0);
-    cream_initclass(c);
+    eclass_guiinit(c, 0);
+
     
     eclass_addmethod(c, (method) dsp_tilde_assist,          "assist",           A_NULL, 0);
     eclass_addmethod(c, (method) dsp_tilde_paint,           "paint",            A_NULL, 0);

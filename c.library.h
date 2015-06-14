@@ -12,8 +12,6 @@ extern "C"
 #include "ThirdParty/PureData/Sources/cicm_wrapper.h"
 }
 
-void cream_initclass(t_eclass* c);
-
 extern "C" void cream_setup(void);
 extern "C" void Cream_setup(void);
 

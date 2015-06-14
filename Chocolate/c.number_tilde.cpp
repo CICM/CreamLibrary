@@ -260,8 +260,8 @@ extern "C" void setup_c0x2enumber_tilde(void)
     c = eclass_new("c.number~", (method)number_tilde_new, (method)number_tilde_free, (short)sizeof(t_number_tilde), 0L, A_GIMME, 0);
     
     eclass_dspinit(c);
-    eclass_init(c, 0);
-    cream_initclass(c);
+    eclass_guiinit(c, 0);
+
     
     eclass_addmethod(c, (method) number_tilde_dsp,             "dsp",              A_NULL, 0);
     eclass_addmethod(c, (method) number_tilde_paint,           "paint",            A_NULL, 0);

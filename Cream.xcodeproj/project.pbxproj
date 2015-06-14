@@ -41,8 +41,8 @@
 		8F9AA2551B2DA0A6002C2B4E /* epopup.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F9AA23B1B2DA0A6002C2B4E /* epopup.c */; };
 		8F9AA2561B2DA0A6002C2B4E /* epopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA23C1B2DA0A6002C2B4E /* epopup.h */; };
 		8F9AA2571B2DA0A6002C2B4E /* epopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA23C1B2DA0A6002C2B4E /* epopup.h */; };
-		8F9AA2581B2DA0A6002C2B4E /* estruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA23D1B2DA0A6002C2B4E /* estruct.h */; };
-		8F9AA2591B2DA0A6002C2B4E /* estruct.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA23D1B2DA0A6002C2B4E /* estruct.h */; };
+		8F9AA2581B2DA0A6002C2B4E /* edefine.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA23D1B2DA0A6002C2B4E /* edefine.h */; };
+		8F9AA2591B2DA0A6002C2B4E /* edefine.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA23D1B2DA0A6002C2B4E /* edefine.h */; };
 		8F9AA25C1B2DA2FA002C2B4E /* egraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F9AA25A1B2DA2FA002C2B4E /* egraphics.c */; };
 		8F9AA25D1B2DA2FA002C2B4E /* egraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F9AA25A1B2DA2FA002C2B4E /* egraphics.c */; };
 		8F9AA25E1B2DA2FA002C2B4E /* egraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA25B1B2DA2FA002C2B4E /* egraphics.h */; };
@@ -146,7 +146,7 @@
 		8F9AA2391B2DA0A6002C2B4E /* epdmax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = epdmax.h; path = Sources/epdmax.h; sourceTree = "<group>"; };
 		8F9AA23B1B2DA0A6002C2B4E /* epopup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = epopup.c; path = Sources/epopup.c; sourceTree = "<group>"; };
 		8F9AA23C1B2DA0A6002C2B4E /* epopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = epopup.h; path = Sources/epopup.h; sourceTree = "<group>"; };
-		8F9AA23D1B2DA0A6002C2B4E /* estruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = estruct.h; path = Sources/estruct.h; sourceTree = "<group>"; };
+		8F9AA23D1B2DA0A6002C2B4E /* edefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = edefine.h; path = Sources/edefine.h; sourceTree = "<group>"; };
 		8F9AA25A1B2DA2FA002C2B4E /* egraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = egraphics.c; path = Sources/egraphics.c; sourceTree = "<group>"; };
 		8F9AA25B1B2DA2FA002C2B4E /* egraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = egraphics.h; path = Sources/egraphics.h; sourceTree = "<group>"; };
 		8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix_tilde.cpp; sourceTree = "<group>"; };
@@ -305,13 +305,13 @@
 			children = (
 				8F9AA2301B2DA0A6002C2B4E /* cicm_wrapper.h */,
 				8F9AA2391B2DA0A6002C2B4E /* epdmax.h */,
-				8F9AA23D1B2DA0A6002C2B4E /* estruct.h */,
-				8F9AA2331B2DA0A6002C2B4E /* eclass.c */,
-				8F9AA2341B2DA0A6002C2B4E /* eclass.h */,
+				8F9AA23D1B2DA0A6002C2B4E /* edefine.h */,
 				8F9AA2351B2DA0A6002C2B4E /* ecommon.c */,
 				8F9AA2361B2DA0A6002C2B4E /* ecommon.h */,
 				8F9AA25A1B2DA2FA002C2B4E /* egraphics.c */,
 				8F9AA25B1B2DA2FA002C2B4E /* egraphics.h */,
+				8F9AA2331B2DA0A6002C2B4E /* eclass.c */,
+				8F9AA2341B2DA0A6002C2B4E /* eclass.h */,
 				8F9AA2311B2DA0A6002C2B4E /* ebox.c */,
 				8F9AA2321B2DA0A6002C2B4E /* ebox.h */,
 				8F9AA2371B2DA0A6002C2B4E /* eobj.c */,
@@ -340,7 +340,7 @@
 				8F9AA24A1B2DA0A6002C2B4E /* ecommon.h in Headers */,
 				8F9AA23E1B2DA0A6002C2B4E /* cicm_wrapper.h in Headers */,
 				8F9AA2421B2DA0A6002C2B4E /* ebox.h in Headers */,
-				8F9AA2581B2DA0A6002C2B4E /* estruct.h in Headers */,
+				8F9AA2581B2DA0A6002C2B4E /* edefine.h in Headers */,
 				8FB8EB4819007B04005FAF6A /* AudioFFT.h in Headers */,
 				8F9AA2501B2DA0A6002C2B4E /* epdmax.h in Headers */,
 			);
@@ -360,7 +360,7 @@
 				8F9AA24B1B2DA0A6002C2B4E /* ecommon.h in Headers */,
 				8F9AA23F1B2DA0A6002C2B4E /* cicm_wrapper.h in Headers */,
 				8F9AA2431B2DA0A6002C2B4E /* ebox.h in Headers */,
-				8F9AA2591B2DA0A6002C2B4E /* estruct.h in Headers */,
+				8F9AA2591B2DA0A6002C2B4E /* edefine.h in Headers */,
 				8FAC0BF51969731800E09ACB /* AudioFFT.h in Headers */,
 				8F9AA2511B2DA0A6002C2B4E /* epdmax.h in Headers */,
 			);
