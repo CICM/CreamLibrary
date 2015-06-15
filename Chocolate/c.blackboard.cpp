@@ -185,7 +185,7 @@ static void blackboard_path(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
 {
     int i;
     char text[MAXPDSTRING];
-
+    size_t lenght;
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
         pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
@@ -206,7 +206,8 @@ static void blackboard_path(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
                 if(argc > i+1 && atom_gettype(argv+i) == A_FLOAT && atom_gettype(argv+i+1) == A_FLOAT)
                 {
                     sprintf(text, "%d %d ", (int)atom_getfloat(argv+i), (int)atom_getfloat(argv+i+1));
-                    strcat(x->f_instructions[x->f_ninstructions], text);
+                    lenght = strlen(text);
+                    strncat(x->f_instructions[x->f_ninstructions], text, lenght);
                 }
             }
             
@@ -215,7 +216,8 @@ static void blackboard_path(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
             else
                 sprintf(text, "-fill %s -width %d", x->f_color->s_name, (int)x->f_width);
             
-            strcat(x->f_instructions[x->f_ninstructions], text);
+            lenght = strlen(text);
+            strncat(x->f_instructions[x->f_ninstructions], text, lenght);
 
             x->f_ninstructions++;
             ebox_redraw((t_ebox *)x);
@@ -351,7 +353,7 @@ static void blackboard_text(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
 {
     int i;
     char buffer[MAXPDSTRING];
-    
+    size_t length;
     if(x->f_ninstructions >= _blackboard::maxcmd)
     {
         pd_error(x, "%s too many drawing commands.", eobj_getclassname(x)->s_name);
@@ -367,12 +369,14 @@ static void blackboard_text(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
             for(i = 2; i < argc; i++)
             {
                 atom_string(argv+i, buffer, MAXPDSTRING);
-                strcat(x->f_instructions[x->f_ninstructions], " ");
-                strcat(x->f_instructions[x->f_ninstructions], buffer);
+                length = strlen(buffer);
+                strncat(x->f_instructions[x->f_ninstructions], " ", 1);
+                strncat(x->f_instructions[x->f_ninstructions], buffer, length);
             }
             
             sprintf(buffer, "} -font {%s %d %s} -fill %s", x->j_box.b_font.c_family->s_name, (int)x->j_box.b_font.c_size, x->j_box.b_font.c_weight->s_name, x->f_color->s_name);
-            strcat(x->f_instructions[x->f_ninstructions], buffer);
+            length = strlen(buffer);
+            strncat(x->f_instructions[x->f_ninstructions], buffer, length);
             
             x->f_ninstructions++;
             ebox_redraw((t_ebox *)x);

@@ -223,14 +223,16 @@ static void tab_sizemustchange(t_tab *x)
 static t_symbol* tab_atoms_to_sym(t_atom* argv, long argc)
 {
     int i;
+    size_t lenght;
     char temp[MAXPDSTRING];
     char text[MAXPDSTRING];
     atom_string(argv, text, MAXPDSTRING);
     for(i = 1; i < argc; i++)
     {
         atom_string(argv+i, temp, MAXPDSTRING);
-        strcat(text, " ");
-        strcat(text, temp);
+        lenght = strlen(temp);
+        strncat(text, " ", 1);
+        strncat(text, temp, lenght);
     }
     return gensym(text);
 }

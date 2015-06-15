@@ -497,7 +497,7 @@ void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long modifiers
     if(x->f_mode == 0)
     {
         x->f_mode = 1;
-        strcpy(x->f_textvalue, "");
+        sprintf(x->f_textvalue, "");
         ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
@@ -550,12 +550,15 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
 
     if(textcharacter == EKEY_DEL)
     {
-        if(strlen(x->f_textvalue) > 1)
+        int lenght = (int)strlen(x->f_textvalue);
+        if(lenght > 1)
         {
-            strcpy(x->f_textvalue+strlen(x->f_textvalue)-1, "");
+            sprintf(x->f_textvalue + lenght-1, "");
         }
         else
-            strcpy(x->f_textvalue, "");
+        {
+            sprintf(x->f_textvalue, "");
+        }
 
         ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
@@ -572,7 +575,7 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
     else if (textcharacter == EKEY_ESC)
     {
         x->f_mode = 0;
-        strcpy(x->f_textvalue, "");
+        sprintf(x->f_textvalue, "");
 
         ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
@@ -582,7 +585,7 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
 void number_mouseleave(t_number *x)
 {
     x->f_mode = 0;
-    strcpy(x->f_textvalue, "");
+    sprintf(x->f_textvalue, "");
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }

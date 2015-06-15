@@ -34,9 +34,9 @@ typedef struct  _patcherargs
     t_outlet*   f_out_done;
     t_canvas*   f_cnv;
     t_atom*     f_args;
-    long        f_argc;
+    int         f_argc;
 
-    long        f_n_attrs;
+    int         f_nattrs;
     t_symbol**  f_attr_name;
     t_atom**    f_attr_vals;
     int*        f_attr_size;
@@ -62,7 +62,7 @@ static char patcherargs_initialize(t_patcherargs *x)
                 ac--;
                 av++;
             }
-            long argc = atoms_get_attributes_offset(ac, av);
+            int argc = atoms_get_attributes_offset(ac, av);
             
             if(argc > x->f_argc)
             {
@@ -78,7 +78,7 @@ static char patcherargs_initialize(t_patcherargs *x)
             
             memcpy(x->f_args, av, (size_t)argc * sizeof(t_atom));
             
-            for(int i = 0; i < x->f_n_attrs; i++)
+            for(int i = 0; i < x->f_nattrs; i++)
             {
                 int nattr;
                 t_atom* attrs;
@@ -103,7 +103,7 @@ static void patcherargs_output(t_patcherargs *x)
         x->f_init = patcherargs_initialize(x);
     }
     outlet_list(x->f_out_args, &s_list, (int)x->f_argc, x->f_args);
-    for(int i = 0; i < x->f_n_attrs; i++)
+    for(int i = 0; i < x->f_nattrs; i++)
     {
         outlet_anything(x->f_out_attrs, gensym(x->f_attr_name[i]->s_name+1), x->f_attr_size[i], x->f_attr_vals[i]);
     }
@@ -124,9 +124,9 @@ static void patcherargs_free(t_patcherargs *x)
     {
         free(x->f_args);
     }
-    if(x->f_n_attrs)
+    if(x->f_nattrs)
     {
-        for(i = 0; i < x->f_n_attrs; i++)
+        for(i = 0; i < x->f_nattrs; i++)
         {
             if(x->f_attr_size[i] && x->f_attr_vals[i])
             {
@@ -150,12 +150,12 @@ static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
         x->f_args = (t_atom *)getbytes((size_t)x->f_argc * sizeof(t_atom));
         memcpy(x->f_args, argv, (size_t)x->f_argc * sizeof(t_atom));
         
-        x->f_n_attrs = atoms_get_keys((int)(argc-x->f_argc), argv+x->f_argc, &x->f_attr_name);
-        if(x->f_n_attrs)
+        x->f_nattrs = atoms_get_keys((int)(argc-x->f_argc), argv+x->f_argc, &x->f_attr_name);
+        if(x->f_nattrs)
         {
-            x->f_attr_vals = (t_atom **)getbytes((size_t)x->f_n_attrs * sizeof(t_atom *));
-            x->f_attr_size = (int *)getbytes((size_t)x->f_n_attrs * sizeof(int));
-            for(i = 0; i < x->f_n_attrs; i++)
+            x->f_attr_vals = (t_atom **)getbytes((size_t)x->f_nattrs * sizeof(t_atom *));
+            x->f_attr_size = (int *)getbytes((size_t)x->f_nattrs * sizeof(int));
+            for(i = 0; i < x->f_nattrs; i++)
             {
                 atoms_get_attribute(argc-x->f_argc, argv+x->f_argc, x->f_attr_name[i], &x->f_attr_size[i], &x->f_attr_vals[i]);
             }

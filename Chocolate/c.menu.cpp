@@ -205,14 +205,16 @@ void menu_assist(t_menu *x, void *b, long m, long a, char *s)
 static t_symbol* menu_atoms_to_sym(t_atom* argv, long argc)
 {
     int i;
+    size_t length;
     char temp[MAXPDSTRING];
     char text[MAXPDSTRING];
     atom_string(argv, text, MAXPDSTRING);
     for(i = 1; i < argc; i++)
     {
         atom_string(argv+i, temp, MAXPDSTRING);
-        strcat(text, " ");
-        strcat(text, temp);
+        length = strlen(temp);
+        strncat(text, " ", 1);
+        strncat(text, temp, length);
     }
     return gensym(text);
 }

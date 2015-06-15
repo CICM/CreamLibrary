@@ -24,30 +24,41 @@
  *
  */
 
+/*!
+ * \example c.bang.cpp
+ * \brief This is an example of how to use the create a basic GUI.
+ * \details This example shows how to initialize a GUI class with methods for painting and mouse interractions and attributes.
+ */
 
 #include "../c.library.h"
 
-typedef struct _bang
+/**
+ * @example c.bang.cpp
+ * @struct t_bang
+ * @brief The example GUI bang structure.
+ * @details It is a basic GUI struture with attributes and basic Pd stuffs.
+ */
+typedef struct t_bang
 {
-	t_ebox      j_box;
-    
-    t_outlet*   f_out;
-	t_rgba		f_color_background;
-	t_rgba		f_color_border;
-	t_rgba		f_color_bang;
-    t_clock*    f_clock;
-    char        f_active;
+	t_ebox      b_box;              /*!< The t_ebox that allows to create a GUI. */
+    t_outlet*   b_out;              /*!< The t_outlet of the object. */
+	t_rgba		b_color_background; /*!< The struture for the t_eattr background color. */
+	t_rgba		b_color_border;     /*!< The struture for the t_eattr border color. */
+	t_rgba		b_color_bang;       /*!< The struture for the t_eattr bang color. */
+    t_clock*    b_clock;            /*!< The t_clock of the object. */
+    char        b_active;           /*!< If the object is performming a bang. */
     
 } t_bang;
 
+/*!< The example t_eclass for the t_bang. */
 static t_eclass *bang_class;
 
 static void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params)
 {
 	params->d_borderthickness   = 2;
 	params->d_cornersize        = 2;
-    params->d_bordercolor       = x->f_color_border;
-    params->d_boxfillcolor      = x->f_color_border;
+    params->d_bordercolor       = x->b_color_border;
+    params->d_boxfillcolor      = x->b_color_border;
 }
 
 static void bang_oksize(t_bang *x, t_rect *newrect)
@@ -62,14 +73,14 @@ static void bang_oksize(t_bang *x, t_rect *newrect)
 
 static void bang_output(t_bang *x, t_symbol* s, int argc, t_atom *argv)
 {
-    x->f_active = 1;
+    x->b_active = 1;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
-    outlet_bang(x->f_out);
+    outlet_bang(x->b_out);
     if(ebox_getsender((t_ebox *) x))
         pd_bang(ebox_getsender((t_ebox *) x));
     
-    clock_delay(x->f_clock, 100);
+    clock_delay(x->b_clock, 100);
 }
 
 static t_pd_err bang_notify(t_bang *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
@@ -92,13 +103,13 @@ static void draw_background(t_bang *x, t_object *view, t_rect *rect)
 	if (g)
 	{
         size = rect->width * 0.5;
-        if(x->f_active)
+        if(x->b_active)
         {
-            egraphics_set_color_rgba(g, &x->f_color_bang);
+            egraphics_set_color_rgba(g, &x->b_color_bang);
         }
         else
         {
-            egraphics_set_color_rgba(g, &x->f_color_background);
+            egraphics_set_color_rgba(g, &x->b_color_background);
         }
         egraphics_circle(g, floor(size + 0.5), floor(size+ 0.5), size * 0.9);
         egraphics_fill(g);
@@ -116,17 +127,17 @@ static void bang_paint(t_bang *x, t_object *view)
 
 static void bang_mousedown(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    x->f_active = 1;
+    x->b_active = 1;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
-    outlet_bang(x->f_out);
+    outlet_bang(x->b_out);
     if(ebox_getsender((t_ebox *) x))
         pd_bang(ebox_getsender((t_ebox *) x));
 }
 
 static void bang_mouseup(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    x->f_active = 0;
+    x->b_active = 0;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
@@ -139,9 +150,9 @@ static void *bang_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
-        x->f_out = outlet_new((t_object *)x, &s_bang);
-        x->f_active = 0;
-        x->f_clock          = clock_new(x,(t_method)bang_mouseup);
+        x->b_out = outlet_new((t_object *)x, &s_bang);
+        x->b_active = 0;
+        x->b_clock          = clock_new(x,(t_method)bang_mouseup);
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
     }
@@ -149,61 +160,69 @@ static void *bang_new(t_symbol *s, int argc, t_atom *argv)
     return (x);
 }
 
+/*!
+ * \fn          static void bang_free(t_bang *x)
+ * \brief       Frees the t_bang structure.
+ * \details     The function just calls ebox_free() and frees b_clock.
+ * \param x     The t_bang pointer.
+ */
 static void bang_free(t_bang *x)
 {
     ebox_free((t_ebox *)x);
-    clock_free(x->f_clock);
+    clock_free(x->b_clock);
 }
 
+/*!
+ * \fn          extern "C" void setup_c0x2ebang(void)
+ * \brief       Setups the bang_class for GUI behavior.
+ * \details     ...
+ */
 extern "C" void setup_c0x2ebang(void)
 {
-    t_eclass *c;
-    
-    c = eclass_new("c.bang", (method)bang_new, (method)bang_free, (short)sizeof(t_bang), 0L, A_GIMME, 0);
-    
-    eclass_guiinit(c, 0);
-
-    
-    eclass_addmethod(c, (method) bang_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) bang_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) bang_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) bang_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) bang_output,          "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) bang_output,          "bang",             A_NULL, 0);
-    eclass_addmethod(c, (method) bang_output,          "list",             A_GIMME,0);
-    eclass_addmethod(c, (method) bang_output,          "anything",         A_GIMME,0);
-    
-    eclass_addmethod(c, (method) bang_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) bang_mouseup,         "mouseup",          A_NULL, 0);
-    
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
-    CLASS_ATTR_DEFAULT              (c, "size", 0, "16. 16.");
-    
-    CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_bang, f_color_background);
-    CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
-    CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
-    CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
-    
-    CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_bang, f_color_border);
-    CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
-    CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
-    CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
-    
-    CLASS_ATTR_RGBA                 (c, "bacolor", 0, t_bang, f_color_bang);
-    CLASS_ATTR_LABEL                (c, "bacolor", 0, "Bang Color");
-    CLASS_ATTR_ORDER                (c, "bacolor", 0, "3");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bacolor", 0, "0. 0. 0. 1.");
-    CLASS_ATTR_STYLE                (c, "bacolor", 0, "color");
-    
-    bang_class = c;
+    // Creation of the t_eclass for the t_bang structure.
+    t_eclass *c = eclass_new("c.bang", (method)bang_new, (method)bang_free, (short)sizeof(t_bang), 0L, A_GIMME, 0);
+    if(c)
+    {
+        eclass_guiinit(c, 0);
+        
+        eclass_addmethod(c, (method) bang_paint,           "paint",            A_NULL, 0);
+        eclass_addmethod(c, (method) bang_notify,          "notify",           A_NULL, 0);
+        eclass_addmethod(c, (method) bang_getdrawparams,   "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (method) bang_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (method) bang_output,          "float",            A_FLOAT,0);
+        eclass_addmethod(c, (method) bang_output,          "bang",             A_NULL, 0);
+        eclass_addmethod(c, (method) bang_output,          "list",             A_GIMME,0);
+        eclass_addmethod(c, (method) bang_output,          "anything",         A_GIMME,0);
+        eclass_addmethod(c, (method) bang_mousedown,       "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (method) bang_mouseup,         "mouseup",          A_NULL, 0);
+        
+        CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
+        CLASS_ATTR_DEFAULT              (c, "size", 0, "16. 16.");
+        
+        CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_bang, b_color_background);
+        CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
+        CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
+        CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
+        
+        CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_bang, b_color_border);
+        CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
+        CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
+        CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
+        
+        CLASS_ATTR_RGBA                 (c, "bacolor", 0, t_bang, b_color_bang);
+        CLASS_ATTR_LABEL                (c, "bacolor", 0, "Bang Color");
+        CLASS_ATTR_ORDER                (c, "bacolor", 0, "3");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bacolor", 0, "0. 0. 0. 1.");
+        CLASS_ATTR_STYLE                (c, "bacolor", 0, "color");
+        
+        bang_class = c;
+    }
 }
-
-
 
 
 
