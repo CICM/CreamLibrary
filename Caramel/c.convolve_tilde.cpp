@@ -175,7 +175,7 @@ extern "C"  void setup_c0x2econvolve_tilde(void)
     eclass_addmethod(c, (method) convolve_dsp,       "dsp",              A_NULL, 0);
     eclass_addmethod(c, (method) convolve_set,       "set",              A_SYMBOL,  0);
     eclass_addmethod(c, (method) convolve_normalize, "normalize",        A_FLOAT, 0);
-    
+    eclass_register(CLASS_OBJ, c);
     convolve_class = c;
 }
 

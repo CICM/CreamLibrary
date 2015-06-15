@@ -251,7 +251,7 @@ extern "C"  void setup_c0x2efir_tilde(void)
     eclass_addmethod(c, (method) fir_dsp,       "dsp",              A_NULL, 0);
     eclass_addmethod(c, (method) fir_set,       "set",              A_SYMBOL,  0);
     eclass_addmethod(c, (method) fir_normalize, "normalize",        A_FLOAT, 0);
-
+    eclass_register(CLASS_OBJ, c);
     fir_class = c;
 }
 

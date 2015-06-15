@@ -185,14 +185,10 @@ extern "C" void setup_c0x2epatcherargs(void)
 
 	c = eclass_new("c.patcherargs", (method)patcherargs_new, (method)patcherargs_free, (short)sizeof(t_patcherargs), 0L, A_GIMME, 0);
     class_addcreator((t_newmethod)patcherargs_new, gensym("c.canvasargs"), A_GIMME, 0);
-
-
     eclass_addmethod(c, (method)patcherargs_output,      "bang",       A_NULL, 0);
     eclass_addmethod(c, (method)patcherargs_click,       "click",      A_NULL, 0);
-
-    
-	
-patcherargs_class = c;
+    eclass_register(CLASS_OBJ, c);
+    patcherargs_class = c;
 }
 
 

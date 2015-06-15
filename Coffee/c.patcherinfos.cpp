@@ -68,10 +68,8 @@ extern "C" void setup_c0x2epatcherinfos(void)
     CLASS_ATTR_ORDER            (c, "notify", 0, "1");
     CLASS_ATTR_FILTER_CLIP      (c, "notify", 0, 1);
     CLASS_ATTR_SAVE             (c, "notify", 0);
-    
-    
-	
-patcherinfos_class = c;
+    eclass_register(CLASS_OBJ, c);
+    patcherinfos_class = c;
 }
 
 static void canvas_setgraph(t_glist *x, int flag, int nogoprect)

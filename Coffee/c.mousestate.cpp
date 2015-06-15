@@ -545,10 +545,8 @@ extern "C" void setup_c0x2emousestate(void)
     eclass_addmethod(c, (method) mousestate_reset,      "reset",           A_NULL, 0);
     eclass_addmethod(c, (method) mousestate_zero,       "zero",            A_NULL, 0);
     eclass_addmethod(c, (method) mousestate_mode,       "mode",            A_FLOAT, 0);
-
-    
-	
-mousestate_class = c;
+    eclass_register(CLASS_OBJ, c);
+    mousestate_class = c;
      */
 }
 
