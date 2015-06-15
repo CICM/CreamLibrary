@@ -176,10 +176,10 @@ void *colorpanel_new(t_symbol *s, int argc, t_atom *argv)
 
 	x = (t_colorpanel *)eobj_new(colorpanel_class);
 
-    x->f_matrix_colorpanel   = (t_hsla **)getbytes(1 * sizeof(t_hsla *));
+    x->f_matrix_colorpanel   = (t_hsla **)malloc(1 * sizeof(t_hsla *));
     for(i = 0; i < 1; i++)
     {
-        x->f_matrix_colorpanel[i]   = (t_hsla *)getbytes(1 * sizeof(t_hsla));
+        x->f_matrix_colorpanel[i]   = (t_hsla *)malloc(1 * sizeof(t_hsla));
     }
     x->f_matrix_sizes.x = 1;
     x->f_matrix_sizes.y = 1;
@@ -481,10 +481,10 @@ t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, int ac, t_atom *
 
         x->f_matrix_sizes.x = (int)pd_clip_min(atom_getfloat(av), 1);
         x->f_matrix_sizes.y = (int)pd_clip_min(atom_getfloat(av+1), 1);
-        x->f_matrix_colorpanel   = (t_hsla **)getbytes(x->f_matrix_sizes.x * sizeof(t_hsla *));
+        x->f_matrix_colorpanel   = (t_hsla **)malloc(x->f_matrix_sizes.x * sizeof(t_hsla *));
         for(i = 0; i < x->f_matrix_sizes.x; i++)
         {
-            x->f_matrix_colorpanel[i]   = (t_hsla *)getbytes(x->f_matrix_sizes.y * sizeof(t_hsla));
+            x->f_matrix_colorpanel[i]   = (t_hsla *)malloc(x->f_matrix_sizes.y * sizeof(t_hsla));
         }
         colorpanel_computecolors(x);
     }

@@ -99,7 +99,7 @@ static void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
         if(!dsp)
             dsp_state = canvas_suspend_dsp();
         
-        temp = (float *)getbytes((size_t)buffer_size * sizeof(float));
+        temp = (float *)malloc((size_t)buffer_size * sizeof(float));
         for(int i = 0; i < buffer_size; i++)
         {
             temp[i] = buffer[i].w_float;

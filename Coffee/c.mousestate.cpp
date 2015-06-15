@@ -248,7 +248,7 @@ static void eobj_attach_torouter(t_object* child)
         }
         if(!x->e_nchilds || x->e_childs == NULL)
         {
-            x->e_childs = (t_object **)getbytes(sizeof(t_object *));
+            x->e_childs = (t_object **)malloc(sizeof(t_object *));
             if(x->e_childs)
             {
                 x->e_childs[0]  = child;

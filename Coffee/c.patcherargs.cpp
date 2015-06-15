@@ -147,14 +147,14 @@ static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
     if(x)
     {
         x->f_argc = atoms_get_attributes_offset(argc, argv);
-        x->f_args = (t_atom *)getbytes((size_t)x->f_argc * sizeof(t_atom));
+        x->f_args = (t_atom *)malloc((size_t)x->f_argc * sizeof(t_atom));
         memcpy(x->f_args, argv, (size_t)x->f_argc * sizeof(t_atom));
         
         x->f_nattrs = atoms_get_keys((int)(argc-x->f_argc), argv+x->f_argc, &x->f_attr_name);
         if(x->f_nattrs)
         {
-            x->f_attr_vals = (t_atom **)getbytes((size_t)x->f_nattrs * sizeof(t_atom *));
-            x->f_attr_size = (int *)getbytes((size_t)x->f_nattrs * sizeof(int));
+            x->f_attr_vals = (t_atom **)malloc((size_t)x->f_nattrs * sizeof(t_atom *));
+            x->f_attr_size = (int *)malloc((size_t)x->f_nattrs * sizeof(int));
             for(i = 0; i < x->f_nattrs; i++)
             {
                 atoms_get_attribute(argc-x->f_argc, argv+x->f_argc, x->f_attr_name[i], &x->f_attr_size[i], &x->f_attr_vals[i]);

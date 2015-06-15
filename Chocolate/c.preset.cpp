@@ -547,7 +547,7 @@ static void *preset_new(t_symbol *s, int argc, t_atom *argv)
     t_binbuf* d = binbuf_via_atoms(argc,argv);
     if(x && d)
     {
-        x->f_binbuf = (t_binbuf **)getbytes(_preset::maxbinbufs * sizeof(t_binbuf *));
+        x->f_binbuf = (t_binbuf **)malloc(_preset::maxbinbufs * sizeof(t_binbuf *));
         for(int i = 0; i < _preset::maxbinbufs; i++)
         {
             x->f_binbuf[i]  = binbuf_new();

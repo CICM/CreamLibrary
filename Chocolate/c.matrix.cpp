@@ -141,7 +141,7 @@ void *matrixctrl_new(t_symbol *s, int argc, t_atom *argv)
 
     x->f_size.x = 8;
     x->f_size.y = 4;
-    x->f_values = (char *)getbytes(x->f_size.x * x->f_size.y * sizeof(char));
+    x->f_values = (char *)malloc(x->f_size.x * x->f_size.y * sizeof(char));
     memset(x->f_values, 0, x->f_size.x * x->f_size.y * sizeof(char));
 
     x->f_selected.x = -1;
@@ -224,7 +224,7 @@ void matrixctrl_getrow(t_matrixctrl *x, float f)
     t_atom* av;
     if(f >= 0 && f < x->f_size.y)
     {
-        av = (t_atom *)getbytes(x->f_size.x * sizeof(t_atom));
+        av = (t_atom *)malloc(x->f_size.x * sizeof(t_atom));
         for(long i = 0; i < x->f_size.x; i++)
         {
             atom_setfloat(av+i, x->f_values[(long)f * (long)x->f_size.x + i]);
@@ -239,7 +239,7 @@ void matrixctrl_getcolumn(t_matrixctrl *x, float f)
     t_atom* av;
     if(f >= 0 && f < x->f_size.x)
     {
-        av = (t_atom *)getbytes(x->f_size.y * sizeof(t_atom));
+        av = (t_atom *)malloc(x->f_size.y * sizeof(t_atom));
         for(long i = 0; i < x->f_size.y; i++)
         {
             atom_setfloat(av+i, x->f_values[i * (long)x->f_size.x + (long)f]);
@@ -405,7 +405,7 @@ void matrixctrl_mouseleave(t_matrixctrl *x, t_object *patcherview, t_pt pt, long
 
 void matrixctrl_preset(t_matrixctrl *x, t_binbuf *b)
 {
-    t_atom* av = (t_atom *)getbytes(x->f_size.x * x->f_size.y * 3 * sizeof(t_atom));
+    t_atom* av = (t_atom *)malloc(x->f_size.x * x->f_size.y * 3 * sizeof(t_atom));
     long ac = 0;
     for(long i = 0; i < (long)x->f_size.y; i++)
     {
@@ -433,7 +433,7 @@ t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, int ac, t_atom *
         }
         x->f_size.x = (int)pd_clip_min(atom_getfloat(av), 1);
         x->f_size.y = (int)pd_clip_min(atom_getfloat(av+1), 1);
-        x->f_values = (char *)getbytes(x->f_size.x * x->f_size.y * sizeof(char));
+        x->f_values = (char *)malloc(x->f_size.x * x->f_size.y * sizeof(char));
         memset(x->f_values, 0, x->f_size.x * x->f_size.y * sizeof(char));
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);

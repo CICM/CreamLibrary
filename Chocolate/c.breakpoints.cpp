@@ -158,7 +158,7 @@ static void breakpoints_getlist(t_breakpoints *x)
 {
     if(x->f_npoints)
     {
-        t_atom* av = (t_atom *)getbytes((size_t)(x->f_npoints * 2) * sizeof(t_atom));
+        t_atom* av = (t_atom *)malloc((size_t)(x->f_npoints * 2) * sizeof(t_atom));
         if(av)
         {
             for(int i = 0, j = 0; i < x->f_npoints; j += 2, i++)
@@ -257,7 +257,7 @@ static void breakpoints_add(t_breakpoints *x, t_symbol* s, int argc, t_atom* arg
             float ord = pd_clip_minmax(atom_getfloat(argv+1), x->f_range_ordinate[0], x->f_range_ordinate[1]);
             if(!x->f_points)
             {
-                x->f_points = (t_pt *)getbytes(sizeof(t_pt));
+                x->f_points = (t_pt *)malloc(sizeof(t_pt));
                 if(x->f_points)
                 {
                     x->f_npoints = 1;

@@ -74,7 +74,7 @@ void *prepend_new(t_symbol *s, int argc, t_atom *argv)
     x = (t_prepend *)eobj_new(prepend_class);
     if(x)
     {
-        x->f_argv = (t_atom *)getbytes(_prepend::maxsize * sizeof(t_atom));
+        x->f_argv = (t_atom *)malloc(_prepend::maxsize * sizeof(t_atom));
         prepend_set(x, gensym("set"), argc, argv);
         x->f_out = outlet_new((t_object *)x, &s_list);
     }

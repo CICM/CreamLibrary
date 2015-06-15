@@ -467,10 +467,10 @@ static void *blackboard_new(t_symbol *s, int argc, t_atom *argv)
         x->f_color      = gensym("#000000");
         x->f_fill       = 0;
         x->f_ninstructions = 0;
-        x->f_instructions = (char **)getbytes(_blackboard::maxcmd * sizeof(char*));
+        x->f_instructions = (char **)malloc(_blackboard::maxcmd * sizeof(char*));
         for(int i = 0; i < _blackboard::maxcmd; i++)
         {
-            x->f_instructions[i] = (char *)getbytes(MAXPDSTRING * sizeof(char));
+            x->f_instructions[i] = (char *)malloc(MAXPDSTRING * sizeof(char));
         }
         
         ebox_attrprocess_viabinbuf(x, d);

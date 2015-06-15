@@ -109,7 +109,7 @@ static void fir_set_do(t_fir *x, t_symbol *s, char dsp)
             }
             else
             {
-                x->f_buffer = (t_sample *)getbytes((size_t)size * sizeof(t_sample));
+                x->f_buffer = (t_sample *)malloc((size_t)size * sizeof(t_sample));
             }
             if(x->f_buffer)
             {
@@ -228,7 +228,7 @@ static void fir_dsp(t_fir *x, t_object *dsp, short *count, double samplerate, lo
         }
         else
         {
-            x->f_temp = (t_sample *)getbytes((size_t)(maxvectorsize + x->f_size - 1) * sizeof(t_sample));
+            x->f_temp = (t_sample *)malloc((size_t)(maxvectorsize + x->f_size - 1) * sizeof(t_sample));
         }
         if(x->f_temp)
         {

@@ -75,7 +75,7 @@ static void loadmess_free(t_loadmess *x)
 {
     if(x->l_argv)
     {
-        freebytes(x->l_argv, (size_t)x->l_argc * sizeof(t_atom));
+        free(x->l_argv);
     }
     eobj_free(x);
 }
@@ -89,7 +89,7 @@ static void *loadmess_new(t_symbol *s, int argc, t_atom *argv)
         if(argc && argv)
         {
             x->l_argc = (size_t)argc;
-            x->l_argv = (t_atom *)getbytes(x->l_argc * sizeof(t_atom));
+            x->l_argv = (t_atom *)malloc(x->l_argc * sizeof(t_atom));
             if(x->l_argv)
             {
                 memcpy(x->l_argv, argv, sizeof(t_atom) * x->l_argc);
