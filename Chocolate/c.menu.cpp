@@ -158,6 +158,7 @@ extern "C" void setup_c0x2emenu(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
 	CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
     
+    eclass_register(CLASS_BOX, c);
 	menu_class = c;
 }
 

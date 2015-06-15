@@ -185,6 +185,7 @@ extern "C" void setup_c0x2etab(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "secolor", 0, "0.35 0.35 0.35 1.");
     CLASS_ATTR_STYLE                (c, "secolor", 0, "color");
     
+    eclass_register(CLASS_BOX, c);
 	tab_class = c;
 }
 

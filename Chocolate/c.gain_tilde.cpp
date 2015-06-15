@@ -149,6 +149,7 @@ extern "C"  void setup_c0x2egain_tilde(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "kncolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "kncolor", 0, "color");
     
+    eclass_register(CLASS_BOX, c);
 	gain_class = c;
 }
 

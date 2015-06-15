@@ -200,6 +200,7 @@ extern "C" void setup_c0x2etoggle(void)
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "crcolor", 0, "0.5 0.5 0.5 1.");
     CLASS_ATTR_STYLE                (c, "crcolor", 0, "color");
     
+    eclass_register(CLASS_BOX, c);
     toggle_class = c;
 }
 

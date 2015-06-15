@@ -127,6 +127,7 @@ extern "C" void setup_c0x2eplane(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "ptcolor", 0, "0. 0. 0. 1");
 	CLASS_ATTR_STYLE                (c, "ptcolor", 0, "color");
 	
+    eclass_register(CLASS_BOX, c);
 	plane_class = c;
 }
 

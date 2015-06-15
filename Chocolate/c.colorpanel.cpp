@@ -162,6 +162,7 @@ extern "C" void setup_c0x2ecolorpanel(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
 
+    eclass_register(CLASS_BOX, c);
 	colorpanel_class = c;
 }
 

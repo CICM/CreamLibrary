@@ -222,6 +222,7 @@ extern "C" void setup_c0x2edsp_tilde(void)
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "logocolor", 0, "0. 0.6 0. 0.8");
     CLASS_ATTR_STYLE                (c, "logocolor", 0, "color");
     
+    eclass_register(CLASS_BOX, c);
     dsp_tildeclass = c;
 }
 

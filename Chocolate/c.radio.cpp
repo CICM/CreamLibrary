@@ -130,6 +130,7 @@ extern "C" void setup_c0x2eradio(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "itcolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "itcolor", 0, "color");
     
+    eclass_register(CLASS_BOX, c);
 	radio_class = c;
 }
 

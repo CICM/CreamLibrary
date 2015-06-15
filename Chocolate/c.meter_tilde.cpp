@@ -143,6 +143,7 @@ extern "C" void setup_c0x2emeter_tilde(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "overcolor", 0, "1. 0. 0. 0.8");
 	CLASS_ATTR_STYLE                (c, "overcolor", 0, "color");
     
+    eclass_register(CLASS_BOX, c);
 	meter_class = c;
 }
 
