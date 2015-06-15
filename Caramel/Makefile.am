@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 noinst_LTLIBRARIES = libCaramel.la
 
-libCaramel_la_CXXFLAGS = @PD_CPPFLAGS@ -s -O2 -fPIC -fpermissive 
+libCaramel_la_CXXFLAGS = @PD_CPPFLAGS@ -O3 -fPIC
 libCaramel_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
 libCaramel_la_LIBADD = 
 

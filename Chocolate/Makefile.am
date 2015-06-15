@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 noinst_LTLIBRARIES = libChocolate.la
 
-libChocolate_la_CXXFLAGS = @PD_CPPFLAGS@ -s -O2 -fPIC -fpermissive 
+libChocolate_la_CXXFLAGS = @PD_CPPFLAGS@ -O3 -fPIC
 #~libChocolate_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
 libChocolate_la_LIBADD = 
 

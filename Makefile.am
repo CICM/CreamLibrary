@@ -3,7 +3,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 pkglib_LTLIBRARIES = Cream.la
 
-Cream_la_CXXFLAGS = @PD_CPPFLAGS@ -s -O2 -fPIC -fpermissive 
+Cream_la_CXXFLAGS = @PD_CPPFLAGS@ -O3 -fPIC 
 Cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
 Cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la Cinnamon/libCinnamon.la
 Cream_la_LIBADD += ThirdParty/PureData/Sources/libCicmWrapper.la
