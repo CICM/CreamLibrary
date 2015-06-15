@@ -450,9 +450,9 @@ static void *blackboard_new(t_symbol *s, int argc, t_atom *argv)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
         
-        x->f_out_drag   = (t_outlet *)listout(x);
-        x->f_out_move   = (t_outlet *)listout(x);
-        x->f_out_down   = (t_outlet *)floatout(x);
+        x->f_out_drag   = outlet_new((t_object *)x, &s_list);
+        x->f_out_move   = outlet_new((t_object *)x, &s_list);
+        x->f_out_down   = outlet_new((t_object *)x, &s_float);
         x->f_pen_new.x  = 0.;
         x->f_pen_new.y  = 0.;
         x->f_pen_old.x  = 0.;
@@ -542,7 +542,6 @@ extern "C" void setup_c0x2eblackboard(void)
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
     CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
     blackboard_class = c;
 }
 

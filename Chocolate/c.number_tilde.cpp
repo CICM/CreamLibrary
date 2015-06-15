@@ -93,7 +93,7 @@ static t_pd_err number_tilde_notify(t_number_tilde *x, t_symbol *s, t_symbol *ms
 		}
         if(s == cream_sym_fontsize)
         {
-            object_attr_setvalueof((t_object *)x, s_size, 0, NULL);
+            eobj_attr_setvalueof(x, s_size, 0, NULL);
         }
         ebox_redraw((t_ebox *)x);
 	}
@@ -242,7 +242,7 @@ static void *number_tilde_new(t_symbol *s, int argc, t_atom *argv)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK);
         eobj_dspsetup((t_ebox *)x, 1, 1);
-        x->f_peaks_outlet   = floatout(x);
+        x->f_peaks_outlet   = outlet_new((t_object *)x, &s_float);
         x->f_peak_value     = 0.;
         x->f_clock          = clock_new(x,(t_method)number_tilde_tick);
         x->f_startclock     = 0;
@@ -307,7 +307,6 @@ extern "C" void setup_c0x2enumber_tilde(void)
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
     CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
     number_tilde_class = c;
 }
 

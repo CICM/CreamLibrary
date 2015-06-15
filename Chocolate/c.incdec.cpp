@@ -117,7 +117,6 @@ extern "C" void setup_c0x2eincdec(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "arcolor", 0, "0. 0. 0. 1.");
     CLASS_ATTR_STYLE                (c, "arcolor", 0, "color");
 
-    eclass_register(CLASS_BOX, c);
 	incdec_class = c;
 }
 
@@ -137,7 +136,7 @@ void *incdec_new(t_symbol *s, int argc, t_atom *argv)
 
     x->f_value = 0.;
     x->f_mouse_down = 0;
-    x->f_out = (t_outlet *)floatout(x);
+    x->f_out = outlet_new((t_object *)x, &s_float);
 	ebox_attrprocess_viabinbuf(x, d);
     x->f_setted = 0;
 	ebox_ready((t_ebox *)x);

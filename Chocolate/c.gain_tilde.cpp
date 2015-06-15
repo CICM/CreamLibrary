@@ -149,7 +149,6 @@ extern "C"  void setup_c0x2egain_tilde(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "kncolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "kncolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
 	gain_class = c;
 }
 
@@ -167,7 +166,7 @@ void *gain_new(t_symbol *s, int argc, t_atom *argv)
     ;
 	ebox_new((t_ebox *)x, flags);
     eobj_dspsetup((t_ebox *)x, 1, 1);
-    x->f_out = (t_outlet *)floatout(x);
+    x->f_out = outlet_new((t_object *)x, &s_float);
     
     x->f_value  = 0.;
     x->f_amp    = 1.;

@@ -69,8 +69,9 @@ extern "C" void setup_c0x2epatcherinfos(void)
     CLASS_ATTR_FILTER_CLIP      (c, "notify", 0, 1);
     CLASS_ATTR_SAVE             (c, "notify", 0);
     
-    eclass_register(CLASS_OBJ, c);
-	patcherinfos_class = c;
+    
+	
+patcherinfos_class = c;
 }
 
 static void canvas_setgraph(t_glist *x, int flag, int nogoprect)
@@ -226,9 +227,9 @@ void *patcherinfos_new(t_symbol *s, int argc, t_atom *argv)
         else
             x->f_canvas = NULL;
         
-        x->f_out_name = (t_outlet *)symbolout(x);
-        x->f_out_path = (t_outlet *)symbolout(x);
-        x->f_out_coords = (t_outlet *)listout(x);
+        x->f_out_name = outlet_new((t_object *)x, &s_symbol);
+        x->f_out_path = outlet_new((t_object *)x, &s_symbol);
+        x->f_out_coords = outlet_new((t_object *)x, &s_list);
         x->f_time = clock_getsystime();
         
         

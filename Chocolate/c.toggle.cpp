@@ -149,7 +149,7 @@ static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
         x->f_active = 0;
-        x->f_out = (t_outlet *)floatout(x);
+        x->f_out = outlet_new((t_object *)x, &s_float);
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
     }
@@ -200,7 +200,6 @@ extern "C" void setup_c0x2etoggle(void)
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "crcolor", 0, "0.5 0.5 0.5 1.");
     CLASS_ATTR_STYLE                (c, "crcolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
     toggle_class = c;
 }
 

@@ -67,8 +67,8 @@ extern "C" void cream_setup(void)
     setup_c0x2emousestate();
     setup_c0x2epatchermess();
     
-    pd_library_add_folder("Cream", "misc");
-    pd_library_add_folder("Cream", "helps");
+    epd_add_folder("Cream", "misc");
+    epd_add_folder("Cream", "helps");
 }
 
 extern "C" void Cream_setup(void)

@@ -143,7 +143,6 @@ extern "C" void setup_c0x2emeter_tilde(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "overcolor", 0, "1. 0. 0. 0.8");
 	CLASS_ATTR_STYLE                (c, "overcolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
 	meter_class = c;
 }
 
@@ -166,7 +165,7 @@ void *meter_new(t_symbol *s, int argc, t_atom *argv)
     eobj_dspsetup((t_ebox *)x, 1, 0);
     
     x->f_direction      = 0;
-    x->f_peaks_outlet   = floatout(x);
+    x->f_peaks_outlet   = outlet_new((t_object *)x, &s_float);
     x->f_peak_value     = -90.;
     x->f_clock          = clock_new(x,(t_method)meter_tick);
 	x->f_startclock     = 0;

@@ -59,8 +59,9 @@ extern "C" void setup_c0x2ematrix_tilde(void)
 	eclass_addmethod(c, (method) matrix_assist,          "assist",           A_NULL, 0);
     eclass_addmethod(c, (method) matrix_list,            "list",             A_GIMME,0);
     
-    eclass_register(CLASS_OBJ, c);
-	matrix_class = c;
+    
+	
+matrix_class = c;
 }
 
 void *matrix_new(t_symbol *s, int argc, t_atom *argv)

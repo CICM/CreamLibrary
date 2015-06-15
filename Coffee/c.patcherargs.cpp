@@ -161,9 +161,9 @@ static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
             }
         }
 
-        x->f_out_args = (t_outlet *)listout(x);
-        x->f_out_attrs = (t_outlet *)listout(x);
-        x->f_out_done = (t_outlet *)bangout(x);
+        x->f_out_args = outlet_new((t_object *)x, &s_list);
+        x->f_out_attrs = outlet_new((t_object *)x, &s_list);
+        x->f_out_done = outlet_new((t_object *)x, &s_bang);
         x->f_time = clock_getsystime();
         if(canvas_getcurrent())
         {
@@ -190,8 +190,9 @@ extern "C" void setup_c0x2epatcherargs(void)
     eclass_addmethod(c, (method)patcherargs_output,      "bang",       A_NULL, 0);
     eclass_addmethod(c, (method)patcherargs_click,       "click",      A_NULL, 0);
 
-    eclass_register(CLASS_OBJ, c);
-	patcherargs_class = c;
+    
+	
+patcherargs_class = c;
 }
 
 

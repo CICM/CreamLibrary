@@ -96,16 +96,16 @@ static void *loadmess_new(t_symbol *s, int argc, t_atom *argv)
                 if(x->l_argc == 1)
                 {
                     if(atom_gettype(argv) == A_FLOAT)
-                        x->l_out = (t_outlet *)floatout(x);
+                        x->l_out = outlet_new((t_object *)x, &s_float);
                     else if (atom_gettype(argv) == A_SYMBOL)
-                        x->l_out = (t_outlet *)symbolout(x);
+                        x->l_out = outlet_new((t_object *)x, &s_symbol);
                 }
                 else
                 {
                     if(atom_gettype(argv) == A_FLOAT)
-                        x->l_out = (t_outlet *)listout(x);
+                        x->l_out = outlet_new((t_object *)x, &s_list);
                     else if (atom_gettype(argv) == A_SYMBOL)
-                        x->l_out = (t_outlet *)anythingout(x);
+                        x->l_out = outlet_new((t_object *)x, &s_anything);
                 }
             }
             else
@@ -117,7 +117,7 @@ static void *loadmess_new(t_symbol *s, int argc, t_atom *argv)
         {
             x->l_argc = 0;
             x->l_argv = NULL;
-            x->l_out = (t_outlet *)bangout(x);
+            x->l_out = outlet_new((t_object *)x, &s_bang);
         }
     }
     
@@ -135,8 +135,9 @@ extern "C" void setup_c0x2eloadmess(void)
     eclass_addmethod(c, (method) loadmess_output,      "bang",             A_NULL, 0);
 	eclass_addmethod(c, (method) loadmess_click,       "click",            A_NULL, 0);
 	
-    eclass_register(CLASS_OBJ, c);
-	loadmess_class = c;
+    
+	
+loadmess_class = c;
 }
 
 

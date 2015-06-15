@@ -425,7 +425,7 @@ static void breakpoints_scaleabs(t_breakpoints *x, t_symbol* s, int argc, t_atom
         {
             x->f_points[i].x = ((x->f_points[i].x - x->f_range_abscissa[0]) / ratio) * (max - min) + min;
         }
-        object_attr_setvalueof((t_object *)x, cream_sym_absrange, argc, argv);
+        eobj_attr_setvalueof(x, cream_sym_absrange, argc, argv);
     }
     
 }
@@ -449,7 +449,7 @@ static void breakpoints_scaleord(t_breakpoints *x, t_symbol* s, int argc, t_atom
         {
             x->f_points[i].y = ((x->f_points[i].y - x->f_range_ordinate[0]) / ratio) * (max - min) + min;
         }
-        object_attr_setvalueof((t_object *)x, cream_sym_ordrange, argc, argv);
+        eobj_attr_setvalueof(x, cream_sym_ordrange, argc, argv);
     }
 }
 
@@ -879,9 +879,9 @@ static void *breakpoints_new(t_symbol *s, int argc, t_atom *argv)
         ;
         ebox_new((t_ebox *)x, flags);
         
-        x->f_out_float = (t_outlet *)floatout(x);
-        x->f_out_list = (t_outlet *)listout(x);
-        x->f_out_function = (t_outlet *)listout(x);
+        x->f_out_float = outlet_new((t_object *)x, &s_float);
+        x->f_out_list = outlet_new((t_object *)x, &s_list);
+        x->f_out_function = outlet_new((t_object *)x, &s_list);
         x->f_npoints = 0;
         x->f_points = NULL;
         x->f_point_hover    = -1;
@@ -992,7 +992,6 @@ extern "C" void setup_c0x2ebreakpoints(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
     CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
 	breakpoints_class = c;
 }
 

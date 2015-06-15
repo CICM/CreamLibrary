@@ -64,7 +64,6 @@ extern "C" void setup_c0x2eprepend(void)
     eclass_addmethod(c, (method)prepend_symbol,      "symbol",         A_SYMBOL,0);
     eclass_addmethod(c, (method)prepend_bang,        "bang",           A_NULL,  0);
     
-    eclass_register(CLASS_OBJ, c);
     prepend_class = c;
 }
 
@@ -77,7 +76,7 @@ void *prepend_new(t_symbol *s, int argc, t_atom *argv)
     {
         x->f_argv = (t_atom *)getbytes(_prepend::maxsize * sizeof(t_atom));
         prepend_set(x, gensym("set"), argc, argv);
-        x->f_out = (t_outlet *)listout(x);
+        x->f_out = outlet_new((t_object *)x, &s_list);
     }
     
     return (x);

@@ -254,8 +254,9 @@ extern "C"  void setup_c0x2efreeverb_tilde(void)
     eclass_addmethod(c, (method) freeverb_damp,            "damp",             A_FLOAT, 0);
     eclass_addmethod(c, (method) freeverb_freeze,          "freeze",           A_FLOAT, 0);
     
-    eclass_register(CLASS_OBJ, c);
-	freeverb_class = c;
+    
+	
+freeverb_class = c;
 }
 
 void *freeverb_new(t_symbol *s, int argc, t_atom *argv)

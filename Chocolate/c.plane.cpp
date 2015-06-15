@@ -127,7 +127,6 @@ extern "C" void setup_c0x2eplane(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "ptcolor", 0, "0. 0. 0. 1");
 	CLASS_ATTR_STYLE                (c, "ptcolor", 0, "color");
 	
-    eclass_register(CLASS_BOX, c);
 	plane_class = c;
 }
 
@@ -144,8 +143,8 @@ void *plane_new(t_symbol *s, int argc, t_atom *argv)
     | EBOX_GROWLINK
     ;
 	ebox_new((t_ebox *)x, flags);
-    x->f_out_x = (t_outlet *)floatout(x);
-    x->f_out_y = (t_outlet *)floatout(x);
+    x->f_out_x = outlet_new((t_object *)x, &s_float);
+    x->f_out_y = outlet_new((t_object *)x, &s_float);
     
     x->f_position.x = 0.;
     x->f_position.y = 0.;

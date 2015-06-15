@@ -130,7 +130,6 @@ extern "C" void setup_c0x2eradio(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "itcolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "itcolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
 	radio_class = c;
 }
 
@@ -147,7 +146,7 @@ void *radio_new(t_symbol *s, int argc, t_atom *argv)
     | EBOX_GROWINDI
     ;
 	ebox_new((t_ebox *)x, flags);
-    x->f_out = (t_outlet *)outlet_new((t_object *)x, &s_anything);
+    x->f_out = outlet_new((t_object *)x, &s_anything);
     
 	ebox_attrprocess_viabinbuf(x, d);//To ensure the number of items has been setted before we compute the box size (not clean)
     ebox_attrprocess_viabinbuf(x, d);
@@ -516,7 +515,7 @@ t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av)
             ebox_invalidate_layer((t_ebox *)x, gensym("items_layer"));
             atom_setfloat(argv, x->j_box.b_rect.width);
             atom_setfloat(argv+1, x->j_box.b_rect.height);
-            object_attr_setvalueof((t_object *)x, gensym("size"), 2, argv);
+            eobj_attr_setvalueof(x, gensym("size"), 2, argv);
         }
     }
     return 0;

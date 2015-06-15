@@ -90,9 +90,9 @@ static void *tab_new(t_symbol *s, int argc, t_atom *argv)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
         
-        x->f_out_index  = floatout(x);
-        x->f_out_item   = listout(x);
-        x->f_out_hover  = floatout(x);
+        x->f_out_index  = outlet_new((t_object *)x, &s_float);
+        x->f_out_item   = outlet_new((t_object *)x, &s_list);
+        x->f_out_hover  = outlet_new((t_object *)x, &s_float);
         
         x->f_item_selected = -1;
         x->f_item_hover    = -1;
@@ -185,7 +185,6 @@ extern "C" void setup_c0x2etab(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "secolor", 0, "0.35 0.35 0.35 1.");
     CLASS_ATTR_STYLE                (c, "secolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
 	tab_class = c;
 }
 
@@ -198,7 +197,7 @@ static void tab_sizemustchange(t_tab *x)
     if(x->f_orientation)
     {
         if(rect.width < sys_fontwidth(x->j_box.b_font.c_size) * 3 || rect.height < (sys_fontheight(x->j_box.b_font.c_size) + 4) * pd_clip_min(x->f_items_size, 1))
-            object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
+            eobj_attr_setvalueof(x, gensym("size"), 0, NULL);
         else
         {
             ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
@@ -210,7 +209,7 @@ static void tab_sizemustchange(t_tab *x)
     else
     {
         if(rect.width < sys_fontwidth(x->j_box.b_font.c_size) * 3 * pd_clip_min(x->f_items_size, 1) || rect.height < (sys_fontheight(x->j_box.b_font.c_size) + 4) * sys_fontheight(x->j_box.b_font.c_size) + 4)
-            object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
+            eobj_attr_setvalueof(x, gensym("size"), 0, NULL);
         else
         {
             ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
@@ -469,7 +468,7 @@ t_pd_err tab_notify(t_tab *x, t_symbol *s, t_symbol *msg, void *sender, void *da
 		}
         if(s == cream_sym_fontsize || s == gensym("orientation") || s == gensym("items"))
         {
-            object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
+            eobj_attr_setvalueof(x, gensym("size"), 0, NULL);
         }
         ebox_redraw((t_ebox *)x);
 	}

@@ -89,22 +89,25 @@ extern "C"  void setup_c0x2eatan_tilde(void)
     eclass_dspinit(c);
 
     eclass_addmethod(c, (method) atan_dsp,       "dsp",              A_NULL, 0);
-    eclass_register(CLASS_OBJ, c);
-	atan_class = c;
+    
+	
+atan_class = c;
 
     c = eclass_new("c.atan2~", (method)atan2_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
     eclass_dspinit(c);
     
     eclass_addmethod(c, (method) atan2_dsp,       "dsp",              A_NULL, 0);
-    eclass_register(CLASS_OBJ, c);
-	atan2_class = c;
+    
+	
+atan2_class = c;
 
     c = eclass_new("c.atanh~", (method)atanh_new, (method)eobj_dspfree, (short)sizeof(t_edspobj), 0L, A_GIMME, 0);
     eclass_dspinit(c);
     
     eclass_addmethod(c, (method) atanh_dsp,       "dsp",              A_NULL, 0);
-    eclass_register(CLASS_OBJ, c);
-	atanh_class = c;
+    
+	
+atanh_class = c;
 }
 
 

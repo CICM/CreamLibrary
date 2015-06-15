@@ -158,7 +158,6 @@ extern "C" void setup_c0x2emenu(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
 	CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
 	menu_class = c;
 }
 
@@ -179,8 +178,8 @@ void *menu_new(t_symbol *s, int argc, t_atom *argv)
     
 	ebox_new((t_ebox *)x, flags);
     
-    x->f_out_index  = floatout(x);
-    x->f_out_item   = listout(x);
+    x->f_out_index  = outlet_new((t_object *)x, &s_float);
+    x->f_out_item   = outlet_new((t_object *)x, &s_list);
     x->f_item_selected = 0;
     x->f_items_size = 0;
     x->f_open       = 0;
@@ -456,7 +455,7 @@ t_pd_err menu_notify(t_menu *x, t_symbol *s, t_symbol *msg, void *sender, void *
 		}
         if(s == cream_sym_fontsize || s == gensym("items"))
         {
-            object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
+            eobj_attr_setvalueof(x, gensym("size"), 0, NULL);
         }
         ebox_redraw((t_ebox *)x);
 	}
@@ -592,7 +591,7 @@ void menu_mousedown(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
         else
             x->f_open = 1;
         atom_setfloat(av, x->j_box.b_rect.width);
-        object_attr_setvalueof((t_object *)x, gensym("size"), 1, av);
+        eobj_attr_setvalueof(x, gensym("size"), 1, av);
     }
 }
 
@@ -601,7 +600,7 @@ void menu_mouseleave(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
     t_atom av[1];
     atom_setfloat(av, x->j_box.b_rect.width);
     x->f_open = 0;
-    object_attr_setvalueof((t_object *)x, gensym("size"), 1, av);
+    eobj_attr_setvalueof(x, gensym("size"), 1, av);
 }
 
 void menu_mousemove(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -611,7 +610,7 @@ void menu_mousemove(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
     {
         atom_setfloat(av, x->j_box.b_rect.width);
         x->f_open = 1;
-        object_attr_setvalueof((t_object *)x, gensym("size"), 1, av);
+        eobj_attr_setvalueof(x, gensym("size"), 1, av);
     }
 }
 

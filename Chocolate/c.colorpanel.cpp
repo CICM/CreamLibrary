@@ -162,7 +162,6 @@ extern "C" void setup_c0x2ecolorpanel(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
 
-    eclass_register(CLASS_BOX, c);
 	colorpanel_class = c;
 }
 
@@ -194,9 +193,9 @@ void *colorpanel_new(t_symbol *s, int argc, t_atom *argv)
     x->f_color_hover.y = -10;
     x->f_color_picked.x = -10;
     x->f_color_picked.y = -10;
-    x->f_out_rgb = (t_outlet *)listout(x);
-    x->f_out_hsl = (t_outlet *)listout(x);
-    x->f_out_hex = (t_outlet *)outlet_new((t_object *)x, &s_symbol);
+    x->f_out_rgb = outlet_new((t_object *)x, &s_list);
+    x->f_out_hsl = outlet_new((t_object *)x, &s_list);
+    x->f_out_hex = outlet_new((t_object *)x, &s_symbol);
 
 	ebox_attrprocess_viabinbuf(x, d);
 	ebox_ready((t_ebox *)x);

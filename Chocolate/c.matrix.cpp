@@ -126,7 +126,6 @@ extern "C" void setup_c0x2ematrix(void)
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "accolor", 0, "0.5 0.5 0.5 1.");
 	CLASS_ATTR_STYLE                (c, "accolor", 0, "color");
 
-    eclass_register(CLASS_BOX, c);
 	matrixctrl_class = c;
 }
 
@@ -153,8 +152,8 @@ void *matrixctrl_new(t_symbol *s, int argc, t_atom *argv)
     ;
 	ebox_new((t_ebox *)x, flags);
 
-    x->f_out_cell   = (t_outlet *)listout(x);
-    x->f_out_colrow = (t_outlet *)listout(x);
+    x->f_out_cell   = outlet_new((t_object *)x, &s_list);
+    x->f_out_colrow = outlet_new((t_object *)x, &s_list);
 
 	ebox_attrprocess_viabinbuf(x, d);
 	ebox_ready((t_ebox *)x);

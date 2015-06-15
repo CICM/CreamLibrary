@@ -55,8 +55,7 @@ extern "C"  void setup_c0x2esin_tilde(void)
     eclass_dspinit(c);
 	
     eclass_addmethod(c, (method) sin_dsp,       "dsp",              A_NULL, 0);
-    eclass_register(CLASS_OBJ, c);
-	sin_class = c;
+    sin_class = c;
 }
 
 

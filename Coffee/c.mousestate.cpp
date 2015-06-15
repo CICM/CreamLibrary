@@ -518,12 +518,12 @@ static void *mousestate_new(t_symbol *s, int argc, t_atom *argv)
     t_mousestate *x = (t_mousestate *)eobj_new(mousestate_class);
     if(x)
     {
-        x->l_mouse_pressed = (t_outlet *)floatout(x);
-        x->l_mouse_x       = (t_outlet *)floatout(x);
-        x->l_mouse_y       = (t_outlet *)floatout(x);
-        x->l_mouse_deltax  = (t_outlet *)floatout(x);
-        x->l_mouse_deltay  = (t_outlet *)floatout(x);
-        x->l_mouse_modifier= (t_outlet *)floatout(x);
+        x->l_mouse_pressed = outlet_new((t_object *)x, &s_float);
+        x->l_mouse_x       = outlet_new((t_object *)x, &s_float);
+        x->l_mouse_y       = outlet_new((t_object *)x, &s_float);
+        x->l_mouse_deltax  = outlet_new((t_object *)x, &s_float);
+        x->l_mouse_deltay  = outlet_new((t_object *)x, &s_float);
+        x->l_mouse_modifier= outlet_new((t_object *)x, &s_float);
         x->l_mode          = 0;
         x->l_zero          = 0;
         x->l_mouse         = eobj_get_mouse_global_position((t_object *)x);
@@ -546,8 +546,9 @@ extern "C" void setup_c0x2emousestate(void)
     eclass_addmethod(c, (method) mousestate_zero,       "zero",            A_NULL, 0);
     eclass_addmethod(c, (method) mousestate_mode,       "mode",            A_FLOAT, 0);
 
-    eclass_register(CLASS_OBJ, c);
-	mousestate_class = c;
+    
+	
+mousestate_class = c;
      */
 }
 

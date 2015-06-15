@@ -188,7 +188,7 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
                 atom_setsym(x->f_argv+i, gensym("symbol"));
             }
         }
-        x->f_out = (t_outlet *)listout(x);
+        x->f_out = outlet_new((t_object *)x, &s_list);
     }
     
     return (x);
@@ -207,7 +207,8 @@ extern "C" void setup_c0x2epak(void)
     eclass_addmethod(c, (method)pak_symbol,      "symbol",         A_SYMBOL,0);
     eclass_addmethod(c, (method)pak_output,      "bang",           A_NULL,  0);
     
-    eclass_register(CLASS_OBJ, c);
-	pak_class = c;
+    
+	
+pak_class = c;
 }
 

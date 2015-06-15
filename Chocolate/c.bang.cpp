@@ -139,7 +139,7 @@ static void *bang_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
-        x->f_out = (t_outlet *)bangout((t_object *)x);
+        x->f_out = outlet_new((t_object *)x, &s_bang);
         x->f_active = 0;
         x->f_clock          = clock_new(x,(t_method)bang_mouseup);
         ebox_attrprocess_viabinbuf(x, d);
@@ -200,7 +200,6 @@ extern "C" void setup_c0x2ebang(void)
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bacolor", 0, "0. 0. 0. 1.");
     CLASS_ATTR_STYLE                (c, "bacolor", 0, "color");
     
-    eclass_register(CLASS_BOX, c);
     bang_class = c;
 }
 

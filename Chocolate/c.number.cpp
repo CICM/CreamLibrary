@@ -161,7 +161,6 @@ extern "C" void setup_c0x2enumber(void)
 	CLASS_ATTR_ORDER                (c, "textcolor", 0, "3");
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
     CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
-    eclass_register(CLASS_BOX, c);
 	number_class = c;
 }
 
@@ -182,7 +181,7 @@ void *number_new(t_symbol *s, int argc, t_atom *argv)
 
 	ebox_new((t_ebox *)x, flags);
 
-    x->f_outlet   = floatout(x);
+    x->f_outlet   = outlet_new((t_object *)x, &s_float);
     x->f_mode     = 0.f;
     sprintf(x->f_textvalue, "0.");
     x->f_value    = 0;
@@ -262,7 +261,7 @@ t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sender, vo
 		}
         if(s == cream_sym_fontsize || s == cream_sym_fontname)
         {
-            object_attr_setvalueof((t_object *)x, gensym("size"), 0, NULL);
+            eobj_attr_setvalueof(x, gensym("size"), 0, NULL);
         }
         ebox_redraw((t_ebox *)x);
 	}
