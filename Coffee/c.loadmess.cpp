@@ -53,9 +53,9 @@ static void loadmess_output(t_loadmess *x)
     else
     {
         if(atom_gettype(x->l_argv) == A_FLOAT)
-            outlet_list(x->l_out, &s_list, (long)x->l_argc, x->l_argv);
+            outlet_list(x->l_out, &s_list, (int)x->l_argc, x->l_argv);
         else if (atom_gettype(x->l_argv) == A_SYMBOL)
-            outlet_anything(x->l_out, atom_getsymbol(x->l_argv), (long)x->l_argc-1, x->l_argv+1);
+            outlet_anything(x->l_out, atom_getsymbol(x->l_argv), (int)x->l_argc-1, x->l_argv+1);
     }
 }
 

@@ -380,7 +380,7 @@ void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long modifier
 
 void slider_preset(t_slider *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sf", gensym("float"), (float)x->f_value);
+    binbuf_addv(b, (char *)"sf", gensym("float"), (float)x->f_value);
 }
 
 

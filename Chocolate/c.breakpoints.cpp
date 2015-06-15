@@ -480,10 +480,10 @@ static void breakpoints_init(t_breakpoints *x, t_binbuf *d)
 
 static void breakpoints_preset(t_breakpoints *x, t_binbuf *b)
 {
-    binbuf_addv(b, "s", cream_sym_function);
+    binbuf_addv(b, (char *)"s", cream_sym_function);
     for(int i = 0; i < x->f_npoints; i++)
     {
-        binbuf_addv(b, "ff", (float)x->f_points[i].x, (float)x->f_points[i].y);
+        binbuf_addv(b, (char *)"ff", (float)x->f_points[i].x, (float)x->f_points[i].y);
     }
 }
 
@@ -491,10 +491,10 @@ static void breakpoints_save(t_breakpoints *x, t_binbuf *d)
 {
     if(x->f_npoints)
     {
-        binbuf_addv(d, "s", cream_sym_atpoints);
+        binbuf_addv(d, (char *)"s", cream_sym_atpoints);
         for(int i = 0; i < x->f_npoints; i++)
         {
-            binbuf_addv(d, "ff", x->f_points[i].x, x->f_points[i].y);
+            binbuf_addv(d, (char *)"ff", x->f_points[i].x, x->f_points[i].y);
         }
     }
 }
@@ -504,7 +504,7 @@ static void breakpoints_read(t_breakpoints *x, t_symbol *s, int argc, t_atom *ar
     t_binbuf *d = binbuf_new();
     if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
     {
-        if(binbuf_read(d, atom_getsymbol(argv)->s_name, "", 0))
+        if(binbuf_read(d, atom_getsymbol(argv)->s_name, (char *)"", 0))
         {
             pd_error(x, "breakpoints : %s read failed", atom_getsymbol(argv)->s_name);
         }
@@ -523,7 +523,7 @@ static void breakpoints_write(t_breakpoints *x, t_symbol *s, int argc, t_atom *a
     if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
     {
         breakpoints_save(x, d);
-        if(binbuf_write(d, atom_getsymbol(argv)->s_name, "", 0))
+        if(binbuf_write(d, atom_getsymbol(argv)->s_name, (char *)"", 0))
         {
             pd_error(x, "breakpoints : %s write failed", atom_getsymbol(argv)->s_name);
         }
@@ -538,7 +538,7 @@ static void breakpoints_function(t_breakpoints *x, t_symbol* s, int argc, t_atom
     t_binbuf* b = binbuf_new();
     if(argc && argv)
     {
-        binbuf_addv(b, "s", cream_sym_atpoints);
+        binbuf_addv(b, (char *)"s", cream_sym_atpoints);
         binbuf_add(b, argc, argv);
         breakpoints_init(x, b);
         binbuf_free(b);

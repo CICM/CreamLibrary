@@ -503,7 +503,7 @@ void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modifiers)
 
 void knob_preset(t_knob *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sf", gensym("float"), (float)x->f_value);
+    binbuf_addv(b, (char *)"sf", gensym("float"), (float)x->f_value);
 }
 
 

@@ -305,7 +305,7 @@ void plane_mousedrag(t_plane *x, t_object *patcherview, t_pt pt, long modifiers)
 
 void plane_preset(t_plane *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sff", gensym("list"), x->f_position.x, x->f_position.y);
+    binbuf_addv(b, (char *)"sff", gensym("list"), x->f_position.x, x->f_position.y);
 }
 
 

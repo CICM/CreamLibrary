@@ -411,7 +411,7 @@ void colorpanel_mouseleave(t_colorpanel *x, t_object *patcherview, t_pt pt, long
 
 void colorpanel_preset(t_colorpanel *x, t_binbuf *b)
 {
-   binbuf_addv(b, "sff", gensym("list"), x->f_color_picked.x, x->f_color_picked.y);
+   binbuf_addv(b, (char *)"sff", gensym("list"), x->f_color_picked.x, x->f_color_picked.y);
 }
 
 static void colorpanel_computecolors(t_colorpanel *x)

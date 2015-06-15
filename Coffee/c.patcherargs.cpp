@@ -62,7 +62,7 @@ static char patcherargs_initialize(t_patcherargs *x)
                 ac--;
                 av++;
             }
-            int argc = atoms_get_attributes_offset(ac, av);
+            long argc = atoms_get_attributes_offset(ac, av);
             
             if(argc > x->f_argc)
             {
@@ -82,7 +82,7 @@ static char patcherargs_initialize(t_patcherargs *x)
             {
                 int nattr;
                 t_atom* attrs;
-                if(!atoms_get_attribute(ac-argc, av+argc, x->f_attr_name[i], &nattr, &attrs))
+                if(!atoms_get_attribute((int)(ac-argc), av+argc, x->f_attr_name[i], &nattr, &attrs))
                 {
                     x->f_attr_size[i] = nattr;
                     x->f_attr_vals[i] = (t_atom *)realloc(x->f_attr_vals[i], (size_t)nattr * sizeof(t_atom));
@@ -102,7 +102,7 @@ static void patcherargs_output(t_patcherargs *x)
     {
         x->f_init = patcherargs_initialize(x);
     }
-    outlet_list(x->f_out_args, &s_list, x->f_argc, x->f_args);
+    outlet_list(x->f_out_args, &s_list, (int)x->f_argc, x->f_args);
     for(int i = 0; i < x->f_n_attrs; i++)
     {
         outlet_anything(x->f_out_attrs, gensym(x->f_attr_name[i]->s_name+1), x->f_attr_size[i], x->f_attr_vals[i]);
@@ -150,7 +150,7 @@ static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
         x->f_args = (t_atom *)getbytes((size_t)x->f_argc * sizeof(t_atom));
         memcpy(x->f_args, argv, (size_t)x->f_argc * sizeof(t_atom));
         
-        x->f_n_attrs = atoms_get_keys(argc-x->f_argc, argv+x->f_argc, &x->f_attr_name);
+        x->f_n_attrs = atoms_get_keys((int)(argc-x->f_argc), argv+x->f_argc, &x->f_attr_name);
         if(x->f_n_attrs)
         {
             x->f_attr_vals = (t_atom **)getbytes((size_t)x->f_n_attrs * sizeof(t_atom *));

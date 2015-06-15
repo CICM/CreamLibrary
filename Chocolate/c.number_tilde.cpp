@@ -154,10 +154,10 @@ static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
                 inc++;
             }
             // TRONQUER SELON LE NOMBRE MAXIMUM DE DECIMAL
-            if(inc > x->f_max_decimal - size)
-                inc = x->f_max_decimal - size;
-            if(inc > x->f_ndecimal)
-                inc = x->f_ndecimal;
+            if(inc > (int)x->f_max_decimal - size)
+                inc = (int)x->f_max_decimal - size;
+            if(inc > (int)x->f_ndecimal)
+                inc = (int)x->f_ndecimal;
 
             if(inc == 0)
                 sprintf(number, "%i", (int)x->f_peak_value);

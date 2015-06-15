@@ -115,7 +115,7 @@ static void patchermess_anything(t_patchermess *x, t_symbol *s, int argc, t_atom
                 while(((t_pd *)newcnv != s__X.s_thing) && s__X.s_thing)
                 {
                     newcnv = (t_canvas *)s__X.s_thing;
-                    vmess((t_pd *)newcnv, gensym("pop"), "i", 1);
+                    vmess((t_pd *)newcnv, gensym("pop"), (char *)"i", 1);
                     
                     pd_typedmess((t_pd *)newcnv, gensym("selectall"), 0, NULL);
                     pd_typedmess((t_pd *)newcnv, gensym("copy"), 0, NULL);

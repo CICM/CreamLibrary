@@ -273,7 +273,7 @@ void tab_insert(t_tab *x, t_symbol *s, int argc, t_atom *argv)
             x->f_items[x->f_items_size] = item;
         else
         {
-            for(i = x->f_items_size - 1; i >= atom_getfloat(argv); i--)
+            for(i = (int)x->f_items_size - 1; i >= atom_getfloat(argv); i--)
                 x->f_items[i+1] = x->f_items[i];
             x->f_items[atom_getint(argv)] = item;
         }
@@ -308,7 +308,7 @@ void tab_delete(t_tab *x, t_symbol *s, int argc, t_atom *argv)
             for(i = atom_getfloat(argv); i < x->f_items_size - 1; i++)
                 x->f_items[i] = x->f_items[i+1];
             x->f_items_size--;
-            for(i = x->f_items_size; i < MAXITEMS; i++)
+            for(i = (int)x->f_items_size; i < MAXITEMS; i++)
                 x->f_items[i] = s_null;
         }
         tab_sizemustchange(x);
@@ -389,7 +389,7 @@ void tab_float(t_tab *x, t_floatarg f)
 void tab_symbol(t_tab *x, t_symbol *s, int argc, t_atom *argv)
 {
     int i;
-    i = tab_symbol_exist(x, s);
+    i = (int)tab_symbol_exist(x, s);
     if(x->f_toggle)
     {
         if(i != -1)
@@ -658,7 +658,7 @@ void tab_mousemove(t_tab *x, t_object *patcherview, t_pt pt, long modifiers)
 
 void tab_preset(t_tab *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sf", &s_float, (float)x->f_item_selected);
+    binbuf_addv(b, (char *)"sf", &s_float, (float)x->f_item_selected);
 }
 
 

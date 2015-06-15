@@ -267,8 +267,8 @@ void gain_assist(t_gain *x, void *b, long m, long a, char *s)
 
 void gain_dsp(t_gain *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
-    x->f_sample_rate = pd_clip_min(samplerate, 1);
-    x->f_ramp_sample = pd_clip_min(x->f_ramp * x->f_sample_rate / 1000., 1);
+    x->f_sample_rate = pd_clip_min((float)samplerate, 1);
+    x->f_ramp_sample = pd_clip_min(x->f_ramp * x->f_sample_rate / 1000.f, 1.f);
     object_method(dsp, gensym("dsp_add"), x, (method)gain_perform, 0, NULL);
 }
 
@@ -320,31 +320,31 @@ void draw_background(t_gain *x, t_object *view, t_rect *rect)
 	{
         if(x->f_direction)
         {
-            ratio = 90. / 108.;
-            egraphics_set_line_width(g, pd_clip_minmax(rect->height * 0.1, 2., 4.));
+            ratio = 90.f / 108.f;
+            egraphics_set_line_width(g, pd_clip_minmax(rect->height * 0.1f, 2.f, 4.f));
             
             egraphics_set_color_rgba(g, &x->f_color_border);
             egraphics_line_fast(g, rect->width * ratio, 0, rect->width * ratio, rect->height);
             
             egraphics_set_color_rgba(g, &x->f_color_background);
-            egraphics_line_fast(g, rect->width * ratio, pd_clip_min(rect->height * 0.1, 2), rect->width * ratio, rect->height - pd_clip_min(rect->height * 0.1, 2));
+            egraphics_line_fast(g, rect->width * ratio, pd_clip_min(rect->height * 0.1f, 2.f), rect->width * ratio, rect->height - pd_clip_min(rect->height * 0.1f, 2));
             
             egraphics_set_color_rgba(g, &x->f_color_border);
-            egraphics_line_fast(g, pd_clip_min(rect->height * 0.1, 2), rect->height * 0.5, rect->width-pd_clip_min(rect->height * 0.1, 2), rect->height * 0.5);
+            egraphics_line_fast(g, pd_clip_min(rect->height * 0.1f, 2), rect->height * 0.5f, rect->width-pd_clip_min(rect->height * 0.1f, 2), rect->height * 0.5f);
         }
         else
         {
-            ratio = 1. - 90. / 108.;
-            egraphics_set_line_width(g, pd_clip_minmax(rect->width * 0.1, 2., 4.));
+            ratio = 1.f - 90.f / 108.f;
+            egraphics_set_line_width(g, pd_clip_minmax(rect->width * 0.1f, 2.f, 4.f));
             
             egraphics_set_color_rgba(g, &x->f_color_border);
             egraphics_line_fast(g, 0, rect->height * ratio, rect->width, rect->height * ratio);
             
             egraphics_set_color_rgba(g, &x->f_color_background);
-            egraphics_line_fast(g, pd_clip_min(rect->width * 0.1, 2), rect->height * ratio, rect->width - pd_clip_min(rect->width * 0.1, 2), rect->height * ratio);
+            egraphics_line_fast(g, pd_clip_min(rect->width * 0.1f, 2), rect->height * ratio, rect->width - pd_clip_min(rect->width * 0.1f, 2), rect->height * ratio);
             
             egraphics_set_color_rgba(g, &x->f_color_border);
-            egraphics_line_fast(g, rect->width * 0.5, pd_clip_min(rect->width * 0.1, 2), rect->width * 0.5, rect->height -pd_clip_min(rect->width * 0.1, 2));
+            egraphics_line_fast(g, rect->width * 0.5f, pd_clip_min(rect->width * 0.1f, 2.f), rect->width * 0.5f, rect->height -pd_clip_min(rect->width * 0.1f, 2.f));
             
         }
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
@@ -461,7 +461,7 @@ t_pd_err gain_ramp_set(t_gain *x, t_object *attr, int argc, t_atom *argv)
 
 void gain_preset(t_gain *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sf", gensym("float"), (float)x->f_value);
+    binbuf_addv(b, (char *)"sf", gensym("float"), (float)x->f_value);
 }
 
 

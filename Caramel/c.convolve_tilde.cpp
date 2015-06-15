@@ -109,8 +109,8 @@ static void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
             float max = 0;
             for(int i = 0; i < buffer_size; i++)
             {
-                if(fabs(temp[i]) > max)
-                    max = fabs(temp[i]);
+                if(fabsf(temp[i]) > max)
+                    max = fabsf(temp[i]);
             }
             if(max != 0)
             {
@@ -144,7 +144,7 @@ static void convolve_free(t_convolve *x)
 
 static void convolve_normalize(t_convolve *x, float f)
 {
-    x->f_normalize = f;
+    x->f_normalize = (char)f;
     if(x->f_normalize < 1)
         x->f_normalize = 0;
     else

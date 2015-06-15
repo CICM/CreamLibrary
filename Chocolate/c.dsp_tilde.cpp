@@ -143,7 +143,7 @@ static void dsp_tilde_anything(t_dsp_tilde *x, t_symbol* s, int argc, t_atom *ar
 
 static void dsp_tilde_open(t_dsp_tilde *x)
 {
-    sys_gui("pdsend \"pd audio-properties\"\n");
+    sys_gui((char *)"pdsend \"pd audio-properties\"\n");
 }
 
 static void dsp_tilde_start(t_dsp_tilde *x)

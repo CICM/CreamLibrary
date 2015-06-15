@@ -95,8 +95,8 @@ static void blackboard_clear(t_blackboard *x)
     if(!ebox_isdrawable((t_ebox *)x) || x->j_box.b_window_id == NULL)
         return;
     
-    sys_vgui("%s delete %snopen\n", x->j_box.b_drawing_id->s_name, x->j_box.b_all_id->s_name);
-    sys_vgui("%s delete %spen\n", x->j_box.b_drawing_id->s_name, x->j_box.b_all_id->s_name);
+    sys_vgui((char *)"%s delete %snopen\n", x->j_box.b_drawing_id->s_name, x->j_box.b_all_id->s_name);
+    sys_vgui((char *)"%s delete %spen\n", x->j_box.b_drawing_id->s_name, x->j_box.b_all_id->s_name);
     
     for(int i = 0; i < x->f_ninstructions; i++)
         sprintf(x->f_instructions[i], "\n");
@@ -383,8 +383,8 @@ static void blackboard_text(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
 
 static void blackboard_pen(t_blackboard *x)
 {
-    sys_vgui("%s create line %d %d %d %d ", x->j_box.b_drawing_id->s_name, (int)(x->f_pen_old.x), (int)(x->f_pen_old.y), (int)(x->f_pen_new.x), (int)(x->f_pen_new.y));
-    sys_vgui("-fill %s -width %d -tags %spen\n", x->f_color->s_name, (int)x->f_width,  x->j_box.b_all_id->s_name);
+    sys_vgui((char *)"%s create line %d %d %d %d ", x->j_box.b_drawing_id->s_name, (int)(x->f_pen_old.x), (int)(x->f_pen_old.y), (int)(x->f_pen_new.x), (int)(x->f_pen_new.y));
+    sys_vgui((char *)"-fill %s -width %d -tags %spen\n", x->f_color->s_name, (int)x->f_width,  x->j_box.b_all_id->s_name);
 }
 
 static void blackboard_paint(t_blackboard *x, t_object *view)
@@ -392,10 +392,10 @@ static void blackboard_paint(t_blackboard *x, t_object *view)
 	t_rect rect;
 	ebox_get_rect_for_view((t_ebox *)x, &rect);
     
-    sys_vgui("%s delete %snopen\n", x->j_box.b_drawing_id->s_name, x->j_box.b_all_id->s_name);
+    sys_vgui((char *)"%s delete %snopen\n", x->j_box.b_drawing_id->s_name, x->j_box.b_all_id->s_name);
     for(int i = 0; i < x->f_ninstructions; i++)
     {
-        sys_vgui("%s %s -tags %snopen\n", x->j_box.b_drawing_id->s_name, x->f_instructions[i], x->j_box.b_all_id->s_name);
+        sys_vgui((char *)"%s %s -tags %snopen\n", x->j_box.b_drawing_id->s_name, x->f_instructions[i], x->j_box.b_all_id->s_name);
     }
 
     x->f_box = rect;

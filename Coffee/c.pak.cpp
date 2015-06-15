@@ -39,7 +39,7 @@ t_eclass *pak_class;
 
 static void pak_output(t_pak *x)
 {
-    outlet_list(x->f_out, &s_list, x->f_argc, x->f_argv);
+    outlet_list(x->f_out, &s_list, (int)x->f_argc, x->f_argv);
 }
 
 static void pak_list(t_pak *x, t_symbol *s, int argc, t_atom *argv)

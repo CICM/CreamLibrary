@@ -478,7 +478,7 @@ void rslider_mousedrag(t_rslider *x, t_object *patcherview, t_pt pt, long modifi
 
 void rslider_preset(t_rslider *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sff", gensym("list"), (float)x->f_value_low, (float)x->f_value_high);
+    binbuf_addv(b, (char *)"sff", gensym("list"), (float)x->f_value_low, (float)x->f_value_high);
 }
 
 

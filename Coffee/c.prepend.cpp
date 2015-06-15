@@ -31,7 +31,7 @@ typedef struct  _prepend
     t_eobj      j_box;
     t_outlet*   f_out;
     t_atom*     f_argv;
-    long        f_argc;
+    int         f_argc;
     t_symbol*   f_selector;
     static const int maxsize = 1024;
 } t_prepend;
@@ -198,7 +198,7 @@ void prepend_bang(t_prepend *x)
     if(x->f_argc < _prepend::maxsize)
     {
         atom_setsym(x->f_argv+x->f_argc, gensym("bang"));
-        outlet_anything(x->f_out, x->f_selector, x->f_argc + 1, x->f_argv);
+        outlet_anything(x->f_out, x->f_selector, (int)x->f_argc + 1, x->f_argv);
     }
     else
         outlet_anything(x->f_out, x->f_selector, x->f_argc, x->f_argv);

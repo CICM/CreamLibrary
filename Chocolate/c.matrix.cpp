@@ -197,16 +197,16 @@ void matrixctrl_bang(t_matrixctrl *x)
     {
         for(long j = 0; j < (long)x->f_size.x; j++)
         {
-            matrixctrl_output(x, j, i);
+            matrixctrl_output(x, (int)j, (int)i);
         }
     }
 }
 
 void matrixctrl_clear(t_matrixctrl *x)
 {
-    for(long i = 0; i < (long)x->f_size.y; i++)
+    for(int i = 0; i < x->f_size.y; i++)
     {
-        for(long j = 0; j < (long)x->f_size.x; j++)
+        for(int j = 0; j < x->f_size.x; j++)
         {
            if(x->f_values[i * (long)x->f_size.x + j])
            {
@@ -418,7 +418,7 @@ void matrixctrl_preset(t_matrixctrl *x, t_binbuf *b)
         }
     }
 
-    binbuf_addv(b, "s", gensym("list"));
+    binbuf_addv(b, (char *)"s", gensym("list"));
     binbuf_add(b, x->f_size.x * x->f_size.y * 3, av);
     free(av);
 }

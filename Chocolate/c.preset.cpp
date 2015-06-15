@@ -439,16 +439,16 @@ static void preset_mouseleave(t_preset *x, t_object *patcherview, t_pt pt, long 
 
 static void preset_save(t_preset *x, t_binbuf *d)
 {
-    binbuf_addv(d, "ss", cream_sym_atpreset, cream_sym_left_bracket);
+    binbuf_addv(d, (char *)"ss", cream_sym_atpreset, cream_sym_left_bracket);
     for(int i = 0; i < _preset::maxbinbufs; i++)
     {
         if(binbuf_getnatom(x->f_binbuf[i]))
         {
-            binbuf_addv(d, "sf", cream_sym_atindex, (float)i);
+            binbuf_addv(d, (char *)"sf", cream_sym_atindex, (float)i);
             binbuf_addbinbuf(d, x->f_binbuf[i]);
         }
     }
-    binbuf_addv(d, "s", cream_sym_right_bracket);
+    binbuf_addv(d, (char *)"s", cream_sym_right_bracket);
 }
 
 static void preset_init(t_preset *x, t_binbuf *d)
@@ -502,7 +502,7 @@ static void preset_read(t_preset *x, t_symbol *s, int argc, t_atom *argv)
     t_binbuf *d = binbuf_new();
     if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
     {
-        if(binbuf_read(d, atom_getsymbol(argv)->s_name, "", 0))
+        if(binbuf_read(d, atom_getsymbol(argv)->s_name, (char *)"", 0))
         {
             pd_error(x, "preset : %s read failed", atom_getsymbol(argv)->s_name);
         }
@@ -526,7 +526,7 @@ static void preset_write(t_preset *x, t_symbol *s, int argc, t_atom *argv)
     if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
     {
         preset_save(x, d);
-        if(binbuf_write(d, atom_getsymbol(argv)->s_name, "", 0))
+        if(binbuf_write(d, atom_getsymbol(argv)->s_name, (char *)"", 0))
         {
             pd_error(x, "preset : %s write failed", atom_getsymbol(argv)->s_name);
         }

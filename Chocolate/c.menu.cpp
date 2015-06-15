@@ -259,7 +259,7 @@ void menu_insert(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             x->f_items[x->f_items_size] = item;
         else
         {
-            for(i = x->f_items_size - 1; i >= atom_getfloat(argv); i--)
+            for(i = (int)x->f_items_size - 1; i >= atom_getfloat(argv); i--)
                 x->f_items[i+1] = x->f_items[i];
             x->f_items[atom_getint(argv)] = item;
         }
@@ -297,7 +297,7 @@ void menu_delete(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             for(i = atom_getfloat(argv); i < x->f_items_size - 1; i++)
                 x->f_items[i] = x->f_items[i+1];
             x->f_items_size--;
-            for(i = x->f_items_size; i < MAXITEMS; i++)
+            for(i = (int)x->f_items_size; i < MAXITEMS; i++)
                 x->f_items[i] = s_null;
             
             ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
@@ -633,7 +633,7 @@ t_pd_err menu_states_set(t_menu *x, t_object *attr, int ac, t_atom *av)
 
 void menu_preset(t_menu *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sf", gensym("float"), (float)x->f_item_selected);
+    binbuf_addv(b, (char *)"sf", gensym("float"), (float)x->f_item_selected);
 }
 
 t_pd_err menu_items_set(t_menu *x, t_object *attr, int ac, t_atom *av)

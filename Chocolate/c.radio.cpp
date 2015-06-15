@@ -260,9 +260,9 @@ void radio_output(t_radio *x)
     {
         for(i = 0; i < x->f_nitems; i++)
             atom_setfloat(av+i, (float)x->f_items[i]);
-        outlet_list(x->f_out, &s_list, x->f_nitems, av);
+        outlet_list(x->f_out, &s_list, (int)x->f_nitems, av);
         if(ebox_getsender((t_ebox *) x))
-            pd_list(ebox_getsender((t_ebox *) x), &s_list, x->f_nitems, av);
+            pd_list(ebox_getsender((t_ebox *) x), &s_list, (int)x->f_nitems, av);
     }
     else
     {
@@ -484,9 +484,9 @@ void radio_preset(t_radio *x, t_binbuf *b)
     
     if(x->f_mode)
     {
-        binbuf_addv(b, "s", gensym("list"));
+        binbuf_addv(b, (char *)"s", gensym("list"));
         for(i = 0; i < x->f_nitems; i++)
-            binbuf_addv(b, "f", (float)x->f_items[i]);
+            binbuf_addv(b, (char *)"f", (float)x->f_items[i]);
 
     }
     else
@@ -494,7 +494,7 @@ void radio_preset(t_radio *x, t_binbuf *b)
         for(i = 0; i < x->f_nitems; i++)
         {
             if(x->f_items[i])
-                binbuf_addv(b, "sf", gensym("float"), (float)i);
+                binbuf_addv(b, (char *)"sf", gensym("float"), (float)i);
         }
     }
 }

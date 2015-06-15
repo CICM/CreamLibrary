@@ -376,9 +376,9 @@ void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
             }
             // TRONQUER SELON LE NOMBRE MAXIMUM DE DECIMAL
             if(inc > x->f_max_decimal - size)
-                inc = x->f_max_decimal - size;
+                inc = (int)x->f_max_decimal - size;
             if(inc > x->f_ndecimal)
-                inc = x->f_ndecimal;
+                inc = (int)x->f_ndecimal;
 
             if(inc == 0 || x->f_value == (int)x->f_value)
                 sprintf(number, "%i.", (int)x->f_value);
@@ -589,7 +589,7 @@ void number_mouseleave(t_number *x)
 
 void number_preset(t_number *x, t_binbuf *b)
 {
-    binbuf_addv(b, "sf", gensym("float"), x->f_value);
+    binbuf_addv(b, (char *)"sf", gensym("float"), x->f_value);
 }
 
 t_pd_err number_min_set(t_number *x, t_object *attr, int ac, t_atom *av)
