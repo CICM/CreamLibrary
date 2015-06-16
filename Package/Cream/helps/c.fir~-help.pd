@@ -1,14 +1,6 @@
-#N canvas 283 125 962 471 10;
-#X text 8 49 c.convolve~ uses the HiFi-LoFi convolution reverb implementation.
-;
-#X obj 417 266 table \$0-ir;
-#X obj 418 243 soundfiler;
-#X obj 418 78 c.bang @size 17 17 @fontname "Helvetica" @fontweight
-"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
-@bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#N canvas 361 310 600 461 10;
 #X msg 512 211 \; pd dsp 1;
 #X msg 512 252 \; pd dsp 0;
-#X obj 418 106 symbol \$0-ir;
 #X text 36 95 set the buffer;
 #X msg 236 146 normalize \$1;
 #X obj 236 111 c.toggle @size 15 15 @fontname "Helvetica" @fontweight
@@ -18,7 +10,6 @@
 #X text 191 82 normalize the ir;
 #X text 152 229 arg 1 : the buffer name;
 #X text 152 249 arg 2 (faculative) : normalize;
-#X text 449 76 load an ir;
 #X obj 148 122 symbol \$0-ir;
 #X obj 148 98 c.bang @size 17 17 @fontname "Helvetica" @fontweight
 "normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
@@ -28,40 +19,36 @@
 #X obj 13 21 c.loadmess;
 #X obj 7 7 c.help.header;
 #X obj 161 379 c.help.pub;
-#X msg 418 143 read -resize /Users/Pierre/Desktop/IRC_1002_C/IRC_1002_C_R0195_T000_P000.wav
-\$1;
 #X obj 67 192 c.fir~ \$0-ir;
-#X floatatom 830 338 0 0 0 0 - - -;
-#X obj 830 250 cputime;
-#X obj 830 110 loadbang;
-#X obj 830 194 metro 1000;
-#X msg 830 138 1;
-#X floatatom 830 166 0 0 0 0 - - -;
-#X obj 830 222 t b b;
-#X obj 830 310 * 0.1;
-#X obj 830 279 int;
 #X text 875 166 <-- on/off;
 #X obj 67 261 dac~;
 #X obj 67 153 noise~;
-#X connect 3 0 6 0;
-#X connect 6 0 21 0;
-#X connect 8 0 22 0;
+#X text 8 49 c.fir~ A time convolution.;
+#X obj 417 236 table \$0-ir;
+#X obj 417 213 soundfiler;
+#X obj 417 99 openpanel;
+#X obj 417 160 pack s s;
+#X obj 417 119 t s b;
+#X obj 418 78 c.bang @size 17 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X msg 417 182 read -resize \$1 \$2;
+#X obj 462 138 symbol \$0-ir;
+#X text 449 76 load an ir;
+#X connect 3 0 15 0;
+#X connect 4 0 3 0;
+#X connect 8 0 10 0;
 #X connect 9 0 8 0;
-#X connect 14 0 16 0;
-#X connect 15 0 14 0;
-#X connect 16 0 22 0;
-#X connect 17 0 19 0;
-#X connect 18 0 17 0;
-#X connect 21 0 2 0;
-#X connect 22 0 33 0;
-#X connect 22 0 33 1;
-#X connect 24 0 31 0;
-#X connect 25 0 27 0;
-#X connect 26 0 29 0;
-#X connect 27 0 28 0;
-#X connect 28 0 26 0;
-#X connect 29 0 24 0;
-#X connect 29 1 24 1;
-#X connect 30 0 23 0;
-#X connect 31 0 30 0;
-#X connect 34 0 22 0;
+#X connect 10 0 15 0;
+#X connect 11 0 13 0;
+#X connect 12 0 11 0;
+#X connect 15 0 17 0;
+#X connect 15 0 17 1;
+#X connect 18 0 15 0;
+#X connect 22 0 24 0;
+#X connect 23 0 26 0;
+#X connect 24 0 23 0;
+#X connect 24 1 27 0;
+#X connect 25 0 22 0;
+#X connect 26 0 21 0;
+#X connect 27 0 23 1;

@@ -35,32 +35,9 @@ typedef struct _matrix_tilde
     
 } t_matrix_tilde;
 
-t_eclass *matrix_class;
+static t_eclass *matrix_class;
 
-void *matrix_new(t_symbol *s, int argc, t_atom *argv);
-void matrix_free(t_matrix_tilde *x);
-void matrix_assist(t_matrix_tilde *x, void *b, long m, long a, char *s);
-
-void matrix_list(t_matrix_tilde *x, t_symbol *s, int ac, t_atom *av);
-
-void matrix_dsp(t_matrix_tilde *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags);
-void matrix_perform(t_matrix_tilde *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sf, long f,void *up);
-
-extern "C" void setup_c0x2ematrix_tilde(void)
-{
-	t_eclass *c;
-    
-	c = eclass_new("c.matrix~", (method)matrix_new, (method)matrix_free, (short)sizeof(t_matrix_tilde), 0L, A_GIMME, 0);
-    
-    eclass_dspinit(c);
-    eclass_addmethod(c, (method) matrix_dsp,             "dsp",              A_NULL, 0);
-	eclass_addmethod(c, (method) matrix_assist,          "assist",           A_NULL, 0);
-    eclass_addmethod(c, (method) matrix_list,            "list",             A_GIMME,0);
-    eclass_register(CLASS_OBJ, c);
-    matrix_class = c;
-}
-
-void *matrix_new(t_symbol *s, int argc, t_atom *argv)
+static void *matrix_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_matrix_tilde *x = (t_matrix_tilde *)eobj_new(matrix_class);
 	if(x)
@@ -84,13 +61,13 @@ void *matrix_new(t_symbol *s, int argc, t_atom *argv)
 }
 
 
-void matrix_free(t_matrix_tilde *x)
+static void matrix_free(t_matrix_tilde *x)
 {
 	eobj_dspfree((t_ebox *)x);
     free(x->f_values);
 }
 
-void matrix_list(t_matrix_tilde *x, t_symbol *s, int ac, t_atom *av)
+static void matrix_list(t_matrix_tilde *x, t_symbol *s, int ac, t_atom *av)
 {
     if(ac && av)
     {
@@ -110,18 +87,7 @@ void matrix_list(t_matrix_tilde *x, t_symbol *s, int ac, t_atom *av)
     }
 }
 
-
-void matrix_assist(t_matrix_tilde *x, void *b, long m, long a, char *s)
-{
-	;
-}
-
-void matrix_dsp(t_matrix_tilde *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
-{
-    object_method(dsp, gensym("dsp_add"), x, (method)matrix_perform, 0, NULL);
-}
-
-void matrix_perform(t_matrix_tilde *x, t_object *d, t_sample **ins, long ninputs, t_sample **outs, long noutputs, long sampleframes, long f,void *up)
+static void matrix_perform(t_matrix_tilde *x, t_object *d, t_sample **ins, long ninputs, t_sample **outs, long noutputs, long sampleframes, long f,void *up)
 {
     t_sample* gains = x->f_values+noutputs*ninputs-1;
     while(noutputs--)
@@ -140,6 +106,25 @@ void matrix_perform(t_matrix_tilde *x, t_object *d, t_sample **ins, long ninputs
             --gains;
         }
     }
+}
+
+
+static void matrix_dsp(t_matrix_tilde *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+{
+    object_method(dsp, gensym("dsp_add"), x, (method)matrix_perform, 0, NULL);
+}
+
+extern "C" void setup_c0x2ematrix_tilde(void)
+{
+    t_eclass *c;
+    
+    c = eclass_new("c.matrix~", (method)matrix_new, (method)matrix_free, (short)sizeof(t_matrix_tilde), 0L, A_GIMME, 0);
+    
+    eclass_dspinit(c);
+    eclass_addmethod(c, (method) matrix_dsp,             "dsp",              A_NULL, 0);
+    eclass_addmethod(c, (method) matrix_list,            "list",             A_GIMME,0);
+    eclass_register(CLASS_OBJ, c);
+    matrix_class = c;
 }
 
 
