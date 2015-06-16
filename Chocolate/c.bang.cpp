@@ -83,21 +83,9 @@ static void bang_output(t_bang *x, t_symbol* s, int argc, t_atom *argv)
     clock_delay(x->b_clock, 100);
 }
 
-static t_pd_err bang_notify(t_bang *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
-{
-	if(msg == cream_sym_attr_modified)
-	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_bacolor)
-		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-		}
-        ebox_redraw((t_ebox *)x);
-	}
-	return 0;
-}
-
 static void draw_background(t_bang *x, t_object *view, t_rect *rect)
 {
+    post("paint");
     float size;
 	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
 	if (g)
@@ -186,7 +174,6 @@ extern "C" void setup_c0x2ebang(void)
         eclass_guiinit(c, 0);
         
         eclass_addmethod(c, (method) bang_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) bang_notify,          "notify",           A_NULL, 0);
         eclass_addmethod(c, (method) bang_getdrawparams,   "getdrawparams",    A_NULL, 0);
         eclass_addmethod(c, (method) bang_oksize,          "oksize",           A_NULL, 0);
         eclass_addmethod(c, (method) bang_output,          "float",            A_FLOAT,0);

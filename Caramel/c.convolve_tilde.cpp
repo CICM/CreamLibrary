@@ -67,8 +67,7 @@ static void *convolve_new(t_symbol *s, int argc, t_atom *argv)
         x->f_normalize = 1;
     else
         x->f_normalize = 0;
-    
-    x->j_box.d_misc = E_NO_INPLACE;
+    eobj_dspflags(x, E_NO_INPLACE);
     
 	return (x);
 }
