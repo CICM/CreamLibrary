@@ -54,7 +54,6 @@ void scope_free(t_scope *x);
 void scope_assist(t_scope *x, void *b, long m, long a, char *s);
 
 void scope_dsp(t_scope *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags);
-void scope_perform(t_scope *x, t_object *d, float **ins, long ni, float **outs, long no, long sf, long f,void *up);
 
 void scope_tick(t_scope *x);
 
@@ -74,8 +73,8 @@ extern "C" void setup_c0x2escope_tilde(void)
 
 	c = eclass_new("c.scope~", (method)scope_new, (method)scope_free, (short)sizeof(t_scope), 0L, A_GIMME, 0);
 
-	eclass_dspinit(c);
 	eclass_guiinit(c, 0);
+    eclass_dspinit(c);
     eclass_addmethod(c, (method) scope_dsp,             "dsp",              A_NULL, 0);
 	eclass_addmethod(c, (method) scope_assist,          "assist",           A_NULL, 0);
 	eclass_addmethod(c, (method) scope_paint,           "paint",            A_NULL, 0);
@@ -181,18 +180,7 @@ void scope_oksize(t_scope *x, t_rect *newrect)
     newrect->height = pd_clip_min(newrect->height, 8.);
 }
 
-void scope_dsp(t_scope *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
-{
-    if(count[1])
-        x->f_mode = 1;
-    else
-        x->f_mode = 0;
-
-    object_method(dsp, gensym("dsp_add"), x, (method)scope_perform, 0, NULL);
-	x->f_startclock = 1;
-}
-
-void scope_perform(t_scope *x, t_object *dsp, t_sample **ins, long ni, t_sample **outs, long no, long nsamples, long f,void *up)
+static void scope_perform(t_scope *x, t_object *dsp, t_sample **ins, long ni, t_sample **outs, long no, long nsamples, long f,void *up)
 {
     int i;
     for(i = 0; i < nsamples; i++)
@@ -206,6 +194,17 @@ void scope_perform(t_scope *x, t_object *dsp, t_sample **ins, long ni, t_sample 
             clock_delay(x->f_clock, 0);
         }
     }
+}
+
+void scope_dsp(t_scope *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+{
+    if(count[1])
+        x->f_mode = 1;
+    else
+        x->f_mode = 0;
+    object_method(dsp, gensym("dsp_add"), x, (method)scope_perform, 0, NULL);
+    
+	x->f_startclock = 1;
 }
 
 void scope_tick(t_scope *x)
