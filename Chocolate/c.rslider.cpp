@@ -209,7 +209,6 @@ static void draw_background(t_rslider *x, t_object *view, t_rect *rect)
         {
             egraphics_line_fast(g, rect->width * 0.5, -2, rect->width * 0.5, rect->height  + 4);
         }
-        egraphics_stroke(g);
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
     }
     ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
@@ -256,7 +255,6 @@ static void draw_knob(t_rslider *x, t_object *view, t_rect *rect)
             egraphics_line_fast(g, -2, value_low * rect->height, rect->width + 4, value_low * rect->height);
             egraphics_line_fast(g, -2, value_high * rect->height, rect->width + 4, value_high * rect->height);
         }
-        egraphics_stroke(g);
         ebox_end_layer((t_ebox*)x, cream_sym_knob_layer);
     }
     ebox_paint_layer((t_ebox *)x, cream_sym_knob_layer, 0., 0.);
