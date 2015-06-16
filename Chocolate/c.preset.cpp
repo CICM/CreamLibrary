@@ -348,22 +348,18 @@ static void draw_background(t_preset *x, t_object *view, t_rect *rect)
 	{
         for(xc = x->f_point_size * 1.25, yc = x->f_point_size * 1.25, i = 1;  yc + x->f_point_size / 2. < rect->height; )
         {
-            if(x->f_binbuf_selected == i-1 && binbuf_getnatom(x->f_binbuf[i-1]))
-                color = rgba_addContrast(x->f_color_button_selected, 0.1);
+            if(x->f_binbuf_selected == i-1 && binbuf_getnatom(x->f_binbuf[i-1])){
+                color = rgba_addContrast(x->f_color_button_selected, 0.1);}
             else if(!binbuf_getnatom(x->f_binbuf[i-1]))
                 color = rgba_addContrast(x->f_color_button_empty, 0.1);
             else if(binbuf_getnatom(x->f_binbuf[i-1]))
                 color = rgba_addContrast(x->f_color_button_stored, -0.1);
 
             egraphics_set_color_rgba(g, &color);
-            egraphics_circle(g, xc, yc, x->f_point_size);
-            egraphics_fill(g);
-
-            if(x->f_binbuf_hover == i)
+            if(x->f_binbuf_hover != i)
             {
-                egraphics_set_line_width(g, 2);
-                egraphics_stroke(g);
-                egraphics_set_line_width(g, 1);
+                egraphics_circle(g, xc, yc, x->f_point_size);
+                egraphics_fill(g);
             }
 
             sprintf(number, "%i", i);
