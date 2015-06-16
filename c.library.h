@@ -74,6 +74,7 @@ static t_symbol* cream_sym_selection_layer      = gensym("selection_layer");
 static t_symbol* cream_sym_points_layer         = gensym("points_layer");
 static t_symbol* cream_sym_value_layer          = gensym("value_layer");
 static t_symbol* cream_sym_knob_layer           = gensym("knob_layer");
+static t_symbol* cream_sym_signal_layer         = gensym("signal_layer");
 
 static t_symbol* cream_sym_bacolor              = gensym("bacolor");
 static t_symbol* cream_sym_bgcolor              = gensym("bgcolor");
