@@ -67,8 +67,11 @@ static void number_tilde_perform(t_number_tilde *x, t_object *dsp, t_sample **in
 
 static void number_tilde_dsp(t_number_tilde *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
-    object_method(dsp, gensym("dsp_add"), x, (method)number_tilde_perform, 0, NULL);
-    x->f_startclock = 1;
+    if(count[0])
+    {
+        object_method(dsp, gensym("dsp_add"), x, (method)number_tilde_perform, 0, NULL);
+        x->f_startclock = 1;
+    }
 }
 
 static void number_tilde_tick(t_number_tilde *x)
@@ -86,7 +89,7 @@ static t_pd_err number_tilde_notify(t_number_tilde *x, t_symbol *s, t_symbol *ms
 {
 	if (msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant)
+		if(s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
@@ -130,59 +133,35 @@ static void draw_background(t_number_tilde *x, t_object *view, t_rect *rect)
 static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
 {
 	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_value_layer, rect->width, rect->height);
-	t_etext *jtl = etext_layout_create();
-	if (g && jtl)
+	if(g)
 	{
-        int size, inc = 0;
-        float peak;
-        char number[256];
-        sprintf(number, "%i", (int)x->f_peak_value);
-        size = (int)strlen(number);
-        // TRONQUER LE NOMBRE ENTIER
-        if(size > x->f_max_decimal+1)
+        t_etext *jtl = etext_layout_create();
+        if(jtl)
         {
-            sprintf(number, "%i...", (int)(x->f_peak_value / powf(10, size - (x->f_max_decimal+1))));
-        }
-        // TRONQUER LES DECIMALS
-        else
-        {
-            // ENLEVER LES ZEROS
-            peak = x->f_peak_value;
-            while(peak - (int)peak != 0)
-            {
-                peak *= 10;
-                inc++;
-            }
-            // TRONQUER SELON LE NOMBRE MAXIMUM DE DECIMAL
-            if(inc > (int)x->f_max_decimal - size)
-                inc = (int)x->f_max_decimal - size;
-            if(inc > (int)x->f_ndecimal)
-                inc = (int)x->f_ndecimal;
-
-            if(inc == 0)
+            char number[256];
+            if(x->f_max_decimal == 0)
                 sprintf(number, "%i", (int)x->f_peak_value);
-            else if(inc == 1)
+            else if(x->f_max_decimal == 1)
                 sprintf(number, "%.1f", x->f_peak_value);
-            else if(inc == 2)
+            else if(x->f_max_decimal == 2)
                 sprintf(number, "%.2f", x->f_peak_value);
-            else if(inc == 3)
+            else if(x->f_max_decimal == 3)
                 sprintf(number, "%.3f", x->f_peak_value);
-            else if(inc == 4)
+            else if(x->f_max_decimal == 4)
                 sprintf(number, "%.4f", x->f_peak_value);
-            else if(inc == 5)
+            else if(x->f_max_decimal == 5)
                 sprintf(number, "%.5f", x->f_peak_value);
             else
                 sprintf(number, "%.6f", x->f_peak_value);
+            etext_layout_settextcolor(jtl, &x->f_color_text);
+            etext_layout_set(jtl, number, &x->j_box.b_font, sys_fontwidth(x->j_box.b_font.c_size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
+            
+            etext_layout_draw(jtl, g);
+            ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
+            etext_layout_destroy(jtl);
         }
-        etext_layout_settextcolor(jtl, &x->f_color_text);
-
-        etext_layout_set(jtl, number, &x->j_box.b_font, sys_fontwidth(x->j_box.b_font.c_size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
-
-        etext_layout_draw(jtl, g);
-		ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
 	}
 	ebox_paint_layer((t_ebox *)x, cream_sym_value_layer, 0., 0.);
-    etext_layout_destroy(jtl);
 }
 
 static void number_tilde_paint(t_number_tilde *x, t_object *view)

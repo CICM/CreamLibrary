@@ -220,7 +220,7 @@ void gain_set(t_gain *x, float f)
     x->f_amp = powf(10., x->f_value * 0.05);
     x->f_amp_step = (float)(x->f_amp - x->f_amp_old) / (float)x->f_ramp_sample;
     x->f_counter  = 0;
-    ebox_invalidate_layer((t_ebox *)x, gensym("knob_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -244,7 +244,7 @@ void gain_linear(t_gain *x, float f)
 
 void gain_bang(t_gain *x)
 {
-    ebox_invalidate_layer((t_ebox *)x, gensym("knob_layer"));
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
     gain_output(x);
 }
@@ -296,7 +296,7 @@ t_pd_err gain_notify(t_gain *x, t_symbol *s, t_symbol *msg, void *sender, void *
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == gensym("kncolor"))
 		{
-            ebox_invalidate_layer((t_ebox *)x, gensym("knob_layer"));
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
         ebox_redraw((t_ebox *)x);
@@ -356,7 +356,7 @@ void draw_background(t_gain *x, t_object *view, t_rect *rect)
 void draw_knob(t_gain *x, t_object *view, t_rect *rect)
 {
     float ratio;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, gensym("knob_layer"), rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_knob_layer, rect->width, rect->height);
     
 	if (g)
 	{
@@ -374,9 +374,9 @@ void draw_knob(t_gain *x, t_object *view, t_rect *rect)
             egraphics_set_line_width(g, ratio);
             egraphics_line_fast(g, -2, (1. - value) * rect->height, rect->width+4, (1. - value) * rect->height);
         }
-        ebox_end_layer((t_ebox*)x, gensym("knob_layer"));
+        ebox_end_layer((t_ebox*)x, cream_sym_knob_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, gensym("knob_layer"), 0., 0.);
+	ebox_paint_layer((t_ebox *)x, cream_sym_knob_layer, 0., 0.);
 }
 
 void gain_mousedown(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
