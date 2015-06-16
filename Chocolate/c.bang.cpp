@@ -85,7 +85,6 @@ static void bang_output(t_bang *x, t_symbol* s, int argc, t_atom *argv)
 
 static void draw_background(t_bang *x, t_object *view, t_rect *rect)
 {
-    post("paint");
     float size;
 	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
 	if (g)
