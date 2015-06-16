@@ -51,17 +51,18 @@ void preset_interpolate(t_preset *x, float f);
 static void preset_store(t_preset *x, float f)
 {
     int index = (int)f;
-    if(index > 1 && index < _preset::maxbinbufs)
+    if(index >= 1 && index < _preset::maxbinbufs)
     {
+        index -= 1;
         char id[MAXPDSTRING];
         t_atom av[2];
-        
+
         t_binbuf *b = x->f_binbuf[index];
         if(binbuf_getnatom(b))
         {
             binbuf_clear(b);
         }
-        
+
         for(t_gobj *y = eobj_getcanvas(x)->gl_list; y; y = y->g_next)
         {
             t_ebox *z = (t_ebox *)y;
@@ -116,7 +117,7 @@ static void preset_float(t_preset *x, float f)
                 }
                 mpreset = NULL;
             }
-            
+
             ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
@@ -275,7 +276,7 @@ void preset_interpolate(t_preset *x, float f)
         }
         mpreset = NULL;
     }
-    
+
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
@@ -283,14 +284,15 @@ void preset_interpolate(t_preset *x, float f)
 static void preset_clear(t_preset *x, float f)
 {
     int index = (int)f;
-    if(index > 1 && index < _preset::maxbinbufs)
+    if(index >= 1 && index < _preset::maxbinbufs)
     {
+        index -= 1;
         if(x->f_binbuf_selected == index)
         {
             x->f_binbuf_selected = 0;
         }
-        binbuf_clear(x->f_binbuf[index-1]);
-        
+        binbuf_clear(x->f_binbuf[index]);
+
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
@@ -394,14 +396,13 @@ static void preset_paint(t_preset *x, t_object *view)
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     x->f_point_size = ebox_getfontsize((t_ebox *)x);
     draw_background(x, view, &rect);
-    
+
 #ifdef __APPLE__
     x->j_box.b_font.c_size += 3;
 #elif _WINDOWS
     x->j_box.b_font.c_size += 2;
 #endif
 }
-
 
 static void preset_mousemove(t_preset *x, t_object *patcherview, t_pt pt, long modifiers)
 {
@@ -553,15 +554,15 @@ static void *preset_new(t_symbol *s, int argc, t_atom *argv)
             x->f_binbuf[i]  = binbuf_new();
         }
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
-        
+
         x->f_binbuf_selected = 0;
         x->f_binbuf_hover    = 0;
-        
+
         preset_init(x, d);
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
     }
-    
+
     return (x);
 }
 
@@ -575,14 +576,13 @@ static void preset_free(t_preset *x)
     ebox_free((t_ebox *)x);
 }
 
-
 extern "C" void setup_c0x2epreset(void)
 {
     t_eclass* c = eclass_new("c.preset", (method)preset_new, (method)preset_free, (short)sizeof(t_preset), 0L, A_GIMME, 0);
-    
+
     eclass_guiinit(c, 0);
 
-    
+
     eclass_addmethod(c, (method) preset_paint,           "paint",            A_NULL, 0);
     eclass_addmethod(c, (method) preset_notify,          "notify",           A_NULL, 0);
     eclass_addmethod(c, (method) preset_getdrawparams,   "getdrawparams",    A_NULL, 0);
@@ -592,55 +592,55 @@ extern "C" void setup_c0x2epreset(void)
     eclass_addmethod(c, (method) preset_float,           "float",            A_FLOAT,0);
     eclass_addmethod(c, (method) preset_interpolate,     "inter",            A_FLOAT,0);
     eclass_addmethod(c, (method) preset_clearall,        "clearall",         A_NULL,0);
-    
+
     eclass_addmethod(c, (method) preset_mousemove,       "mousemove",        A_NULL, 0);
     eclass_addmethod(c, (method) preset_mousedown,       "mousedown",        A_NULL, 0);
     eclass_addmethod(c, (method) preset_mouseleave,      "mouseleave",       A_NULL, 0);
-    
+
     eclass_addmethod(c, (method) preset_save,            "save",             A_NULL, 0);
     eclass_addmethod(c, (method) preset_read,            "read",             A_GIMME,0);
     eclass_addmethod(c, (method) preset_write,           "write",            A_GIMME,0);
-    
+
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "102 34");
     CLASS_ATTR_DEFAULT              (c, "fontsize", 0, "10");
-    
+
     CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_preset, f_color_background);
     CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
     CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
     CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
-    
+
     CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_preset, f_color_border);
     CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
     CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
     CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
-    
+
     CLASS_ATTR_RGBA                 (c, "textcolor", 0, t_preset, f_color_text);
     CLASS_ATTR_LABEL                (c, "textcolor", 0, "Text Color");
     CLASS_ATTR_ORDER                (c, "textcolor", 0, "3");
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
     CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
-    
+
     CLASS_ATTR_RGBA                 (c, "emcolor", 0, t_preset, f_color_button_empty);
     CLASS_ATTR_LABEL                (c, "emcolor", 0, "Empty Button Color");
     CLASS_ATTR_ORDER                (c, "emcolor", 0, "3");
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "emcolor", 0, "0.85 0.85 0.85 1.");
     CLASS_ATTR_STYLE                (c, "emcolor", 0, "color");
-    
+
     CLASS_ATTR_RGBA                 (c, "stcolor", 0, t_preset, f_color_button_stored);
     CLASS_ATTR_LABEL                (c, "stcolor", 0, "Stored Button Color");
     CLASS_ATTR_ORDER                (c, "stcolor", 0, "3");
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "stcolor", 0, "0.5 0.5 0.5 1.");
     CLASS_ATTR_STYLE                (c, "stcolor", 0, "color");
-    
+
     CLASS_ATTR_RGBA                 (c, "secolor", 0, t_preset, f_color_button_selected);
     CLASS_ATTR_LABEL                (c, "secolor", 0, "Selected Button Color");
     CLASS_ATTR_ORDER                (c, "secolor", 0, "3");
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "secolor", 0, "0.15 0.15 0.15 1.");
     CLASS_ATTR_STYLE                (c, "secolor", 0, "color");
-    
+
     eclass_register(CLASS_BOX, c);
     preset_class = c;
 }
