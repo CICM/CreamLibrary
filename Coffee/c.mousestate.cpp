@@ -70,12 +70,12 @@ static void erouter_mousedown(t_erouter *x, t_symbol *s, int argc, t_atom *argv)
     x->e_mouse_down = 1;
     x->e_mouse_modifier = (long)atom_getfloat(argv+2);
 #ifdef __APPLE__
-    
+
 #elif _WINDOWS
-    
-    if(x->e_mouse_modifier >= 131080)
+
+    if(x->e_mouse_modifier >= 131072)
     {
-        x->e_mouse_modifier -= 131080;
+        x->e_mouse_modifier -= 131072;
         x->e_mouse_modifier += EMOD_ALT;
     }
     else
@@ -90,12 +90,12 @@ static void erouter_mouseup(t_erouter *x, t_symbol *s, int argc, t_atom *argv)
     x->e_mouse_down = 0;
     x->e_mouse_modifier = (long)atom_getfloat(argv+2);
 #ifdef __APPLE__
-    
+
 #elif _WINDOWS
-    
-    if(x->e_mouse_modifier >= 131080)
+
+    if(x->e_mouse_modifier >= 131072)
     {
-        x->e_mouse_modifier -= 131080;
+        x->e_mouse_modifier -= 131072;
         x->e_mouse_modifier += EMOD_ALT;
     }
     else
@@ -109,12 +109,12 @@ static void erouter_mousemove(t_erouter *x, t_symbol *s, int argc, t_atom *argv)
 {
     x->e_mouse_modifier = (long)atom_getfloat(argv+2);
 #ifdef __APPLE__
-    
+
 #elif _WINDOWS
-    
-    if(x->e_mouse_modifier >= 131080)
+
+    if(x->e_mouse_modifier >= 131072)
     {
-        x->e_mouse_modifier -= 131080;
+        x->e_mouse_modifier -= 131072;
         x->e_mouse_modifier += EMOD_ALT;
     }
     else
@@ -272,7 +272,7 @@ static void eobj_attach_torouter(t_object* child)
                     return;
                 }
             }
-            
+
             x->e_childs = (t_object **)realloc(x->e_childs, (unsigned long)(x->e_nchilds + 1) * sizeof(t_object *));
             if(x->e_childs)
             {
@@ -299,7 +299,7 @@ static t_erouter* erouter_setup()
     t_class* c = NULL;
     int right = EMOD_CMD;
 #ifdef __APPLE__
-    
+
 #elif _WINDOWS
     right += 8;
 #else
@@ -323,15 +323,15 @@ static t_erouter* erouter_setup()
                 x->e_nchilds    = 0;
                 x->e_childs     = NULL;
                 x->e_clock      = NULL;
-                
+
                 sys_gui("namespace eval erouter1572 {} \n");
-                
+
                 sys_vgui("bind all <Button-3> {+pdsend {%s mousedown %%x %%y %i}}\n", erouter1572_sym->s_name, right);
                 sys_vgui("bind all <Button-2> {+pdsend {%s mousedown %%x %%y %i}}\n", erouter1572_sym->s_name, right);
                 sys_vgui("bind all <Button-1> {+pdsend {%s mousedown %%x %%y %%s}}\n", erouter1572_sym->s_name);
                 sys_vgui("bind all <ButtonRelease> {+pdsend {%s mouseup %%x %%y %%s}}\n", erouter1572_sym->s_name);
                 sys_vgui("bind all <Motion> {+pdsend {%s mousemove %%x %%y %%s}}\n", erouter1572_sym->s_name);
-                
+
                 // PATCHER MOUSE POSITION //
                 sys_vgui("proc eobj_canvas_mouse {target patcher} {\n");
                 sys_gui(" set rx [winfo rootx $patcher]\n");
@@ -340,14 +340,14 @@ static t_erouter* erouter_setup()
                 sys_gui(" set y  [winfo pointery .]\n");
                 sys_vgui(" pdsend \"%s $target canvasmouse [expr $x - $rx] [expr $y - $ry] \"\n", erouter1572_sym->s_name);
                 sys_gui("}\n");
-                
+
                 // GLOBAL MOUSE POSITION //
                 sys_gui("proc erouter_global_mouse {} {\n");
                 sys_gui(" set x [winfo pointerx .]\n");
                 sys_gui(" set y [winfo pointery .]\n");
                 sys_vgui(" pdsend \"%s globalmouse $x $y\"\n", erouter1572_sym->s_name);
                 sys_gui("}\n");
-                
+
                 pd_bind((t_pd *)x, erouter1572_sym);
                 erouter1572obj_sym->s_thing = (t_class **)x;
                 return x;
@@ -465,14 +465,14 @@ static void mousestate_tick(t_mousestate *x)
         mouse.x -= x->l_mouse_zero.x;
         mouse.y -= x->l_mouse_zero.y;
     }
-    
+
     outlet_float(x->l_mouse_modifier, eobj_get_mouse_modifier(x));
     outlet_float(x->l_mouse_deltay, mouse.y - x->l_mouse.y);
     outlet_float(x->l_mouse_deltax, mouse.x - x->l_mouse.x);
     outlet_float(x->l_mouse_y, mouse.y);
     outlet_float(x->l_mouse_x, mouse.x);
     outlet_float(x->l_mouse_pressed, eobj_get_mouse_status(x));
-    
+
     x->l_mouse = mouse;
     clock_delay(x->l_clock, 20);
 }
@@ -489,14 +489,14 @@ static void mousestate_poll(t_mousestate *x)
         mouse.x -= x->l_mouse_zero.x;
         mouse.y -= x->l_mouse_zero.y;
     }
-    
+
     outlet_float(x->l_mouse_modifier, eobj_get_mouse_modifier(x));
     outlet_float(x->l_mouse_deltay, mouse.y - x->l_mouse.y);
     outlet_float(x->l_mouse_deltax, mouse.x - x->l_mouse.x);
     outlet_float(x->l_mouse_y, mouse.y);
     outlet_float(x->l_mouse_x, mouse.x);
     outlet_float(x->l_mouse_pressed, eobj_get_mouse_status(x));
-    
+
     x->l_mouse = mouse;
     clock_set(x->l_clock, 20);
 }
@@ -536,10 +536,10 @@ extern "C" void setup_c0x2emousestate(void)
 {
     /*
 	t_eclass *c;
-    
+
 	c = eclass_new("c.mousestate", (method)mousestate_new, (method)mousestate_free, (short)sizeof(t_mousestate), 0L, A_GIMME, 0);
 
-    
+
     eclass_addmethod(c, (method) mousestate_poll,       "poll",            A_NULL, 0);
     eclass_addmethod(c, (method) mousestate_nopoll,     "nopoll",          A_NULL, 0);
     eclass_addmethod(c, (method) mousestate_reset,      "reset",           A_NULL, 0);

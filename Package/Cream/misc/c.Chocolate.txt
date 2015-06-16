@@ -14,7 +14,7 @@ c.number~-help.pd c.number~ A number box for signal.;
 c.plane-help.pd c.plane A plane and... a point.;
 c.preset-help.pd c.preset A GUI to save and recall presets.;
 c.radio-help.pd c.radio A check list or radio buttons.;
-c.rslider-help.pd c.rslider A vertical or horizontal range slider.;
+c.rslider-help.pd c.rslider A vertical or horizontal range rslider.;
 c.scope~-help.pd c.scope~ An oscilloscope.;
 c.slider-help.pd c.slider A vertical or horizontal slider.;
 c.tab-help.pd c.tab A multiple text buttons or text toggles menu.;
