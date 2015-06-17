@@ -1,3 +1,0 @@
-c.pak-help.pd c.pak Combine several atoms into one message.;
-c.patcherargs-help.pd c.patcherargs An object that retrieve the patcher arguments.;
-c.patcherinfos-help.pd c.patcherinfos An object that retrieve the patcher informations.;

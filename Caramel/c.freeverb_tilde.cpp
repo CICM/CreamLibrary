@@ -104,7 +104,7 @@ public:
     void	setDelay(float aValue);
     float	getDelay();
 	
-    inline  float	process(float anInput);
+    inline  float process(float anInput);
     ~CombFilter(){};
 };
 
@@ -223,7 +223,6 @@ typedef struct _freeverb
 {
 	t_edspobj   j_box;
     Freeverb*   f_freeverb;
-    
 } t_freeverb;
 
 t_eclass *freeverb_class;

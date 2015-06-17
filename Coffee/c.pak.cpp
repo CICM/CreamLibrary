@@ -31,7 +31,7 @@ typedef struct  _pak
 	t_eobj      j_box;
 	t_outlet*   f_out;
     t_atom*     f_argv;
-	long        f_argc;
+	int         f_argc;
     char*       f_selectors;
 } t_pak;
 
@@ -200,7 +200,6 @@ extern "C" void setup_c0x2epak(void)
     
 	c = eclass_new("c.pak", (method)pak_new, (method)pak_free, (short)sizeof(t_pak), CLASS_NOINLET, A_GIMME, 0);
 
-    
     eclass_addmethod(c, (method)pak_anything,    "anything",       A_GIMME, 0);
     eclass_addmethod(c, (method)pak_list,        "list",           A_GIMME, 0);
     eclass_addmethod(c, (method)pak_float,       "float",          A_FLOAT, 0);

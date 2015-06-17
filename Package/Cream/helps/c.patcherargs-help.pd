@@ -1,14 +1,12 @@
 #N canvas 229 192 737 425 10;
 #X obj 5 6 cnv 40 552 40 empty empty c.patcherargs 3 12 0 18 -228856
 -33289 0;
-#X obj 87 101 c.bang @size 17 17 @fontname "Helvetica"èsR\,® @fontweight
-"normal".µSèsR\,® @fontslant "roman"ø.µSèsR\,® @fontsize 11 @receive
-"(null)".µSèsR\,® @send "(null)".µSèsR\,® @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X obj 378 197 c.bang @size 17 17 @fontname "Helvetica"èsR\,® @fontweight
-"normal".µSèsR\,® @fontslant "roman"ø.µSèsR\,® @fontsize 11 @receive
-"(null)".µSèsR\,® @send "(null)".µSèsR\,® @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X obj 87 101 c.bang @size 17 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X obj 378 197 c.bang @size 17 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
 #X text 8 28 An object that retrieve the patcher arguments.;
 #X text 85 216 The argument list;
 #N canvas 532 93 615 248 This 0;
@@ -20,10 +18,9 @@
 #X obj 213 69 c.prepend set;
 #X obj 344 69 c.prepend set;
 #X obj 476 69 c.prepend set;
-#X obj 57 17 c.bang @size 17 17 @fontname "Helvetica"èsR\,® @fontweight
-"normal".µSèsR\,® @fontslant "roman"ø.µSèsR\,® @fontsize 11 @receive
-"(null)".µSèsR\,® @send "(null)".µSèsR\,® @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X obj 57 17 c.bang @size 17 17 @fontname "Helvetica" @fontweight "normal"
+@fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)" @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
 #X msg 57 105;
 #X msg 213 105 movie;
 #X msg 344 105 maker;
@@ -50,10 +47,9 @@
 #X obj 307 115 c.prepend set;
 #X obj 396 115 c.prepend set;
 #X obj 57 77 c.prepend set;
-#X obj 58 21 c.bang @size 17 17 @fontname "Helvetica"èsR\,® @fontweight
-"normal".µSèsR\,® @fontslant "roman"ø.µSèsR\,® @fontsize 11 @receive
-"(null)".µSèsR\,® @send "(null)".µSèsR\,® @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X obj 58 21 c.bang @size 17 17 @fontname "Helvetica" @fontweight "normal"
+@fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)" @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
 #X msg 57 115;
 #X msg 217 145;
 #X msg 307 145;
@@ -74,8 +70,6 @@
 #X obj 87 132 c.patcherargs Once upon a time @where in the west;
 #X obj 87 159 c.prepend set;
 #X obj 232 159 c.prepend set;
-#X text 17 388 Coffee by Pierre Guillot | CICM - UniversitÈ Paris 8
-;
 #X msg 232 195 where in the west;
 #X text 115 102 Bang or double click;
 #X text 6 49 c.patcherargs retrieves the arguments and the attributes
@@ -85,9 +79,13 @@ be output the patcher don't have arguments or attributes.;
 #X text 366 226 the attributes has been read;
 #X text 224 216 The attribute list;
 #X msg 87 195 Once upon a time;
+#X text 116 355 Important : Perhaps in the future this object will
+be a part of another library dedicated to canvas management. The cream
+library tries to be exclusively a GUI library.;
+#X text 300 7 Pierre Guillot | CICM - UniversitÈ Paris 8;
 #X connect 1 0 9 0;
 #X connect 9 0 10 0;
 #X connect 9 1 11 0;
 #X connect 9 2 2 0;
-#X connect 10 0 19 0;
-#X connect 11 0 13 0;
+#X connect 10 0 18 0;
+#X connect 11 0 12 0;

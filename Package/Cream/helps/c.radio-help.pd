@@ -41,6 +41,8 @@ or vradio.;
 #X obj 366 159 list trim;
 #X obj 286 285 list prepend set;
 #X obj 286 307 list trim;
+#X obj 422 388 c.help.gui;
+#X text 419 372 Look at me;
 #X connect 2 0 12 0;
 #X connect 3 0 12 0;
 #X connect 4 0 3 0;

@@ -40,7 +40,6 @@ typedef struct  _patcherargs
     t_symbol**  f_attr_name;
     t_atom**    f_attr_vals;
     int*        f_attr_size;
-    double      f_time;
     char        f_init;
 
 } t_patcherargs;
@@ -110,13 +109,6 @@ static void patcherargs_output(t_patcherargs *x)
     outlet_bang(x->f_out_done);
 }
 
-static void patcherargs_click(t_patcherargs *x)
-{
-    if(clock_gettimesince(x->f_time) < 250.)
-        patcherargs_output(x);
-    x->f_time = clock_getsystime();
-}
-
 static void patcherargs_free(t_patcherargs *x)
 {
     int i;
@@ -164,7 +156,6 @@ static void *patcherargs_new(t_symbol *s, int argc, t_atom *argv)
         x->f_out_args = outlet_new((t_object *)x, &s_list);
         x->f_out_attrs = outlet_new((t_object *)x, &s_list);
         x->f_out_done = outlet_new((t_object *)x, &s_bang);
-        x->f_time = clock_getsystime();
         if(canvas_getcurrent())
         {
             x->f_cnv = glist_getcanvas(canvas_getcurrent());
@@ -186,7 +177,6 @@ extern "C" void setup_c0x2epatcherargs(void)
 	c = eclass_new("c.patcherargs", (method)patcherargs_new, (method)patcherargs_free, (short)sizeof(t_patcherargs), 0L, A_GIMME, 0);
     class_addcreator((t_newmethod)patcherargs_new, gensym("c.canvasargs"), A_GIMME, 0);
     eclass_addmethod(c, (method)patcherargs_output,      "bang",       A_NULL, 0);
-    eclass_addmethod(c, (method)patcherargs_click,       "click",      A_NULL, 0);
     eclass_register(CLASS_OBJ, c);
     patcherargs_class = c;
 }

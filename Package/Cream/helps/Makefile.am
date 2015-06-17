@@ -30,5 +30,4 @@ c.pak-help.pd \
 c.patcherargs-help.pd \
 c.patcherinfos-help.pd \
 c.convolve~-help.pd \
-c.fir~-help.pd \
 c.freeverb~-help.pd

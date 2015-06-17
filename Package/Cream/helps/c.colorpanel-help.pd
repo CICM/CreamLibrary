@@ -79,6 +79,8 @@ pick them.;
 #X obj 423 354 list trim;
 #X obj 269 354 list trim;
 #X obj 115 354 list trim;
+#X obj 531 480 c.help.gui;
+#X text 528 464 Look at me;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 3 0 7 0;

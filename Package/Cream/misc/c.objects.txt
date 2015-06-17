@@ -1,8 +1,9 @@
+cream-help.pd Cream The Cream Library.;
 c.bang-help.pd c.bang A bang... that's all.;
 c.blackboard-help.pd c.blackboard A blackboard to draw.;
 c.breakpoints-help.pd c.breakpoints A GUI to edit a breakpoint function.;
-c.dsp~-help.pd c.dsp~ A dsp controler.;
 c.colorpanel-help.pd c.colorpanel A GUI to pick color.;
+c.dsp~-help.pd c.dsp~ A dsp controler.;
 c.gain~-help.pd c.gain~ A slider for signal.;
 c.incdec-help.pd c.incdec A GUI to increment and decrement a value.;
 c.knob-help.pd c.knob A knob.;
@@ -19,3 +20,6 @@ c.scope~-help.pd c.scope~ An oscilloscope.;
 c.slider-help.pd c.slider A vertical or horizontal slider.;
 c.tab-help.pd c.tab A multiple text buttons or text toggles menu.;
 c.toggle-help.pd c.toggle A toggle... that's all.;
+c.pak-help.pd c.pak Combine several atoms into one message.;
+c.patcherargs-help.pd c.patcherargs An object that retrieve the patcher arguments.;
+c.patcherinfos-help.pd c.patcherinfos An object that retrieve the patcher informations.;

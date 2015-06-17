@@ -131,47 +131,6 @@ object properties.;
 #X text 659 117 Set the chalk;
 #X text 659 127 color with rgb;
 #X text 659 137 hsl or hex.;
-#N canvas 390 84 722 277 what 0;
-#X msg 595 99 attrprint;
-#X text 29 -5 - Look at the properties window to edit the attributes.
-Use the attrprint message to post the attributes characteristics.;
-#X text 29 96 - The inlets and outlets are hidden with the "run mode".
-;
-#X text 29 198 - Some objects are very similar to the vanilla ones
-but they're compatible with the preset and will be a part of a global
-system to write time events.;
-#X text 29 122 - Drag the border (bottom or right) or the corner (bottom-right)
-of the box to resize the objects. Sometimes the width or the height
-depends of the font size.;
-#X text 29 168 -The popup menu (for attributes and help) is only available
-with the "edit mode";
-#X text 29 35 "Name" is the message that the object is expecting to
-edit the attribute \, "Type" is the type of the values (float \, symbol
-\, etc...) and "Size" is the number of values the object is expecting.
-;
-#X obj 516 73 c.number @size 53 17 @fontname "Helvetica" @fontweight
-"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
-@presetname "(null)" @min 64 @max "(null)" @minmax 64 "(null)" @decimal
-6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0
-1;
-#X obj 516 142 c.radio @size 64 8 @fontname "Helvetica" @fontweight
-"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
-@presetname "(null)" @nitems 8 @mode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor
-0.5 0.5 0.5 1 @itcolor 0.5 0.5 0.5 1;
-#X msg 516 102 size \$1 8;
-#X text 513 45 Example;
-#X obj 446 73 c.number @size 53 17 @fontname "Helvetica" @fontweight
-"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
-@presetname "(null)" @min 1 @max "(null)" @minmax 1 "(null)" @decimal
-6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0
-1;
-#X msg 446 102 nitems \$1;
-#X connect 0 0 8 0;
-#X connect 7 0 9 0;
-#X connect 9 0 8 0;
-#X connect 11 0 12 0;
-#X connect 12 0 8 0;
-#X restore 632 29 pd what you can do with GUI;
 #X obj 478 524 c.help.pub;
 #X obj 6 24 c.patcherinfos;
 #X obj 7 15 c.loadmess;
@@ -179,6 +138,8 @@ edit the attribute \, "Type" is the type of the values (float \, symbol
 #X obj 814 224 list prepend set;
 #X obj 814 198 pack s f f f f;
 #X obj 814 246 list trim;
+#X obj 848 543 c.help.gui;
+#X text 845 527 Look at me;
 #X connect 0 0 6 0;
 #X connect 0 1 3 0;
 #X connect 0 2 2 0;
@@ -193,17 +154,17 @@ edit the attribute \, "Type" is the type of the values (float \, symbol
 #X connect 13 0 0 0;
 #X connect 14 0 0 0;
 #X connect 16 0 15 0;
-#X connect 31 1 73 0;
+#X connect 31 1 72 0;
 #X connect 32 0 15 0;
 #X connect 33 0 32 0;
 #X connect 36 0 37 0;
 #X connect 37 0 15 0;
 #X connect 38 1 39 0;
 #X connect 39 0 15 0;
-#X connect 40 0 73 1;
-#X connect 41 0 73 2;
-#X connect 42 0 73 3;
-#X connect 43 0 73 4;
+#X connect 40 0 72 1;
+#X connect 41 0 72 2;
+#X connect 42 0 72 3;
+#X connect 43 0 72 4;
 #X connect 45 0 46 0;
 #X connect 46 0 15 0;
 #X connect 51 0 15 0;
@@ -211,8 +172,8 @@ edit the attribute \, "Type" is the type of the values (float \, symbol
 #X connect 54 0 53 0;
 #X connect 55 0 53 0;
 #X connect 56 0 53 0;
-#X connect 69 0 71 0;
-#X connect 70 0 69 0;
-#X connect 72 0 74 0;
-#X connect 73 0 72 0;
-#X connect 74 0 46 0;
+#X connect 68 0 70 0;
+#X connect 69 0 68 0;
+#X connect 71 0 73 0;
+#X connect 72 0 71 0;
+#X connect 73 0 46 0;
