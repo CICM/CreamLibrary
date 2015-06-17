@@ -38,8 +38,6 @@
 1 0.6 0 0.8 @overcolor 1 0 0 0.8;
 #X obj 277 114 c.loadmess 0.1;
 #X obj 39 104 c.loadmess 0.3;
-#X text 3 49 c.meter~ is the chocolate counterpart of the vanilla vu.
-;
 #X obj 7 30 c.patcherinfos;
 #X obj 8 11 c.loadmess;
 #X obj 4 5 c.help.header;
@@ -50,6 +48,7 @@
 "normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @logocolor 0 0.6 0
 0.8;
+#X text 3 49 c.meter~ is the cream counterpart of the vanilla vu.;
 #X connect 0 0 12 0;
 #X connect 3 0 0 0;
 #X connect 6 0 3 0;
@@ -59,5 +58,5 @@
 #X connect 12 0 10 0;
 #X connect 13 0 7 0;
 #X connect 14 0 6 0;
-#X connect 16 0 18 0;
-#X connect 17 0 16 0;
+#X connect 15 0 17 0;
+#X connect 16 0 15 0;

@@ -46,8 +46,6 @@
 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
 #X obj 40 89 c.loadmess 0.3;
 #X obj 401 201 c.loadmess 80;
-#X text 4 44 c.slider is the chocolate counterpart of the vanilla hslider
-or vslider.;
 #X text 65 191 hslider or vslider.;
 #X text 65 165 c.slider have exactly;
 #X text 254 82 c.slider with a relative;
@@ -57,6 +55,8 @@ or vslider.;
 #X obj 79 368 c.help.pub;
 #X obj 450 385 c.help.gui;
 #X text 447 369 Look at me;
+#X text 4 44 c.slider is the cream counterpart of the vanilla hslider
+or vslider.;
 #X connect 4 0 11 0;
 #X connect 9 0 13 0;
 #X connect 10 0 9 0;
@@ -66,5 +66,5 @@ or vslider.;
 #X connect 14 0 13 0;
 #X connect 15 0 4 0;
 #X connect 16 0 10 0;
-#X connect 21 0 23 0;
-#X connect 22 0 21 0;
+#X connect 20 0 22 0;
+#X connect 21 0 20 0;

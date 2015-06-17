@@ -31,8 +31,6 @@
 @presetname "chocodio" @nitems 8 @mode 0 @bgcolor 0.75 0.75 0.75 1
 @bdcolor 0.5 0.5 0.5 1 @itcolor 0.5 0.5 0.5 1;
 #X obj 31 126 c.loadmess 0;
-#X text 2 44 c.radio is the chocolate counterpart of the vanilla hradio
-or vradio.;
 #X obj 8 24 c.patcherinfos;
 #X obj 9 15 c.loadmess;
 #X obj 3 3 c.help.header;
@@ -43,20 +41,22 @@ or vradio.;
 #X obj 286 307 list trim;
 #X obj 422 388 c.help.gui;
 #X text 419 372 Look at me;
+#X text 2 44 c.radio is the cream counterpart of the vanilla hradio
+or vradio.;
 #X connect 2 0 12 0;
 #X connect 3 0 12 0;
 #X connect 4 0 3 0;
 #X connect 7 0 11 0;
-#X connect 8 0 19 0;
+#X connect 8 0 18 0;
 #X connect 9 0 7 0;
 #X connect 10 0 11 0;
-#X connect 11 0 21 0;
+#X connect 11 0 20 0;
 #X connect 12 0 0 0;
 #X connect 13 0 2 0;
 #X connect 13 0 4 0;
-#X connect 15 0 17 0;
-#X connect 16 0 15 0;
-#X connect 19 0 20 0;
-#X connect 20 0 11 0;
-#X connect 21 0 22 0;
-#X connect 22 0 1 0;
+#X connect 14 0 16 0;
+#X connect 15 0 14 0;
+#X connect 18 0 19 0;
+#X connect 19 0 11 0;
+#X connect 20 0 21 0;
+#X connect 21 0 1 0;

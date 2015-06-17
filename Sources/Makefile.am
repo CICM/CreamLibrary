@@ -1,11 +1,11 @@
 AUTOMAKE_OPTIONS = foreign
-noinst_LTLIBRARIES = libChocolate.la
+noinst_LTLIBRARIES = libSources.la
 
-libChocolate_la_CXXFLAGS = @PD_CPPFLAGS@ -O3 -fPIC
-#~libChocolate_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
-libChocolate_la_LIBADD = 
+libSources_la_CXXFLAGS = @PD_CPPFLAGS@ -O3 -fPIC
+libSources_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
+libSources_la_LIBADD = 
 
-libChocolate_la_SOURCES = c.bang.cpp \
+libSources_la_SOURCES = c.bang.cpp \
 c.blackboard.cpp \
 c.breakpoints.cpp \
 c.colorpanel.cpp \

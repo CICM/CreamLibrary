@@ -35,8 +35,6 @@
 "normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
 #X obj 37 127 c.loadmess -3.14169;
-#X text 5 50 c.number is the chocolate counterpart of the vanilla nbx.
-;
 #X text 193 252 Double click to write the number.;
 #X text 193 272 Press enter or tab to valid the number.;
 #X text 193 311 Press the up arrow or the down arrow to increment or
@@ -49,11 +47,13 @@ decrement by 1;
 #X obj 101 383 c.help.pub;
 #X obj 476 401 c.help.gui;
 #X text 473 385 Look at me;
+#X text 5 50 c.number is the cream counterpart of the vanilla nbx.
+;
 #X connect 2 0 4 0;
 #X connect 4 0 5 0;
 #X connect 6 0 2 0;
 #X connect 12 0 4 0;
 #X connect 13 0 4 0;
 #X connect 13 0 6 0;
-#X connect 19 0 21 0;
-#X connect 20 0 19 0;
+#X connect 18 0 20 0;
+#X connect 19 0 18 0;

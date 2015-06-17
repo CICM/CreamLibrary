@@ -24,12 +24,7 @@ extern "C" void cream_setup(void)
     post("© 2013 - 2015  CICM | Paris 8 University");
     post("Version %s (%s) for %s",creamversion, __DATE__, pdversion);
     post("");
-    
-    // Caramel
-    setup_c0x2econvolve_tilde();
-    setup_c0x2efreeverb_tilde();
-    
-    // Chocolate
+
     setup_c0x2ebang();
     setup_c0x2eblackboard();
     setup_c0x2ebreakpoints();
@@ -52,7 +47,9 @@ extern "C" void cream_setup(void)
     setup_c0x2etab();
     setup_c0x2etoggle();
     
-    // Coffee
+    // Deprecated
+    setup_c0x2econvolve_tilde();
+    setup_c0x2efreeverb_tilde();
     setup_c0x2epak();
     setup_c0x2epatcherargs();
     setup_c0x2epatcherinfos();

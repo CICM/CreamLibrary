@@ -5,7 +5,7 @@ pkglib_LTLIBRARIES = Cream.la
 
 Cream_la_CXXFLAGS = @PD_CPPFLAGS@ -O3 -fPIC 
 Cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
-Cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la
+Cream_la_LIBADD = Deprecated/libDeprecated.la Sources/libSources.la
 Cream_la_LIBADD += ThirdParty/CicmWrapper/Sources/libCicmWrapper.la
 
 Cream_la_SOURCES = c.library.h \
@@ -27,8 +27,7 @@ ORIGDIR=pd-$(PACKAGE_NAME)_$(PACKAGE_VERSION)
 OS=$(shell uname -s)
 DISTBINDIR=$(DISTDIR)-$(OS)
 
-SUBDIRS=Coffee Caramel Chocolate
-
+SUBDIRS= Deprecated Sources
 SUBDIRS+= ThirdParty/CicmWrapper
 SUBDIRS+= Package/Cream
 

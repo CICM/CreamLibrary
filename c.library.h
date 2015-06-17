@@ -12,12 +12,10 @@ extern "C"
 #include "ThirdParty/CicmWrapper/Sources/cicm_wrapper.h"
 }
 
-// Loaders
 extern "C" void cream_setup(void);
 extern "C" void Cream_setup(void);
 extern "C" void libpd_loadcream(void);
 
-// Chocolate
 extern "C" void setup_c0x2ebang(void);
 extern "C" void setup_c0x2eblackboard(void);
 extern "C" void setup_c0x2ebreakpoints(void);
@@ -40,11 +38,9 @@ extern "C" void setup_c0x2eslider(void);
 extern "C" void setup_c0x2etab(void);
 extern "C" void setup_c0x2etoggle(void);
 
-// Caramel
+// Deprecated
 extern "C" void setup_c0x2econvolve_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
-
-// Coffee
 extern "C" void setup_c0x2epak(void);
 extern "C" void setup_c0x2epatcherargs(void);
 extern "C" void setup_c0x2epatcherinfos(void);

@@ -97,8 +97,6 @@ function 0 0.933333 396.947 0 488.55 0.866667 541.985 0 1000 1 ];
 6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0
 1;
 #X obj 381 78 c.loadmess 1;
-#X text -10 44 c.preset saves and recalls presets of the Chocolate
-externals in a pacther;
 #X text 696 90 Recall with interpolation;
 #X text 19 101 Object with a preset name are compatible.;
 #X text 19 114 Note that they can share the same preset;
@@ -113,6 +111,8 @@ externals in a pacther;
 #X obj 8 429 c.help.pub;
 #X obj 382 446 c.help.gui;
 #X text 379 430 Look at me;
+#X text -10 44 c.preset saves and recalls presets of the cream externals
+in a pacther;
 #X connect 1 0 18 0;
 #X connect 4 0 18 0;
 #X connect 8 0 1 0;
@@ -125,5 +125,5 @@ externals in a pacther;
 #X connect 35 0 18 0;
 #X connect 36 0 35 0;
 #X connect 37 0 10 0;
-#X connect 47 0 49 0;
-#X connect 48 0 47 0;
+#X connect 46 0 48 0;
+#X connect 47 0 46 0;

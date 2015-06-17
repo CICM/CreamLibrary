@@ -9,16 +9,16 @@
 "normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
 @presetname "(null)" @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5
 1 @crcolor 0.5 0.5 0.5 1;
-#X text 4 50 c.toggle is the chocolate counterpart of the vanilla toggle.
-;
 #X obj 8 27 c.patcherinfos;
 #X obj 9 18 c.loadmess;
 #X obj 3 6 c.help.header;
 #X obj 45 268 c.help.pub;
 #X obj 413 287 c.help.gui;
 #X text 410 271 Look at me;
+#X text 4 50 c.toggle is the cream counterpart of the vanilla toggle.
+;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
-#X connect 5 0 7 0;
-#X connect 6 0 5 0;
+#X connect 4 0 6 0;
+#X connect 5 0 4 0;
