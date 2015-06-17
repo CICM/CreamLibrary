@@ -6,7 +6,7 @@ pkglib_LTLIBRARIES = Cream.la
 Cream_la_CXXFLAGS = @PD_CPPFLAGS@ -O3 -fPIC 
 Cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
 Cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la
-Cream_la_LIBADD += ThirdParty/PureData/Sources/libCicmWrapper.la
+Cream_la_LIBADD += ThirdParty/CicmWrapper/Sources/libCicmWrapper.la
 
 Cream_la_SOURCES = c.library.h \
  c.library.cpp
@@ -29,7 +29,7 @@ DISTBINDIR=$(DISTDIR)-$(OS)
 
 SUBDIRS=Coffee Caramel Chocolate
 
-SUBDIRS+= ThirdParty/PureData
+SUBDIRS+= ThirdParty/CicmWrapper
 SUBDIRS+= Package/Cream
 
 $(abs_builddir)/.libs/cream.@EXTENSION@: cream.la

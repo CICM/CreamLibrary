@@ -5,7 +5,7 @@ AC_INIT([Cream], beta-0.4-git, musique@univ-paris8.fr,[Cream],[https://github.co
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_FILES([Coffee/Makefile Chocolate/Makefile Caramel/Makefile])
-AC_CONFIG_FILES([ThirdParty/PureData/Makefile ThirdParty/PureData/Sources/Makefile])
+AC_CONFIG_FILES([ThirdParty/CicmWrapper/Makefile ThirdParty/CicmWrapper/Sources/Makefile])
 AC_CONFIG_FILES([Package/Cream/Makefile Package/Cream/helps/Makefile Package/Cream/misc/Makefile])
 AC_CONFIG_FILES([Cream-meta.pd])
 
