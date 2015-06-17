@@ -19,10 +19,10 @@ extern "C" void libpd_loadcream(void)
 }
 
 extern "C" void cream_setup(void)
-{    
+{
     post("Cream Library by Pierre Guillot");
     post("© 2013 - 2015  CICM | Paris 8 University");
-    post("Version %s (%s) for %s",creamversion, __DATE__, pdversion);
+    post("Version %s (%s) for %s %i.%i",creamversion, __DATE__, pdversion, PD_MAJOR_VERSION, PD_MINOR_VERSION);
     post("");
 
     setup_c0x2ebang();

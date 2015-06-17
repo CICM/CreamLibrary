@@ -83,11 +83,6 @@ static void dsp_tilde_free(t_dsp_tilde *x)
 	ebox_free((t_ebox *)x);
 }
 
-static void dsp_tilde_assist(t_dsp_tilde *x, void *b, long m, long a, char *s)
-{
-	;
-}
-
 static void draw_background(t_dsp_tilde *x,  t_object *view, t_rect *rect)
 {
 	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
@@ -187,8 +182,6 @@ extern "C" void setup_c0x2edsp_tilde(void)
     
     eclass_guiinit(c, 0);
 
-    
-    eclass_addmethod(c, (method) dsp_tilde_assist,          "assist",           A_NULL, 0);
     eclass_addmethod(c, (method) dsp_tilde_paint,           "paint",            A_NULL, 0);
     eclass_addmethod(c, (method) dsp_tilde_getdrawparams,   "getdrawparams",    A_NULL, 0);
     eclass_addmethod(c, (method) dsp_tilde_oksize,          "oksize",           A_NULL, 0);

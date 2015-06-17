@@ -30,12 +30,12 @@ typedef struct  _meter
 {
 	t_edspbox   j_box;
 	t_clock*	f_clock;
-	int			f_startclock;
+	char        f_startclock;
 	long        f_interval;
-    t_outlet*   f_peaks_outlet;
-    float       f_peak_value;
+    t_outlet*   f_outlet;
+    float       f_peak;
 	char        f_direction;
-    long		f_over_led_preserved;
+    long		f_overled;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_signal_cold;
@@ -51,34 +51,34 @@ static t_eclass *meter_class;
 static void meter_output(t_meter *x)
 {
     t_pd* send = ebox_getsender((t_ebox *) x);
-    outlet_float((t_outlet*)x->f_peaks_outlet, x->f_peak_value);
+    outlet_float(x->f_outlet, x->f_peak);
     if(send)
     {
-        pd_float(send, x->f_peak_value);
+        pd_float(send, x->f_peak);
     }
 }
 
 static void meter_tick(t_meter *x)
 {
-    if(x->f_peak_value > 0.)
+    if(x->f_peak > 0.)
     {
-        x->f_peak_value = 20. * log10(x->f_peak_value);
+        x->f_peak = 20. * log10(x->f_peak);
     }
     else
     {
-        x->f_peak_value = -90.;
+        x->f_peak = -90.;
     }
-    if(x->f_peak_value >= 0)
+    if(x->f_peak >= 0)
     {
-        x->f_over_led_preserved = 1;
+        x->f_overled = 1;
     }
-    else if(x->f_over_led_preserved > 0)
+    else if(x->f_overled > 0)
     {
-        x->f_over_led_preserved++;
+        x->f_overled++;
     }
-    if(x->f_over_led_preserved >= 1000. / x->f_interval)
+    if(x->f_overled >= 1000. / x->f_interval)
     {
-        x->f_over_led_preserved = 0;
+        x->f_overled = 0;
     }
     
     meter_output(x);
@@ -104,7 +104,7 @@ static void meter_perform(t_meter *x, t_object *dsp, t_sample **ins, long ni, t_
             peak = temp;
         }
     }
-    x->f_peak_value = (float)peak;
+    x->f_peak = (float)peak;
     if (x->f_startclock)
     {
         x->f_startclock = 0;
@@ -207,7 +207,7 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect)
         float led_width = rect->width / 13.f;
         for(i = 12, dB = -39; i > 0; i--, dB += 3.f)
         {
-            if(x->f_peak_value >= dB)
+            if(x->f_peak >= dB)
             {
                 if(i > 9)
                     egraphics_set_color_rgba(g, &x->f_color_signal_cold);
@@ -234,7 +234,7 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect)
                 egraphics_fill(g);
             }
         }
-        if(x->f_over_led_preserved)
+        if(x->f_overled)
         {
             egraphics_set_color_rgba(g, &x->f_color_signal_over);
             if(!x->f_direction)
@@ -271,11 +271,11 @@ static void *meter_new(t_symbol *s, int argc, t_atom *argv)
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK);
         eobj_dspsetup((t_ebox *)x, 1, 0);
         x->f_direction      = 0;
-        x->f_peaks_outlet   = outlet_new((t_object *)x, &s_float);
-        x->f_peak_value     = -90.;
+        x->f_outlet   = outlet_new((t_object *)x, &s_float);
+        x->f_peak     = -90.;
         x->f_clock          = clock_new(x,(t_method)meter_tick);
         x->f_startclock     = 0;
-        x->f_over_led_preserved = 0;
+        x->f_overled = 0;
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
     }
