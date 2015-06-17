@@ -5,7 +5,7 @@ pkglib_LTLIBRARIES = Cream.la
 
 Cream_la_CXXFLAGS = @PD_CPPFLAGS@ -O3 -fPIC 
 Cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFLAGS@ -fPIC
-Cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la Cinnamon/libCinnamon.la
+Cream_la_LIBADD = Coffee/libCoffee.la Caramel/libCaramel.la Chocolate/libChocolate.la
 Cream_la_LIBADD += ThirdParty/PureData/Sources/libCicmWrapper.la
 
 Cream_la_SOURCES = c.library.h \
@@ -16,7 +16,7 @@ ALL_CFLAGS = -I"$(PD_INCLUDE)"
 Creamdir=$(pkglibdir)
 
 dist_Cream_DATA = \
-	cream-meta.pd \
+	Cream-meta.pd \
 	LICENSE.txt \
 	README.txt
 	
@@ -27,7 +27,7 @@ ORIGDIR=pd-$(PACKAGE_NAME)_$(PACKAGE_VERSION)
 OS=$(shell uname -s)
 DISTBINDIR=$(DISTDIR)-$(OS)
 
-SUBDIRS=Coffee Caramel Chocolate Cinnamon
+SUBDIRS=Coffee Caramel Chocolate
 
 SUBDIRS+= ThirdParty/PureData
 SUBDIRS+= Package/Cream

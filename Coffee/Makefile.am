@@ -6,7 +6,6 @@ libCoffee_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_
 libCoffee_la_LIBADD = 
 
 libCoffee_la_SOURCES = c.loadmess.cpp \
-c.mousestate.cpp \
 c.pak.cpp \
 c.patcherargs.cpp \
 c.patcherinfos.cpp \

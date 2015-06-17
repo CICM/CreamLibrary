@@ -14,7 +14,6 @@
 		8F53164C1906F50A00734AD6 /* c.patchermess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F53164B1906F50A00734AD6 /* c.patchermess.cpp */; };
 		8F564FA11B281BC600A7E1B9 /* c.fir_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F564FA01B281BC600A7E1B9 /* c.fir_tilde.cpp */; };
 		8F564FA21B281BC600A7E1B9 /* c.fir_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F564FA01B281BC600A7E1B9 /* c.fir_tilde.cpp */; };
-		8F5DB22519630E41005DE808 /* c.mousestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F5DB22419630E41005DE808 /* c.mousestate.cpp */; };
 		8F93C5BF1ABFCD4400140C8A /* c.dsp_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F93C5BE1ABFCD4400140C8A /* c.dsp_tilde.cpp */; };
 		8F93C5C01ABFCD4400140C8A /* c.dsp_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F93C5BE1ABFCD4400140C8A /* c.dsp_tilde.cpp */; };
 		8F9AA23E1B2DA0A6002C2B4E /* cicm_wrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA2301B2DA0A6002C2B4E /* cicm_wrapper.h */; };
@@ -47,12 +46,6 @@
 		8F9AA25D1B2DA2FA002C2B4E /* egraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F9AA25A1B2DA2FA002C2B4E /* egraphics.c */; };
 		8F9AA25E1B2DA2FA002C2B4E /* egraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA25B1B2DA2FA002C2B4E /* egraphics.h */; };
 		8F9AA25F1B2DA2FA002C2B4E /* egraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9AA25B1B2DA2FA002C2B4E /* egraphics.h */; };
-		8FA255E31A56E57C00CD0697 /* c.matrix_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */; };
-		8FA255E41A56E57C00CD0697 /* c.matrix_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */; };
-		8FA8BB311A47E6560001EB87 /* c.atan_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */; };
-		8FA8BB321A47E6560001EB87 /* c.atan_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */; };
-		8FA8BB341A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */; };
-		8FA8BB351A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */; };
 		8FAC0BA71969731800E09ACB /* c.gain_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3219007B04005FAF6A /* c.gain_tilde.cpp */; };
 		8FAC0BA81969731800E09ACB /* c.patcherinfos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */; };
 		8FAC0BAB1969731800E09ACB /* c.rslider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3C19007B04005FAF6A /* c.rslider.cpp */; };
@@ -71,7 +64,6 @@
 		8FAC0BC81969731800E09ACB /* c.convolve_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB2719007B04005FAF6A /* c.convolve_tilde.cpp */; };
 		8FAC0BCA1969731800E09ACB /* c.incdec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3319007B04005FAF6A /* c.incdec.cpp */; };
 		8FAC0BCC1969731800E09ACB /* c.preset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3A19007B04005FAF6A /* c.preset.cpp */; };
-		8FAC0BCE1969731800E09ACB /* c.mousestate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F5DB22419630E41005DE808 /* c.mousestate.cpp */; };
 		8FAC0BCF1969731800E09ACB /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB2B19007B04005FAF6A /* Utilities.cpp */; };
 		8FAC0BD11969731800E09ACB /* c.meter_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3619007B04005FAF6A /* c.meter_tilde.cpp */; };
 		8FAC0BD21969731800E09ACB /* c.colorpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3119007B04005FAF6A /* c.colorpanel.cpp */; };
@@ -132,7 +124,6 @@
 		8F26F18A17E76273005FCB97 /* c.library.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.library.cpp; sourceTree = "<group>"; };
 		8F53164B1906F50A00734AD6 /* c.patchermess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patchermess.cpp; sourceTree = "<group>"; };
 		8F564FA01B281BC600A7E1B9 /* c.fir_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.fir_tilde.cpp; sourceTree = "<group>"; };
-		8F5DB22419630E41005DE808 /* c.mousestate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.mousestate.cpp; sourceTree = "<group>"; };
 		8F93C5BE1ABFCD4400140C8A /* c.dsp_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.dsp_tilde.cpp; sourceTree = "<group>"; };
 		8F9AA2301B2DA0A6002C2B4E /* cicm_wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cicm_wrapper.h; path = Sources/cicm_wrapper.h; sourceTree = "<group>"; };
 		8F9AA2311B2DA0A6002C2B4E /* ebox.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ebox.c; path = Sources/ebox.c; sourceTree = "<group>"; };
@@ -149,9 +140,6 @@
 		8F9AA23D1B2DA0A6002C2B4E /* edefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = edefine.h; path = Sources/edefine.h; sourceTree = "<group>"; };
 		8F9AA25A1B2DA2FA002C2B4E /* egraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = egraphics.c; path = Sources/egraphics.c; sourceTree = "<group>"; };
 		8F9AA25B1B2DA2FA002C2B4E /* egraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = egraphics.h; path = Sources/egraphics.h; sourceTree = "<group>"; };
-		8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.matrix_tilde.cpp; sourceTree = "<group>"; };
-		8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.atan_tilde.cpp; sourceTree = "<group>"; };
-		8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.sin_tilde.cpp; sourceTree = "<group>"; };
 		8FAC0BFB1969731800E09ACB /* Cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB8EB2519007B04005FAF6A /* AudioFFT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioFFT.cpp; sourceTree = "<group>"; };
 		8FB8EB2619007B04005FAF6A /* AudioFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFFT.h; sourceTree = "<group>"; };
@@ -213,7 +201,6 @@
 			children = (
 				8F26F18A17E76273005FCB97 /* c.library.cpp */,
 				8FB8EB6719007B1E005FAF6A /* c.library.h */,
-				8FA8BB2F1A47E6560001EB87 /* Cinnamon */,
 				8FB8EB2419007B04005FAF6A /* Caramel */,
 				8FB8EB2D19007B04005FAF6A /* Chocolate */,
 				8FB8EB69190080E9005FAF6A /* Coffee */,
@@ -232,22 +219,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8FA8BB2F1A47E6560001EB87 /* Cinnamon */ = {
-			isa = PBXGroup;
-			children = (
-				8FA8BB331A47EAD80001EB87 /* c.sin_tilde.cpp */,
-				8FA8BB301A47E6560001EB87 /* c.atan_tilde.cpp */,
-			);
-			path = Cinnamon;
-			sourceTree = "<group>";
-		};
 		8FB8EB2419007B04005FAF6A /* Caramel */ = {
 			isa = PBXGroup;
 			children = (
 				8FB8EB2719007B04005FAF6A /* c.convolve_tilde.cpp */,
 				8F564FA01B281BC600A7E1B9 /* c.fir_tilde.cpp */,
 				8FB8EB2819007B04005FAF6A /* c.freeverb_tilde.cpp */,
-				8FA255E21A56E57C00CD0697 /* c.matrix_tilde.cpp */,
 				8FB8EB2519007B04005FAF6A /* AudioFFT.cpp */,
 				8FB8EB2619007B04005FAF6A /* AudioFFT.h */,
 				8FB8EB2919007B04005FAF6A /* FFTConvolver.cpp */,
@@ -290,7 +267,6 @@
 			isa = PBXGroup;
 			children = (
 				8FB8EB6A190080E9005FAF6A /* c.loadmess.cpp */,
-				8F5DB22419630E41005DE808 /* c.mousestate.cpp */,
 				8FB8EB6B190080E9005FAF6A /* c.pak.cpp */,
 				8FB8EB6C190080E9005FAF6A /* c.patcherargs.cpp */,
 				8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */,
@@ -439,11 +415,9 @@
 				8FB8EB5D19007B04005FAF6A /* c.rslider.cpp in Sources */,
 				8FB8EB5819007B04005FAF6A /* c.number.cpp in Sources */,
 				8F9AA2441B2DA0A6002C2B4E /* eclass.c in Sources */,
-				8FA8BB341A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */,
 				8FB8EB73190080E9005FAF6A /* c.prepend.cpp in Sources */,
 				8FB8EB6F190080E9005FAF6A /* c.loadmess.cpp in Sources */,
 				8FB8EB4F19007B04005FAF6A /* c.bang.cpp in Sources */,
-				8FA8BB311A47E6560001EB87 /* c.atan_tilde.cpp in Sources */,
 				8FB8EB5A19007B04005FAF6A /* c.plane.cpp in Sources */,
 				8FB8EB6119007B04005FAF6A /* c.toggle.cpp in Sources */,
 				8FB8EB5919007B04005FAF6A /* c.number_tilde.cpp in Sources */,
@@ -458,8 +432,6 @@
 				8FB8EB5419007B04005FAF6A /* c.incdec.cpp in Sources */,
 				8FB8EB5B19007B04005FAF6A /* c.preset.cpp in Sources */,
 				8F564FA11B281BC600A7E1B9 /* c.fir_tilde.cpp in Sources */,
-				8FA255E31A56E57C00CD0697 /* c.matrix_tilde.cpp in Sources */,
-				8F5DB22519630E41005DE808 /* c.mousestate.cpp in Sources */,
 				8FB8EB4D19007B04005FAF6A /* Utilities.cpp in Sources */,
 				8F1E0E761A46FEF400551842 /* c.matrix.cpp in Sources */,
 				8FB8EB5719007B04005FAF6A /* c.meter_tilde.cpp in Sources */,
@@ -490,11 +462,9 @@
 				8FAC0BAB1969731800E09ACB /* c.rslider.cpp in Sources */,
 				8FAC0BAE1969731800E09ACB /* c.number.cpp in Sources */,
 				8F9AA2451B2DA0A6002C2B4E /* eclass.c in Sources */,
-				8FA8BB351A47EAD80001EB87 /* c.sin_tilde.cpp in Sources */,
 				8FAC0BB21969731800E09ACB /* c.prepend.cpp in Sources */,
 				8FAC0BB31969731800E09ACB /* c.loadmess.cpp in Sources */,
 				8FAC0BB41969731800E09ACB /* c.bang.cpp in Sources */,
-				8FA8BB321A47E6560001EB87 /* c.atan_tilde.cpp in Sources */,
 				8FAC0BB61969731800E09ACB /* c.plane.cpp in Sources */,
 				8FAC0BB91969731800E09ACB /* c.toggle.cpp in Sources */,
 				8FAC0BBA1969731800E09ACB /* c.number_tilde.cpp in Sources */,
@@ -509,8 +479,6 @@
 				8FAC0BCA1969731800E09ACB /* c.incdec.cpp in Sources */,
 				8FAC0BCC1969731800E09ACB /* c.preset.cpp in Sources */,
 				8F564FA21B281BC600A7E1B9 /* c.fir_tilde.cpp in Sources */,
-				8FA255E41A56E57C00CD0697 /* c.matrix_tilde.cpp in Sources */,
-				8FAC0BCE1969731800E09ACB /* c.mousestate.cpp in Sources */,
 				8FAC0BCF1969731800E09ACB /* Utilities.cpp in Sources */,
 				8F1E0E771A46FEF400551842 /* c.matrix.cpp in Sources */,
 				8FAC0BD11969731800E09ACB /* c.meter_tilde.cpp in Sources */,

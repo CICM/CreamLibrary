@@ -25,15 +25,10 @@ extern "C" void cream_setup(void)
     post("Version %s (%s) for %s",creamversion, __DATE__, pdversion);
     post("");
     
-    // Cinnamon
-    setup_c0x2eatan_tilde();
-    setup_c0x2esin_tilde();
-    
     // Caramel
     setup_c0x2econvolve_tilde();
     setup_c0x2efir_tilde();
     setup_c0x2efreeverb_tilde();
-    setup_c0x2ematrix_tilde();
     
     // Chocolate
     setup_c0x2ebang();
@@ -64,14 +59,41 @@ extern "C" void cream_setup(void)
     setup_c0x2epatcherargs();
     setup_c0x2epatcherinfos();
     setup_c0x2eprepend();
-    setup_c0x2emousestate();
     setup_c0x2epatchermess();
+    
+    //Deprecated
+    setup_c0x2emousestate();
     
     epd_add_folder("Cream", "misc");
     epd_add_folder("Cream", "helps");
 }
 
+typedef t_object *(*t_returnnewmethod)(t_symbol *s);
+
 extern "C" void Cream_setup(void)
 {
 	cream_setup();
 }
+
+static void *mousestate_new(t_symbol *s, int argc, t_atom *argv)
+{
+    pd_typedmess(&pd_objectmaker, gensym("Cyclone/MouseState"), 0, NULL);
+    t_returnnewmethod newmouse = (t_returnnewmethod)getfn((t_pd *)&pd_objectmaker, gensym("Cyclone/MouseState"));
+    if(newmouse)
+    {
+        t_object* mousestate = newmouse(gensym("Cyclone/MouseState"));
+        if(mousestate)
+        {
+            pd_error(mousestate, "c.mousestate does not axist anymore we've replaced it with mousestate from the cyclone library.");
+            return mousestate;
+        }
+    }
+    error("c.mousestate does not axist anymore please download the cyclone library to get it.");
+    return NULL;
+}
+
+extern "C" void setup_c0x2emousestate(void)
+{
+    eclass_new("c.mousestate", (method)mousestate_new, (method)NULL, (short)sizeof(t_eobj), 0L, A_NULL, 0);
+}
+

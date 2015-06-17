@@ -10,7 +10,6 @@ AudioFFT.h \
 c.convolve_tilde.cpp \
 c.fir_tilde.cpp \
 c.freeverb_tilde.cpp \
-c.matrix_tilde.cpp \
 FFTConvolver.cpp \
 FFTConvolver.h \
 fftw3.h \

@@ -1,13 +1,13 @@
 dnl Process this file with autoconf to produce a configure script.
 ## replace the email below with authors' emails
-AC_INIT([Cream], 0.3-git, musique@univ-paris8.fr,[Cream],[https://github.com/CICM/CreamLibrary])
+AC_INIT([Cream], beta-0.4-git, musique@univ-paris8.fr,[Cream],[https://github.com/CICM/CreamLibrary])
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR(config)
-AC_CONFIG_FILES([Coffee/Makefile Chocolate/Makefile Caramel/Makefile Cinnamon/Makefile])
+AC_CONFIG_FILES([Coffee/Makefile Chocolate/Makefile Caramel/Makefile])
 AC_CONFIG_FILES([ThirdParty/PureData/Makefile ThirdParty/PureData/Sources/Makefile])
 AC_CONFIG_FILES([Package/Cream/Makefile Package/Cream/helps/Makefile Package/Cream/misc/Makefile])
-AC_CONFIG_FILES([cream-meta.pd])
+AC_CONFIG_FILES([Cream-meta.pd])
 
 AC_ARG_WITH([pdextended], [AS_HELP_STRING([--with-pdextended], [use PD-Extended instead of PD-Vanilla])], [], [with_pdextended=no])
 AS_IF([test "x$with_pdextended" != xno],  AC_DEFINE(PD_EXTENDED,[],[Use PD-Extended]), [])

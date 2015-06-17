@@ -17,15 +17,10 @@ extern "C" void Cream_setup(void);
 
 extern "C" void libpd_loadcream(void);
 
-// Cinnamon
-extern "C"  void setup_c0x2eatan_tilde(void);
-extern "C"  void setup_c0x2esin_tilde(void);
-
 // Caramel
 extern "C" void setup_c0x2econvolve_tilde(void);
 extern "C" void setup_c0x2efir_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
-extern "C" void setup_c0x2ematrix_tilde(void);
 
 // Chocolate
 extern "C" void setup_c0x2ebang(void);
