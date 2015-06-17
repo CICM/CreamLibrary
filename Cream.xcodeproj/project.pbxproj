@@ -241,8 +241,6 @@
 		8FB8EB69190080E9005FAF6A /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
-				8F27CF5C1B31CA2300220A14 /* AudioFFT.cpp */,
-				8F27CF5D1B31CA2300220A14 /* AudioFFT.h */,
 				8F27CF5E1B31CA2300220A14 /* c.convolve_tilde.cpp */,
 				8F27CF5F1B31CA2300220A14 /* c.freeverb_tilde.cpp */,
 				8F27CF601B31CA2300220A14 /* c.pak.cpp */,
@@ -251,6 +249,8 @@
 				8F27CF631B31CA2300220A14 /* c.patchermess.cpp */,
 				8F27CF641B31CA2300220A14 /* FFTConvolver.cpp */,
 				8F27CF651B31CA2300220A14 /* FFTConvolver.h */,
+				8F27CF5C1B31CA2300220A14 /* AudioFFT.cpp */,
+				8F27CF5D1B31CA2300220A14 /* AudioFFT.h */,
 				8F27CF661B31CA2300220A14 /* Utilities.cpp */,
 				8F27CF671B31CA2300220A14 /* Utilities.h */,
 			);

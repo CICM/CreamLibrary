@@ -61,6 +61,7 @@ static t_symbol* cream_sym_points_layer         = gensym("points_layer");
 static t_symbol* cream_sym_value_layer          = gensym("value_layer");
 static t_symbol* cream_sym_knob_layer           = gensym("knob_layer");
 static t_symbol* cream_sym_signal_layer         = gensym("signal_layer");
+static t_symbol* cream_sym_leds_layer           = gensym("leds_layer");
 
 static t_symbol* cream_sym_bacolor              = gensym("bacolor");
 static t_symbol* cream_sym_bgcolor              = gensym("bgcolor");
@@ -70,6 +71,11 @@ static t_symbol* cream_sym_btcolor              = gensym("btcolor");
 static t_symbol* cream_sym_textcolor            = gensym("textcolor");
 static t_symbol* cream_sym_ptcolor              = gensym("ptcolor");
 static t_symbol* cream_sym_licolor              = gensym("licolor");
+static t_symbol* cream_sym_coldcolor            = gensym("coldcolor");
+static t_symbol* cream_sym_tepidcolor           = gensym("tepidcolor");
+static t_symbol* cream_sym_warmcolor            = gensym("warmcolor");
+static t_symbol* cream_sym_hotcolor             = gensym("hotcolor");
+static t_symbol* cream_sym_overcolor            = gensym("overcolor");
 
 static t_symbol* cream_sym_fontsize             = gensym("fontsize");
 static t_symbol* cream_sym_fontname             = gensym("fontname");
