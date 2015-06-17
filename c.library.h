@@ -42,7 +42,6 @@ extern "C" void setup_c0x2etoggle(void);
 
 // Caramel
 extern "C" void setup_c0x2econvolve_tilde(void);
-extern "C" void setup_c0x2efir_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
 
 // Coffee
