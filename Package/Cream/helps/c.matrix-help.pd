@@ -1,7 +1,7 @@
 #N canvas 141 97 688 660 10;
-#X obj 108 183 c.bang @size 17 17 @fontname Helvetica @fontweight normal
-@fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X obj 108 183 c.bang @size 17 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
 #X obj 10 29 c.patcherinfos;
 #X obj 11 20 c.loadmess;
 #X obj 5 8 c.help.header;
@@ -23,20 +23,22 @@ with the "edit mode";
 edit the attribute \, "Type" is the type of the values (float \, symbol
 \, etc...) and "Size" is the number of values the object is expecting.
 ;
-#X obj 516 73 c.number @size 53 14 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 64 @max (null) @minmax 64 (null) @decimal 6 @bgcolor 0.75
-0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 516 142 c.radio @size 64 8 @fontname Helvetica @fontweight normal
-@fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @nitems 1 @mode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5
-0.5 1 @itcolor 0.5 0.5 0.5 1;
+#X obj 516 73 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 64 @max "(null)" @minmax 64 "(null)" @decimal
+6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0
+1;
+#X obj 516 142 c.radio @size 64 8 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @nitems 1 @mode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor
+0.5 0.5 0.5 1 @itcolor 0.5 0.5 0.5 1;
 #X msg 516 102 size \$1 8;
 #X text 513 45 Example;
-#X obj 446 73 c.number @size 53 14 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 1 @max (null) @minmax 1 (null) @decimal 6 @bgcolor 0.75
-0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 446 73 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 1 @max "(null)" @minmax 1 "(null)" @decimal
+6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0
+1;
 #X msg 446 102 nitems \$1;
 #X connect 0 0 8 0;
 #X connect 7 0 9 0;
@@ -47,23 +49,22 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X obj 220 570 c.help.pub;
 #X text 7 54 c.matrix allows to create a breakpoint function and to
 use it for line.;
-#X obj 281 375 c.matrix @size 161 81 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @matrix 8 4 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1
-@accolor 0.5 0.5 0.5 1;
+#X obj 281 375 c.matrix @size 161 81 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @matrix 8 4 @bgcolor 0.75 0.75 0.75 1 @bdcolor
+0.5 0.5 0.5 1 @accolor 0.5 0.5 0.5 1;
 #X msg 524 306 matrix 8 4;
 #X msg 480 274 matrix 4 2;
-#X obj 437 483 c.prepend set;
 #X msg 437 515 1 0 0 0 0 0 0 0;
-#X obj 429 151 c.number @size 53 14 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 0 @max 3 @minmax 0 3 @decimal 0 @bgcolor 0.75 0.75 0.75
-1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 429 151 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 0 @max 3 @minmax 0 3 @decimal 0 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X msg 429 187 getrow \$1;
-#X obj 508 151 c.number @size 53 14 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 0 @max 8 @minmax 0 8 @decimal 0 @bgcolor 0.75 0.75 0.75
-1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 508 151 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 0 @max 8 @minmax 0 8 @decimal 0 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X msg 508 187 getcolumn \$1;
 #X text 435 543 Row or column values;
 #X text 427 113 Output the row or column values;
@@ -77,7 +78,6 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X text 253 183 row \, value \, column \, row \,;
 #X text 253 193 value \, column \, row \, etc.).;
 #X msg 39 241 clear;
-#X obj 281 483 c.prepend set;
 #X msg 281 515 4 3 1;
 #X text 279 543 Cell value;
 #X msg 257 212 1 1 1 \, 2 0 1 \, 4 3 1;
@@ -89,23 +89,29 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X text 29 285 Set without;
 #X text 29 295 output the values.;
 #X text 477 252 Resize the matrix (column \, row);
+#X obj 281 463 list prepend set;
+#X obj 281 485 list trim;
+#X obj 437 463 list prepend set;
+#X obj 437 485 list trim;
 #X connect 0 0 7 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X connect 7 0 28 0;
-#X connect 7 1 10 0;
+#X connect 7 0 38 0;
+#X connect 7 1 40 0;
 #X connect 8 0 7 0;
 #X connect 9 0 7 0;
-#X connect 10 0 11 0;
-#X connect 12 0 13 0;
-#X connect 13 0 7 0;
-#X connect 14 0 15 0;
-#X connect 15 0 7 0;
+#X connect 11 0 12 0;
+#X connect 12 0 7 0;
+#X connect 13 0 14 0;
+#X connect 14 0 7 0;
+#X connect 18 0 7 0;
 #X connect 19 0 7 0;
-#X connect 20 0 7 0;
-#X connect 27 0 7 0;
-#X connect 28 0 29 0;
-#X connect 31 0 7 0;
+#X connect 26 0 7 0;
+#X connect 29 0 7 0;
+#X connect 32 0 7 0;
+#X connect 33 0 7 0;
 #X connect 34 0 7 0;
-#X connect 35 0 7 0;
-#X connect 36 0 7 0;
+#X connect 38 0 39 0;
+#X connect 39 0 27 0;
+#X connect 40 0 41 0;
+#X connect 41 0 10 0;

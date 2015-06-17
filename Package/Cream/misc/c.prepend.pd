@@ -1,0 +1,17 @@
+#N canvas 546 393 450 300 10;
+#X obj 159 19 inlet;
+#X obj 159 101 list prepend, f 20;
+#X obj 159 123 list trim;
+#X obj 159 145 outlet;
+#X obj 242 49 c.canvasargs;
+#X obj 242 21 loadbang;
+#X obj 159 41 route set;
+#X obj 242 71 list split 1;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 7 0;
+#X connect 5 0 4 0;
+#X connect 6 0 1 1;
+#X connect 6 1 1 0;
+#X connect 7 1 1 1;

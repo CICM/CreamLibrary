@@ -7,9 +7,13 @@ For an overview of Chocolate, Coffee and Caramel Libraries, please refer to the 
 Beta 0.4
 ------------------------
 
-c.matrix~
 c.matrix
 c.dsp~
+removed objects : 
+c.mousestate (use cyclone with patch alias)
+patch versions : 
+c.prepend
+c.loadmes
 
 ------------------------
 Beta 0.3

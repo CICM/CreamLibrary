@@ -1,46 +1,51 @@
 #N canvas 10 22 1392 727 10;
-#X obj 54 273 c.blackboard @size 200 200 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
-1 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
-#X obj 151 514 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 249 512 c.toggle @size 15 15 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @crcolor 0.5
-0.5 0.5 1;
+#X obj 54 273 c.blackboard @size 200 200 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@chalkmode 1 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
+#X obj 151 514 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min "(null)" @max "(null)" @minmax "(null)" "(null)"
+@decimal 6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
+0 0 0 1;
+#X obj 249 512 c.toggle @size 15 15 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5
+1 @crcolor 0.5 0.5 0.5 1;
 #X obj 151 478 unpack;
-#X obj 184 544 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 54 514 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 184 544 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min "(null)" @max "(null)" @minmax "(null)" "(null)"
+@decimal 6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
+0 0 0 1;
+#X obj 54 514 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min "(null)" @max "(null)" @minmax "(null)" "(null)"
+@decimal 6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
+0 0 0 1;
 #X obj 54 478 unpack;
-#X obj 87 544 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min (null) @max (null) @minmax (null) (null) @decimal 6 @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 87 544 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min "(null)" @max "(null)" @minmax "(null)" "(null)"
+@decimal 6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
+0 0 0 1;
 #X msg 152 181 clear;
 #X msg 54 181 reset;
-#X obj 215 177 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 1 @max 4.29497e+09 @minmax 1 4.29497e+09 @decimal 0 @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 291 145 c.colorpanel @size 121 65 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @matrix 10 8 @reverse 0 @saturation 1 @hue 0 @lightness 1 @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
+#X obj 215 177 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 1 @max 4.29497e+09 @minmax 1 4.29497e+09
+@decimal 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
+0 0 0 1;
+#X obj 291 145 c.colorpanel @size 121 65 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @matrix 10 8 @reverse 0 @saturation 1 @hue 0 @lightness
+1 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
 #X text 3 49 c.blackboard allows to draw lines with the mouse and to
 create shapes on a blackboard.;
 #X msg 215 210 width \$1;
 #X msg 291 229 color rgb \$1 \$2 \$3;
-#X obj 455 275 c.blackboard @size 200 200 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
-0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
+#X obj 455 275 c.blackboard @size 200 200 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@chalkmode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
 #X msg 455 177 clear;
 #X text 141 146 Erase the;
 #X text 141 156 blackboard;
@@ -56,48 +61,50 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
 #X text 55 560 Dragging mouse;
 #X text 42 98 Draw with the mouse (chalkmode);
 #X text 462 98 Draw shapes with messages;
-#X obj 773 169 c.menu @size 46 17 @fontname Helvetica @fontweight normal
-@fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @hover 0 @items line rect oval @states 0 0 0 @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 773 149 c.menu @size 46 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @hover 0 @items "line" "rect" "oval" @states 0
+0 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0
+0 1;
 #X msg 501 210 fill \$1;
-#X obj 501 179 c.toggle @size 15 15 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @crcolor 0.5
-0.5 0.5 1;
+#X obj 501 179 c.toggle @size 15 15 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5
+1 @crcolor 0.5 0.5 0.5 1;
 #X text 489 144 Active;
 #X text 489 154 filling;
-#X obj 560 176 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 1 @max 4.29497e+09 @minmax 1 4.29497e+09 @decimal 0 @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 560 176 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 1 @max 4.29497e+09 @minmax 1 4.29497e+09
+@decimal 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor
+0 0 0 1;
 #X msg 560 209 width \$1;
-#X obj 636 158 c.colorpanel @size 121 65 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @matrix 10 8 @reverse 0 @saturation 1 @hue 0 @lightness 1 @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
+#X obj 636 158 c.colorpanel @size 121 65 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @matrix 10 8 @reverse 0 @saturation 1 @hue 0 @lightness
+1 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
 #X msg 632 239 color hsl \$1 \$2 \$3;
-#X obj 835 167 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 0 @max 200 @minmax 0 200 @decimal 0 @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 857 141 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 0 @max 200 @minmax 0 200 @decimal 0 @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 879 191 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 0 @max 200 @minmax 0 200 @decimal 0 @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 901 167 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 0 @max 200 @minmax 0 200 @decimal 0 @bgcolor 0.75 0.75
-0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 834 147 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 0 @max 200 @minmax 0 200 @decimal 0 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 854 121 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 0 @max 200 @minmax 0 200 @decimal 0 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 874 171 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 0 @max 200 @minmax 0 200 @decimal 0 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 895 147 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 0 @max 200 @minmax 0 200 @decimal 0 @bgcolor
+0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
 #X text 806 93 Set the coordinates;
-#X obj 792 247 c.bang @size 17 17 @fontname Helvetica @fontweight normal
-@fontslant roman @fontsize 11 @receive (null) @send (null) @bgcolor
-0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
-#X msg 814 272 line 4.5 1.8 128 128;
+#X obj 792 247 c.bang @size 17 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @bacolor 0 0 0 1;
+#X msg 814 272 rect 55 110 0 200;
 #X text 806 103 and the shape then bang;
 #X text 696 303 Other shapes;
 #X text 696 323 path x1 y1 x2 y2 etc.;
@@ -106,9 +113,9 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 120 80 45 180;
 #X msg 697 346 fill 1 \, color hsl 0.4 1 0.428571 \, path 70 10 130
 110 160 80 150 30 70 110;
-#X obj 1080 235 c.blackboard @size 200 281 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @chalkmode
-0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
+#X obj 1080 235 c.blackboard @size 200 281 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@chalkmode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1;
 #X msg 1021 176 clear;
 #X msg 1096 168 image 0 0 image2.gif \, text 60 10 LHOOQ;
 #X msg 1080 134 image 0 0 image1.gif \, text 60 10 La Joconde;
@@ -124,8 +131,6 @@ object properties.;
 #X text 659 117 Set the chalk;
 #X text 659 127 color with rgb;
 #X text 659 137 hsl or hex.;
-#X obj 814 218 c.pak s f f f f;
-#X obj 814 244 c.prepend set;
 #N canvas 390 84 722 277 what 0;
 #X msg 595 99 attrprint;
 #X text 29 -5 - Look at the properties window to edit the attributes.
@@ -144,20 +149,22 @@ with the "edit mode";
 edit the attribute \, "Type" is the type of the values (float \, symbol
 \, etc...) and "Size" is the number of values the object is expecting.
 ;
-#X obj 516 73 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 64 @max (null) @minmax 64 (null) @decimal 6 @bgcolor 0.75
-0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
-#X obj 516 142 c.radio @size 64 8 @fontname Helvetica @fontweight normal
-@fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @nitems 8 @mode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5
-0.5 1 @itcolor 0.5 0.5 0.5 1;
+#X obj 516 73 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 64 @max "(null)" @minmax 64 "(null)" @decimal
+6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0
+1;
+#X obj 516 142 c.radio @size 64 8 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @nitems 8 @mode 0 @bgcolor 0.75 0.75 0.75 1 @bdcolor
+0.5 0.5 0.5 1 @itcolor 0.5 0.5 0.5 1;
 #X msg 516 102 size \$1 8;
 #X text 513 45 Example;
-#X obj 446 73 c.number @size 53 17 @fontname Helvetica @fontweight
-normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
-(null) @min 1 @max (null) @minmax 1 (null) @decimal 6 @bgcolor 0.75
-0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0 1;
+#X obj 446 73 c.number @size 53 17 @fontname "Helvetica" @fontweight
+"normal" @fontslant "roman" @fontsize 11 @receive "(null)" @send "(null)"
+@presetname "(null)" @min 1 @max "(null)" @minmax 1 "(null)" @decimal
+6 @bgcolor 0.75 0.75 0.75 1 @bdcolor 0.5 0.5 0.5 1 @textcolor 0 0 0
+1;
 #X msg 446 102 nitems \$1;
 #X connect 0 0 8 0;
 #X connect 7 0 9 0;
@@ -169,6 +176,9 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X obj 6 24 c.patcherinfos;
 #X obj 7 15 c.loadmess;
 #X obj 1 3 c.help.header;
+#X obj 814 224 list prepend set;
+#X obj 814 198 pack s f f f f;
+#X obj 814 246 list trim;
 #X connect 0 0 6 0;
 #X connect 0 1 3 0;
 #X connect 0 2 2 0;
@@ -183,17 +193,17 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X connect 13 0 0 0;
 #X connect 14 0 0 0;
 #X connect 16 0 15 0;
-#X connect 31 1 67 0;
+#X connect 31 1 73 0;
 #X connect 32 0 15 0;
 #X connect 33 0 32 0;
 #X connect 36 0 37 0;
 #X connect 37 0 15 0;
 #X connect 38 1 39 0;
 #X connect 39 0 15 0;
-#X connect 40 0 67 1;
-#X connect 41 0 67 2;
-#X connect 42 0 67 3;
-#X connect 43 0 67 4;
+#X connect 40 0 73 1;
+#X connect 41 0 73 2;
+#X connect 42 0 73 3;
+#X connect 43 0 73 4;
 #X connect 45 0 46 0;
 #X connect 46 0 15 0;
 #X connect 51 0 15 0;
@@ -201,7 +211,8 @@ normal @fontslant roman @fontsize 11 @receive (null) @send (null) @presetname
 #X connect 54 0 53 0;
 #X connect 55 0 53 0;
 #X connect 56 0 53 0;
-#X connect 67 0 68 0;
-#X connect 68 0 46 0;
-#X connect 71 0 73 0;
-#X connect 72 0 71 0;
+#X connect 69 0 71 0;
+#X connect 70 0 69 0;
+#X connect 72 0 74 0;
+#X connect 73 0 72 0;
+#X connect 74 0 46 0;

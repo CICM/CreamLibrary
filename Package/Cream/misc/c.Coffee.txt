@@ -1,5 +1,3 @@
-c.loadmess-help.pd c.loadmess A loadbang for float symbol and list.;
 c.pak-help.pd c.pak Combine several atoms into one message.;
 c.patcherargs-help.pd c.patcherargs An object that retrieve the patcher arguments.;
 c.patcherinfos-help.pd c.patcherinfos An object that retrieve the patcher informations.;
-c.prepend-help.pd c.prepend Prepend a float symbol or list to a message.

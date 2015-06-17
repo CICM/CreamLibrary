@@ -50,8 +50,6 @@
 		8FAC0BA81969731800E09ACB /* c.patcherinfos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */; };
 		8FAC0BAB1969731800E09ACB /* c.rslider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3C19007B04005FAF6A /* c.rslider.cpp */; };
 		8FAC0BAE1969731800E09ACB /* c.number.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3719007B04005FAF6A /* c.number.cpp */; };
-		8FAC0BB21969731800E09ACB /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6E190080E9005FAF6A /* c.prepend.cpp */; };
-		8FAC0BB31969731800E09ACB /* c.loadmess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6A190080E9005FAF6A /* c.loadmess.cpp */; };
 		8FAC0BB41969731800E09ACB /* c.bang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB2E19007B04005FAF6A /* c.bang.cpp */; };
 		8FAC0BB61969731800E09ACB /* c.plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3919007B04005FAF6A /* c.plane.cpp */; };
 		8FAC0BB91969731800E09ACB /* c.toggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB4019007B04005FAF6A /* c.toggle.cpp */; };
@@ -110,11 +108,9 @@
 		8FB8EB6019007B04005FAF6A /* c.tab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB3F19007B04005FAF6A /* c.tab.cpp */; };
 		8FB8EB6119007B04005FAF6A /* c.toggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB4019007B04005FAF6A /* c.toggle.cpp */; };
 		8FB8EB6819007B1E005FAF6A /* c.library.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.h */; };
-		8FB8EB6F190080E9005FAF6A /* c.loadmess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6A190080E9005FAF6A /* c.loadmess.cpp */; };
 		8FB8EB70190080E9005FAF6A /* c.pak.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6B190080E9005FAF6A /* c.pak.cpp */; };
 		8FB8EB71190080E9005FAF6A /* c.patcherargs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6C190080E9005FAF6A /* c.patcherargs.cpp */; };
 		8FB8EB72190080E9005FAF6A /* c.patcherinfos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */; };
-		8FB8EB73190080E9005FAF6A /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8EB6E190080E9005FAF6A /* c.prepend.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -169,11 +165,9 @@
 		8FB8EB3F19007B04005FAF6A /* c.tab.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.tab.cpp; sourceTree = "<group>"; };
 		8FB8EB4019007B04005FAF6A /* c.toggle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.toggle.cpp; sourceTree = "<group>"; };
 		8FB8EB6719007B1E005FAF6A /* c.library.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = c.library.h; sourceTree = "<group>"; };
-		8FB8EB6A190080E9005FAF6A /* c.loadmess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.loadmess.cpp; sourceTree = "<group>"; };
 		8FB8EB6B190080E9005FAF6A /* c.pak.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.pak.cpp; sourceTree = "<group>"; };
 		8FB8EB6C190080E9005FAF6A /* c.patcherargs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patcherargs.cpp; sourceTree = "<group>"; };
 		8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.patcherinfos.cpp; sourceTree = "<group>"; };
-		8FB8EB6E190080E9005FAF6A /* c.prepend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c.prepend.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,12 +260,10 @@
 		8FB8EB69190080E9005FAF6A /* Coffee */ = {
 			isa = PBXGroup;
 			children = (
-				8FB8EB6A190080E9005FAF6A /* c.loadmess.cpp */,
 				8FB8EB6B190080E9005FAF6A /* c.pak.cpp */,
 				8FB8EB6C190080E9005FAF6A /* c.patcherargs.cpp */,
 				8FB8EB6D190080E9005FAF6A /* c.patcherinfos.cpp */,
 				8F53164B1906F50A00734AD6 /* c.patchermess.cpp */,
-				8FB8EB6E190080E9005FAF6A /* c.prepend.cpp */,
 			);
 			path = Coffee;
 			sourceTree = "<group>";
@@ -415,8 +407,6 @@
 				8FB8EB5D19007B04005FAF6A /* c.rslider.cpp in Sources */,
 				8FB8EB5819007B04005FAF6A /* c.number.cpp in Sources */,
 				8F9AA2441B2DA0A6002C2B4E /* eclass.c in Sources */,
-				8FB8EB73190080E9005FAF6A /* c.prepend.cpp in Sources */,
-				8FB8EB6F190080E9005FAF6A /* c.loadmess.cpp in Sources */,
 				8FB8EB4F19007B04005FAF6A /* c.bang.cpp in Sources */,
 				8FB8EB5A19007B04005FAF6A /* c.plane.cpp in Sources */,
 				8FB8EB6119007B04005FAF6A /* c.toggle.cpp in Sources */,
@@ -462,8 +452,6 @@
 				8FAC0BAB1969731800E09ACB /* c.rslider.cpp in Sources */,
 				8FAC0BAE1969731800E09ACB /* c.number.cpp in Sources */,
 				8F9AA2451B2DA0A6002C2B4E /* eclass.c in Sources */,
-				8FAC0BB21969731800E09ACB /* c.prepend.cpp in Sources */,
-				8FAC0BB31969731800E09ACB /* c.loadmess.cpp in Sources */,
 				8FAC0BB41969731800E09ACB /* c.bang.cpp in Sources */,
 				8FAC0BB61969731800E09ACB /* c.plane.cpp in Sources */,
 				8FAC0BB91969731800E09ACB /* c.toggle.cpp in Sources */,
