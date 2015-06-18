@@ -41,7 +41,6 @@ extern "C" void cream_setup(void)
         eobj_free(obj);
     }
     
-
     setup_c0x2ebang();
     setup_c0x2eblackboard();
     setup_c0x2ebreakpoints();
@@ -71,6 +70,8 @@ extern "C" void cream_setup(void)
     setup_c0x2epatcherargs();
     setup_c0x2epatcherinfos();
     setup_c0x2epatchermess();
+    setup_c0x2eloadmess();
+    setup_c0x2eprepend();
     
     epd_add_folder("Cream", "misc");
     epd_add_folder("Cream", "helps");

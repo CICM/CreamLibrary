@@ -8,9 +8,7 @@ dist_c.librarymisc_DATA = \
  c.help.header.pd \
  c.help.pub.pd \
  c.help.gui.pd \
- c.prepend.pd \
  c.mousestate.pd \
- c.loadmess.pd \
  choco.preset \
  c.objects.txt \
  choco.gif \

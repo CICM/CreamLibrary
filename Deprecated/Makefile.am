@@ -6,6 +6,8 @@ libDeprecated_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  
 libDeprecated_la_LIBADD = 
 
 libDeprecated_la_SOURCES = c.pak.cpp \
+c.prepend.cpp \
+c.loadmess.cpp \
 c.patcherargs.cpp \
 c.patcherinfos.cpp \
 c.patchermess.cpp \

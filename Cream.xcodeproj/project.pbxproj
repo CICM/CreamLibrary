@@ -105,6 +105,10 @@
 		8F27CFBC1B31CC2500220A14 /* c.tab.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF931B31CC2500220A14 /* c.tab.cpp */; };
 		8F27CFBD1B31CC2500220A14 /* c.toggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF941B31CC2500220A14 /* c.toggle.cpp */; };
 		8F27CFBE1B31CC2500220A14 /* c.toggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF941B31CC2500220A14 /* c.toggle.cpp */; };
+		8F823F831B33011600F5A69E /* c.loadmess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F811B33011600F5A69E /* c.loadmess.cpp */; };
+		8F823F841B33011600F5A69E /* c.loadmess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F811B33011600F5A69E /* c.loadmess.cpp */; };
+		8F823F851B33011600F5A69E /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F821B33011600F5A69E /* c.prepend.cpp */; };
+		8F823F861B33011600F5A69E /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F821B33011600F5A69E /* c.prepend.cpp */; };
 		8FAC0BDC1969731800E09ACB /* c.library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F26F18A17E76273005FCB97 /* c.library.cpp */; };
 		8FAC0BE31969731800E09ACB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59FB02F717A7FAA9001E977D /* Accelerate.framework */; };
 		8FAC0BF21969731800E09ACB /* c.library.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.h */; };
@@ -163,6 +167,8 @@
 		8F27CF921B31CC2500220A14 /* c.slider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.slider.cpp; path = Sources/c.slider.cpp; sourceTree = SOURCE_ROOT; };
 		8F27CF931B31CC2500220A14 /* c.tab.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.tab.cpp; path = Sources/c.tab.cpp; sourceTree = SOURCE_ROOT; };
 		8F27CF941B31CC2500220A14 /* c.toggle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.toggle.cpp; path = Sources/c.toggle.cpp; sourceTree = SOURCE_ROOT; };
+		8F823F811B33011600F5A69E /* c.loadmess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.loadmess.cpp; path = Deprecated/c.loadmess.cpp; sourceTree = SOURCE_ROOT; };
+		8F823F821B33011600F5A69E /* c.prepend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.prepend.cpp; path = Deprecated/c.prepend.cpp; sourceTree = SOURCE_ROOT; };
 		8FAC0BFB1969731800E09ACB /* Cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB8EB6719007B1E005FAF6A /* c.library.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = c.library.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -262,6 +268,8 @@
 			isa = PBXGroup;
 			children = (
 				8F27CF171B31C87900220A14 /* cicm_wrapper.h */,
+				8F823F811B33011600F5A69E /* c.loadmess.cpp */,
+				8F823F821B33011600F5A69E /* c.prepend.cpp */,
 				8F27CF181B31C87900220A14 /* ebox.c */,
 				8F27CF191B31C87900220A14 /* ebox.h */,
 				8F27CF1A1B31C87900220A14 /* eclass.c */,
@@ -400,6 +408,7 @@
 				8F27CFA11B31CC2500220A14 /* c.incdec.cpp in Sources */,
 				8F27CFA31B31CC2500220A14 /* c.knob.cpp in Sources */,
 				8F27CFA51B31CC2500220A14 /* c.matrix.cpp in Sources */,
+				8F823F851B33011600F5A69E /* c.prepend.cpp in Sources */,
 				8F27CF3A1B31C87900220A14 /* eobj.c in Sources */,
 				8F27CF971B31CC2500220A14 /* c.blackboard.cpp in Sources */,
 				8F27CFB51B31CC2500220A14 /* c.rslider.cpp in Sources */,
@@ -416,6 +425,7 @@
 				8F27CF9B1B31CC2500220A14 /* c.colorpanel.cpp in Sources */,
 				8F27CFAD1B31CC2500220A14 /* c.number.cpp in Sources */,
 				8F27CF361B31C87900220A14 /* egraphics.c in Sources */,
+				8F823F831B33011600F5A69E /* c.loadmess.cpp in Sources */,
 				8F27CFA71B31CC2500220A14 /* c.menu.cpp in Sources */,
 				8F27CF9D1B31CC2500220A14 /* c.dsp_tilde.cpp in Sources */,
 				8F27CFB71B31CC2500220A14 /* c.scope_tilde.cpp in Sources */,
@@ -444,6 +454,7 @@
 				8F27CFA21B31CC2500220A14 /* c.incdec.cpp in Sources */,
 				8F27CFA41B31CC2500220A14 /* c.knob.cpp in Sources */,
 				8F27CFA61B31CC2500220A14 /* c.matrix.cpp in Sources */,
+				8F823F861B33011600F5A69E /* c.prepend.cpp in Sources */,
 				8F27CF3B1B31C87900220A14 /* eobj.c in Sources */,
 				8F27CF981B31CC2500220A14 /* c.blackboard.cpp in Sources */,
 				8F27CFB61B31CC2500220A14 /* c.rslider.cpp in Sources */,
@@ -460,6 +471,7 @@
 				8F27CF9C1B31CC2500220A14 /* c.colorpanel.cpp in Sources */,
 				8F27CFAE1B31CC2500220A14 /* c.number.cpp in Sources */,
 				8F27CF371B31C87900220A14 /* egraphics.c in Sources */,
+				8F823F841B33011600F5A69E /* c.loadmess.cpp in Sources */,
 				8F27CFA81B31CC2500220A14 /* c.menu.cpp in Sources */,
 				8F27CF9E1B31CC2500220A14 /* c.dsp_tilde.cpp in Sources */,
 				8F27CFB81B31CC2500220A14 /* c.scope_tilde.cpp in Sources */,
