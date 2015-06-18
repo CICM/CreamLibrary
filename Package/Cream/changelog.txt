@@ -10,7 +10,7 @@ Beta 0.4
 c.dsp~
 removed objects : 
 c.mousestate (use cyclone with patch alias)
-patch versions : 
+deprecated : 
 c.prepend
 c.loadmes
 
