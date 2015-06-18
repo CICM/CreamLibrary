@@ -18,12 +18,29 @@ extern "C" void libpd_loadcream(void)
     cream_setup();
 }
 
+static t_eclass *cream_class;
+
+static void *cream_new(t_symbol *s)
+{
+    t_eobj *x = (t_eobj *)eobj_new(cream_class);
+    if(x)
+    {
+        logpost(x, 3, "Cream Library by Pierre Guillot\n© 2013 - 2015  CICM | Paris 8 University\nVersion %s (%s) for %s %i.%i\n",creamversion, __DATE__, pdversion, PD_MAJOR_VERSION, PD_MINOR_VERSION);
+    }
+    return (x);
+}
+
 extern "C" void cream_setup(void)
 {
-    post("Cream Library by Pierre Guillot");
-    post("© 2013 - 2015  CICM | Paris 8 University");
-    post("Version %s (%s) for %s %i.%i",creamversion, __DATE__, pdversion, PD_MAJOR_VERSION, PD_MINOR_VERSION);
-    post("");
+    cream_class = eclass_new("cream", (method)cream_new, (method)eobj_free, (short)sizeof(t_eobj), CLASS_PD, A_NULL, 0);
+    cream_class = eclass_new("Cream", (method)cream_new, (method)eobj_free, (short)sizeof(t_eobj), CLASS_PD, A_NULL, 0);
+    t_eobj* obj = (t_eobj *)cream_new(NULL);
+    if(!obj)
+    {
+        verbose(3, "Cream Library by Pierre Guillot\n© 2013 - 2015  CICM | Paris 8 University\nVersion %s (%s) for %s %i.%i\n",creamversion, __DATE__, pdversion, PD_MAJOR_VERSION, PD_MINOR_VERSION);
+        eobj_free(obj);
+    }
+    
 
     setup_c0x2ebang();
     setup_c0x2eblackboard();
