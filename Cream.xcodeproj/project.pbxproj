@@ -167,6 +167,7 @@
 		8F27CF921B31CC2500220A14 /* c.slider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.slider.cpp; path = Sources/c.slider.cpp; sourceTree = SOURCE_ROOT; };
 		8F27CF931B31CC2500220A14 /* c.tab.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.tab.cpp; path = Sources/c.tab.cpp; sourceTree = SOURCE_ROOT; };
 		8F27CF941B31CC2500220A14 /* c.toggle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.toggle.cpp; path = Sources/c.toggle.cpp; sourceTree = SOURCE_ROOT; };
+		8F5401581B3420EC00A2E969 /* enative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = enative.h; path = ThirdParty/CicmWrapper/Sources/enative.h; sourceTree = SOURCE_ROOT; };
 		8F823F811B33011600F5A69E /* c.loadmess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.loadmess.cpp; path = Deprecated/c.loadmess.cpp; sourceTree = SOURCE_ROOT; };
 		8F823F821B33011600F5A69E /* c.prepend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.prepend.cpp; path = Deprecated/c.prepend.cpp; sourceTree = SOURCE_ROOT; };
 		8FAC0BFB1969731800E09ACB /* Cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -284,6 +285,7 @@
 				8F27CF231B31C87900220A14 /* epdmax.h */,
 				8F27CF241B31C87900220A14 /* epopup.c */,
 				8F27CF251B31C87900220A14 /* epopup.h */,
+				8F5401581B3420EC00A2E969 /* enative.h */,
 			);
 			name = CicmWrapper;
 			path = ThirdParty/PureData;
