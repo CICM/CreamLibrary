@@ -29,6 +29,10 @@
  *  @{
  */
 
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*////////////////////////////////////              STRUCTURE               ////////////////////////////////////*/
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 //
 // The GUI bang structure.
 // It is a basic GUI struture with attributes and basic Pd stuffs.
@@ -56,14 +60,6 @@ typedef struct t_bang
     char        b_active;           /*!< If the object is performming a bang. */
 } t_bang;
 
-// The t_eclass for the t_bang.
-/*! The t_eclass for the t_bang. */
-static t_eclass *bang_class;
-
-// The "background_layer" t_symbol.
-/*! The \"background_layer\" t_symbol. */
-static t_symbol* bang_sym_background_layer;
-
 //! @cond
 static void *bang_new(t_symbol *s, int argc, t_atom *argv);
 static void bang_free(t_bang *x);
@@ -77,16 +73,28 @@ static void bang_mousedown(t_bang *x, t_object *view, t_pt pt, long modifiers);
 static void bang_mouseup(t_bang *x, t_object *view, t_pt pt, long modifiers);
 //! @endcond
 
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*////////////////////////////////////        CLASS INITIALIZATION          ////////////////////////////////////*/
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+// The t_eclass for the t_bang.
+/*! The t_eclass for the t_bang. */
+static t_eclass *bang_class;
+
+// The "background_layer" t_symbol.
+/*! The \"background_layer\" t_symbol. */
+static t_symbol* bang_sym_background_layer;
+
 // Setups the bang_class for GUI behavior.
-// This function is called by Pd to initialize the class of t_eclass of the object called c.bang (bang_class). In the function,
-// you should set up the default method, behavior and attributes of your object. If your object's name is simple like just
-// "bang",this function should be named "bang_setup" otherwise, if your object's name is more complex like "c.bang" the
+// This function is called by Pd to initialize the bang_class of the c.bang object. In the function,
+// you should set up the default methods, behaviors and attributes of your object. If your object's name is simple like
+// "bang", this function should be named "bang_setup" otherwise, if your object's name is more complex like "c.bang" the
 // function's name should replace the special character with the matching UTF8-hexadecimal value and put "setup" before the name
 // of the object. In this example, the dot is replaced with "0x2e" and the function name becomes "setup_c0x2ebang".
 /*!
  * \fn          extern "C" void setup_c0x2ebang(void)
  * \brief       Setups the bang_class for GUI behavior.
- * \details     This function is called by Pd to initialize the class of t_eclass of the object called c.bang (bang_class). In the function, you should set up the default method, behavior and attributes of your object. If your object's name is simple like just \"bang\", this function should be named \"bang_setup\" otherwise, if your object's name is more complex like \"c.bang\" the function's name should replace the special character with the matching UTF8-hexadecimal value and put \"setup\" before the name of the object. In this example, the dot is replaced with \"c0x2e\" and the function name becomes \"setup_c0x2ebang\".
+ * \details     This function is called by Pd to initialize the bang_class of the c.bang object. In the function, you should set up the default methods, behaviors and attributes of your object. If your object's name is simple like \"bang\", this function should be named \"bang_setup\" otherwise, if your object's name is more complex like \"c.bang\" the function's name should replace the special character with the matching UTF8-hexadecimal value and put \"setup\" before the name of the object. In this example, the dot is replaced with \"c0x2e\" and the function name becomes \"setup_c0x2ebang\".
  */
 extern "C" void setup_c0x2ebang(void)
 {
@@ -162,6 +170,10 @@ extern "C" void setup_c0x2ebang(void)
     }
 }
 
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*////////////////////////////////////     OBJECT CREATION AND DELETION     ////////////////////////////////////*/
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 // Allocates and initializes the t_bang structure.
 // The function uses eobj_new to allocate the t_bang with the bang_class and initializes the default values.
 /*!
@@ -218,6 +230,10 @@ static void bang_free(t_bang *x)
     // We free the t_clock
     clock_free(x->b_clock);
 }
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*////////////////////////////////////       OBJECT GRAPHICAL METHODS       ////////////////////////////////////*/
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 // Defines the default graphical parameters of a GUI.
 // The function is used to defines the border size, the border size (dummy mostly for Max compatibility)
@@ -312,6 +328,10 @@ static void bang_paint(t_bang *x, t_object *view)
     ebox_paint_layer((t_ebox *)x, bang_sym_background_layer, 0., 0.);
 }
 
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*////////////////////////////////////      OBJECT MOUSE INTERRACTIONS      ////////////////////////////////////*/
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
 // Activates the status of the t_bang.
 // The function activates the status of the t_bang. Outputs a bang message, sends a bang to the attached objects and ask the t_ebox
 // to be redrawn
@@ -395,7 +415,12 @@ static void bang_mouseup(t_bang *x, t_object *view, t_pt pt, long modifiers)
     bang_deactivate(x);
 }
 
-// Receives the anything notification.
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*////////////////////////////////////      OBJECT MESSAGES RECEPTION       ////////////////////////////////////*/
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+// Receives anything.
 // The function is called when any message has been received from the inlet.
 /*!
  * \fn          static void bang_anything(t_bang *x, t_symbol *s, int argc, t_atom *argv)
