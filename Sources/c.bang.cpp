@@ -50,7 +50,6 @@
 // It is a basic GUI struture with attributes and basic Pd stuffs.
 //
 /**
- * @example c.bang.cpp
  * @struct t_bang
  * @brief The GUI bang structure.
  * @details It is a basic GUI struture with attributes and basic Pd stuffs.
@@ -240,7 +239,7 @@ static void bang_free(t_bang *x)
 // The function is used to defines the border size, the border size (dummy mostly for Max compatibility)
 // the border color and the background color of a t_ebox.
 /*!
- * \fn          static void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params)
+ * \fn          static void bang_getdrawparams(t_bang *x, t_object *view, t_edrawparams *params)
  * \brief       Defines the default graphical parameters of a GUI.
  * \details     The function is used to defines the border size, the border size (dummy mostly for Max compatibility) the border color and the background color of a t_ebox.
  * \param x         The t_bang pointer.
