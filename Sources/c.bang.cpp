@@ -77,17 +77,21 @@ typedef struct t_bang
 /*! The t_eclass for the t_bang. */
 static t_eclass *bang_class;
 
+// The "background_layer" t_symbol.
+/*! The \"background_layer\" t_symbol. */
+static t_symbol* bang_sym_background_layer;
+
 //! @cond
 static void *bang_new(t_symbol *s, int argc, t_atom *argv);
 static void bang_free(t_bang *x);
 static void bang_activate(t_bang *x);
 static void bang_deactivate(t_bang *x);
 static void bang_anything(t_bang *x, t_symbol *s, int argc, t_atom *argv);
-static void bang_getdrawparams(t_bang *x, t_object *patcherview, t_edrawparams *params);
+static void bang_getdrawparams(t_bang *x, t_object *view, t_edrawparams *params);
 static void bang_oksize(t_bang *x, t_rect *newrect);
 static void bang_paint(t_bang *x, t_object *view);
-static void bang_mousedown(t_bang *x, t_object *patcherview, t_pt pt, long modifiers);
-static void bang_mouseup(t_bang *x, t_object *patcherview, t_pt pt, long modifiers);
+static void bang_mousedown(t_bang *x, t_object *view, t_pt pt, long modifiers);
+static void bang_mouseup(t_bang *x, t_object *view, t_pt pt, long modifiers);
 //! @endcond
 
 // Setups the bang_class for GUI behavior.
@@ -120,7 +124,7 @@ extern "C" void setup_c0x2ebang(void)
         // We initialize of the specifics methods that the t_bang can receive. The "paint", "getdrawparams" and "oksize" names
         // are for the graphical methods ("getdrawparams" and "oksize" are optional but facilitates the setting of GUI.
         // The "mousedown" and "mouseup" are for the mouse interraction.
-        // The other are the default message that a native Pd object can receive.
+        // The other are the default message that a native Pd object can receive through an inlet.
         eclass_addmethod(c, (method) bang_paint,           "paint",            A_NULL, 0);
         eclass_addmethod(c, (method) bang_getdrawparams,   "getdrawparams",    A_NULL, 0);
         eclass_addmethod(c, (method) bang_oksize,          "oksize",           A_NULL, 0);
@@ -170,6 +174,8 @@ extern "C" void setup_c0x2ebang(void)
         
         // We initialize bang_class with c. This is important because we use the adress of bang_class in the new method.
         bang_class = c;
+        // We save the adress of the "background_layer" symbol to avoid the multiple call of the function.
+        bang_sym_background_layer = gensym("background_layer");
     }
 }
 
@@ -293,9 +299,9 @@ static void bang_paint(t_bang *x, t_object *view)
     // We defines a initialize a t_rect with the size of the t_ebox.
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     // We ask to retrieves the background t_elayer with a that has the size of the t_ebox. This layer will be binded to the t_ebox
-    // with the t_symbol cream_sym_background_layer aka \"background_layer\". You should always prefer to use static t_symbol to
+    // with the t_symbol bang_sym_background_layer aka \"background_layer\". You should always prefer to use static t_symbol to
     // avoid to call gensym function.
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, bang_sym_background_layer, rect.width, rect.height);
     // If it is a new t_elayer or if the layer has been ivalidated we can draw something in it, otherwise the pointer is NULL.
     if(g)
     {
@@ -316,46 +322,115 @@ static void bang_paint(t_bang *x, t_object *view)
         // We fill the t_elayer with the drawing.
         egraphics_fill(g);
         // We mark the layer as ready to be painted.
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, bang_sym_background_layer);
     }
     // We tell the t_ebox to painted the \"background_layer\" layer at the 0 0 position. If the t_elayer was invalid or new
     // that means that we have drawn something new in it, otherwise t_ebox paint the t_elayer like it was before.
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, bang_sym_background_layer, 0., 0.);
 }
 
-static void bang_mousedown(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
+// Activates the status of the t_bang.
+// The function activates the status of the t_bang. Outputs a bang message, sends a bang to the attached objects and ask the t_ebox
+// to be redrawn
+/*!
+ * \fn          static void bang_activate(t_bang *x)
+ * \brief       Activates the status of the t_bang.
+ * \details     The function activates the status of the t_bang. Outputs a bang message, sends a bang to the attached objects and ask the t_ebox to be redrawn
+ * \param x      The t_bang pointer.
+ */
+static void bang_activate(t_bang *x)
 {
+    // We mark the bang as active.
+    x->b_active = 1;
+    // We send a bang through our outlet.
+    outlet_bang(x->b_out);
+    
+    // We retrieves the link list of object attached to the t_bang.
+    t_pd* senders = ebox_getsender((t_ebox *) x);
+    if(senders)
+    {
+        // If we have a link list we send a bang to the object.
+        // All the GUI has send and receive t_symbol attributes to send and receive messages without connections.
+        pd_bang(senders);
+    }
+    
+    // We invalidate the background layer.
+    ebox_invalidate_layer((t_ebox *)x, bang_sym_background_layer);
+    // We aks the t_ebox to redraw the object.
+    ebox_redraw((t_ebox *)x);
+}
+
+// Deactivates the status of the t_bang.
+// The function deactiveates the status of the t_bang and ask the t_ebox to be redrawn
+/*!
+ * \fn          static void bang_deactivate(t_bang *x)
+ * \brief       Deactivates the status of the t_bang.
+ * \details     The function deactiveates the status of the t_bang and ask the t_ebox to be redrawn
+ * \param x      The t_bang pointer.
+ */
+static void bang_deactivate(t_bang *x)
+{
+    // We mark the bang as inactive.
+    x->b_active = 0;
+    // We invalidate the background layer.
+    ebox_invalidate_layer((t_ebox *)x, bang_sym_background_layer);
+    // We aks the t_ebox to redraw the object.
+    ebox_redraw((t_ebox *)x);
+}
+
+// Receives the mouse down notification..
+// The function is called internally when the object has been clicked.
+/*!
+ * \fn          static void bang_mousedown(t_bang *x, t_object *view, t_pt pt, long modifiers)
+ * \brief       Receives the mouse down notification.
+ * \details     The function is called internally when the object has been clicked.
+ * \param x     The t_bang pointer.
+ * \param view   The view (dummy mostly for Max compatibility).
+ * \param pt   The position of the mouse within the object.
+ * \param modifiers  The modifiers (alt, ctrl, etc.).
+ */
+static void bang_mousedown(t_bang *x, t_object *view, t_pt pt, long modifiers)
+{
+    // In this example, when the mouse down is called we activate the t_bang.
     bang_activate(x);
 }
 
-static void bang_mouseup(t_bang *x, t_object *patcherview, t_pt pt, long modifiers)
+// Receives the mouse up notification..
+// The function is called internally when the mouse has been released from the object.
+/*!
+ * \fn          static void bang_mouseup(t_bang *x, t_object *view, t_pt pt, long modifiers)
+ * \brief       Receives the mouse up notification.
+ * \details     The function is called internally when the mouse has been released from the object.
+ * \param x     The t_bang pointer.
+ * \param view   The view (dummy mostly for Max compatibility).
+ * \param pt   The position of the mouse within the object.
+ * \param modifiers  The modifiers (alt, ctrl, etc.).
+ */
+static void bang_mouseup(t_bang *x, t_object *view, t_pt pt, long modifiers)
 {
+    // In this example, when the mouse down is called we deactivate the t_bang.
     bang_deactivate(x);
 }
 
+// Receives the anything notification.
+// The function is called when any message has been received from the inlet.
+/*!
+ * \fn          static void bang_anything(t_bang *x, t_symbol *s, int argc, t_atom *argv)
+ * \brief       Receives the anything notification.
+ * \details     The function is called when any message has been received from the inlet.
+ * \param x     The t_bang pointer.
+ * \param s     The message symbol.
+ * \param argc  The number of t_atom.
+ * \param argv  The array of t_atom.
+ */
 static void bang_anything(t_bang *x, t_symbol *s, int argc, t_atom *argv)
 {
+    // When we receive any message we activate the t_bang
     bang_activate(x);
+    // then delay the clock of 100ms to deactivate the t_bang
     clock_delay(x->b_clock, 100);
+    // thus the object will blink.
 }
-
-static void bang_activate(t_bang *x)
-{
-    x->b_active = 1;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-    ebox_redraw((t_ebox *)x);
-    outlet_bang(x->b_out);
-    if(ebox_getsender((t_ebox *) x))
-        pd_bang(ebox_getsender((t_ebox *) x));
-}
-
-static void bang_deactivate(t_bang *x)
-{
-    x->b_active = 0;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-    ebox_redraw((t_ebox *)x);
-}
-
 
 /** @} */
 
