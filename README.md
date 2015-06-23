@@ -11,7 +11,7 @@ The lastest release has been tested [Pure Data Vanilla](http://msp.ucsd.edu/soft
 
 With Pure Data Vanilla, copy the <em>Cream</em> folder in your package folder and add <em>Cream</em> in the PD's statup window if you use the default package folder\*, otherwise add <em>Cream/Cream</em>.  
 
-With Pure Data Extended, copy the <em>Cream</em> folder in your package folder and add <em>-lib externals/"system"/pd-extended/Cream</em> in the statup falgs if you use the default package folder\*, otherwise add <em>-lib Cream/externals/"system"/pd-extended/Cream</em> with <em>"system"</em> replaced by <em>Linux</em>, <em>MacOs</em> or <em>Windows</em> for example <em>-lib Cream/externals/MacOs/pd-extended/Cream</em>.  
+With Pure Data Extended, copy the <em>Cream</em> folder in your package folder and add <em>-lib externals/Cream</em> in the statup falgs if you use the default package folder\*, otherwise add <em>-lib Cream/Cream</em>.  
 
 \* The default package folder are generally <em>/usr/local/lib/pd-externals</em> on Linux, <em>/Library/Pd</em>  on Mac Os and <em>C:\Program Files\Common Files\Pd</em>  on Windows.  
 
