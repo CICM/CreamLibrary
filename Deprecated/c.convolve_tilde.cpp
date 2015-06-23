@@ -51,7 +51,6 @@ static void *convolve_new(t_symbol *s, int argc, t_atom *argv)
         x->f_normalize = 1;
     else
         x->f_normalize = 0;
-    eobj_dspflags(x, E_NO_INPLACE);
     
 	return (x);
 }
@@ -80,7 +79,9 @@ static void convolve_set_do(t_convolve *x, t_symbol *s, char dsp)
     {
         int dsp_state;
         if(!dsp)
+        {
             dsp_state = canvas_suspend_dsp();
+        }
         
         temp = (float *)malloc((size_t)buffer_size * sizeof(float));
         for(int i = 0; i < buffer_size; i++)
