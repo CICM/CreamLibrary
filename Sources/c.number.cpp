@@ -102,7 +102,7 @@ extern "C" void setup_c0x2enumber(void)
 	CLASS_ATTR_SAVE                 (c, "min", 1);
     CLASS_ATTR_STYLE                (c, "min", 0, "number");
     CLASS_ATTR_INVISIBLE            (c, "min", 1);
-    
+
     CLASS_ATTR_ATOM                 (c, "max", 0, t_number, f_max);
 	CLASS_ATTR_ORDER                (c, "max", 0, "3");
 	CLASS_ATTR_LABEL                (c, "max", 0, "Maximum Value");
@@ -111,14 +111,14 @@ extern "C" void setup_c0x2enumber(void)
 	CLASS_ATTR_SAVE                 (c, "max", 1);
     CLASS_ATTR_STYLE                (c, "max", 0, "number");
     CLASS_ATTR_INVISIBLE            (c, "max", 1);
-    
+
     CLASS_ATTR_ATOM_ARRAY           (c, "minmax", 0, t_number, f_min, 2);
 	CLASS_ATTR_ORDER                (c, "minmax", 0, "3");
 	CLASS_ATTR_LABEL                (c, "minmax", 0, "Min - Max Values");
     CLASS_ATTR_DEFAULT              (c, "minmax", 0, "(null) (null)");
     CLASS_ATTR_ACCESSORS            (c, "minmax", NULL, number_minmax_set);
 	CLASS_ATTR_SAVE                 (c, "minmax", 1);
-    
+
     CLASS_ATTR_LONG                 (c, "decimal", 0, t_number, f_ndecimal);
 	CLASS_ATTR_ORDER                (c, "decimal", 0, "3");
 	CLASS_ATTR_LABEL                (c, "decimal", 0, "Number of decimal");
@@ -127,25 +127,25 @@ extern "C" void setup_c0x2enumber(void)
     CLASS_ATTR_FILTER_MAX           (c, "decimal", 6);
 	CLASS_ATTR_SAVE                 (c, "decimal", 1);
     CLASS_ATTR_STYLE                (c, "decimal", 0, "number");
-    
+
 	CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_number, f_color_background);
 	CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
 	CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
     CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
-    
+
 	CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_number, f_color_border);
 	CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
 	CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
     CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
-    
+
 	CLASS_ATTR_RGBA                 (c, "textcolor", 0, t_number, f_color_text);
 	CLASS_ATTR_LABEL                (c, "textcolor", 0, "Text Color");
 	CLASS_ATTR_ORDER                (c, "textcolor", 0, "3");
 	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
     CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
-    
+
     eclass_register(CLASS_BOX, c);
 	number_class = c;
 }
@@ -471,7 +471,7 @@ void number_mousedrag(t_number *x, t_object *patcherview, t_pt pt, long modifier
 
     if(PD_BADFLOAT(value) || PD_BIGORSMALL(value))
         return;
-    
+
     x->f_value = value;
     number_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
@@ -483,7 +483,8 @@ void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long modifiers
     if(x->f_mode == 0)
     {
         x->f_mode = 1;
-        sprintf(x->f_textvalue, "");
+        //sprintf(x->f_textvalue, "");
+        memset(x->f_textvalue, '\0', 256*sizeof(char));
         ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
@@ -539,11 +540,13 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
         int lenght = (int)strlen(x->f_textvalue);
         if(lenght > 1)
         {
-            sprintf(x->f_textvalue + lenght-1, "");
+            //sprintf(x->f_textvalue + lenght-1, "");
+            memset(x->f_textvalue+lenght-1, '\0', (256-lenght+1)*sizeof(char));
         }
         else
         {
-            sprintf(x->f_textvalue, "");
+            //sprintf(x->f_textvalue, "");
+            memset(x->f_textvalue, '\0', 256*sizeof(char));
         }
 
         ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
@@ -561,7 +564,8 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
     else if (textcharacter == EKEY_ESC)
     {
         x->f_mode = 0;
-        sprintf(x->f_textvalue, "");
+        //sprintf(x->f_textvalue, "");
+        memset(x->f_textvalue, '\0', 256*sizeof(char));
 
         ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
@@ -571,7 +575,8 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
 void number_mouseleave(t_number *x)
 {
     x->f_mode = 0;
-    sprintf(x->f_textvalue, "");
+    //sprintf(x->f_textvalue, "");
+    memset(x->f_textvalue, '\0', 256*sizeof(char));
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
@@ -648,7 +653,7 @@ t_pd_err number_minmax_set(t_number *x, t_object *attr, int ac, t_atom *av)
         atom_setsym(&x->f_min, s_null);
         atom_setsym(&x->f_max, s_null);
     }
-    
+
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
