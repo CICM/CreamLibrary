@@ -22,7 +22,7 @@ Helps and tutorials are availables in the <em>Cream</em> folder of the <em>help 
 ### Compilation : 
 
 	./autogen.sh (if needed)
-	./configure or ./configure --with-pdextended
+	./configure (useful options --with-pdextended and/or --with-pd=</path/to/pd>)
 	make
 	make install (optional)
 

@@ -7,7 +7,6 @@ AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_FILES([Deprecated/Makefile Sources/Makefile])
 AC_CONFIG_FILES([ThirdParty/CicmWrapper/Makefile ThirdParty/CicmWrapper/Sources/Makefile])
 AC_CONFIG_FILES([Package/Cream/Makefile Package/Cream/helps/Makefile Package/Cream/misc/Makefile])
-AC_CONFIG_FILES([Cream-meta.pd])
 
 AC_ARG_WITH([pdextended], [AS_HELP_STRING([--with-pdextended], [use PD-Extended instead of PD-Vanilla])], [], [with_pdextended=no])
 AS_IF([test "x$with_pdextended" != xno],  AC_DEFINE(PD_EXTENDED,[],[Use PD-Extended]), [])
