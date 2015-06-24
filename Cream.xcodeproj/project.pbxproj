@@ -565,8 +565,8 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
-				HEADER_SEARCH_PATHS = "";
-				"HEADER_SEARCH_PATHS[arch=*]" = "";
+				HEADER_SEARCH_PATHS = "/Applications/Pd-0.46-6.app/Contents/Resources/src/";
+				"HEADER_SEARCH_PATHS[arch=*]" = "/Applications/Pd-0.46-6.app/Contents/Resources/src/";
 				INSTALL_PATH = $SRCROOT/Package/Cream;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -615,7 +615,7 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				HEADER_SEARCH_PATHS = "";
-				"HEADER_SEARCH_PATHS[arch=*]" = "";
+				"HEADER_SEARCH_PATHS[arch=*]" = "/Applications/Pd-extended.app/Contents/Resources/include/pdextended/";
 				INSTALL_PATH = "$SRCROOT/Package/Cream/externals/MacOs/pd-extended";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = (

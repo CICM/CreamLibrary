@@ -541,7 +541,7 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
         if(lenght > 1)
         {
             //sprintf(x->f_textvalue + lenght-1, "");
-            memset(x->f_textvalue+lenght-1, '\0', (256-lenght+1)*sizeof(char));
+            memset(x->f_textvalue+lenght-1, '\0', (size_t)(256-lenght+1)*sizeof(char));
         }
         else
         {
