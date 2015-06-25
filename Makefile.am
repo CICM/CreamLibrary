@@ -31,7 +31,7 @@ SUBDIRS= Deprecated Sources
 SUBDIRS+= ThirdParty/CicmWrapper
 SUBDIRS+= Package/Cream
 
-$(abs_builddir)/.libs/cream.@EXTENSION@: cream.la
+$(abs_builddir)/.libs/cream.@EXTENSION@: Cream.la
 
 $(top_builddir)/cream.@EXTENSION@: $(abs_builddir)/.libs/cream.@EXTENSION@ 
 		rm -f $@ && cd $(top_builddir) && test -e $< && $(LN_S) $< cream.@EXTENSION@ || true

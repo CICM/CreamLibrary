@@ -25,7 +25,6 @@
 Makefile
 Makefile.in
 cream-meta.pd
-README.txt
 config/*
 configure
 config.status
