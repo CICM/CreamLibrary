@@ -22,7 +22,7 @@ Helps and tutorials are availables in the <em>Cream</em> folder of the <em>help 
 ### Compilation : 
 
 	./autogen.sh (if needed)
-	./configure (useful options --with-pdextended and/or --with-pd=</path/to/pd>)
+	./configure (useful options --with-pd=</path/to/pd>)
 	make
 	make install (optional)
 
@@ -38,6 +38,7 @@ Pierre Guillot
 
 ### Licence : 
 
-The Cream Library in under the <a title="GNU" href="http://www.gnu.org/copyleft/gpl.html" target="_blank">GNU Public License</a>. If you'd like to avoid the restrictions of the GPL and use Cream Library for a closed-source product, you contact the <a title="CICM" href="http://cicm.mshparisnord.org/" target="_blank">CICM</a>.
+Copyright (C) 2013-2015 Pierre Guillot - CICM - Universite Paris 8  
+The Cream Library in under the [BSD2 License](http://opensource.org/licenses/BSD-2-Clause "BSD2").
 
 
