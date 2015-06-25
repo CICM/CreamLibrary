@@ -75,7 +75,7 @@ extern "C" void cream_setup(void)
     t_eobj* obj = (t_eobj *)cream_new(NULL);
     if(!obj)
     {
-        verbose(3, "Cream Library by Pierre Guillot\n© 2013 - 2015  CICM | Paris 8 University\nVersion %s (%s) for Puere Data %i.%i\n", creamversion, __DATE__, PD_MAJOR_VERSION, PD_MINOR_VERSION);
+        verbose(3, "Cream Library by Pierre Guillot\n© 2013 - 2015  CICM | Paris 8 University\nVersion %s (%s) for Pure Data %i.%i\n", creamversion, __DATE__, PD_MAJOR_VERSION, PD_MINOR_VERSION);
         eobj_free(obj);
     }
     //epd_add_lib("cream");
