@@ -4,6 +4,6 @@ SUFFIXES = .pd
 
 c.librarydir=$(pkglibdir)
 
-dist_c.library_DATA = cream-help.pd
+dist_c.library_DATA = Cream-help.pd
 
 SUBDIRS=helps misc
