@@ -1,4 +1,4 @@
-cream-help.pd Cream The Cream Library.;
+Cream-help.pd Cream The Cream Library.;
 c.bang-help.pd c.bang A bang... that's all.;
 c.blackboard-help.pd c.blackboard A blackboard to draw.;
 c.breakpoints-help.pd c.breakpoints A GUI to edit a breakpoint function.;
