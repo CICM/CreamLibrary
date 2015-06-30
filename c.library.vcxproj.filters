@@ -1,244 +1,179 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Chocolate\c.bang.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.blackboard.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.breakpoints.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.colorpanel.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.gain_tilde.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.incdec.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.knob.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.menu.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.meter_tilde.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.number.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.number_tilde.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.plane.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.preset.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.radio.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.rslider.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.scope_tilde.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.slider.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.tab.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Chocolate\c.toggle.cpp">
-      <Filter>Chocolate</Filter>
-    </ClCompile>
-    <ClCompile Include="Coffee\c.loadmess.cpp">
-      <Filter>Coffee</Filter>
-    </ClCompile>
-    <ClCompile Include="Coffee\c.pak.cpp">
-      <Filter>Coffee</Filter>
-    </ClCompile>
-    <ClCompile Include="Coffee\c.patcherargs.cpp">
-      <Filter>Coffee</Filter>
-    </ClCompile>
-    <ClCompile Include="Coffee\c.patcherinfos.cpp">
-      <Filter>Coffee</Filter>
-    </ClCompile>
-    <ClCompile Include="Coffee\c.prepend.cpp">
-      <Filter>Coffee</Filter>
-    </ClCompile>
     <ClCompile Include="c.library.cpp" />
-    <ClCompile Include="Caramel\c.freeverb_tilde.cpp">
-      <Filter>Caramel</Filter>
+    <ClCompile Include="Deprecated\AudioFFT.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="Caramel\AudioFFT.cpp">
-      <Filter>Caramel</Filter>
+    <ClCompile Include="Deprecated\c.convolve_tilde.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="Caramel\c.convolve_tilde.cpp">
-      <Filter>Caramel</Filter>
+    <ClCompile Include="Deprecated\c.freeverb_tilde.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="Caramel\FFTConvolver.cpp">
-      <Filter>Caramel</Filter>
+    <ClCompile Include="Deprecated\c.loadmess.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="Caramel\Utilities.cpp">
-      <Filter>Caramel</Filter>
+    <ClCompile Include="Deprecated\c.pak.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="Coffee\c.mousestate.cpp">
-      <Filter>Coffee</Filter>
+    <ClCompile Include="Deprecated\c.patcherargs.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\ebox\ebox_attr.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Deprecated\c.patcherinfos.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\ebox\ebox_basic.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Deprecated\c.patchermess.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\ebox\ebox_draw.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Deprecated\c.prepend.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\ebox\ebox_handle.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Deprecated\FFTConvolver.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\ebox\ebox_patcher.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Deprecated\Utilities.cpp">
+      <Filter>Deprecated</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\ebox\ebox_window.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.bang.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eclass\eclass_attrgetter.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.blackboard.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eclass\eclass_attrnew.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.breakpoints.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eclass\eclass_attroptions.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.colorpanel.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eclass\eclass_attrsetter.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.dsp_tilde.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eclass\eclass_basic.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.gain_tilde.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eclass\eclass_widget.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.incdec.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\ecommon\ecommon.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.knob.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\egraphics\egraphics.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.matrix.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\egraphics\egraphics_color.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.menu.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\egraphics\egraphics_forms.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.meter_tilde.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\egraphics\egraphics_matrix.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.number.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\egraphics\egraphics_text.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.number_tilde.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eobj\eobj_basic.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.plane.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eobj\eobj_dsp.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.preset.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eobj\eobj_handle.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.radio.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eobj\eobj_proxy.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.rslider.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\eobj\eobj_router.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.scope_tilde.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdParty\PureData\Sources\epopup\epopup.c">
-      <Filter>CicmWrapper</Filter>
+    <ClCompile Include="Sources\c.slider.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Coffee\c.informer.cpp">
-      <Filter>Coffee</Filter>
+    <ClCompile Include="Sources\c.tab.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Coffee\c.io.cpp">
-      <Filter>Coffee</Filter>
+    <ClCompile Include="Sources\c.toggle.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\CicmWrapper\Sources\ebox.c">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\CicmWrapper\Sources\eclass.c">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\CicmWrapper\Sources\ecommon.c">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\CicmWrapper\Sources\egraphics.c">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\CicmWrapper\Sources\eobj.c">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\CicmWrapper\Sources\epopup.c">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Chocolate">
-      <UniqueIdentifier>{3adf5a40-522f-49a2-8160-9b9fa475c9af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Coffee">
-      <UniqueIdentifier>{9cc51515-b959-4ee9-889a-fe752c409847}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Caramel">
-      <UniqueIdentifier>{bde52776-46b2-4808-9b75-d6167c23b91c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CicmWrapper">
-      <UniqueIdentifier>{7a712497-9f51-4ad4-adab-e1ce7e8e4c3f}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="Deprecated\AudioFFT.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="Deprecated\FFTConvolver.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="Deprecated\Utilities.h">
+      <Filter>Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\cicm_wrapper.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\ebox.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\eclass.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\ecommon.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\edefine.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\egraphics.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\enative.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\eobj.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\epdmax.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\CicmWrapper\Sources\epopup.h">
+      <Filter>ThirdParty\CicmWrapper\Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="c.library.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="c.library.h" />
-    <ClInclude Include="Caramel\AudioFFT.h">
-      <Filter>Caramel</Filter>
-    </ClInclude>
-    <ClInclude Include="Caramel\Utilities.h">
-      <Filter>Caramel</Filter>
-    </ClInclude>
-    <ClInclude Include="Caramel\FFTConvolver.h">
-      <Filter>Caramel</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\ebox\ebox.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\eclass\eclass.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\ecommon\eboxflag.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\ecommon\ecommon.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\ecommon\pd-extented\s_stuff.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\ecommon\s_stuff.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\egraphics\egraphics.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\eobj\eobj.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\epopup\epopup.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\cicm_wrapper.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\epd.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\epd_max.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="ThirdParty\PureData\Sources\estruct.h">
-      <Filter>CicmWrapper</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ThirdParty\PureData\Sources\ecommon\pd.def">
-      <Filter>CicmWrapper</Filter>
-    </None>
+    <Filter Include="Deprecated">
+      <UniqueIdentifier>{3e8f99b0-e4dd-4625-8d66-8d7da9d087eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{07f1024f-cedc-448e-bee9-2e90538e2cb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\CicmWrapper">
+      <UniqueIdentifier>{aa4e288c-0248-44c8-afae-d51239fbf75c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\CicmWrapper\Sources">
+      <UniqueIdentifier>{a3bb93de-62ba-4d64-8778-9d91da4ea738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{f43c25cf-f976-481e-a10f-e85a7fff72d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -8,7 +8,15 @@
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  */
 
-#include "../c.library.h"
+#include "../c.library.hpp"
+
+#ifdef _MSC_VER
+static double round(double val)
+{
+	return floor(val + 0.5);
+}
+#endif
+
 
 typedef struct  _dsp_tilde
 {

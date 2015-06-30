@@ -8,7 +8,7 @@
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.
  */
 
-#include "../c.library.h"
+#include "../c.library.hpp"
 
 const int	numcombs		= 8;
 const int	numallpasses	= 4;

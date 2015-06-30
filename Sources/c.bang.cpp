@@ -21,7 +21,7 @@
 //
 
 // This header includes cicm_wrapped.h
-#include "../c.library.h"
+#include "../c.library.hpp"
 
 /*! @addtogroup groupbang The Bang Example Part
  * @brief The example part for t_ebox.
