@@ -8,7 +8,7 @@ Cream_la_LDFLAGS = -module -avoid-version -shared -shrext .@EXTENSION@  @PD_LDFL
 Cream_la_LIBADD = Deprecated/libDeprecated.la Sources/libSources.la
 Cream_la_LIBADD += ThirdParty/CicmWrapper/Sources/libCicmWrapper.la
 
-Cream_la_SOURCES = c.library.h \
+Cream_la_SOURCES = c.library.hpp \
  c.library.cpp
 
 ALL_CFLAGS = -I"$(PD_INCLUDE)"
