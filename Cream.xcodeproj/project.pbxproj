@@ -111,8 +111,8 @@
 		8F823F861B33011600F5A69E /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F821B33011600F5A69E /* c.prepend.cpp */; };
 		8FAC0BDC1969731800E09ACB /* c.library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F26F18A17E76273005FCB97 /* c.library.cpp */; };
 		8FAC0BE31969731800E09ACB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59FB02F717A7FAA9001E977D /* Accelerate.framework */; };
-		8FAC0BF21969731800E09ACB /* c.library.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.h */; };
-		8FB8EB6819007B1E005FAF6A /* c.library.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.h */; };
+		8FAC0BF21969731800E09ACB /* c.library.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.hpp */; };
+		8FB8EB6819007B1E005FAF6A /* c.library.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -171,7 +171,7 @@
 		8F823F811B33011600F5A69E /* c.loadmess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.loadmess.cpp; path = Deprecated/c.loadmess.cpp; sourceTree = SOURCE_ROOT; };
 		8F823F821B33011600F5A69E /* c.prepend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.prepend.cpp; path = Deprecated/c.prepend.cpp; sourceTree = SOURCE_ROOT; };
 		8FAC0BFB1969731800E09ACB /* Cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
-		8FB8EB6719007B1E005FAF6A /* c.library.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = c.library.h; sourceTree = "<group>"; };
+		8FB8EB6719007B1E005FAF6A /* c.library.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = c.library.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,7 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				8F26F18A17E76273005FCB97 /* c.library.cpp */,
-				8FB8EB6719007B1E005FAF6A /* c.library.h */,
+				8FB8EB6719007B1E005FAF6A /* c.library.hpp */,
 				8FB8EB2D19007B04005FAF6A /* Sources */,
 				8FB8EB69190080E9005FAF6A /* Deprecated */,
 				8FD16282196FCA1A00D5104D /* CicmWrapper */,
@@ -303,7 +303,7 @@
 				8F27CF381B31C87900220A14 /* egraphics.h in Headers */,
 				8F27CF2A1B31C87900220A14 /* ebox.h in Headers */,
 				8F27CF6A1B31CA2300220A14 /* AudioFFT.h in Headers */,
-				8FB8EB6819007B1E005FAF6A /* c.library.h in Headers */,
+				8FB8EB6819007B1E005FAF6A /* c.library.hpp in Headers */,
 				8F27CF261B31C87900220A14 /* cicm_wrapper.h in Headers */,
 				8F27CF341B31C87900220A14 /* edefine.h in Headers */,
 				8F27CF321B31C87900220A14 /* ecommon.h in Headers */,
@@ -323,7 +323,7 @@
 				8F27CF391B31C87900220A14 /* egraphics.h in Headers */,
 				8F27CF2B1B31C87900220A14 /* ebox.h in Headers */,
 				8F27CF6B1B31CA2300220A14 /* AudioFFT.h in Headers */,
-				8FAC0BF21969731800E09ACB /* c.library.h in Headers */,
+				8FAC0BF21969731800E09ACB /* c.library.hpp in Headers */,
 				8F27CF271B31C87900220A14 /* cicm_wrapper.h in Headers */,
 				8F27CF351B31C87900220A14 /* edefine.h in Headers */,
 				8F27CF331B31C87900220A14 /* ecommon.h in Headers */,
