@@ -15,6 +15,8 @@ typedef struct _camomile
 	t_ebox      j_box;
 	t_rgba		f_color_background;
     t_rgba		f_color_border;
+    t_ebox**    f_boxes;
+    int         f_nboxes;
 } t_camomile;
 
 t_eclass *camomile_class;
@@ -35,7 +37,65 @@ static void camomile_oksize(t_camomile *x, t_rect *newrect)
 
 static void camomile_bang(t_camomile *x)
 {
-    ;
+    int counter = 0;
+    t_ebox** temp;
+    t_canvas* cnv = eobj_getcanvas(x);
+    for(t_gobj* y = cnv->gl_list; y; y = y->g_next)
+    {
+        if(eobj_iscicm(y) && eobj_isbox(x))
+        {
+            t_ebox* z = (t_ebox *)y;
+            if(z->b_rect.x >= x->j_box.b_rect.x &&
+               z->b_rect.y >= x->j_box.b_rect.y &&
+               z->b_rect.x + z->b_rect.width <= x->j_box.b_rect.x + x->j_box.b_rect.width &&
+               z->b_rect.y + z->b_rect.height <= x->j_box.b_rect.y + x->j_box.b_rect.height)
+            {
+                ++counter;
+            }
+        }
+    }
+    if(x->f_nboxes && x->f_boxes)
+    {
+        temp = (t_ebox **)realloc(x->f_boxes, counter * sizeof(t_ebox *));
+        if(temp)
+        {
+            x->f_boxes = temp;
+            x->f_nboxes = counter;
+        }
+        else
+        {
+            x->f_boxes = NULL;
+            x->f_nboxes = 0;
+        }
+    }
+    else
+    {
+        x->f_boxes = (t_ebox **)malloc(counter * sizeof(t_ebox *));
+        if(x->f_boxes)
+        {
+            x->f_nboxes = counter;
+        }
+        else
+        {
+            x->f_nboxes = 0;
+        }
+    }
+    counter = 0;
+    for(t_gobj* y = cnv->gl_list; y; y = y->g_next)
+    {
+        if(eobj_iscicm(y) && eobj_isbox(x))
+        {
+            t_ebox* z = (t_ebox *)y;
+            if(z->b_rect.x >= x->j_box.b_rect.x &&
+               z->b_rect.y >= x->j_box.b_rect.y &&
+               z->b_rect.x + z->b_rect.width <= x->j_box.b_rect.x + x->j_box.b_rect.width &&
+               z->b_rect.y + z->b_rect.height <= x->j_box.b_rect.y + x->j_box.b_rect.height)
+            {
+                x->f_boxes[counter++] = z;
+            }
+            
+        }
+    }
 }
 
 
@@ -61,6 +121,8 @@ static void *camomile_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK);
+        x->f_nboxes = 0;
+        x->f_boxes  = NULL;
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
     }
