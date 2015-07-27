@@ -38,6 +38,13 @@ extern "C" void setup_c0x2eslider(void);
 extern "C" void setup_c0x2etab(void);
 extern "C" void setup_c0x2etoggle(void);
 
+#ifdef __APPLE__
+extern "C" void setup_c0x2ekeyboard(void);
+extern "C" void setup_c0x2ecamomile(void);
+
+extern "C" void setup_c0x2ewavesel(void);
+#endif
+
 // Deprecated
 extern "C" void setup_c0x2econvolve_tilde(void);
 extern "C" void setup_c0x2efreeverb_tilde(void);
@@ -78,6 +85,9 @@ static t_symbol* cream_sym_tepidcolor           = gensym("tepidcolor");
 static t_symbol* cream_sym_warmcolor            = gensym("warmcolor");
 static t_symbol* cream_sym_hotcolor             = gensym("hotcolor");
 static t_symbol* cream_sym_overcolor            = gensym("overcolor");
+static t_symbol* cream_sym_wkeycolor            = gensym("wkeycolor");
+static t_symbol* cream_sym_bkeycolor            = gensym("bkeycolor");
+static t_symbol* cream_sym_skeycolor            = gensym("skeycolor");
 
 static t_symbol* cream_sym_fontsize             = gensym("fontsize");
 static t_symbol* cream_sym_fontname             = gensym("fontname");
@@ -96,6 +106,9 @@ static t_symbol* cream_sym_Linear               = gensym("Linear");
 static t_symbol* cream_sym_Cosine               = gensym("Cosine");
 static t_symbol* cream_sym_Cubic                = gensym("Cubic");
 static t_symbol* cream_sym_outline              = gensym("outline");
+
+static t_symbol* cream_sym_lowkey               = gensym("lowkey");
+static t_symbol* cream_sym_highkey              = gensym("highkey");
 
 static t_symbol* cream_sym_nothing              = gensym("''");
 static t_symbol* cream_sym_left_bracket         = gensym("[");

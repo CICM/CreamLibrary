@@ -102,6 +102,12 @@ extern "C" void cream_setup(void)
     setup_c0x2etab();
     setup_c0x2etoggle();
     
+#ifdef __APPLE__
+    setup_c0x2ekeyboard();
+    setup_c0x2ecamomile();
+    setup_c0x2ewavesel();
+#endif
+    
     // Deprecated
     setup_c0x2econvolve_tilde();
     setup_c0x2efreeverb_tilde();

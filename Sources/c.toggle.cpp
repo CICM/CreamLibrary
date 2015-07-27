@@ -26,7 +26,7 @@ static void toggle_output(t_toggle *x)
 {
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
-    outlet_float((t_outlet*)x->f_out, (float)x->f_active);
+    outlet_float(x->f_out, (float)x->f_active);
     if(ebox_getsender((t_ebox *) x))
         pd_float(ebox_getsender((t_ebox *) x), (float)x->f_active);
 }
@@ -82,7 +82,6 @@ static t_pd_err toggle_notify(t_toggle *x, t_symbol *s, t_symbol *msg, void *sen
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
-        ebox_redraw((t_ebox *)x);
 	}
 	return 0;
 }
