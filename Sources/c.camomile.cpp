@@ -42,7 +42,7 @@ static void camomile_bang(t_camomile *x)
     t_canvas* cnv = eobj_getcanvas(x);
     for(t_gobj* y = cnv->gl_list; y; y = y->g_next)
     {
-        if(eobj_iscicm(y) && eobj_isbox(x))
+        if(y != (t_gobj *)x && eobj_iscicm(y) && eobj_isbox(x))
         {
             t_ebox* z = (t_ebox *)y;
             if(z->b_rect.x >= x->j_box.b_rect.x &&
@@ -83,7 +83,7 @@ static void camomile_bang(t_camomile *x)
     counter = 0;
     for(t_gobj* y = cnv->gl_list; y; y = y->g_next)
     {
-        if(eobj_iscicm(y) && eobj_isbox(x))
+        if(y != (t_gobj *)x && eobj_iscicm(y) && eobj_isbox(x))
         {
             t_ebox* z = (t_ebox *)y;
             if(z->b_rect.x >= x->j_box.b_rect.x &&
@@ -142,6 +142,7 @@ extern "C" void setup_c0x2ecamomile(void)
     eclass_addmethod(c, (method) camomile_getdrawparams,   "getdrawparams",    A_NULL, 0);
     eclass_addmethod(c, (method) camomile_oksize,          "oksize",           A_NULL, 0);
     eclass_addmethod(c, (method) camomile_bang,            "bang",             A_NULL, 0);
+    eclass_addmethod(c, (method) camomile_bang,            "loadbang",         A_NULL, 0);
     
     CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
     CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
