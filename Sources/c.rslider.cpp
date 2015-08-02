@@ -33,6 +33,7 @@ static void *rslider_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_rslider *x = (t_rslider *)eobj_new(rslider_class);
     t_binbuf  *d = binbuf_via_atoms(argc,argv);
+    
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
@@ -44,8 +45,11 @@ static void *rslider_new(t_symbol *s, int argc, t_atom *argv)
         ebox_attrprocess_viabinbuf(x, d);
         x->f_value_low = x->f_min;
         ebox_ready((t_ebox *)x);
+        
+        return x;
     }
-    return x;
+    
+    return NULL;
 }
 
 static void rslider_output(t_rslider *x)
@@ -254,6 +258,9 @@ static void rslider_paint(t_rslider *x, t_object *view)
 
 static void rslider_mousedown(t_rslider *x, t_object *patcherview, t_pt pt, long modifiers)
 {
+    t_rect rect;
+    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    
     float ratio;
     float value;
     if(x->f_min < x->f_max)
@@ -264,16 +271,16 @@ static void rslider_mousedown(t_rslider *x, t_object *patcherview, t_pt pt, long
     if(x->f_direction)
     {
         if(x->f_min < x->f_max)
-            value = pd_clip_minmax(pt.x / x->j_box.b_rect.width * ratio + x->f_min, x->f_min, x->f_max);
+            value = pd_clip_minmax(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
         else
-            value= pd_clip_minmax((x->j_box.b_rect.width - pt.x) / x->j_box.b_rect.width * ratio + x->f_max, x->f_max, x->f_min);
+            value= pd_clip_minmax((rect.width - pt.x) / rect.width * ratio + x->f_max, x->f_max, x->f_min);
     }
     else
     {
         if(x->f_min < x->f_max)
-            value = pd_clip_minmax(pt.y / x->j_box.b_rect.height * ratio + x->f_min, x->f_min, x->f_max);
+            value = pd_clip_minmax(pt.y / rect.height * ratio + x->f_min, x->f_min, x->f_max);
         else
-            value = pd_clip_minmax((x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * ratio + x->f_max, x->f_max, x->f_min);
+            value = pd_clip_minmax((rect.height - pt.y) / rect.height * ratio + x->f_max, x->f_max, x->f_min);
     }
     
     if(modifiers == EMOD_SHIFT)
@@ -295,13 +302,16 @@ static void rslider_mousedown(t_rslider *x, t_object *patcherview, t_pt pt, long
         x->f_loworhigh = 0;
     }
     
+    rslider_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
-    rslider_output(x);
 }
 
 static void rslider_mousedrag(t_rslider *x, t_object *patcherview, t_pt pt, long modifiers)
 {
+    t_rect rect;
+    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    
     float ratio;
     float value;
     if(x->f_min < x->f_max)
@@ -312,16 +322,16 @@ static void rslider_mousedrag(t_rslider *x, t_object *patcherview, t_pt pt, long
     if(x->f_direction)
     {
         if(x->f_min < x->f_max)
-            value = pd_clip_minmax(pt.x / x->j_box.b_rect.width * ratio + x->f_min, x->f_min, x->f_max);
+            value = pd_clip_minmax(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
         else
-            value = pd_clip_minmax((x->j_box.b_rect.width - pt.x) / x->j_box.b_rect.width * ratio + x->f_max, x->f_max, x->f_min);
+            value = pd_clip_minmax((rect.width - pt.x) / rect.width * ratio + x->f_max, x->f_max, x->f_min);
     }
     else
     {
         if(x->f_min < x->f_max)
-            value = pd_clip_minmax(pt.y / x->j_box.b_rect.height * ratio + x->f_min, x->f_min, x->f_max);
+            value = pd_clip_minmax(pt.y / rect.height * ratio + x->f_min, x->f_min, x->f_max);
         else
-            value = pd_clip_minmax((x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * ratio + x->f_max, x->f_max, x->f_min);
+            value = pd_clip_minmax((rect.height - pt.y) / rect.height * ratio + x->f_max, x->f_max, x->f_min);
     }
     
     if(x->f_loworhigh)
@@ -333,9 +343,9 @@ static void rslider_mousedrag(t_rslider *x, t_object *patcherview, t_pt pt, long
         x->f_value_high = value;
     }
     
+    rslider_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
-    rslider_output(x);
 }
 
 extern "C" void setup_c0x2erslider(void)
