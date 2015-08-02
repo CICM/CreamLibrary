@@ -350,71 +350,72 @@ static void rslider_mousedrag(t_rslider *x, t_object *patcherview, t_pt pt, long
 
 extern "C" void setup_c0x2erslider(void)
 {
-	t_eclass *c;
+	t_eclass *c = eclass_new("c.rslider", (method)rslider_new, (method)ebox_free, (short)sizeof(t_rslider), CLASS_NOINLET, A_GIMME, 0);
     
-	c = eclass_new("c.rslider", (method)rslider_new, (method)ebox_free, (short)sizeof(t_rslider), CLASS_NOINLET, A_GIMME, 0);
-    
-	eclass_guiinit(c, 0);
-
-	eclass_addmethod(c, (method) rslider_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) rslider_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) rslider_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) rslider_set,             "set",              A_GIMME,0);
-    eclass_addmethod(c, (method) rslider_list,            "list",             A_GIMME,0);
-    eclass_addmethod(c, (method) rslider_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) rslider_bang,            "bang",             A_NULL, 0);
-    eclass_addmethod(c, (method) rslider_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) rslider_mousedrag,       "mousedrag",        A_NULL, 0);
-    eclass_addmethod(c, (method) rslider_preset,          "preset",           A_NULL, 0);
-    
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
-	CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
-    
-    CLASS_ATTR_LONG                 (c, "listmode", 0, t_rslider, f_mode);
-	CLASS_ATTR_LABEL                (c, "listmode", 0, "List Mode");
-    CLASS_ATTR_FILTER_CLIP          (c, "listmode", 0, 1);
-	CLASS_ATTR_ORDER                (c, "listmode", 0, "1");
-    CLASS_ATTR_DEFAULT              (c, "listmode", 0, "0");
-    CLASS_ATTR_SAVE                 (c, "listmode", 1);
-    CLASS_ATTR_STYLE                (c, "listmode", 0, "onoff");
-    
-    CLASS_ATTR_FLOAT                (c, "min", 0, t_rslider, f_min);
-	CLASS_ATTR_LABEL                (c, "min", 0, "Minimum Value");
-	CLASS_ATTR_ORDER                (c, "min", 0, "1");
-    CLASS_ATTR_DEFAULT              (c, "min", 0, "0.");
-    CLASS_ATTR_SAVE                 (c, "min", 1);
-    CLASS_ATTR_STYLE                (c, "min", 0, "number");
-    
-    CLASS_ATTR_FLOAT                (c, "max", 0, t_rslider, f_max);
-	CLASS_ATTR_LABEL                (c, "max", 0, "Maximum Value");
-	CLASS_ATTR_ORDER                (c, "max", 0, "1");
-    CLASS_ATTR_DEFAULT              (c, "max", 0, "1.");
-    CLASS_ATTR_SAVE                 (c, "max", 1);
-    CLASS_ATTR_STYLE                (c, "max", 0, "number");
-    
-	CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_rslider, f_color_background);
-	CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
-	CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
-	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
-	CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
-    
-	CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_rslider, f_color_border);
-	CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
-	CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
-	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
-	CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
-    
-	CLASS_ATTR_RGBA                 (c, "kncolor", 0, t_rslider, f_color_knob);
-	CLASS_ATTR_LABEL                (c, "kncolor", 0, "Knob Color");
-	CLASS_ATTR_ORDER                (c, "kncolor", 0, "3");
-	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "kncolor", 0, "0.5 0.5 0.5 1.");
-	CLASS_ATTR_STYLE                (c, "kncolor", 0, "color");
-    
-    eclass_register(CLASS_BOX, c);
-	rslider_class = c;
+    if(c)
+    {
+        eclass_guiinit(c, 0);
+        
+        eclass_addmethod(c, (method) rslider_paint,           "paint",            A_NULL, 0);
+        eclass_addmethod(c, (method) rslider_getdrawparams,   "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (method) rslider_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (method) rslider_set,             "set",              A_GIMME,0);
+        eclass_addmethod(c, (method) rslider_list,            "list",             A_GIMME,0);
+        eclass_addmethod(c, (method) rslider_float,           "float",            A_FLOAT,0);
+        eclass_addmethod(c, (method) rslider_bang,            "bang",             A_NULL, 0);
+        eclass_addmethod(c, (method) rslider_mousedown,       "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (method) rslider_mousedrag,       "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (method) rslider_preset,          "preset",           A_NULL, 0);
+        
+        CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
+        CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
+        
+        CLASS_ATTR_LONG                 (c, "listmode", 0, t_rslider, f_mode);
+        CLASS_ATTR_LABEL                (c, "listmode", 0, "List Mode");
+        CLASS_ATTR_FILTER_CLIP          (c, "listmode", 0, 1);
+        CLASS_ATTR_ORDER                (c, "listmode", 0, "1");
+        CLASS_ATTR_DEFAULT              (c, "listmode", 0, "0");
+        CLASS_ATTR_SAVE                 (c, "listmode", 1);
+        CLASS_ATTR_STYLE                (c, "listmode", 0, "onoff");
+        
+        CLASS_ATTR_FLOAT                (c, "min", 0, t_rslider, f_min);
+        CLASS_ATTR_LABEL                (c, "min", 0, "Minimum Value");
+        CLASS_ATTR_ORDER                (c, "min", 0, "1");
+        CLASS_ATTR_DEFAULT              (c, "min", 0, "0.");
+        CLASS_ATTR_SAVE                 (c, "min", 1);
+        CLASS_ATTR_STYLE                (c, "min", 0, "number");
+        
+        CLASS_ATTR_FLOAT                (c, "max", 0, t_rslider, f_max);
+        CLASS_ATTR_LABEL                (c, "max", 0, "Maximum Value");
+        CLASS_ATTR_ORDER                (c, "max", 0, "1");
+        CLASS_ATTR_DEFAULT              (c, "max", 0, "1.");
+        CLASS_ATTR_SAVE                 (c, "max", 1);
+        CLASS_ATTR_STYLE                (c, "max", 0, "number");
+        
+        CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_rslider, f_color_background);
+        CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
+        CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
+        CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
+        
+        CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_rslider, f_color_border);
+        CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
+        CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
+        CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
+        
+        CLASS_ATTR_RGBA                 (c, "kncolor", 0, t_rslider, f_color_knob);
+        CLASS_ATTR_LABEL                (c, "kncolor", 0, "Knob Color");
+        CLASS_ATTR_ORDER                (c, "kncolor", 0, "3");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "kncolor", 0, "0.5 0.5 0.5 1.");
+        CLASS_ATTR_STYLE                (c, "kncolor", 0, "color");
+        
+        eclass_register(CLASS_BOX, c);
+        rslider_class = c;        
+    }
 }
 
 

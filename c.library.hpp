@@ -101,6 +101,7 @@ static t_symbol* cream_sym_fontname             = gensym("fontname");
 static t_symbol* cream_sym_fontweight           = gensym("fontweight");
 static t_symbol* cream_sym_fontslant            = gensym("fontslant");
 
+static t_symbol* cream_sym_ptsize               = gensym("ptsize");
 static t_symbol* cream_sym_preset               = gensym("preset");
 static t_symbol* cream_sym_atpreset             = gensym("@preset");
 static t_symbol* cream_sym_atindex              = gensym("@index");
