@@ -34,127 +34,184 @@ typedef struct  _tab
 
 static t_eclass *tab_class;
 
-static void tab_sizemustchange(t_tab *x)
+static t_symbol* atoms_getsymbol(int ac, t_atom* av)
 {
-    t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
-    if(x->f_orientation)
+    char buffer[MAXPDSTRING];
+    memset(buffer, '\0', MAXPDSTRING * sizeof(char));
+    for(int i = 0; i < ac; i++)
     {
-        if(rect.width < sys_fontwidth(x->j_box.b_font.c_size) * 3 || rect.height < (sys_fontheight(x->j_box.b_font.c_size) + 4) * pd_clip_min(x->f_nitems, 1))
-            eobj_attr_setvalueof(x, gensym("size"), 0, NULL);
-        else
+        if(atom_gettype(av+i) == A_SYMBOL)
         {
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
-            ebox_redraw((t_ebox *)x);
+            const t_symbol* s = atom_getsymbol(av+i);
+            const int lenght = (int)strlen(s->s_name);
+            int buflen = (int)strlen(buffer);
+            if(buflen)
+            {
+                buffer[buflen++] = ' ';
+            }
+            for(int j = 0, k = buflen; j < lenght && k < MAXPDSTRING - 1; j++)
+            {
+                if(s->s_name[j] != '"' && s->s_name[j] != '\'')
+                {
+                    buffer[k++] = s->s_name[j];
+                }
+            }
+            buffer[MAXPDSTRING - 1] = '\0';
+        }
+        else if(atom_gettype(av+i) == A_FLOAT)
+        {
+            char temp[MAXPDSTRING];
+            sprintf(temp, "%f", atom_getfloat(av+i));
+            int lenght = (int)strlen(temp);
+            while(temp[lenght - 1] == '0')
+            {
+                temp[lenght - 1] = '\0';
+                lenght--;
+            }
+            if(temp[lenght - 1] == '.')
+            {
+                temp[lenght - 1] = '\0';
+                lenght--;
+            }
+            if(buffer[0] != '\0')
+            {
+                strncat(buffer, " ", (size_t)1);
+            }
+            strncat(buffer, temp, (size_t)lenght);
+            memset(temp, '\0', MAXPDSTRING * sizeof(char));
         }
     }
-    else
-    {
-        if(rect.width < sys_fontwidth(x->j_box.b_font.c_size) * 3 * pd_clip_min(x->f_nitems, 1) || rect.height < (sys_fontheight(x->j_box.b_font.c_size) + 4) * sys_fontheight(x->j_box.b_font.c_size) + 4)
-            eobj_attr_setvalueof(x, gensym("size"), 0, NULL);
-        else
-        {
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
-            ebox_redraw((t_ebox *)x);
-        }
-    }
+    return gensym(buffer);
 }
 
-static t_symbol* tab_atoms_to_sym(t_atom* argv, long argc)
+static int tab_getindex(t_tab *x, t_symbol* s)
 {
-    int i;
-    size_t lenght;
-    char temp[MAXPDSTRING];
-    char text[MAXPDSTRING];
-    atom_string(argv, text, MAXPDSTRING);
-    for(i = 1; i < argc; i++)
+    if(s)
     {
-        atom_string(argv+i, temp, MAXPDSTRING);
-        lenght = strlen(temp);
-        strncat(text, " ", 1);
-        strncat(text, temp, lenght);
-    }
-    return gensym(text);
-}
-
-static long tab_getindex(t_tab *x, t_symbol* s)
-{
-    long i;
-    for(i = 0; i < x->f_nitems; i++)
-    {
-        if(!strcmp(s->s_name, x->f_items[i]->s_name))
+        for(int i = 0; i < x->f_nitems; i++)
         {
-            return i;
+            if(s == x->f_items[i])
+            {
+                return i;
+            }
         }
     }
     return -1;
 }
 
-void tab_append(t_tab *x, t_symbol *s, int argc, t_atom *argv)
+static void tab_append(t_tab *x, t_symbol *s, int argc, t_atom *argv)
 {
-    t_symbol* item = tab_atoms_to_sym(argv, argc);
-    if(argc && argv && tab_getindex(x, item) == -1)
+    t_symbol* item = atoms_getsymbol(argc, argv);
+    if(item && tab_getindex(x, item) == -1)
     {
         x->f_items[x->f_nitems] = item;
         x->f_nitems++;
-        tab_sizemustchange(x);
-    }
-}
-
-void tab_insert(t_tab *x, t_symbol *s, int argc, t_atom *argv)
-{
-    int i;
-    t_symbol* item = tab_atoms_to_sym(argv+1, argc-1);
-
-    if(argc > 1 && argv && atom_gettype(argv) == A_FLOAT && atom_getfloat(argv) >= 0 && tab_getindex(x, item) == -1)
-    {
-        if(atom_getfloat(argv) >= x->f_nitems)
-            x->f_items[x->f_nitems] = item;
-        else
-        {
-            for(i = (int)x->f_nitems - 1; i >= atom_getfloat(argv); i--)
-                x->f_items[i+1] = x->f_items[i];
-            x->f_items[atom_getint(argv)] = item;
-        }
-        x->f_nitems++;
-
-        tab_sizemustchange(x);
-    }
-}
-
-void tab_setitem(t_tab *x, t_symbol *s, int argc, t_atom *argv)
-{
-    t_symbol* item = tab_atoms_to_sym(argv+1, argc-1);
-    if(argc > 1 && argv && atom_gettype(argv) == A_FLOAT && tab_getindex(x, item) == -1)
-    {
-        if(atom_getfloat(argv) >= 0 && atom_getfloat(argv) < x->f_nitems)
-            x->f_items[atom_getint(argv)] = item;
-
+        
         ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
         ebox_redraw((t_ebox *)x);
+    }
+}
+
+static void tab_insert(t_tab *x, t_symbol *s, int argc, t_atom *argv)
+{
+    if(argc > 1 && argv && atom_gettype(argv) == A_FLOAT)
+    {
+        const int index = atom_getfloat(argv);
+        if(index >= 0 && index < x->f_nitems && index < CREAM_MAXITEMS)
+        {
+            t_symbol* item = atoms_getsymbol(argc - 1, argv + 1);
+            if(item && tab_getindex(x, item) == -1)
+            {
+                for(int i = (int)x->f_nitems; i > index; i--)
+                {
+                    x->f_items[i] = x->f_items[i-1];
+                }
+                x->f_items[index] = item;
+                x->f_nitems++;
+                
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+                ebox_redraw((t_ebox *)x);
+            }
+        }
+        else if(index >= 0)
+        {
+            t_symbol* item = atoms_getsymbol(argc - 1, argv + 1);
+            if(item && tab_getindex(x, item) == -1)
+            {
+                x->f_items[x->f_nitems] = item;
+                x->f_nitems++;
+                
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+                ebox_redraw((t_ebox *)x);
+            }
+        }
+    }
+}
+
+static void tab_setitem(t_tab *x, t_symbol *s, int argc, t_atom *argv)
+{
+    if(argc > 1 && argv && atom_gettype(argv) == A_FLOAT)
+    {
+        const int index = atom_getfloat(argv);
+        if(index >= 0 && index < x->f_nitems)
+        {
+            t_symbol* item = atoms_getsymbol(argc - 1, argv + 1);
+            if(item && tab_getindex(x, item) == -1)
+            {
+                x->f_items[index] = item;
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+                ebox_redraw((t_ebox *)x);
+            }
+        }
     }
 }
 
 static void tab_delete(t_tab *x, t_symbol *s, int argc, t_atom *argv)
 {
-    int i;
-    if(argc > 0 && argv && atom_gettype(argv) == A_FLOAT)
+    if(argc && argv)
     {
-        if(atom_getfloat(argv) >= 0 && atom_getfloat(argv) < x->f_nitems)
+        if(atom_gettype(argv) == A_FLOAT)
         {
-            for(i = atom_getfloat(argv); i < x->f_nitems - 1; i++)
-                x->f_items[i] = x->f_items[i+1];
-            x->f_nitems--;
-            for(i = (int)x->f_nitems; i < CREAM_MAXITEMS; i++)
-                x->f_items[i] = s_null;
+            const int index = (int)atom_getfloat(argv);
+            if(index >= 0 && index < x->f_nitems)
+            {
+                for(int i = index; i < x->f_nitems - 1; i++)
+                {
+                    x->f_items[i] = x->f_items[i+1];
+                }
+                x->f_nitems--;
+                
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+                ebox_redraw((t_ebox *)x);
+            }
         }
-        tab_sizemustchange(x);
+        else
+        {
+            const int index = tab_getindex(x, atoms_getsymbol(argc, argv));
+            if(index >= 0 && index < x->f_nitems)
+            {
+                for(int i = index; i < x->f_nitems - 1; i++)
+                {
+                    x->f_items[i] = x->f_items[i+1];
+                }
+                x->f_nitems--;
+                
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+                ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+                ebox_redraw((t_ebox *)x);
+            }
+        }
     }
 }
 
@@ -162,9 +219,10 @@ static void tab_clear(t_tab *x, t_symbol *s, int argc, t_atom *argv)
 {
     for(int i = 0; i < CREAM_MAXITEMS; i++)
     {
-        x->f_items[i] = nullptr;
+        x->f_items[i] = NULL;
     }
     x->f_nitems = 0;
+    
     ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
@@ -177,7 +235,10 @@ static void tab_output(t_tab *x)
     {
         t_pd* send = ebox_getsender((t_ebox *) x);
         outlet_float(x->f_out_index, x->f_item_selected);
-        outlet_symbol(x->f_out_item, x->f_items[x->f_item_selected]);
+        if(x->f_item_selected != -1)
+        {
+            outlet_symbol(x->f_out_item, x->f_items[x->f_item_selected]);
+        }
         outlet_float(x->f_out_hover, x->f_item_hover);
         
         if(send)
@@ -226,21 +287,32 @@ static void tab_float(t_tab *x, t_floatarg f)
 
 static void tab_symbol(t_tab *x, t_symbol *s, int argc, t_atom *argv)
 {
-    if(x->f_toggle)
+    t_atom* av = (t_atom *)malloc((size_t)(argc + 1) * sizeof(t_atom));
+    if(av)
     {
-        x->f_item_selected = tab_getindex(x, s);
-        tab_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-        ebox_redraw((t_ebox *)x);
+        atom_setsym(av, s);
+        memcpy(av+1, argv, (size_t)(argc) * sizeof(t_atom));
+        t_symbol* item = atoms_getsymbol(argc + 1, av);
+        post(item->s_name);
+        if(item && x->f_toggle && tab_getindex(x, item) != -1)
+        {
+            post(item->s_name);
+            x->f_item_selected = tab_getindex(x, item);
+            tab_output(x);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_redraw((t_ebox *)x);
+        }
+        else if(item)
+        {
+            x->f_item_selected = tab_getindex(x, item);
+            tab_output(x);
+            x->f_item_selected = -1;
+        }
+        free(av);
     }
-    else
-    {
-        x->f_item_selected = tab_getindex(x, s);
-        tab_output(x);
-        x->f_item_selected = -1;
-    }
+    
 }
 
 static void tab_set(t_tab *x, t_symbol *s, int argc, t_atom *argv)
@@ -253,7 +325,7 @@ static void tab_set(t_tab *x, t_symbol *s, int argc, t_atom *argv)
         }
         else if (atom_gettype(argv) == A_SYMBOL)
         {
-            tab_setsymbol(x, tab_atoms_to_sym(argv, argc));
+            tab_setsymbol(x, atoms_getsymbol(argc, argv));
         }
     }
 }
@@ -268,7 +340,6 @@ static void tab_getdrawparams(t_tab *x, t_object *patcherview, t_edrawparams *pa
 
 static void tab_oksize(t_tab *x, t_rect *newrect)
 {
-    int todo;
     if(x->f_orientation)
     {
         newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->j_box.b_font.c_size) * 3);
@@ -304,7 +375,7 @@ static t_pd_err tab_notify(t_tab *x, t_symbol *s, t_symbol *msg, void *sender, v
                 s == cream_sym_orientation ||
                 s == cream_sym_items)
         {
-            eobj_attr_setvalueof(x, s_size, 0, NULL);
+            ebox_notify((t_ebox *)x, s_size, cream_sym_attr_modified, NULL, NULL);
         }
 	}
 	return 0;
@@ -321,7 +392,7 @@ static void draw_background(t_tab *x, t_object *view, t_rect *rect)
         if(x->f_orientation)
         {
             const float ratio = rect->height / (float)x->f_nitems;
-            for(i = 1; i < x->f_nitems - 1; i++)
+            for(i = 1; i < x->f_nitems; i++)
             {
                 egraphics_line_fast(g, 0, ratio * i, rect->width, ratio * i);
             }
@@ -329,7 +400,7 @@ static void draw_background(t_tab *x, t_object *view, t_rect *rect)
         else
         {
             const float ratio = rect->width / (float)x->f_nitems;
-            for(i = 1; i < x->f_nitems - 1; i++)
+            for(i = 1; i < x->f_nitems; i++)
             {
                 egraphics_line_fast(g, ratio * i, 0, ratio * i, rect->height);
             }
@@ -385,38 +456,47 @@ static void draw_selection(t_tab *x, t_object *view, t_rect *rect)
 static void draw_text(t_tab *x, t_object *view, t_rect *rect)
 {
     int i;
-    int todo;
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_text_layer, rect->width, rect->height);
-    t_etext *jtl = etext_layout_create();
-	if(g && jtl)
+	if(g)
 	{
-        const float ratio = x->f_orientation ? rect->height / (float)x->f_nitems : rect->width / (float)x->f_nitems;
-        for(i = 0; i < x->f_nitems; i++)
+        t_etext *jtl = etext_layout_create();
+        if(jtl)
         {
-            if(x->f_items[i] != s_null)
+            if(x->f_orientation)
             {
-                if(x->f_orientation)
+                const float ratio =  rect->height / (float)x->f_nitems;
+                for(i = 0; i < x->f_nitems; i++)
                 {
-
-                    etext_layout_settextcolor(jtl, &x->f_color_text);
-#ifdef __APPLE__
-                    etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font, rect->width * 0.5, ratio * (i + 1.) - sys_fontheight(x->j_box.b_font.c_size) * 0.5, rect->width, 0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_NOWRAP);
-#elif _WINDOWS
-                    etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font, rect->width * 0.5, ratio * (i + 1.) - sys_fontheight(x->j_box.b_font.c_size) * 0.5, rect->width, 0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_NOWRAP);
-#else
-                    etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font, rect->width * 0.5, ratio * (i + 0.5), rect->width, 0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_NOWRAP);
-#endif
-                    etext_layout_draw(jtl, g);
-                }
-                else
-                {
-                    etext_layout_settextcolor(jtl, &x->f_color_text);
-                    etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font, ratio * (i + 0.5), rect->height * 0.5, ratio - 3, 0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_WRAP);
-                    etext_layout_draw(jtl, g);
+                    if(x->f_items[i] && x->f_items[i] != s_null)
+                    {
+                        etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font,
+                                         rect->width * 0.5,
+                                         ratio * (i + 0.5),
+                                         rect->width,
+                                         0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_NOWRAP);
+                        etext_layout_draw(jtl, g);
+                    }
                 }
             }
+            else
+            {
+                const float ratio = rect->width / (float)x->f_nitems;
+                for(i = 0; i < x->f_nitems; i++)
+                {
+                    if(x->f_items[i] && x->f_items[i] != s_null)
+                    {
+                        etext_layout_settextcolor(jtl, &x->f_color_text);
+                        etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font,
+                                         ratio * (i + 0.5),
+                                         rect->height * 0.5,
+                                         ratio - 2,
+                                         0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_WRAP);
+                        etext_layout_draw(jtl, g);
+                    }
+                }
+            }
+            etext_layout_destroy(jtl);
         }
-
         ebox_end_layer((t_ebox*)x, cream_sym_text_layer);
 	}
 	ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
@@ -505,7 +585,6 @@ static void *tab_new(t_symbol *s, int argc, t_atom *argv)
         x->f_item_selected = -1;
         x->f_item_hover    = -1;
         x->f_nitems = 0;
-        x->j_box.b_rect.width = 100;
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
     }
@@ -513,15 +592,9 @@ static void *tab_new(t_symbol *s, int argc, t_atom *argv)
     return (x);
 }
 
-static void tab_free(t_tab *x)
-{
-    ebox_free((t_ebox *)x);
-}
-
-
 extern "C" void setup_c0x2etab(void)
 {
-    t_eclass *c = eclass_new("c.tab", (method)tab_new, (method)tab_free, (short)sizeof(t_tab), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.tab", (method)tab_new, (method)ebox_free, (short)sizeof(t_tab), 0L, A_GIMME, 0);
     
     if(c)
     {

@@ -85,7 +85,7 @@ static void radio_set_one(t_radio *x, int f)
 {
     if(f >= 0 && f < x->f_nitems)
     {
-        memset(x->f_items, 0, x->f_nitems * sizeof(int));
+        memset(x->f_items, 0, (size_t)x->f_nitems * sizeof(int));
         x->f_items[f] = 1;
     }
 }
@@ -360,7 +360,7 @@ static t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av)
             t_rect rect;
             ebox_get_rect_for_view((t_ebox *)x, &rect);
             x->f_nitems = nitems;
-            memset(x->f_items, 0, x->f_nitems * sizeof(int));
+            memset(x->f_items, 0, (size_t)x->f_nitems * sizeof(int));
             ebox_notify((t_ebox *)x, s_size, cream_sym_attr_modified, NULL, NULL);
         }
     }
@@ -375,7 +375,7 @@ static t_pd_err radio_mode_set(t_radio *x, t_object *attr, int ac, t_atom *av)
         if(mode != x->f_mode)
         {
             x->f_mode = mode;
-            memset(x->f_items, 0, x->f_nitems * sizeof(int));
+            memset(x->f_items, 0, (size_t)x->f_nitems * sizeof(int));
             ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
             ebox_redraw((t_ebox *)x);
