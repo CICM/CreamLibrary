@@ -13,17 +13,14 @@
 typedef struct  _plane
 {
 	t_ebox      j_box;
-    
     t_outlet*   f_out_x;
     t_outlet*   f_out_y;
-    
     float       f_size;
     t_pt        f_position;
     t_rect      f_boundaries;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_point;
-    
 } t_plane;
 
 static t_eclass *plane_class;
