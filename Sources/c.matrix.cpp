@@ -203,14 +203,13 @@ static void matrixctrl_paint(t_matrixctrl *x, t_object *view)
         {
             for(int incY = 0, j = 0; j < x->f_size.y; j++, incY += block_height)
             {
+                egraphics_rectangle_rounded(g, incx + 1.f, incY + 1.f, block_width - 2.f, block_height - 2.f, 1.f);
                 if(x->f_values[j * (long)x->f_size.x + i])
                 {
                     egraphics_set_color_rgba(g, &x->f_color_on);
-                    egraphics_rectangle_rounded(g, incx+1, incY+1, block_width-2, block_height-2, 1);
-                    egraphics_fill(g);
+                    egraphics_fill_preserve(g);
                 }
                 egraphics_set_color_rgba(g, &x->f_color_border);
-                egraphics_rectangle_rounded(g, incx+1, incY+1, block_width-2, block_height-2, 1);
                 egraphics_stroke(g);
             }
         }
