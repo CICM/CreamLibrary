@@ -44,34 +44,32 @@ static void meter_output(t_meter *x)
 
 static void meter_tick(t_meter *x)
 {
-    if(x->f_peak > 0.)
-    {
-        x->f_peak = 20. * log10(x->f_peak);
-    }
-    else
-    {
-        x->f_peak = -90.;
-    }
-    if(x->f_peak >= 0)
-    {
-        x->f_overled = 1;
-    }
-    else if(x->f_overled > 0)
-    {
-        x->f_overled++;
-    }
-    if(x->f_overled >= 1000. / x->f_interval)
-    {
-        x->f_overled = 0;
-    }
-    
-    meter_output(x);
-    
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_leds_layer);
-    ebox_redraw((t_ebox *)x);
-    
     if(canvas_dspstate)
     {
+        if(x->f_peak > 0.)
+        {
+            x->f_peak = 20. * log10(x->f_peak);
+        }
+        else
+        {
+            x->f_peak = -90.;
+        }
+        if(x->f_peak >= 0)
+        {
+            x->f_overled = 1;
+        }
+        else if(x->f_overled > 0)
+        {
+            x->f_overled++;
+        }
+        if(x->f_overled >= 1000. / x->f_interval)
+        {
+            x->f_overled = 0;
+        }
+        
+        meter_output(x);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_leds_layer);
+        ebox_redraw((t_ebox *)x);
         clock_delay(x->f_clock, x->f_interval);
     }
 }
@@ -89,7 +87,7 @@ static void meter_perform(t_meter *x, t_object *dsp, t_sample **ins, long ni, t_
         }
     }
     x->f_peak = (float)peak;
-    if (x->f_startclock)
+    if(x->f_startclock)
     {
         x->f_startclock = 0;
         clock_delay(x->f_clock, 0);
@@ -187,11 +185,13 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect)
     
     if (g)
     {
+        const float peak = x->f_peak;
+        const long overload = x->f_overled;
         float led_height = rect->height / 13.f;
         float led_width = rect->width / 13.f;
         for(i = 12, dB = -39; i > 0; i--, dB += 3.f)
         {
-            if(x->f_peak >= dB)
+            if(peak >= dB)
             {
                 if(i > 9)
                     egraphics_set_color_rgba(g, &x->f_color_signal_cold);
@@ -218,7 +218,7 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect)
                 egraphics_fill(g);
             }
         }
-        if(x->f_overled)
+        if(overload)
         {
             egraphics_set_color_rgba(g, &x->f_color_signal_over);
             if(!x->f_direction)
