@@ -56,7 +56,7 @@ static void camomile_bang(t_camomile *x)
     }
     if(x->f_nboxes && x->f_boxes)
     {
-        temp = (t_ebox **)realloc(x->f_boxes, counter * sizeof(t_ebox *));
+        temp = (t_ebox **)realloc(x->f_boxes, (size_t)counter * sizeof(t_ebox *));
         if(temp)
         {
             x->f_boxes = temp;
@@ -70,7 +70,7 @@ static void camomile_bang(t_camomile *x)
     }
     else
     {
-        x->f_boxes = (t_ebox **)malloc(counter * sizeof(t_ebox *));
+        x->f_boxes = (t_ebox **)malloc((size_t)counter * sizeof(t_ebox *));
         if(x->f_boxes)
         {
             x->f_nboxes = counter;
