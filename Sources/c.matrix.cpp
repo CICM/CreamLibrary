@@ -16,9 +16,9 @@ typedef struct  _matrixctrl
 
     t_outlet*   f_out_cell;
     t_outlet*   f_out_colrow;
-    char*       f_values;
-    t_pt        f_size;
-    t_pt        f_selected;
+    char**      f_values;
+    int         f_size[2];
+    int         f_selected[2];
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
     t_rgba      f_color_on;
@@ -27,28 +27,29 @@ typedef struct  _matrixctrl
 
 static t_eclass *matrixctrl_class;
 
-static void matrixctrl_output(t_matrixctrl *x, int i, int j)
+static void matrixctrl_output(t_matrixctrl *x, const int i, const int j)
 {
     t_atom av[3];
-    if(i < x->f_size.x && j < x->f_size.y)
+    if(i < x->f_size[0] && j < x->f_size[1])
     {
         atom_setfloat(av, i);
         atom_setfloat(av+1, j);
-        atom_setfloat(av+2,  x->f_values[j * (long)x->f_size.x + i]);
-    }
-    t_pd* send = ebox_getsender((t_ebox *) x);
-    outlet_list(x->f_out_cell, &s_list, 3, av);
-    if(send)
-    {
-        pd_list(ebox_getsender((t_ebox *) x), &s_list, 3, av);
+        atom_setfloat(av+2,  x->f_values[i][j]);
+        
+        t_pd* send = ebox_getsender((t_ebox *) x);
+        outlet_list(x->f_out_cell, &s_list, 3, av);
+        if(send)
+        {
+            pd_list(ebox_getsender((t_ebox *) x), &s_list, 3, av);
+        }
     }
 }
 
 static void matrixctrl_bang(t_matrixctrl *x)
 {
-    for(int i = 0; i < (int)x->f_size.y; i++)
+    for(int i = 0; i < (int)x->f_size[1]; i++)
     {
-        for(int j = 0; j < (int)x->f_size.x; j++)
+        for(int j = 0; j < (int)x->f_size[0]; j++)
         {
             matrixctrl_output(x, (int)j, (int)i);
         }
@@ -57,13 +58,13 @@ static void matrixctrl_bang(t_matrixctrl *x)
 
 static void matrixctrl_clear(t_matrixctrl *x)
 {
-    for(int i = 0; i < x->f_size.y; i++)
+    for(int i = 0; i < x->f_size[1]; i++)
     {
-        for(int j = 0; j < x->f_size.x; j++)
+        for(int j = 0; j < x->f_size[0]; j++)
         {
-           if(x->f_values[i * (int)x->f_size.x + j])
+           if(x->f_values[i][j])
            {
-               x->f_values[i * (int)x->f_size.x + j] = 0;
+               x->f_values[i][j] = 0;
                matrixctrl_output(x, j, i);
            }
         }
@@ -75,30 +76,36 @@ static void matrixctrl_clear(t_matrixctrl *x)
 static void matrixctrl_getrow(t_matrixctrl *x, float f)
 {
     t_atom* av;
-    if(f >= 0 && f < x->f_size.y)
+    if(f >= 0 && f < x->f_size[1])
     {
-        av = (t_atom *)malloc(x->f_size.x * sizeof(t_atom));
-        for(long i = 0; i < x->f_size.x; i++)
+        av = (t_atom *)malloc((size_t)x->f_size[0] * sizeof(t_atom));
+        if(av)
         {
-            atom_setfloat(av+i, x->f_values[(long)f * (long)x->f_size.x + i]);
+            for(int i = 0; i < x->f_size[0]; i++)
+            {
+                atom_setfloat(av+i, (float)x->f_values[i][(int)f]);
+            }
+            outlet_list(x->f_out_colrow, &s_list, (int)x->f_size[0], av);
+            free(av);
         }
-        outlet_list(x->f_out_colrow, &s_list, (int)x->f_size.x, av);
-        free(av);
     }
 }
 
 static void matrixctrl_getcolumn(t_matrixctrl *x, float f)
 {
     t_atom* av;
-    if(f >= 0 && f < x->f_size.x)
+    if(f >= 0 && f < x->f_size[0])
     {
-        av = (t_atom *)malloc(x->f_size.y * sizeof(t_atom));
-        for(long i = 0; i < x->f_size.y; i++)
+        av = (t_atom *)malloc((size_t)x->f_size[1] * sizeof(t_atom));
+        if(av)
         {
-            atom_setfloat(av+i, x->f_values[i * (long)x->f_size.x + (long)f]);
+            for(int i = 0; i < x->f_size[1]; i++)
+            {
+                atom_setfloat(av+i, x->f_values[(int)f][i]);
+            }
+            outlet_list(x->f_out_colrow, &s_list, (int)x->f_size[1], av);
+            free(av);
         }
-        outlet_list(x->f_out_colrow, &s_list, (int)x->f_size.y, av);
-        free(av);
     }
 }
 
@@ -106,16 +113,16 @@ static void matrixctrl_set(t_matrixctrl *x, t_symbol *s, int ac, t_atom *av)
 {
     if(ac && av)
     {
-        for(long i = 2; i < ac; i += 3)
+        for(int i = 2; i < ac; i += 3)
         {
             if(atom_gettype(av+i-2) == A_FLOAT && atom_gettype(av+i-1) == A_FLOAT && atom_gettype(av+i) == A_FLOAT)
             {
                 int column  = atom_getfloat(av+i-2);
                 int row     = atom_getfloat(av+i-1);
                 char value  = atom_getfloat(av+i);
-                if(column < x->f_size.x && row < x->f_size.y)
+                if(column < x->f_size[0] && row < x->f_size[1])
                 {
-                    x->f_values[row * (long)x->f_size.x + column] = value;
+                    x->f_values[row][column] = value;
                 }
             }
         }
@@ -136,9 +143,9 @@ static void matrixctrl_list(t_matrixctrl *x, t_symbol *s, int ac, t_atom *av)
                 int column  = atom_getfloat(av+i-2);
                 int row     = atom_getfloat(av+i-1);
                 char value  = atom_getfloat(av+i);
-                if(column < x->f_size.x && row < x->f_size.y)
+                if(column < x->f_size[0] && row < x->f_size[1])
                 {
-                    x->f_values[row * (long)x->f_size.x + column] = value;
+                    x->f_values[row][column] = value;
                     matrixctrl_output(x, column, row);
                 }
             }
@@ -163,17 +170,17 @@ static void matrixctrl_oksize(t_matrixctrl *x, t_rect *newrect)
     newrect->width = pd_clip_min(newrect->width, 30.);
     newrect->height = pd_clip_min(newrect->height, 10.);
     
-    ratio = (newrect->width - 1.) / (float)x->f_size.x;
+    ratio = (newrect->width - 1.) / (float)x->f_size[0];
     if(ratio - (int)ratio != 0)
     {
         ratio = floorf(ratio);
-        newrect->width = ratio * (float)x->f_size.x + 1.;
+        newrect->width = ratio * (float)x->f_size[0] + 1.;
     }
-    ratio = (newrect->height - 1.) / (float)x->f_size.y;
+    ratio = (newrect->height - 1.) / (float)x->f_size[1];
     if(ratio - (int)ratio != 0)
     {
         ratio = floorf(ratio);
-        newrect->height = ratio * (float)x->f_size.y + 1.;
+        newrect->height = ratio * (float)x->f_size[1] + 1.;
     }
     
     newrect->width = pd_clip_min(newrect->width, 30.);
@@ -197,14 +204,14 @@ static void matrixctrl_paint(t_matrixctrl *x, t_object *view)
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
     if(g)
     {
-        const int block_width = rect.width / x->f_size.x;
-        const int block_height = rect.height / x->f_size.y;
-        for(int incx = 0, i = 0; i < x->f_size.x; i++, incx += block_width)
+        const int block_width = rect.width / x->f_size[0];
+        const int block_height = rect.height / x->f_size[1];
+        for(int incx = 0, i = 0; i < x->f_size[0]; i++, incx += block_width)
         {
-            for(int incY = 0, j = 0; j < x->f_size.y; j++, incY += block_height)
+            for(int incY = 0, j = 0; j < x->f_size[1]; j++, incY += block_height)
             {
                 egraphics_rectangle_rounded(g, incx + 1.f, incY + 1.f, block_width - 2.f, block_height - 2.f, 1.f);
-                if(x->f_values[j * (long)x->f_size.x + i])
+                if(x->f_values[i][j])
                 {
                     egraphics_set_color_rgba(g, &x->f_color_on);
                     egraphics_fill_preserve(g);
@@ -223,13 +230,12 @@ static void matrixctrl_mousedown(t_matrixctrl *x, t_object *patcherview, t_pt pt
 {
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    x->f_selected.x = (int)pd_clip_minmax((int)(pt.x / (rect.width / (float)x->f_size.x)), 0, x->f_size.x-1);
-    x->f_selected.y = (int)pd_clip_minmax((int)(pt.y / (rect.height / (float)x->f_size.y)), 0, x->f_size.y-1);
-    if(x->f_selected.x >= 0 && x->f_selected.x < x->f_size.x && x->f_selected.y >= 0 && x->f_selected.y < x->f_size.y)
+    x->f_selected[0] = (int)pd_clip_minmax(pt.x / (rect.width / (float)x->f_size[0]), 0.f, (float)x->f_size[0] - 1.f);
+    x->f_selected[1] = (int)pd_clip_minmax(pt.y / (rect.height / (float)x->f_size[1]), 0.f, (float)x->f_size[1] - 1.f);
+    if(x->f_selected[0] >= 0 && x->f_selected[0] < x->f_size[0] && x->f_selected[1] >= 0 && x->f_selected[1] < x->f_size[1])
     {
-        x->f_values[(long)x->f_selected.y * (long)x->f_size.x + (long)x->f_selected.x] = !x->f_values[(long)x->f_selected.y * (long)x->f_size.x + (long)x->f_selected.x];
-        
-        matrixctrl_output(x, x->f_selected.x, x->f_selected.y);
+        x->f_values[x->f_selected[0]][x->f_selected[1]] = !x->f_values[x->f_selected[0]][x->f_selected[1]];
+        matrixctrl_output(x, x->f_selected[0], x->f_selected[1]);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
@@ -239,18 +245,17 @@ static void matrixctrl_mousedrag(t_matrixctrl *x, t_object *patcherview, t_pt pt
 {
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    t_pt newpt;
-    newpt.x = (int)pd_clip_minmax((int)(pt.x / (rect.width / (float)x->f_size.x)), 0, x->f_size.x-1);
-    newpt.y = (int)pd_clip_minmax((int)(pt.y / (rect.height / (float)x->f_size.y)), 0, x->f_size.y-1);
-    if(newpt.x != x->f_selected.x || newpt.y != x->f_selected.y)
+    int newpt[2];
+    newpt[0] = (int)pd_clip_minmax(pt.x / (rect.width / (float)x->f_size[0]), 0.f, (float)x->f_size[0] - 1.f);
+    newpt[1] = (int)pd_clip_minmax(pt.y / (rect.height / (float)x->f_size[1]), 0.f, (float)x->f_size[1] - 1.f);
+    if(newpt[0] != x->f_selected[0] || newpt[1] != x->f_selected[1])
     {
-        x->f_selected.x = newpt.x;
-        x->f_selected.y = newpt.y;
-        if(x->f_selected.x >= 0 && x->f_selected.x < x->f_size.x && x->f_selected.y >= 0 && x->f_selected.y < x->f_size.y)
+        x->f_selected[0] = newpt[0];
+        x->f_selected[1] = newpt[1];
+        if(x->f_selected[0] >= 0 && x->f_selected[0] < x->f_size[0] && x->f_selected[1] >= 0 && x->f_selected[1] < x->f_size[1])
         {
-            x->f_values[(long)x->f_selected.y * (long)x->f_size.x + (long)x->f_selected.x] = !x->f_values[(long)x->f_selected.y * (long)x->f_size.x + (long)x->f_selected.x];
-            
-            matrixctrl_output(x, x->f_selected.x, x->f_selected.y);
+            x->f_values[x->f_selected[0]][x->f_selected[1]] = !x->f_values[x->f_selected[0]][x->f_selected[1]];
+            matrixctrl_output(x, x->f_selected[0], x->f_selected[1]);
             ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
@@ -259,29 +264,29 @@ static void matrixctrl_mousedrag(t_matrixctrl *x, t_object *patcherview, t_pt pt
 
 static void matrixctrl_mouseleave(t_matrixctrl *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    x->f_selected.x = -1;
-    x->f_selected.y = -1;
+    x->f_selected[0] = -1;
+    x->f_selected[1] = -1;
 }
 
 static void matrixctrl_preset(t_matrixctrl *x, t_binbuf *b)
 {
-    t_atom* av = (t_atom *)malloc(x->f_size.x * x->f_size.y * 3 * sizeof(t_atom));
-    long ac = 0;
+    t_atom* av = (t_atom *)malloc((size_t)(x->f_size[0] * x->f_size[1] * 3) * sizeof(t_atom));
+    int ac = 0;
     if(av)
     {
-        for(long i = 0; i < (long)x->f_size.y; i++)
+        for(int i = 0; i < (int)x->f_size[1]; i++)
         {
-            for(long j = 0; j < (long)x->f_size.x; j++)
+            for(int j = 0; j < (int)x->f_size[0]; j++)
             {
                 atom_setfloat(av+ac, j);
                 atom_setfloat(av+ac+1, i);
-                atom_setfloat(av+ac+2, x->f_values[i * (long)x->f_size.x + j]);
+                atom_setfloat(av+ac+2, (float)x->f_values[i][j]);
                 ac += 3;
             }
         }
         
         binbuf_addv(b, (char *)"s", &s_list);
-        binbuf_add(b, x->f_size.x * x->f_size.y * 3, av);
+        binbuf_add(b, x->f_size[0] * x->f_size[1] * 3, av);
         free(av);
     }
 }
@@ -290,14 +295,13 @@ static t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, int ac, t
 {
     if(ac > 1 && av && atom_gettype(av) == A_FLOAT && atom_gettype(av+1) == A_FLOAT)
     {
-        if(x->f_values)
+        x->f_size[0] = (int)pd_clip_minmax(atom_getfloat(av), 1, 256);
+        x->f_size[1] = (int)pd_clip_minmax(atom_getfloat(av+1), 1, 256);
+        for(int i = 0; i < 256; i++)
         {
-            free(x->f_values);
+            x->f_values[i] = (char *)malloc(256 * sizeof(char));
+            memset(x->f_values[i], 0, 256 * sizeof(char));
         }
-        x->f_size.x = (int)pd_clip_min(atom_getfloat(av), 1);
-        x->f_size.y = (int)pd_clip_min(atom_getfloat(av+1), 1);
-        x->f_values = (char *)malloc(x->f_size.x * x->f_size.y * sizeof(char));
-        memset(x->f_values, 0, x->f_size.x * x->f_size.y * sizeof(char));
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
@@ -311,14 +315,16 @@ static void *matrixctrl_new(t_symbol *s, int argc, t_atom *argv)
     
     if(x && d)
     {
-        x->f_size.x = 8;
-        x->f_size.y = 4;
-        x->f_values = (char *)malloc(x->f_size.x * x->f_size.y * sizeof(char));
-        memset(x->f_values, 0, x->f_size.x * x->f_size.y * sizeof(char));
-        
-        x->f_selected.x = -1;
-        x->f_selected.y = -1;
-        
+        x->f_size[0] = 8;
+        x->f_size[1] = 4;
+        x->f_selected[0] = -1;
+        x->f_selected[1] = -1;
+        x->f_values = (char **)malloc(256 * sizeof(char *));
+        for(int i = 0; i < 256; i++)
+        {
+            x->f_values[i] = (char *)malloc(256 * sizeof(char));
+            memset(x->f_values[i], 0, 256 * sizeof(char));
+        }
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
         
         x->f_out_cell   = outlet_new((t_object *)x, &s_list);
@@ -369,7 +375,7 @@ extern "C" void setup_c0x2ematrix(void)
         CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
         CLASS_ATTR_DEFAULT              (c, "size", 0, "105 53");
         
-        CLASS_ATTR_FLOAT_ARRAY          (c, "matrix", 0, t_matrixctrl, f_size, 2);
+        CLASS_ATTR_INT_ARRAY            (c, "matrix", 0, t_matrixctrl, f_size, 2);
         CLASS_ATTR_LABEL                (c, "matrix", 0, "Matrix Size");
         CLASS_ATTR_ACCESSORS			(c, "matrix", NULL, matrixctrl_matrix_set);
         CLASS_ATTR_ORDER                (c, "matrix", 0, "1");
