@@ -51,11 +51,11 @@ static void preset_store(t_preset *x, float f)
         {
             t_ebox *z = (t_ebox *)y;
             t_gotfn mpreset = zgetfn(&y->g_pd, cream_sym_preset);
-            if(mpreset && z->b_objpreset_id)
+            if(mpreset && z->b_preset_id)
             {
-                if(z->b_objpreset_id != s_null && z->b_objpreset_id != cream_sym_nothing)
+                if(z->b_preset_id != cream_sym_nothing)
                 {
-                    sprintf(id, "@%s", z->b_objpreset_id->s_name);
+                    sprintf(id, "@%s", z->b_preset_id->s_name);
                     atom_setsym(av, gensym(id));
                     atom_setsym(av+1, eobj_getclassname(z));
                     binbuf_add(b, 2, av);
@@ -81,11 +81,11 @@ static void preset_float(t_preset *x, float f)
             {
                 t_ebox * z = (t_ebox *)y;
                 t_gotfn mpreset = zgetfn(&y->g_pd, cream_sym_preset);
-                if(mpreset && z->b_objpreset_id && z->b_objpreset_id != s_null && z->b_objpreset_id != cream_sym_nothing)
+                if(mpreset && z->b_preset_id && z->b_preset_id != cream_sym_nothing)
                 {
                     int ac = 0;
                     t_atom* av = NULL;
-                    sprintf(id, "@%s", z->b_objpreset_id->s_name);
+                    sprintf(id, "@%s", z->b_preset_id->s_name);
                     binbuf_get_attribute(b, gensym(id), &ac, &av);
                     if(ac && av && atom_gettype(av) == A_SYMBOL && atom_gettype(av+1) == A_SYMBOL)
                     {
@@ -149,9 +149,9 @@ void preset_interpolate(t_preset *x, float f)
         z = (t_ebox *)y;
         mpreset = zgetfn(&y->g_pd, cream_sym_preset);
         // We find a preset method so we can send preset //
-        if(mpreset && z->b_objpreset_id && z->b_objpreset_id != s_null && z->b_objpreset_id != cream_sym_nothing)
+        if(mpreset && z->b_preset_id && z->b_preset_id != cream_sym_nothing)
         {
-            sprintf(id, "@%s", z->b_objpreset_id->s_name);
+            sprintf(id, "@%s", z->b_preset_id->s_name);
             realdo = -1;
             realup = -1;
             acdo = 0;
