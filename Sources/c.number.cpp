@@ -394,7 +394,7 @@ t_pd_err number_min_set(t_number *x, t_object *attr, int ac, t_atom *av)
     }
     else
     {
-        atom_setsym(&x->f_min, s_null);
+        atom_setsym(&x->f_min, s_cream_empty);
     }
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
@@ -419,7 +419,7 @@ t_pd_err number_max_set(t_number *x, t_object *attr, int ac, t_atom *av)
     }
     else
     {
-        atom_setsym(&x->f_max, s_null);
+        atom_setsym(&x->f_max, s_cream_empty);
     }
 
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
@@ -440,8 +440,8 @@ static t_pd_err number_minmax_set(t_number *x, t_object *attr, int ac, t_atom *a
     }
     else
     {
-        atom_setsym(&x->f_min, s_null);
-        atom_setsym(&x->f_max, s_null);
+        atom_setsym(&x->f_min, s_cream_empty);
+        atom_setsym(&x->f_max, s_cream_empty);
     }
 
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
@@ -491,18 +491,25 @@ extern "C" void setup_c0x2enumber(void)
         eclass_addmethod(c, (method) number_dblclick,         "dblclick",        A_NULL, 0);
         eclass_addmethod(c, (method) number_key,              "key",             A_NULL, 0);
         eclass_addmethod(c, (method) number_keyfilter,        "keyfilter",       A_NULL, 0);
-        eclass_addmethod(c, (method) number_mouseleave,         "mouseleave",        A_NULL, 0);
+        eclass_addmethod(c, (method) number_mouseleave,        "mouseleave",        A_NULL, 0);
         
         eclass_addmethod(c, (method) number_preset,           "preset",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT			(c, "size", 0, "53 13");
         
-        CLASS_ATTR_ATOM_ARRAY           (c, "minmax", 0, t_number, f_min, 2);
-        CLASS_ATTR_ORDER                (c, "minmax", 0, "3");
-        CLASS_ATTR_LABEL                (c, "minmax", 0, "Min - Max Values");
-        CLASS_ATTR_DEFAULT              (c, "minmax", 0, "(null) (null)");
-        CLASS_ATTR_ACCESSORS            (c, "minmax", NULL, number_minmax_set);
-        CLASS_ATTR_SAVE                 (c, "minmax", 1);
+        CLASS_ATTR_ATOM                 (c, "min", 0, t_number, f_min);
+        CLASS_ATTR_ORDER                (c, "min", 0, "3");
+        CLASS_ATTR_LABEL                (c, "min", 0, "Min Value");
+        CLASS_ATTR_DEFAULT              (c, "min", 0, "  ");
+        CLASS_ATTR_ACCESSORS            (c, "min", NULL, number_min_set);
+        CLASS_ATTR_SAVE                 (c, "min", 1);
+        
+        CLASS_ATTR_ATOM                 (c, "max", 0, t_number, f_min);
+        CLASS_ATTR_ORDER                (c, "max", 0, "3");
+        CLASS_ATTR_LABEL                (c, "max", 0, "Max Value");
+        CLASS_ATTR_DEFAULT              (c, "max", 0, "  ");
+        CLASS_ATTR_ACCESSORS            (c, "max", NULL, number_max_set);
+        CLASS_ATTR_SAVE                 (c, "max", 1);
         
         CLASS_ATTR_LONG                 (c, "decimal", 0, t_number, f_ndecimal);
         CLASS_ATTR_ORDER                (c, "decimal", 0, "3");

@@ -76,7 +76,7 @@ static t_pd_err blackboard_notify(t_blackboard *x, t_symbol *s, t_symbol *msg, v
 
 static void blackboard_clear(t_blackboard *x)
 {
-    if(!ebox_isdrawable((t_ebox *)x) || x->j_box.b_window_id == NULL)
+    if(!ebox_isdrawable((t_ebox *)x) || is_valid_symbol(x->j_box.b_window_id))
         return;
     
     sys_vgui((char *)"%s delete %snopen\n", x->j_box.b_drawing_id->s_name, x->j_box.b_all_id->s_name);
@@ -121,7 +121,7 @@ static void blackboard_color(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
                 color_rgb.green = atom_getfloat(argv+2);
             if(argc > 3 && atom_gettype(argv+3) == A_FLOAT)
                 color_rgb.blue = atom_getfloat(argv+3);
-            x->f_color = gensym(rgb_to_hex(color_rgb));
+            x->f_color = gensym(rgb_to_hex(&color_rgb));
         }
         else if(atom_getsymbol(argv) == gensym("hsla") || atom_getsymbol(argv) == gensym("hsl"))
         {
@@ -131,7 +131,7 @@ static void blackboard_color(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
                 color_hsl.saturation = atom_getfloat(argv+2);
             if(argc > 3 && atom_gettype(argv+3) == A_FLOAT)
                 color_hsl.lightness = atom_getfloat(argv+3);
-            x->f_color = gensym(hsl_to_hex(color_hsl));
+            x->f_color = gensym(hsl_to_hex(&color_hsl));
         }
         else if(atom_getsymbol(argv) == gensym("hex") || atom_getsymbol(argv) == gensym("hexa"))
         {

@@ -273,11 +273,6 @@ static void bang_oksize(t_bang *x, t_rect *newrect)
     // We defines a minimum height and width of 15 px.
     newrect->width = pd_clip_min(newrect->width, 15.);
     newrect->height = pd_clip_min(newrect->height, 15.);
-    // We defines that the width and the height can't be an even number (to center the bang circle).
-    if((int)newrect->width % 2 == 0)
-        newrect->width++;
-    if((int)newrect->height % 2 == 0)
-        newrect->height++;
 }
 
 // Paints the t_ebox.

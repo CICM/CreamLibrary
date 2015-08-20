@@ -262,8 +262,8 @@ void colorpanel_output(t_colorpanel *x)
     if(ebox_isdrawable((t_ebox *)x) && x->f_color_picked.x >= 0 && x->f_color_picked.y >= 0)
     {
         color_hls = x->f_matrix_colorpanel[(int)x->f_color_picked.x][(int)x->f_color_picked.y];
-        color_rgb = hsla_to_rgba(color_hls);
-        color_hex = gensym(rgba_to_hex(color_rgb));
+        color_rgb = hsla_to_rgba(&color_hls);
+        color_hex = gensym(rgba_to_hex(&color_rgb));
         atom_setfloat(av, color_rgb.red);
         atom_setfloat(av+1, color_rgb.green);
         atom_setfloat(av+2, color_rgb.blue);

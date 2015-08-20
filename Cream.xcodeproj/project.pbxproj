@@ -229,6 +229,8 @@
 			isa = PBXGroup;
 			children = (
 				8F27CF801B31CC2500220A14 /* c.bang.cpp */,
+				8F27CF941B31CC2500220A14 /* c.toggle.cpp */,
+				8F27CF871B31CC2500220A14 /* c.knob.cpp */,
 				8F27CF811B31CC2500220A14 /* c.blackboard.cpp */,
 				8F27CF821B31CC2500220A14 /* c.breakpoints.cpp */,
 				8F27CF841B31CC2500220A14 /* c.dsp_tilde.cpp */,
@@ -242,13 +244,11 @@
 				8F27CF911B31CC2500220A14 /* c.scope_tilde.cpp */,
 				8F27CF831B31CC2500220A14 /* c.colorpanel.cpp */,
 				8F27CF881B31CC2500220A14 /* c.matrix.cpp */,
-				8F27CF871B31CC2500220A14 /* c.knob.cpp */,
 				8F27CF8D1B31CC2500220A14 /* c.plane.cpp */,
 				8F27CF901B31CC2500220A14 /* c.rslider.cpp */,
 				8F27CF921B31CC2500220A14 /* c.slider.cpp */,
 				8F27CF931B31CC2500220A14 /* c.tab.cpp */,
 				8F27CF8F1B31CC2500220A14 /* c.radio.cpp */,
-				8F27CF941B31CC2500220A14 /* c.toggle.cpp */,
 				8F8963021B529DE100A996D7 /* c.wavesel.cpp */,
 				8FB9044F1B64F2E9000A8449 /* c.keyboard.cpp */,
 				8FB904531B6661D9000A8449 /* c.camomile.cpp */,
@@ -266,6 +266,8 @@
 				8F27CF611B31CA2300220A14 /* c.patcherargs.cpp */,
 				8F27CF621B31CA2300220A14 /* c.patcherinfos.cpp */,
 				8F27CF631B31CA2300220A14 /* c.patchermess.cpp */,
+				8F823F821B33011600F5A69E /* c.prepend.cpp */,
+				8F823F811B33011600F5A69E /* c.loadmess.cpp */,
 				8F27CF641B31CA2300220A14 /* FFTConvolver.cpp */,
 				8F27CF651B31CA2300220A14 /* FFTConvolver.h */,
 				8F27CF5C1B31CA2300220A14 /* AudioFFT.cpp */,
@@ -281,8 +283,6 @@
 			isa = PBXGroup;
 			children = (
 				8F27CF171B31C87900220A14 /* cicm_wrapper.h */,
-				8F823F811B33011600F5A69E /* c.loadmess.cpp */,
-				8F823F821B33011600F5A69E /* c.prepend.cpp */,
 				8F27CF181B31C87900220A14 /* ebox.c */,
 				8F27CF191B31C87900220A14 /* ebox.h */,
 				8F27CF1A1B31C87900220A14 /* eclass.c */,

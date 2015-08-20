@@ -467,7 +467,7 @@ static void draw_text(t_tab *x, t_object *view, t_rect *rect)
                 const float ratio =  rect->height / (float)x->f_nitems;
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    if(x->f_items[i] && x->f_items[i] != s_null)
+                    if(x->f_items[i])
                     {
                         etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font,
                                          rect->width * 0.5,
@@ -483,7 +483,7 @@ static void draw_text(t_tab *x, t_object *view, t_rect *rect)
                 const float ratio = rect->width / (float)x->f_nitems;
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    if(x->f_items[i] && x->f_items[i] != s_null)
+                    if(x->f_items[i])
                     {
                         etext_layout_settextcolor(jtl, &x->f_color_text);
                         etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font,
