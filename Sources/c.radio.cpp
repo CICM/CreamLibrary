@@ -243,18 +243,24 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    const float val = (i + 0.5f) * ratio - offset + 2.f;
-                    egraphics_line_fast(g, val, 4.f, val + dist, 4.f + dist);
-                    egraphics_line_fast(g, val, 4.f  + dist, val + dist, 4.f);
+                    if(x->f_items[i])
+                    {
+                        const float val = (i + 0.5f) * ratio - offset + 2.f;
+                        egraphics_line_fast(g, val, 4.f, val + dist, 4.f + dist);
+                        egraphics_line_fast(g, val, 4.f  + dist, val + dist, 4.f);
+                    }
                 }
             }
             else
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    const float val = (i + 0.5f) * ratio - offset + 2.f;
-                    egraphics_line_fast(g, 4.f, val, 4.f + dist, val + dist);
-                    egraphics_line_fast(g, 4.f + dist, val, 4.f, val + dist);
+                    if(x->f_items[i])
+                    {
+                        const float val = (i + 0.5f) * ratio - offset + 2.f;
+                        egraphics_line_fast(g, 4.f, val, 4.f + dist, val + dist);
+                        egraphics_line_fast(g, 4.f + dist, val, 4.f, val + dist);
+                    }
                 }
             }
         }

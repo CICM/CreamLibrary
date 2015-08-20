@@ -118,11 +118,13 @@ static void slider_paint(t_slider *x, t_object *view)
         egraphics_set_line_width(g, 2);
         if(x->f_direction)
         {
-            egraphics_line_fast(g, value * rect.width, 0, value * rect.width, rect.height);
+            const float pos = (rect.width - 4.f) * value + 2.f;
+            egraphics_line_fast(g, pos, 2.f, pos, rect.height - 2.f);
         }
         else
         {
-            egraphics_line_fast(g, 0, (1. - value) * rect.height, rect.width, (1. - value) * rect.height);
+            const float pos = (rect.height - 4.f) * (1. - value) + 2.f;
+            egraphics_line_fast(g, 2.f, pos, rect.width - 2.f, pos);
         }
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
     }
@@ -140,6 +142,8 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
         x->f_value_last = x->f_value;
         if(x->f_direction)
         {
+            rect.width -= 4.f;
+            pt.x -= 4.f;
             if(x->f_min < x->f_max)
                 x->f_value_ref = pd_clip_minmax(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
             else
@@ -147,6 +151,8 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
         }
         else
         {
+            rect.height -= 4.f;
+            pt.y -= 4.f;
             if(x->f_min < x->f_max)
                 x->f_value_ref = pd_clip_minmax((rect.height - pt.y) / rect.height * ratio + x->f_min, x->f_min, x->f_max);
             else
@@ -157,6 +163,8 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
     {
         if(x->f_direction)
         {
+            rect.width -= 4.f;
+            pt.x -= 4.f;
             if(x->f_min < x->f_max)
                 x->f_value = pd_clip_minmax(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
             else
@@ -164,6 +172,8 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
         }
         else
         {
+            rect.height -= 4.f;
+            pt.y -= 4.f;
             if(x->f_min < x->f_max)
                 x->f_value = pd_clip_minmax((rect.height - pt.y) / rect.height * ratio + x->f_min, x->f_min, x->f_max);
             else
@@ -187,6 +197,8 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
         float newvalue;
         if(x->f_direction)
         {
+            rect.width -= 4.f;
+            pt.x -= 4.f;
             if(x->f_min < x->f_max)
                 newvalue = pt.x / rect.width * ratio + x->f_min;
             else
@@ -194,6 +206,8 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
         }
         else
         {
+            rect.height -= 4.f;
+            pt.y -= 4.f;
             if(x->f_min < x->f_max)
                 newvalue = (rect.height - pt.y) / rect.height * ratio + x->f_min;
             else
@@ -214,6 +228,8 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
     {
         if(x->f_direction)
         {
+            rect.width -= 4.f;
+            pt.x -= 4.f;
             if(x->f_min < x->f_max)
                 x->f_value = pd_clip_minmax(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
             else
@@ -221,6 +237,8 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
         }
         else
         {
+            rect.height -= 4.f;
+            pt.y -= 4.f;
             if(x->f_min < x->f_max)
                 x->f_value = pd_clip_minmax((rect.height - pt.y) / rect.height * ratio + x->f_min, x->f_min, x->f_max);
             else
