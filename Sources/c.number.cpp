@@ -174,7 +174,7 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
             else
                 sprintf(number, "%.6f", x->f_value);
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0., rect->width - width, rect->height, ETEXT_TOPRIGHT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0., rect->width - width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
