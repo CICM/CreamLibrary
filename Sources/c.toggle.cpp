@@ -113,6 +113,77 @@ static void toggle_preset(t_toggle *x, t_binbuf *b)
     binbuf_add(b, 2, av);
 }
 
+typedef struct _preset
+{
+    t_symbol*   name;
+    int         ninterpolations;
+    t_symbol**  interpolations;
+    
+} t_preset;
+
+static void toggle_presetinfos(t_toggle* x, int* nparams, t_symbol*** params)
+{
+    *nparams = 1;
+    *params = (t_symbol **)malloc(sizeof(t_symbol *));
+    if(*params)
+    {
+        *params[0] = gensym("state");
+    }
+}
+
+static void toggle_presetinterpolations(t_toggle* x, int index,  int* ntypes, t_symbol*** types)
+{
+    *ntypes = 1;
+    *types = (t_symbol **)malloc(sizeof(t_symbol *));
+    if(*types)
+    {
+        *types[0] = gensym("threshold");
+    }
+}
+
+static void toggle_presetget(t_toggle* x, int* argc, t_atom** argv)
+{
+    *argc = 1;
+    *argv = (t_atom *)malloc(sizeof(t_atom));
+    if(*argv)
+    {
+        atom_setfloat(argv[0], (float)x->f_active);
+    }
+    else
+    {
+        argc = 0;
+    }
+}
+
+static void toggle_presetset(t_toggle* x, t_symbol* name, t_symbol* interpolation,
+                             int argc1, t_atom* argv1,
+                             int argc2, t_atom* argv2,
+                             float delta)
+{
+    char f;
+    if(argc1 && argv1 && argc2 && argv1)
+    {
+        f = (char)pd_clip_min(atom_getfloat(argv1), atom_getfloat(argv2));
+    }
+    else if(argc1 && argv1)
+    {
+        f = (char)atom_getfloat(argv1);
+    }
+    else if(argc2 && argv2)
+    {
+        f = (char)atom_getfloat(argv2);
+    }
+    else
+    {
+        return;
+    }
+    if(f != x->f_active)
+    {
+        x->f_active = f;
+        toggle_output(x);
+    }
+}
+
 static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_toggle *x = (t_toggle *)eobj_new(toggle_class);
