@@ -12,7 +12,7 @@
 #include "../c.library.hpp"
 #include <vector>
 
-typedef struct _preset
+typedef struct _presetobj
 {
 	t_ebox      j_box;
     t_binbuf**  f_binbuf;
@@ -26,13 +26,13 @@ typedef struct _preset
     t_rgba		f_color_button_selected;
     t_rgba		f_color_text;
     static const int maxbinbufs = 1000;
-} t_preset;
+} t_presetobj;
 
 static t_eclass *preset_class;
 
-void preset_interpolate(t_preset *x, float f);
+void preset_interpolate(t_presetobj *x, float f);
 
-static void preset_store(t_preset *x, float f)
+static void preset_store(t_presetobj *x, float f)
 {
     int index = (int)f;
     if(index >= 1 && index < CREAM_MAXITEMS)
@@ -67,7 +67,7 @@ static void preset_store(t_preset *x, float f)
     }
 }
 
-static void preset_float(t_preset *x, float f)
+static void preset_float(t_presetobj *x, float f)
 {
     t_canvas *cnv = eobj_getcanvas(x);
     if(cnv && !cnv->gl_loading)
@@ -108,7 +108,7 @@ static void preset_float(t_preset *x, float f)
     }
 }
 
-void preset_interpolate(t_preset *x, float f)
+void preset_interpolate(t_presetobj *x, float f)
 {
     t_gobj *y;
     t_ebox *z;
@@ -265,7 +265,7 @@ void preset_interpolate(t_preset *x, float f)
     ebox_redraw((t_ebox *)x);
 }
 
-static void preset_clear(t_preset *x, float f)
+static void preset_clear(t_presetobj *x, float f)
 {
     int index = (int)f;
     if(index >= 1 && index < CREAM_MAXITEMS)
@@ -282,7 +282,7 @@ static void preset_clear(t_preset *x, float f)
     }
 }
 
-static void preset_clearall(t_preset *x)
+static void preset_clearall(t_presetobj *x)
 {
     for(int i = 0; i < CREAM_MAXITEMS; i++)
     {
@@ -293,7 +293,7 @@ static void preset_clearall(t_preset *x)
     ebox_redraw((t_ebox *)x);
 }
 
-static void preset_getdrawparams(t_preset *x, t_object *patcherview, t_edrawparams *params)
+static void preset_getdrawparams(t_presetobj *x, t_object *patcherview, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -301,13 +301,13 @@ static void preset_getdrawparams(t_preset *x, t_object *patcherview, t_edrawpara
     params->d_boxfillcolor      = x->f_color_background;
 }
 
-static void preset_oksize(t_preset *x, t_rect *newrect)
+static void preset_oksize(t_presetobj *x, t_rect *newrect)
 {
     newrect->width = pd_clip_min(newrect->width, 15.);
     newrect->height = pd_clip_min(newrect->height, 15.);
 }
 
-static t_pd_err preset_notify(t_preset *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+static t_pd_err preset_notify(t_presetobj *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
     if (msg == cream_sym_attr_modified)
     {
@@ -320,7 +320,7 @@ static t_pd_err preset_notify(t_preset *x, t_symbol *s, t_symbol *msg, void *sen
     return 0;
 }
 
-static void draw_background(t_preset *x, t_object *view, t_rect *rect)
+static void draw_background(t_presetobj *x, t_object *view, t_rect *rect)
 {
 	int i, xc, yc;
     char number[256];
@@ -365,7 +365,7 @@ static void draw_background(t_preset *x, t_object *view, t_rect *rect)
 	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
-static void preset_paint(t_preset *x, t_object *view)
+static void preset_paint(t_presetobj *x, t_object *view)
 {
     t_rect rect;
 #ifdef __APPLE__
@@ -384,7 +384,7 @@ static void preset_paint(t_preset *x, t_object *view)
 #endif
 }
 
-static void preset_mousemove(t_preset *x, t_object *patcherview, t_pt pt, long modifiers)
+static void preset_mousemove(t_presetobj *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     int index;
     int n_row_button = (x->j_box.b_rect.width - x->f_point_size * 1.24) / (x->f_point_size * 2.5) + 1;
@@ -396,7 +396,7 @@ static void preset_mousemove(t_preset *x, t_object *patcherview, t_pt pt, long m
     ebox_redraw((t_ebox *)x);
 }
 
-static void preset_mousedown(t_preset *x, t_object *patcherview, t_pt pt, long modifiers)
+static void preset_mousedown(t_presetobj *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     int index;
     int n_row_button = (x->j_box.b_rect.width - x->f_point_size * 1.24) / (x->f_point_size * 2.5) + 1;
@@ -411,14 +411,14 @@ static void preset_mousedown(t_preset *x, t_object *patcherview, t_pt pt, long m
     preset_float(x, index);
 }
 
-static void preset_mouseleave(t_preset *x, t_object *patcherview, t_pt pt, long modifiers)
+static void preset_mouseleave(t_presetobj *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_binbuf_hover = 0;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void preset_save(t_preset *x, t_binbuf *d)
+static void preset_save(t_presetobj *x, t_binbuf *d)
 {
     binbuf_addv(d, (char *)"ss", cream_sym_atpreset, cream_sym_left_bracket);
     for(int i = 0; i < CREAM_MAXITEMS; i++)
@@ -432,7 +432,7 @@ static void preset_save(t_preset *x, t_binbuf *d)
     binbuf_addv(d, (char *)"s", cream_sym_right_bracket);
 }
 
-static void preset_init(t_preset *x, t_binbuf *d)
+static void preset_init(t_presetobj *x, t_binbuf *d)
 {
 	int check;
     long index;
@@ -478,7 +478,7 @@ static void preset_init(t_preset *x, t_binbuf *d)
 
 }
 
-static void preset_read(t_preset *x, t_symbol *s, int argc, t_atom *argv)
+static void preset_read(t_presetobj *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_binbuf *d = binbuf_new();
     if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
@@ -501,7 +501,7 @@ static void preset_read(t_preset *x, t_symbol *s, int argc, t_atom *argv)
     }
 }
 
-static void preset_write(t_preset *x, t_symbol *s, int argc, t_atom *argv)
+static void preset_write(t_presetobj *x, t_symbol *s, int argc, t_atom *argv)
 {
     t_binbuf *d = binbuf_new();
     if(d && argv && argc && atom_gettype(argv) == A_SYMBOL)
@@ -524,7 +524,7 @@ static void preset_write(t_preset *x, t_symbol *s, int argc, t_atom *argv)
 
 static void *preset_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_preset *x = (t_preset *)eobj_new(preset_class);
+    t_presetobj *x = (t_presetobj *)eobj_new(preset_class);
     t_binbuf* d = binbuf_via_atoms(argc,argv);
     if(x && d)
     {
@@ -546,7 +546,7 @@ static void *preset_new(t_symbol *s, int argc, t_atom *argv)
     return (x);
 }
 
-static void preset_free(t_preset *x)
+static void preset_free(t_presetobj *x)
 {
     for(int i = 0; i < CREAM_MAXITEMS; i++)
     {
@@ -558,7 +558,7 @@ static void preset_free(t_preset *x)
 
 extern "C" void setup_c0x2epreset(void)
 {
-    t_eclass* c = eclass_new("c.preset", (method)preset_new, (method)preset_free, (short)sizeof(t_preset), 0L, A_GIMME, 0);
+    t_eclass* c = eclass_new("c.preset", (method)preset_new, (method)preset_free, (short)sizeof(t_presetobj), 0L, A_GIMME, 0);
 
     if(c)
     {
@@ -586,37 +586,37 @@ extern "C" void setup_c0x2epreset(void)
         CLASS_ATTR_DEFAULT              (c, "size", 0, "102 34");
         CLASS_ATTR_DEFAULT              (c, "fontsize", 0, "10");
         
-        CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_preset, f_color_background);
+        CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_presetobj, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
         CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
         CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
         
-        CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_preset, f_color_border);
+        CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_presetobj, f_color_border);
         CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
         CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
         
-        CLASS_ATTR_RGBA                 (c, "textcolor", 0, t_preset, f_color_text);
+        CLASS_ATTR_RGBA                 (c, "textcolor", 0, t_presetobj, f_color_text);
         CLASS_ATTR_LABEL                (c, "textcolor", 0, "Text Color");
         CLASS_ATTR_ORDER                (c, "textcolor", 0, "3");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
         CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
         
-        CLASS_ATTR_RGBA                 (c, "emcolor", 0, t_preset, f_color_button_empty);
+        CLASS_ATTR_RGBA                 (c, "emcolor", 0, t_presetobj, f_color_button_empty);
         CLASS_ATTR_LABEL                (c, "emcolor", 0, "Empty Button Color");
         CLASS_ATTR_ORDER                (c, "emcolor", 0, "3");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "emcolor", 0, "0.85 0.85 0.85 1.");
         CLASS_ATTR_STYLE                (c, "emcolor", 0, "color");
         
-        CLASS_ATTR_RGBA                 (c, "stcolor", 0, t_preset, f_color_button_stored);
+        CLASS_ATTR_RGBA                 (c, "stcolor", 0, t_presetobj, f_color_button_stored);
         CLASS_ATTR_LABEL                (c, "stcolor", 0, "Stored Button Color");
         CLASS_ATTR_ORDER                (c, "stcolor", 0, "3");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "stcolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "stcolor", 0, "color");
         
-        CLASS_ATTR_RGBA                 (c, "secolor", 0, t_preset, f_color_button_selected);
+        CLASS_ATTR_RGBA                 (c, "secolor", 0, t_presetobj, f_color_button_selected);
         CLASS_ATTR_LABEL                (c, "secolor", 0, "Selected Button Color");
         CLASS_ATTR_ORDER                (c, "secolor", 0, "3");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "secolor", 0, "0.15 0.15 0.15 1.");

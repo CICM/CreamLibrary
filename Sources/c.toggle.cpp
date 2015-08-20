@@ -113,74 +113,73 @@ static void toggle_preset(t_toggle *x, t_binbuf *b)
     binbuf_add(b, 2, av);
 }
 
-typedef struct _preset
+static void toggle_presetinfos(t_toggle* x, int* nppresets, t_preset** presets)
 {
-    t_symbol*   name;
-    int         ninterpolations;
-    t_symbol**  interpolations;
-    
-} t_preset;
-
-static void toggle_presetinfos(t_toggle* x, int* nparams, t_symbol*** params)
-{
-    *nparams = 1;
-    *params = (t_symbol **)malloc(sizeof(t_symbol *));
-    if(*params)
+    *nppresets = 1;
+    *presets = (t_preset *)malloc(sizeof(t_preset));
+    if(*presets)
     {
-        *params[0] = gensym("state");
-    }
-}
-
-static void toggle_presetinterpolations(t_toggle* x, int index,  int* ntypes, t_symbol*** types)
-{
-    *ntypes = 1;
-    *types = (t_symbol **)malloc(sizeof(t_symbol *));
-    if(*types)
-    {
-        *types[0] = gensym("threshold");
-    }
-}
-
-static void toggle_presetget(t_toggle* x, int* argc, t_atom** argv)
-{
-    *argc = 1;
-    *argv = (t_atom *)malloc(sizeof(t_atom));
-    if(*argv)
-    {
-        atom_setfloat(argv[0], (float)x->f_active);
+        presets[0]->p_name   = cream_sym_state;
+        presets[0]->p_natoms = 1;
+        presets[0]->p_atoms  = (t_atom *)malloc(sizeof(t_atom *));
+        if(presets[0]->p_atoms)
+        {
+            atom_setfloat(presets[0]->p_atoms, 0.f);
+        }
+        else
+        {
+            presets[0]->p_natoms = 0;
+        }
     }
     else
     {
-        argc = 0;
+        *nppresets = 0;
     }
 }
 
-static void toggle_presetset(t_toggle* x, t_symbol* name, t_symbol* interpolation,
-                             int argc1, t_atom* argv1,
-                             int argc2, t_atom* argv2,
-                             float delta)
+static void toggle_presetget(t_toggle* x, t_preset* preset)
 {
-    char f;
-    if(argc1 && argv1 && argc2 && argv1)
+    if(preset && preset->p_name == cream_sym_state)
     {
-        f = (char)pd_clip_min(atom_getfloat(argv1), atom_getfloat(argv2));
+        preset->p_natoms = 1;
+        preset->p_atoms  = (t_atom *)malloc(sizeof(t_atom *));
+        if(preset->p_atoms)
+        {
+            atom_setfloat(preset->p_atoms, (float)x->f_active);
+        }
+        else
+        {
+            preset->p_natoms = 0;
+        }
     }
-    else if(argc1 && argv1)
+}
+
+static void toggle_presetset(t_toggle* x, t_preset* preset1, t_preset* preset2, float delta)
+{
+    if(preset1 && preset2)
     {
-        f = (char)atom_getfloat(argv1);
+        if(preset1->p_natoms && atom_gettype(preset1->p_atoms) == A_FLOAT &&
+           preset2->p_natoms && atom_gettype(preset2->p_atoms) == A_FLOAT)
+        {
+            x->f_active = (char)pd_clip_min(atom_getfloat(preset1->p_atoms), atom_getfloat(preset2->p_atoms));
+            toggle_output(x);
+        }
     }
-    else if(argc2 && argv2)
+    else if(preset1)
     {
-        f = (char)atom_getfloat(argv2);
+        if(preset1->p_natoms && atom_gettype(preset1->p_atoms) == A_FLOAT)
+        {
+            x->f_active = (char)atom_getfloat(preset1->p_atoms);
+            toggle_output(x);
+        }
     }
-    else
+    else if(preset2)
     {
-        return;
-    }
-    if(f != x->f_active)
-    {
-        x->f_active = f;
-        toggle_output(x);
+        if(preset2->p_natoms && atom_gettype(preset2->p_atoms) == A_FLOAT)
+        {
+            x->f_active = (char)atom_getfloat(preset2->p_atoms);
+            toggle_output(x);
+        }
     }
 }
 
@@ -218,6 +217,10 @@ extern "C" void setup_c0x2etoggle(void)
         eclass_addmethod(c, (method) toggle_bang,            "bang",             A_NULL, 0);
         eclass_addmethod(c, (method) toggle_mousedown,       "mousedown",        A_NULL, 0);
         eclass_addmethod(c, (method) toggle_preset,          "preset",           A_NULL, 0);
+        
+        eclass_addmethod(c, (method) toggle_presetinfos,     "presetinfos",      A_CANT, 0);
+        eclass_addmethod(c, (method) toggle_presetget,       "presetget",        A_CANT, 0);
+        eclass_addmethod(c, (method) toggle_presetset,       "presetset",        A_CANT, 0);
         
         CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
         CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);

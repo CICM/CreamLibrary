@@ -126,4 +126,6 @@ static t_symbol* cream_sym_nothing              = gensym("''");
 static t_symbol* cream_sym_left_bracket         = gensym("[");
 static t_symbol* cream_sym_right_bracket        = gensym("]");
 
+static t_symbol* cream_sym_state                = gensym("state");
+
 #endif

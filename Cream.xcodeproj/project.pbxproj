@@ -230,6 +230,7 @@
 			children = (
 				8F27CF801B31CC2500220A14 /* c.bang.cpp */,
 				8F27CF941B31CC2500220A14 /* c.toggle.cpp */,
+				8F27CF871B31CC2500220A14 /* c.knob.cpp */,
 				8F27CF811B31CC2500220A14 /* c.blackboard.cpp */,
 				8F27CF821B31CC2500220A14 /* c.breakpoints.cpp */,
 				8F27CF841B31CC2500220A14 /* c.dsp_tilde.cpp */,
@@ -243,7 +244,6 @@
 				8F27CF911B31CC2500220A14 /* c.scope_tilde.cpp */,
 				8F27CF831B31CC2500220A14 /* c.colorpanel.cpp */,
 				8F27CF881B31CC2500220A14 /* c.matrix.cpp */,
-				8F27CF871B31CC2500220A14 /* c.knob.cpp */,
 				8F27CF8D1B31CC2500220A14 /* c.plane.cpp */,
 				8F27CF901B31CC2500220A14 /* c.rslider.cpp */,
 				8F27CF921B31CC2500220A14 /* c.slider.cpp */,

@@ -349,6 +349,55 @@ static void knob_preset(t_knob *x, t_binbuf *b)
     binbuf_addv(b, (char *)"sf", &s_float, (float)x->f_value);
 }
 
+static void knob_presetinfos(t_knob* x, int* nppresets, t_preset** presets)
+{
+    *nppresets = 1;
+    *presets = (t_preset *)malloc(sizeof(t_preset));
+    if(*presets)
+    {
+        presets[0]->p_name   = cream_sym_state;
+        presets[0]->p_natoms = 1;
+        presets[0]->p_atoms  = (t_atom *)malloc(sizeof(t_atom *));
+        if(presets[0]->p_atoms)
+        {
+            atom_setfloat(presets[0]->p_atoms, x->f_min);
+        }
+        else
+        {
+            presets[0]->p_natoms = 0;
+        }
+    }
+    else
+    {
+        *nppresets = 0;
+    }
+}
+
+static void knob_presetget(t_knob* x, t_preset* preset)
+{
+    if(preset && preset->p_name == cream_sym_state)
+    {
+        preset->p_natoms = 1;
+        preset->p_atoms  = (t_atom *)malloc(sizeof(t_atom *));
+        if(preset->p_atoms)
+        {
+            atom_setfloat(preset->p_atoms, (float)x->f_value);
+        }
+        else
+        {
+            preset->p_natoms = 0;
+        }
+    }
+}
+
+static void knob_presetset(t_knob* x, t_symbol* name, t_symbol* interpolation,
+                             int argc1, t_atom* argv1,
+                             int argc2, t_atom* argv2,
+                             float delta)
+{
+    ;
+}
+
 static void *knob_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_knob *x = (t_knob *)eobj_new(knob_class);
