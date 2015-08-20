@@ -25,29 +25,6 @@ typedef struct _radio
 
 static t_eclass *radio_class;
 
-static void radio_getdrawparams(t_radio *x, t_object *patcherview, t_edrawparams *params)
-{
-	params->d_borderthickness   = 2;
-	params->d_cornersize        = 2;
-    params->d_bordercolor       = x->f_color_border;
-    params->d_boxfillcolor      = x->f_color_background;
-}
-
-static void radio_oksize(t_radio *x, t_rect *newrect)
-{
-    newrect->width = pd_clip_min(newrect->width, 15.);
-    newrect->height = pd_clip_min(newrect->height, 15.);
-    x->f_direction = (newrect->width > newrect->height) ? 1 : 0;
-    if(x->f_direction)
-    {
-        newrect->width = pd_clip_min(newrect->width, x->f_nitems * newrect->height);
-    }
-    else
-    {
-        newrect->height = pd_clip_min(newrect->height, x->f_nitems * newrect->width);
-    }
-}
-
 static void radio_output(t_radio *x)
 {
     int i;
@@ -166,6 +143,30 @@ static t_pd_err radio_notify(t_radio *x, t_symbol *s, t_symbol *msg, void *sende
 	return 0;
 }
 
+static void radio_getdrawparams(t_radio *x, t_object *patcherview, t_edrawparams *params)
+{
+    params->d_borderthickness   = 2;
+    params->d_cornersize        = 2;
+    params->d_bordercolor       = x->f_color_border;
+    params->d_boxfillcolor      = x->f_color_background;
+}
+
+static void radio_oksize(t_radio *x, t_rect *newrect)
+{
+    newrect->width = pd_clip_min(newrect->width, 15.);
+    newrect->height = pd_clip_min(newrect->height, 15.);
+    x->f_direction = (newrect->width > newrect->height) ? 1 : 0;
+    if(x->f_direction)
+    {
+        newrect->width = pd_clip_min(newrect->width, x->f_nitems * newrect->height);
+    }
+    else
+    {
+        newrect->height = pd_clip_min(newrect->height, x->f_nitems * newrect->width);
+    }
+}
+
+
 static void draw_background(t_radio *x, t_object *view, t_rect *rect)
 {
 	int i;
@@ -174,28 +175,26 @@ static void draw_background(t_radio *x, t_object *view, t_rect *rect)
 	if (g)
 	{
         egraphics_set_color_rgba(g, &x->f_color_border);
-        egraphics_set_line_width(g, 1);
-        egraphics_rectangle(g, 0, 0, rect->width, rect->height);
-        egraphics_fill(g);
-        egraphics_set_color_rgba(g, &x->f_color_background);
-        const float ratio = x->f_direction ? (rect->width / x->f_nitems) : rect->height / x->f_nitems;
+        egraphics_set_line_width(g, 2.f);
+        const float ratio = x->f_direction ? ((rect->width - 4.f) / x->f_nitems) : (rect->height - 4.f) / x->f_nitems;
         if(x->f_mode)
         {
-            const float offset = x->f_direction ? (rect->height * 0.45) : rect->width * 0.45;
+            const float offset = x->f_direction ? (rect->height * 0.5f - 2.f) : (rect->width * 0.5f - 2.f);
+            const float dist = offset * 2.f;
             if(x->f_direction)
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    egraphics_rectangle(g, (i + 0.5) * ratio - offset, rect->height * 0.05, offset * 2., offset * 2.);
-                    egraphics_fill(g);
+                    egraphics_rectangle(g, (i + 0.5f) * ratio - offset + 2.f, 2.f, dist, dist);
+                    egraphics_stroke(g);
                 }
             }
             else
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    egraphics_rectangle(g, rect->width * 0.05, (i + 0.5) * ratio - offset, offset * 2., offset * 2.);
-                    egraphics_fill(g);
+                    egraphics_rectangle(g, 2.f, (i + 0.5) * ratio - offset + 2.f, dist, dist);
+                    egraphics_stroke(g);
                 }
             }
         }
@@ -203,22 +202,24 @@ static void draw_background(t_radio *x, t_object *view, t_rect *rect)
         {
             if(x->f_direction)
             {
+                const float height = rect->height * 0.5f;
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    egraphics_circle(g, (i + 0.5) * ratio, rect->height * 0.5, rect->height * 0.45);
-                    egraphics_fill(g);
+                    egraphics_circle(g, (i + 0.5f) * ratio + 2.f, height, height - 2.f);
+                    egraphics_stroke(g);
                 }
             }
             else
             {
+                const float width = rect->width * 0.5f;
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    egraphics_circle(g, rect->width * 0.5, (i + 0.5) * ratio, rect->width * 0.45);
-                    egraphics_fill(g);
+                    egraphics_circle(g, width, (i + 0.5f) * ratio + 2.f, width - 2.f);
+                    egraphics_stroke(g);
                 }
             }
         }
-        
+    
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
 	}
 	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
@@ -232,30 +233,28 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
 	if (g)
 	{
         egraphics_set_color_rgba(g, &x->f_color_item);
-        const float ratio = x->f_direction ? (rect->width / x->f_nitems) : rect->height / x->f_nitems;
+        const float ratio = x->f_direction ? ((rect->width - 4.f) / x->f_nitems) : (rect->height - 4.f) / x->f_nitems;
         if(x->f_mode)
         {
-            const float offset = x->f_direction ? (rect->height * 0.35) : rect->width * 0.35;
+            egraphics_set_line_width(g, 2.f);
+            const float offset = x->f_direction ? (rect->height * 0.5f - 4.f) : (rect->width * 0.5f - 4.f);
+            const float dist = offset * 2.f;
             if(x->f_direction)
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    if(x->f_items[i])
-                    {
-                        egraphics_rectangle(g, (i + 0.5) * ratio - offset, rect->height * 0.15, offset * 2., offset * 2.);
-                        egraphics_fill(g);
-                    }
+                    const float val = (i + 0.5f) * ratio - offset + 2.f;
+                    egraphics_line_fast(g, val, 4.f, val + dist, 4.f + dist);
+                    egraphics_line_fast(g, val, 4.f  + dist, val + dist, 4.f);
                 }
             }
             else
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    if(x->f_items[i])
-                    {
-                        egraphics_rectangle(g, rect->width * 0.15, (i + 0.5) * ratio - offset, offset * 2., offset * 2.);
-                        egraphics_fill(g);
-                    }
+                    const float val = (i + 0.5f) * ratio - offset + 2.f;
+                    egraphics_line_fast(g, 4.f, val, 4.f + dist, val + dist);
+                    egraphics_line_fast(g, 4.f + dist, val, 4.f, val + dist);
                 }
             }
         }
@@ -263,22 +262,24 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
         {
             if(x->f_direction)
             {
+                const float height = rect->height * 0.5f;
                 for(i = 0; i < x->f_nitems; i++)
                 {
                     if(x->f_items[i])
                     {
-                        egraphics_circle(g, (i + 0.5) * ratio, rect->height * 0.5, rect->height * 0.35);
+                        egraphics_circle(g, (i + 0.5f) * ratio + 2.f, height, height - 4.f);
                         egraphics_fill(g);
                     }
                 }
             }
             else
             {
+                const float width = rect->width * 0.5f;
                 for(i = 0; i < x->f_nitems; i++)
                 {
                     if(x->f_items[i])
                     {
-                        egraphics_circle(g, rect->width * 0.5, (i + 0.5) * ratio, rect->width * 0.35);
+                        egraphics_circle(g, width, (i + 0.5f) * ratio + 2.f, width - 4.f);
                         egraphics_fill(g);
                     }
                 }

@@ -155,7 +155,7 @@ extern "C" void setup_c0x2ebang(void)
         CLASS_ATTR_RGBA                 (c, "bacolor", 0, t_bang, b_color_bang);
         CLASS_ATTR_LABEL                (c, "bacolor", 0, "Bang Color");
         CLASS_ATTR_ORDER                (c, "bacolor", 0, "3");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bacolor", 0, "0. 0. 0. 1.");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bacolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "bacolor", 0, "color");
         
         // We register the class. This function is important it will set up some dsp members if needs and the properties window
@@ -256,7 +256,7 @@ static void bang_getdrawparams(t_bang *x, t_object *view, t_edrawparams *params)
     params->d_bordercolor       = x->b_color_border;
     // We define the background color with our border attribute color. The background color will be used when the
     // t_bang is inactive to draw the circle.
-    params->d_boxfillcolor      = x->b_color_border;
+    params->d_boxfillcolor      = x->b_color_background;
 }
 
 // Defines and validates the size of a GUI.
@@ -288,7 +288,6 @@ static void bang_oksize(t_bang *x, t_rect *newrect)
  */
 static void bang_paint(t_bang *x, t_object *view)
 {
-    float size;
     t_rect rect;
     // We defines a initialize a t_rect with the size of the t_ebox.
     ebox_get_rect_for_view((t_ebox *)x, &rect);
@@ -300,7 +299,7 @@ static void bang_paint(t_bang *x, t_object *view)
     if(g)
     {
         
-        size = rect.width * 0.5;
+        const  float size = rect.width * 0.5;
         // We set up the bang color is the t_bang is currently active.
         // Otherwise we use the background color.
         if(x->b_active)
@@ -312,9 +311,15 @@ static void bang_paint(t_bang *x, t_object *view)
             egraphics_set_color_rgba(g, &x->b_color_background);
         }
         // We add a circle at the center the t_elayer.
-        egraphics_circle(g, floor(size + 0.5), floor(size + 0.5), size * 0.9);
+        egraphics_circle(g, size, size, (size - 2.f));
         // We fill the t_elayer with the drawing.
-        egraphics_fill(g);
+        egraphics_fill_preserve(g);
+        // We change the color.
+        egraphics_set_color_rgba(g, &x->b_color_border);
+        // We change the color.
+        egraphics_set_line_width(g, 2.f);
+        // We stroke the t_elayer with the drawing.
+        egraphics_stroke(g);
         // We mark the layer as ready to be painted.
         ebox_end_layer((t_ebox*)x, bang_sym_background_layer);
     }

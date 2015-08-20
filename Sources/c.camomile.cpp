@@ -120,7 +120,7 @@ static void *camomile_new(t_symbol *s, int argc, t_atom *argv)
     
     if(x && d)
     {
-        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK);
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWNO | EBOX_IGNORELOCKCLICK);
         x->f_nboxes = 0;
         x->f_boxes  = NULL;
         ebox_attrprocess_viabinbuf(x, d);
@@ -150,7 +150,7 @@ extern "C" void setup_c0x2ecamomile(void)
     CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
     CLASS_ATTR_INVISIBLE            (c, "receive", 1);
-    CLASS_ATTR_DEFAULT              (c, "size", 0, "50. 50.");
+    CLASS_ATTR_DEFAULT              (c, "size", 0, "600. 400.");
     CLASS_ATTR_DEFAULT              (c, "pinned", 0, "1");
     CLASS_ATTR_INVISIBLE            (c, "pinned", 1);
     
