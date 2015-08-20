@@ -347,7 +347,7 @@ static void draw_background(t_presetobj *x, t_object *view, t_rect *rect)
             }
 
             sprintf(number, "%i", i);
-            etext_layout_set(jtl, number, &x->j_box.b_font, xc, yc, rect->width, 0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->j_box.b_font, xc, yc, rect->width, 0, ETEXT_CENTRED, ETEXT_NOWRAP);
             etext_layout_settextcolor(jtl, &x->f_color_text);
             etext_layout_draw(jtl, g);
 

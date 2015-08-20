@@ -132,7 +132,7 @@ static void draw_background(t_number *x, t_object *view, t_rect *rect)
         if(jtl)
         {
             const float width = sys_fontwidth(ebox_getfontsize((t_ebox *)x)) + 6;
-            etext_layout_set(jtl, "©", &x->j_box.b_font, width * 0.5f, rect->height * 0.5f, width, rect->height, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_NOWRAP);
+            etext_layout_set(jtl, "©", &x->j_box.b_font, 1.f, 0., width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_settextcolor(jtl, &x->f_color_text);
             etext_layout_draw(jtl, g);
@@ -174,7 +174,7 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
             else
                 sprintf(number, "%.6f", x->f_value);
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->j_box.b_font, width, rect->height * 0.5f, rect->width - width, rect->height, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0., rect->width - width, rect->height, ETEXT_TOPRIGHT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
@@ -198,7 +198,7 @@ static void draw_value_text(t_number *x,  t_object *view, t_rect *rect)
             sprintf(number, "%s|", x->f_textvalue);
             etext_layout_settextcolor(jtl, &x->f_color_text);
             
-            etext_layout_set(jtl, number, &x->j_box.b_font, width, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0., rect->width - 3, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             ebox_end_layer((t_ebox*)x, cream_sym_value_layer);

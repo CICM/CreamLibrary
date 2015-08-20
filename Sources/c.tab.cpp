@@ -473,7 +473,7 @@ static void draw_text(t_tab *x, t_object *view, t_rect *rect)
                                          rect->width * 0.5,
                                          ratio * (i + 0.5),
                                          rect->width,
-                                         0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_NOWRAP);
+                                         0, ETEXT_CENTRED, ETEXT_NOWRAP);
                         etext_layout_draw(jtl, g);
                     }
                 }
@@ -490,7 +490,7 @@ static void draw_text(t_tab *x, t_object *view, t_rect *rect)
                                          ratio * (i + 0.5),
                                          rect->height * 0.5,
                                          ratio - 2,
-                                         0, ETEXT_CENTER, ETEXT_JCENTER, ETEXT_WRAP);
+                                         0, ETEXT_CENTRED, ETEXT_WRAP);
                         etext_layout_draw(jtl, g);
                     }
                 }

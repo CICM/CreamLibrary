@@ -96,7 +96,7 @@ static void draw_background(t_number_tilde *x, t_object *view, t_rect *rect)
         jtl = etext_layout_create();
         if(jtl)
         {
-            etext_layout_set(jtl, "~", &x->j_box.b_font, 1, rect->height / 2., rect->width, 0, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, "~", &x->j_box.b_font, 1, rect->height / 2., rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
             etext_layout_settextcolor(jtl, &x->f_color_text);
             etext_layout_draw(jtl, g);
             
@@ -138,7 +138,7 @@ static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
             else
                 sprintf(number, "%.6f", x->f_peak_value);
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->j_box.b_font, sys_fontwidth(x->j_box.b_font.c_size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->j_box.b_font, sys_fontwidth(x->j_box.b_font.c_size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             ebox_end_layer((t_ebox*)x, cream_sym_value_layer);

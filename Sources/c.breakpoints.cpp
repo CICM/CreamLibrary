@@ -737,7 +737,7 @@ static void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
             ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
             return;
         }
-        etext_layout_set(jtl, number, &x->j_box.b_font, 5, height * 0.5, rect->width, 0, ETEXT_LEFT, ETEXT_JLEFT, ETEXT_NOWRAP);
+        etext_layout_set(jtl, number, &x->j_box.b_font, 5, height * 0.5, rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
         etext_layout_settextcolor(jtl, &x->f_color_text);
         etext_layout_draw(jtl, g);
         
