@@ -660,9 +660,6 @@ extern "C" void setup_c0x2ewavesel(void)
     wavesel_sym_bgcolor          = gensym("bgcolor");
     wavesel_sym_wacolor          = gensym("wacolor");
     wavesel_sym_secolor          = gensym("secolor");
-    
-    post("c.wavesel~ 0.1 , a waveform~ wannabe, that isn't there yet...");
-    post("fjkraan@xs4all.nl, 2015-07-09");
 
 }
 
