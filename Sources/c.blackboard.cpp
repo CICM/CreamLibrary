@@ -76,7 +76,7 @@ static t_pd_err blackboard_notify(t_blackboard *x, t_symbol *s, t_symbol *msg, v
 
 static void blackboard_clear(t_blackboard *x)
 {
-    if(!ebox_isdrawable((t_ebox *)x) || x->j_box.b_window_id == NULL)
+    if(!ebox_isdrawable((t_ebox *)x) || is_valid_symbol(x->j_box.b_window_id))
         return;
     
     sys_vgui((char *)"%s delete %snopen\n", x->j_box.b_drawing_id->s_name, x->j_box.b_all_id->s_name);

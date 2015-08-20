@@ -73,79 +73,6 @@ void menu_mousemove(t_menu *x, t_object *patcherview, t_pt pt, long modifiers);
 
 void menu_preset(t_menu *x, t_binbuf *b);
 
-extern "C" void setup_c0x2emenu(void)
-{
-	t_eclass *c;
-    
-	c = eclass_new("c.menu", (method)menu_new, (method)menu_free, (short)sizeof(t_menu), 0L, A_GIMME, 0);
-    
-    eclass_guiinit(c, 0);
-    eclass_addmethod(c, (method) menu_assist,          "assist",           A_NULL, 0);
-	eclass_addmethod(c, (method) menu_paint,           "paint",            A_NULL, 0);
-	eclass_addmethod(c, (method) menu_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) menu_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) menu_oksize,          "oksize",           A_NULL, 0);
-    
-    eclass_addmethod(c, (method) menu_append,          "append",           A_GIMME,0);
-    eclass_addmethod(c, (method) menu_insert,          "insert",           A_GIMME,0);
-    eclass_addmethod(c, (method) menu_setitem,         "setitem",          A_GIMME,0);
-    eclass_addmethod(c, (method) menu_delete,          "delete",           A_GIMME,0);
-    eclass_addmethod(c, (method) menu_clear,           "clear",            A_GIMME,0);
-    eclass_addmethod(c, (method) menu_state,           "state",            A_GIMME,0);
-    
-    eclass_addmethod(c, (method) menu_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) menu_symbol,          "anything",         A_GIMME,0);
-    eclass_addmethod(c, (method) menu_set,             "set",              A_GIMME,0);
-    eclass_addmethod(c, (method) menu_output,          "bang",             A_NULL, 0);
-    
-    eclass_addmethod(c, (method) menu_mousedown,        "mousedown",       A_NULL, 0);
-    eclass_addmethod(c, (method) menu_mousemove,        "mousemove",       A_NULL, 0);
-    eclass_addmethod(c, (method) menu_mouseleave,       "mouseleave",      A_NULL, 0);
-    eclass_addmethod(c, (method) menu_preset,           "preset",          A_NULL, 0);
-    
-	CLASS_ATTR_DEFAULT              (c, "size", 0, "100 13");
-    
-    CLASS_ATTR_LONG                 (c, "hover", 0, t_menu, f_hover);
-	CLASS_ATTR_LABEL                (c, "hover", 0, "Hover Mode");
-	CLASS_ATTR_ORDER                (c, "hover", 0, "1");
-    CLASS_ATTR_FILTER_CLIP          (c, "hover", 0, 1);
-	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "hover", 0, "0");
-    CLASS_ATTR_STYLE                (c, "hover", 0, "onoff");
-    
-    CLASS_ATTR_SYMBOL_VARSIZE       (c, "items", 0, t_menu, f_items, f_items_size, MAXITEMS);
-    CLASS_ATTR_LABEL                (c, "items", 0, "Items");
-    CLASS_ATTR_ACCESSORS            (c, "items", menu_items_get, menu_items_set);
-    CLASS_ATTR_ORDER                (c, "items", 0, "1");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "items", 0, "(null)");
-    
-    CLASS_ATTR_LONG_VARSIZE         (c, "states", 0, t_menu, f_states, f_states_size, MAXITEMS);
-    CLASS_ATTR_LABEL                (c, "states", 0, "Items Disable State");
-    CLASS_ATTR_ACCESSORS            (c, "states", NULL, menu_states_set);
-    CLASS_ATTR_ORDER                (c, "states", 0, "1");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "states", 0, "0");
-    
-	CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_menu, f_color_background);
-	CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
-	CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
-	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
-    CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
-    
-	CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_menu, f_color_border);
-	CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
-	CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
-	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
-	CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
-    
-	CLASS_ATTR_RGBA                 (c, "textcolor", 0, t_menu, f_color_text);
-	CLASS_ATTR_LABEL                (c, "textcolor", 0, "Text Color");
-	CLASS_ATTR_ORDER                (c, "textcolor", 0, "3");
-	CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
-	CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
-    
-    eclass_register(CLASS_BOX, c);
-	menu_class = c;
-}
-
 void *menu_new(t_symbol *s, int argc, t_atom *argv)
 {
 	t_menu *x =  NULL;
@@ -285,7 +212,7 @@ void menu_delete(t_menu *x, t_symbol *s, int argc, t_atom *argv)
                 x->f_items[i] = x->f_items[i+1];
             x->f_items_size--;
             for(i = (int)x->f_items_size; i < MAXITEMS; i++)
-                x->f_items[i] = s_null;
+                x->f_items[i] = NULL;
             
             ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
             
@@ -300,7 +227,7 @@ void menu_clear(t_menu *x, t_symbol *s, int argc, t_atom *argv)
     int i;
     for(i = 0; i < MAXITEMS; i++)
     {
-        x->f_items[i] = s_null;
+        x->f_items[i] = NULL;
     }
     x->f_items_size = 0;
     ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
@@ -333,7 +260,7 @@ void menu_clean(t_menu *x)
     int i, j;
     for(i = 0; i < x->f_items_size; i++)
     {
-        if(x->f_items[i] == s_null)
+        if(x->f_items[i] == NULL)
         {
             for(j = i; j < x->f_items_size; j++)
                 x->f_items[j] = x->f_items[j+1];
@@ -471,7 +398,7 @@ void draw_background(t_menu *x, t_object *view, t_rect *rect)
 	if(g && jtl)
 	{
         
-        if(x->f_items_size == 0 || (x->f_items_size == 1 && x->f_items[0] == s_null))
+        if(x->f_items_size == 0 || (x->f_items_size == 1 && x->f_items[0] == NULL))
         {
             ;
         }
@@ -525,7 +452,7 @@ void draw_selection(t_menu *x, t_object *view, t_rect *rect)
         for(i = 0; i < x->f_items_size; i++)
         {
             egraphics_line_fast(g, 0., x->f_close_height * (i + 1), rect->width - x->f_close_height, x->f_close_height * (i + 1));
-            if(x->f_items[i] != s_null)
+            if(x->f_items[i] != NULL)
             {
                 if(x->f_states[i])
                     etext_layout_settextcolor(jtl, &x->f_color_border);
@@ -547,7 +474,7 @@ void draw_selection(t_menu *x, t_object *view, t_rect *rect)
         egraphics_set_line_width(g, 2);
         egraphics_line_fast(g, 0., x->f_close_height, rect->width, x->f_close_height);
         
-        if(x->f_items_size > x->f_item_selected &&  x->f_items[x->f_item_selected] != s_null)
+        if(x->f_items_size > x->f_item_selected &&  x->f_items[x->f_item_selected] != NULL)
         {
             egraphics_circle(g, rect->width - x->f_close_height * 0.5 + 1.5, x->f_close_height * (x->f_item_selected + 1.5), x->f_close_height * 0.25);
             egraphics_stroke(g);
@@ -635,9 +562,7 @@ t_pd_err menu_items_set(t_menu *x, t_object *attr, int ac, t_atom *av)
             atom_string(av+i, text, MAXPDSTRING);
             x->f_items[i] = gensym(text);
         }
-        
     }
-    
     x->f_items_size = ac;
     return 0;
 }
@@ -655,5 +580,77 @@ t_pd_err menu_items_get(t_menu *x, t_object *attr, long* ac, t_atom **av)
     return 0;
 }
 
+extern "C" void setup_c0x2emenu(void)
+{
+    t_eclass *c;
+    
+    c = eclass_new("c.menu", (method)menu_new, (method)menu_free, (short)sizeof(t_menu), 0L, A_GIMME, 0);
+    
+    eclass_guiinit(c, 0);
+    eclass_addmethod(c, (method) menu_assist,          "assist",           A_NULL, 0);
+    eclass_addmethod(c, (method) menu_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (method) menu_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (method) menu_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (method) menu_oksize,          "oksize",           A_NULL, 0);
+    
+    eclass_addmethod(c, (method) menu_append,          "append",           A_GIMME,0);
+    eclass_addmethod(c, (method) menu_insert,          "insert",           A_GIMME,0);
+    eclass_addmethod(c, (method) menu_setitem,         "setitem",          A_GIMME,0);
+    eclass_addmethod(c, (method) menu_delete,          "delete",           A_GIMME,0);
+    eclass_addmethod(c, (method) menu_clear,           "clear",            A_GIMME,0);
+    eclass_addmethod(c, (method) menu_state,           "state",            A_GIMME,0);
+    
+    eclass_addmethod(c, (method) menu_float,           "float",            A_FLOAT,0);
+    eclass_addmethod(c, (method) menu_symbol,          "anything",         A_GIMME,0);
+    eclass_addmethod(c, (method) menu_set,             "set",              A_GIMME,0);
+    eclass_addmethod(c, (method) menu_output,          "bang",             A_NULL, 0);
+    
+    eclass_addmethod(c, (method) menu_mousedown,        "mousedown",       A_NULL, 0);
+    eclass_addmethod(c, (method) menu_mousemove,        "mousemove",       A_NULL, 0);
+    eclass_addmethod(c, (method) menu_mouseleave,       "mouseleave",      A_NULL, 0);
+    eclass_addmethod(c, (method) menu_preset,           "preset",          A_NULL, 0);
+    
+    CLASS_ATTR_DEFAULT              (c, "size", 0, "100 13");
+    
+    CLASS_ATTR_LONG                 (c, "hover", 0, t_menu, f_hover);
+    CLASS_ATTR_LABEL                (c, "hover", 0, "Hover Mode");
+    CLASS_ATTR_ORDER                (c, "hover", 0, "1");
+    CLASS_ATTR_FILTER_CLIP          (c, "hover", 0, 1);
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "hover", 0, "0");
+    CLASS_ATTR_STYLE                (c, "hover", 0, "onoff");
+    
+    CLASS_ATTR_SYMBOL_VARSIZE       (c, "items", 0, t_menu, f_items, f_items_size, MAXITEMS);
+    CLASS_ATTR_LABEL                (c, "items", 0, "Items");
+    CLASS_ATTR_ACCESSORS            (c, "items", menu_items_get, menu_items_set);
+    CLASS_ATTR_ORDER                (c, "items", 0, "1");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "items", 0, "");
+    
+    CLASS_ATTR_LONG_VARSIZE         (c, "states", 0, t_menu, f_states, f_states_size, MAXITEMS);
+    CLASS_ATTR_LABEL                (c, "states", 0, "Items Disable State");
+    CLASS_ATTR_ACCESSORS            (c, "states", NULL, menu_states_set);
+    CLASS_ATTR_ORDER                (c, "states", 0, "1");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "states", 0, "0");
+    
+    CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_menu, f_color_background);
+    CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
+    CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
+    CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
+    
+    CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_menu, f_color_border);
+    CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
+    CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
+    CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
+    
+    CLASS_ATTR_RGBA                 (c, "textcolor", 0, t_menu, f_color_text);
+    CLASS_ATTR_LABEL                (c, "textcolor", 0, "Text Color");
+    CLASS_ATTR_ORDER                (c, "textcolor", 0, "3");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
+    CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
+    
+    eclass_register(CLASS_BOX, c);
+    menu_class = c;
+}
 
 

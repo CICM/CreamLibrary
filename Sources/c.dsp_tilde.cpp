@@ -10,7 +10,7 @@
 
 #include "../c.library.hpp"
 
-#ifdef _MSC_VER
+#if (_MSC_VER >= 1800)
 static double round(double val)
 {
 	return floor(val + 0.5);

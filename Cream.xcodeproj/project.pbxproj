@@ -109,10 +109,16 @@
 		8F823F841B33011600F5A69E /* c.loadmess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F811B33011600F5A69E /* c.loadmess.cpp */; };
 		8F823F851B33011600F5A69E /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F821B33011600F5A69E /* c.prepend.cpp */; };
 		8F823F861B33011600F5A69E /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F821B33011600F5A69E /* c.prepend.cpp */; };
+		8F8963031B529DE100A996D7 /* c.wavesel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F8963021B529DE100A996D7 /* c.wavesel.cpp */; };
+		8F8963041B529DE100A996D7 /* c.wavesel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F8963021B529DE100A996D7 /* c.wavesel.cpp */; };
 		8FAC0BDC1969731800E09ACB /* c.library.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F26F18A17E76273005FCB97 /* c.library.cpp */; };
 		8FAC0BE31969731800E09ACB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59FB02F717A7FAA9001E977D /* Accelerate.framework */; };
-		8FAC0BF21969731800E09ACB /* c.library.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.h */; };
-		8FB8EB6819007B1E005FAF6A /* c.library.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.h */; };
+		8FAC0BF21969731800E09ACB /* c.library.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.hpp */; };
+		8FB8EB6819007B1E005FAF6A /* c.library.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 8FB8EB6719007B1E005FAF6A /* c.library.hpp */; };
+		8FB904501B64F2E9000A8449 /* c.keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB9044F1B64F2E9000A8449 /* c.keyboard.cpp */; };
+		8FB904511B64F2E9000A8449 /* c.keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB9044F1B64F2E9000A8449 /* c.keyboard.cpp */; };
+		8FB904541B6661D9000A8449 /* c.camomile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB904531B6661D9000A8449 /* c.camomile.cpp */; };
+		8FB904551B6661D9000A8449 /* c.camomile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB904531B6661D9000A8449 /* c.camomile.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -170,8 +176,11 @@
 		8F5401581B3420EC00A2E969 /* enative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = enative.h; path = ThirdParty/CicmWrapper/Sources/enative.h; sourceTree = SOURCE_ROOT; };
 		8F823F811B33011600F5A69E /* c.loadmess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.loadmess.cpp; path = Deprecated/c.loadmess.cpp; sourceTree = SOURCE_ROOT; };
 		8F823F821B33011600F5A69E /* c.prepend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.prepend.cpp; path = Deprecated/c.prepend.cpp; sourceTree = SOURCE_ROOT; };
+		8F8963021B529DE100A996D7 /* c.wavesel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.wavesel.cpp; path = Sources/c.wavesel.cpp; sourceTree = SOURCE_ROOT; };
 		8FAC0BFB1969731800E09ACB /* Cream.pd_darwin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Cream.pd_darwin; sourceTree = BUILT_PRODUCTS_DIR; };
-		8FB8EB6719007B1E005FAF6A /* c.library.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = c.library.h; sourceTree = "<group>"; };
+		8FB8EB6719007B1E005FAF6A /* c.library.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = c.library.hpp; sourceTree = "<group>"; };
+		8FB9044F1B64F2E9000A8449 /* c.keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.keyboard.cpp; path = Sources/c.keyboard.cpp; sourceTree = SOURCE_ROOT; };
+		8FB904531B6661D9000A8449 /* c.camomile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.camomile.cpp; path = Sources/c.camomile.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,7 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				8F26F18A17E76273005FCB97 /* c.library.cpp */,
-				8FB8EB6719007B1E005FAF6A /* c.library.h */,
+				8FB8EB6719007B1E005FAF6A /* c.library.hpp */,
 				8FB8EB2D19007B04005FAF6A /* Sources */,
 				8FB8EB69190080E9005FAF6A /* Deprecated */,
 				8FD16282196FCA1A00D5104D /* CicmWrapper */,
@@ -220,26 +229,29 @@
 			isa = PBXGroup;
 			children = (
 				8F27CF801B31CC2500220A14 /* c.bang.cpp */,
+				8F27CF941B31CC2500220A14 /* c.toggle.cpp */,
+				8F27CF871B31CC2500220A14 /* c.knob.cpp */,
 				8F27CF811B31CC2500220A14 /* c.blackboard.cpp */,
 				8F27CF821B31CC2500220A14 /* c.breakpoints.cpp */,
-				8F27CF831B31CC2500220A14 /* c.colorpanel.cpp */,
 				8F27CF841B31CC2500220A14 /* c.dsp_tilde.cpp */,
 				8F27CF851B31CC2500220A14 /* c.gain_tilde.cpp */,
 				8F27CF861B31CC2500220A14 /* c.incdec.cpp */,
-				8F27CF871B31CC2500220A14 /* c.knob.cpp */,
-				8F27CF881B31CC2500220A14 /* c.matrix.cpp */,
 				8F27CF891B31CC2500220A14 /* c.menu.cpp */,
 				8F27CF8A1B31CC2500220A14 /* c.meter_tilde.cpp */,
 				8F27CF8B1B31CC2500220A14 /* c.number_tilde.cpp */,
 				8F27CF8C1B31CC2500220A14 /* c.number.cpp */,
-				8F27CF8D1B31CC2500220A14 /* c.plane.cpp */,
 				8F27CF8E1B31CC2500220A14 /* c.preset.cpp */,
-				8F27CF8F1B31CC2500220A14 /* c.radio.cpp */,
-				8F27CF901B31CC2500220A14 /* c.rslider.cpp */,
 				8F27CF911B31CC2500220A14 /* c.scope_tilde.cpp */,
+				8F27CF831B31CC2500220A14 /* c.colorpanel.cpp */,
+				8F27CF881B31CC2500220A14 /* c.matrix.cpp */,
+				8F27CF8D1B31CC2500220A14 /* c.plane.cpp */,
+				8F27CF901B31CC2500220A14 /* c.rslider.cpp */,
 				8F27CF921B31CC2500220A14 /* c.slider.cpp */,
 				8F27CF931B31CC2500220A14 /* c.tab.cpp */,
-				8F27CF941B31CC2500220A14 /* c.toggle.cpp */,
+				8F27CF8F1B31CC2500220A14 /* c.radio.cpp */,
+				8F8963021B529DE100A996D7 /* c.wavesel.cpp */,
+				8FB9044F1B64F2E9000A8449 /* c.keyboard.cpp */,
+				8FB904531B6661D9000A8449 /* c.camomile.cpp */,
 			);
 			name = Sources;
 			path = Chocolate;
@@ -254,6 +266,8 @@
 				8F27CF611B31CA2300220A14 /* c.patcherargs.cpp */,
 				8F27CF621B31CA2300220A14 /* c.patcherinfos.cpp */,
 				8F27CF631B31CA2300220A14 /* c.patchermess.cpp */,
+				8F823F821B33011600F5A69E /* c.prepend.cpp */,
+				8F823F811B33011600F5A69E /* c.loadmess.cpp */,
 				8F27CF641B31CA2300220A14 /* FFTConvolver.cpp */,
 				8F27CF651B31CA2300220A14 /* FFTConvolver.h */,
 				8F27CF5C1B31CA2300220A14 /* AudioFFT.cpp */,
@@ -269,8 +283,6 @@
 			isa = PBXGroup;
 			children = (
 				8F27CF171B31C87900220A14 /* cicm_wrapper.h */,
-				8F823F811B33011600F5A69E /* c.loadmess.cpp */,
-				8F823F821B33011600F5A69E /* c.prepend.cpp */,
 				8F27CF181B31C87900220A14 /* ebox.c */,
 				8F27CF191B31C87900220A14 /* ebox.h */,
 				8F27CF1A1B31C87900220A14 /* eclass.c */,
@@ -303,7 +315,7 @@
 				8F27CF381B31C87900220A14 /* egraphics.h in Headers */,
 				8F27CF2A1B31C87900220A14 /* ebox.h in Headers */,
 				8F27CF6A1B31CA2300220A14 /* AudioFFT.h in Headers */,
-				8FB8EB6819007B1E005FAF6A /* c.library.h in Headers */,
+				8FB8EB6819007B1E005FAF6A /* c.library.hpp in Headers */,
 				8F27CF261B31C87900220A14 /* cicm_wrapper.h in Headers */,
 				8F27CF341B31C87900220A14 /* edefine.h in Headers */,
 				8F27CF321B31C87900220A14 /* ecommon.h in Headers */,
@@ -323,7 +335,7 @@
 				8F27CF391B31C87900220A14 /* egraphics.h in Headers */,
 				8F27CF2B1B31C87900220A14 /* ebox.h in Headers */,
 				8F27CF6B1B31CA2300220A14 /* AudioFFT.h in Headers */,
-				8FAC0BF21969731800E09ACB /* c.library.h in Headers */,
+				8FAC0BF21969731800E09ACB /* c.library.hpp in Headers */,
 				8F27CF271B31C87900220A14 /* cicm_wrapper.h in Headers */,
 				8F27CF351B31C87900220A14 /* edefine.h in Headers */,
 				8F27CF331B31C87900220A14 /* ecommon.h in Headers */,
@@ -408,6 +420,7 @@
 				8F27CF2C1B31C87900220A14 /* eclass.c in Sources */,
 				8F27CF281B31C87900220A14 /* ebox.c in Sources */,
 				8F27CFA11B31CC2500220A14 /* c.incdec.cpp in Sources */,
+				8F8963031B529DE100A996D7 /* c.wavesel.cpp in Sources */,
 				8F27CFA31B31CC2500220A14 /* c.knob.cpp in Sources */,
 				8F27CFA51B31CC2500220A14 /* c.matrix.cpp in Sources */,
 				8F823F851B33011600F5A69E /* c.prepend.cpp in Sources */,
@@ -436,8 +449,10 @@
 				8F27CFA91B31CC2500220A14 /* c.meter_tilde.cpp in Sources */,
 				8F27CF781B31CA2300220A14 /* FFTConvolver.cpp in Sources */,
 				8F27CF681B31CA2300220A14 /* AudioFFT.cpp in Sources */,
+				8FB904541B6661D9000A8449 /* c.camomile.cpp in Sources */,
 				8F27CFB31B31CC2500220A14 /* c.radio.cpp in Sources */,
 				8F27CFAF1B31CC2500220A14 /* c.plane.cpp in Sources */,
+				8FB904501B64F2E9000A8449 /* c.keyboard.cpp in Sources */,
 				8F27CFBD1B31CC2500220A14 /* c.toggle.cpp in Sources */,
 				8F26F18B17E76274005FCB97 /* c.library.cpp in Sources */,
 				8F27CF401B31C87900220A14 /* epopup.c in Sources */,
@@ -454,6 +469,7 @@
 				8F27CF2D1B31C87900220A14 /* eclass.c in Sources */,
 				8F27CF291B31C87900220A14 /* ebox.c in Sources */,
 				8F27CFA21B31CC2500220A14 /* c.incdec.cpp in Sources */,
+				8F8963041B529DE100A996D7 /* c.wavesel.cpp in Sources */,
 				8F27CFA41B31CC2500220A14 /* c.knob.cpp in Sources */,
 				8F27CFA61B31CC2500220A14 /* c.matrix.cpp in Sources */,
 				8F823F861B33011600F5A69E /* c.prepend.cpp in Sources */,
@@ -482,8 +498,10 @@
 				8F27CFAA1B31CC2500220A14 /* c.meter_tilde.cpp in Sources */,
 				8F27CF791B31CA2300220A14 /* FFTConvolver.cpp in Sources */,
 				8F27CF691B31CA2300220A14 /* AudioFFT.cpp in Sources */,
+				8FB904551B6661D9000A8449 /* c.camomile.cpp in Sources */,
 				8F27CFB41B31CC2500220A14 /* c.radio.cpp in Sources */,
 				8F27CFB01B31CC2500220A14 /* c.plane.cpp in Sources */,
+				8FB904511B64F2E9000A8449 /* c.keyboard.cpp in Sources */,
 				8F27CFBE1B31CC2500220A14 /* c.toggle.cpp in Sources */,
 				8FAC0BDC1969731800E09ACB /* c.library.cpp in Sources */,
 				8F27CF411B31C87900220A14 /* epopup.c in Sources */,

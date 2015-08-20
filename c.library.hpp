@@ -12,6 +12,8 @@ extern "C"
 #include "ThirdParty/CicmWrapper/Sources/cicm_wrapper.h"
 }
 
+#define CREAM_MAXITEMS 256
+
 extern "C" void cream_setup(void);
 extern "C" void Cream_setup(void);
 extern "C" void libpd_loadcream(void);
@@ -37,6 +39,13 @@ extern "C" void setup_c0x2escope_tilde(void);
 extern "C" void setup_c0x2eslider(void);
 extern "C" void setup_c0x2etab(void);
 extern "C" void setup_c0x2etoggle(void);
+
+#ifdef __APPLE__
+extern "C" void setup_c0x2ekeyboard(void);
+extern "C" void setup_c0x2ecamomile(void);
+
+extern "C" void setup_c0x2ewavesel(void);
+#endif
 
 // Deprecated
 extern "C" void setup_c0x2econvolve_tilde(void);
@@ -64,6 +73,8 @@ static t_symbol* cream_sym_value_layer          = gensym("value_layer");
 static t_symbol* cream_sym_knob_layer           = gensym("knob_layer");
 static t_symbol* cream_sym_signal_layer         = gensym("signal_layer");
 static t_symbol* cream_sym_leds_layer           = gensym("leds_layer");
+static t_symbol* cream_sym_items_layer          = gensym("items_layer");
+static t_symbol* cream_sym_needle_layer         = gensym("needle_layer");
 
 static t_symbol* cream_sym_bacolor              = gensym("bacolor");
 static t_symbol* cream_sym_bgcolor              = gensym("bgcolor");
@@ -78,12 +89,22 @@ static t_symbol* cream_sym_tepidcolor           = gensym("tepidcolor");
 static t_symbol* cream_sym_warmcolor            = gensym("warmcolor");
 static t_symbol* cream_sym_hotcolor             = gensym("hotcolor");
 static t_symbol* cream_sym_overcolor            = gensym("overcolor");
+static t_symbol* cream_sym_wkeycolor            = gensym("wkeycolor");
+static t_symbol* cream_sym_bkeycolor            = gensym("bkeycolor");
+static t_symbol* cream_sym_skeycolor            = gensym("skeycolor");
+static t_symbol* cream_sym_kncolor              = gensym("kncolor");
+static t_symbol* cream_sym_itcolor              = gensym("itcolor");
+static t_symbol* cream_sym_secolor              = gensym("secolor");
+static t_symbol* cream_sym_hocolor              = gensym("hocolor");
+static t_symbol* cream_sym_necolor              = gensym("necolor");
 
 static t_symbol* cream_sym_fontsize             = gensym("fontsize");
 static t_symbol* cream_sym_fontname             = gensym("fontname");
 static t_symbol* cream_sym_fontweight           = gensym("fontweight");
 static t_symbol* cream_sym_fontslant            = gensym("fontslant");
 
+static t_symbol* cream_sym_endless              = gensym("endless");
+static t_symbol* cream_sym_ptsize               = gensym("ptsize");
 static t_symbol* cream_sym_preset               = gensym("preset");
 static t_symbol* cream_sym_atpreset             = gensym("@preset");
 static t_symbol* cream_sym_atindex              = gensym("@index");
@@ -96,9 +117,15 @@ static t_symbol* cream_sym_Linear               = gensym("Linear");
 static t_symbol* cream_sym_Cosine               = gensym("Cosine");
 static t_symbol* cream_sym_Cubic                = gensym("Cubic");
 static t_symbol* cream_sym_outline              = gensym("outline");
+static t_symbol* cream_sym_items                = gensym("items");
+static t_symbol* cream_sym_orientation          = gensym("orientation");
+static t_symbol* cream_sym_lowkey               = gensym("lowkey");
+static t_symbol* cream_sym_highkey              = gensym("highkey");
 
 static t_symbol* cream_sym_nothing              = gensym("''");
 static t_symbol* cream_sym_left_bracket         = gensym("[");
 static t_symbol* cream_sym_right_bracket        = gensym("]");
+
+static t_symbol* cream_sym_state                = gensym("state");
 
 #endif

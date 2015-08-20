@@ -20,15 +20,18 @@ typedef struct _toggle
     char        f_active;
 } t_toggle;
 
-t_eclass *toggle_class;
+static t_eclass *toggle_class;
 
 static void toggle_output(t_toggle *x)
 {
+    t_pd* send = ebox_getsender((t_ebox *) x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
-    outlet_float((t_outlet*)x->f_out, (float)x->f_active);
-    if(ebox_getsender((t_ebox *) x))
-        pd_float(ebox_getsender((t_ebox *) x), (float)x->f_active);
+    outlet_float(x->f_out, (float)x->f_active);
+    if(send)
+    {
+        pd_float(send, (float)x->f_active);
+    }
 }
 
 static void toggle_getdrawparams(t_toggle *x, t_object *patcherview, t_edrawparams *params)
@@ -47,68 +50,54 @@ static void toggle_oksize(t_toggle *x, t_rect *newrect)
 
 static void toggle_set(t_toggle *x, float f)
 {
-    if(f == 0)
-        x->f_active = 0;
-    else
-        x->f_active = 1;
+    x->f_active = f == 0 ? 0 : 1;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 static void toggle_float(t_toggle *x, float f)
 {
-    if(f == 0)
-        x->f_active = 0;
-    else
-        x->f_active = 1;
+    x->f_active = f == 0 ? 0 : 1;
     toggle_output(x);
 }
 
 static void toggle_bang(t_toggle *x)
 {
-    if(x->f_active == 1)
-        x->f_active = 0;
-    else
-        x->f_active = 1;
+    x->f_active = x->f_active == 0 ? 1 : 0;
     toggle_output(x);
 }
 
 
 static t_pd_err toggle_notify(t_toggle *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if (msg == cream_sym_attr_modified)
+	if(msg == cream_sym_attr_modified)
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_crcolor)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
-        ebox_redraw((t_ebox *)x);
 	}
 	return 0;
 }
 
-static void draw_background(t_toggle *x, t_object *view, t_rect *rect)
+static void toggle_paint(t_toggle *x, t_object *view)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
-	if(g)
-	{
+    t_elayer *g;
+    t_rect rect;
+    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+    if(g)
+    {
         if(x->f_active)
         {
             egraphics_set_color_rgba(g, &x->f_color_cross);
             egraphics_set_line_width(g, 2);
-            egraphics_line_fast(g, 0, 0, rect->width, rect->height);
-            egraphics_line_fast(g, 0, rect->height, rect->width, 0);
+            egraphics_line_fast(g, 0, 0, rect.width, rect.height);
+            egraphics_line_fast(g, 0, rect.height, rect.width, 0);
         }
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
-	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
-}
-
-static void toggle_paint(t_toggle *x, t_object *view)
-{
-    t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
-    draw_background(x, view, &rect);
+    }
+    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
 static void toggle_mousedown(t_toggle *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -124,6 +113,76 @@ static void toggle_preset(t_toggle *x, t_binbuf *b)
     binbuf_add(b, 2, av);
 }
 
+static void toggle_presetinfos(t_toggle* x, int* nppresets, t_preset** presets)
+{
+    *nppresets = 1;
+    *presets = (t_preset *)malloc(sizeof(t_preset));
+    if(*presets)
+    {
+        presets[0]->p_name   = cream_sym_state;
+        presets[0]->p_natoms = 1;
+        presets[0]->p_atoms  = (t_atom *)malloc(sizeof(t_atom *));
+        if(presets[0]->p_atoms)
+        {
+            atom_setfloat(presets[0]->p_atoms, 0.f);
+        }
+        else
+        {
+            presets[0]->p_natoms = 0;
+        }
+    }
+    else
+    {
+        *nppresets = 0;
+    }
+}
+
+static void toggle_presetget(t_toggle* x, t_preset* preset)
+{
+    if(preset && preset->p_name == cream_sym_state)
+    {
+        preset->p_natoms = 1;
+        preset->p_atoms  = (t_atom *)malloc(sizeof(t_atom *));
+        if(preset->p_atoms)
+        {
+            atom_setfloat(preset->p_atoms, (float)x->f_active);
+        }
+        else
+        {
+            preset->p_natoms = 0;
+        }
+    }
+}
+
+static void toggle_presetset(t_toggle* x, t_preset* preset1, t_preset* preset2, float delta)
+{
+    if(preset1 && preset2)
+    {
+        if(preset1->p_natoms && atom_gettype(preset1->p_atoms) == A_FLOAT &&
+           preset2->p_natoms && atom_gettype(preset2->p_atoms) == A_FLOAT)
+        {
+            x->f_active = (char)pd_clip_min(atom_getfloat(preset1->p_atoms), atom_getfloat(preset2->p_atoms));
+            toggle_output(x);
+        }
+    }
+    else if(preset1)
+    {
+        if(preset1->p_natoms && atom_gettype(preset1->p_atoms) == A_FLOAT)
+        {
+            x->f_active = (char)atom_getfloat(preset1->p_atoms);
+            toggle_output(x);
+        }
+    }
+    else if(preset2)
+    {
+        if(preset2->p_natoms && atom_gettype(preset2->p_atoms) == A_FLOAT)
+        {
+            x->f_active = (char)atom_getfloat(preset2->p_atoms);
+            toggle_output(x);
+        }
+    }
+}
+
 static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_toggle *x = (t_toggle *)eobj_new(toggle_class);
@@ -136,54 +195,60 @@ static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
         x->f_out = outlet_new((t_object *)x, &s_float);
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
+        
+        return x;
     }
     
-    return (x);
+    return NULL;
 }
 
 extern "C" void setup_c0x2etoggle(void)
 {
-    t_eclass *c;
-    
-    c = eclass_new("c.toggle", (method)toggle_new, (method)ebox_free, (short)sizeof(t_toggle), 0L, A_GIMME, 0);
-    
-    eclass_guiinit(c, 0);
-    eclass_addmethod(c, (method) toggle_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) toggle_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) toggle_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) toggle_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) toggle_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) toggle_set,             "set",              A_FLOAT,0);
-    eclass_addmethod(c, (method) toggle_bang,            "bang",             A_NULL, 0);
-    eclass_addmethod(c, (method) toggle_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) toggle_preset,          "preset",           A_NULL, 0);
-    
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
-    CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 15.");
-    
-    CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_toggle, f_color_background);
-    CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
-    CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
-    CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
-    
-    CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_toggle, f_color_border);
-    CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
-    CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
-    CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
-    
-    CLASS_ATTR_RGBA                 (c, "crcolor", 0, t_toggle, f_color_cross);
-    CLASS_ATTR_LABEL                (c, "crcolor", 0, "Cross Color");
-    CLASS_ATTR_ORDER                (c, "crcolor", 0, "3");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "crcolor", 0, "0.5 0.5 0.5 1.");
-    CLASS_ATTR_STYLE                (c, "crcolor", 0, "color");
-    
-    eclass_register(CLASS_BOX, c);
-    toggle_class = c;
+    t_eclass *c = eclass_new("c.toggle", (method)toggle_new, (method)ebox_free, (short)sizeof(t_toggle), 0L, A_GIMME, 0);
+    if(c)
+    {
+        eclass_guiinit(c, 0);
+        eclass_addmethod(c, (method) toggle_paint,           "paint",            A_NULL, 0);
+        eclass_addmethod(c, (method) toggle_notify,          "notify",           A_NULL, 0);
+        eclass_addmethod(c, (method) toggle_getdrawparams,   "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (method) toggle_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (method) toggle_float,           "float",            A_FLOAT,0);
+        eclass_addmethod(c, (method) toggle_set,             "set",              A_FLOAT,0);
+        eclass_addmethod(c, (method) toggle_bang,            "bang",             A_NULL, 0);
+        eclass_addmethod(c, (method) toggle_mousedown,       "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (method) toggle_preset,          "preset",           A_NULL, 0);
+        
+        eclass_addmethod(c, (method) toggle_presetinfos,     "presetinfos",      A_CANT, 0);
+        eclass_addmethod(c, (method) toggle_presetget,       "presetget",        A_CANT, 0);
+        eclass_addmethod(c, (method) toggle_presetset,       "presetset",        A_CANT, 0);
+        
+        CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
+        CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
+        CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 15.");
+        
+        CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_toggle, f_color_background);
+        CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
+        CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
+        CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
+        
+        CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_toggle, f_color_border);
+        CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
+        CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
+        CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
+        
+        CLASS_ATTR_RGBA                 (c, "crcolor", 0, t_toggle, f_color_cross);
+        CLASS_ATTR_LABEL                (c, "crcolor", 0, "Cross Color");
+        CLASS_ATTR_ORDER                (c, "crcolor", 0, "3");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "crcolor", 0, "0.5 0.5 0.5 1.");
+        CLASS_ATTR_STYLE                (c, "crcolor", 0, "color");
+        
+        eclass_register(CLASS_BOX, c);
+        toggle_class = c;
+    }
 }
 
 
