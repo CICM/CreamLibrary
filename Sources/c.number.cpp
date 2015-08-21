@@ -254,9 +254,9 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
             etexteditor_settextcolor(x->f_editor, &x->f_color_text);
             etexteditor_setfont(x->f_editor, ebox_getfont((t_ebox *)x));
             etexteditor_setwrap(x->f_editor, 0);
-            rect.x = ebox_getfontsize((t_ebox *)x) + 7;
+            rect.x = ebox_getfontsize((t_ebox *)x) + 5;
             rect.y = 0;
-            rect.width -= ebox_getfontsize((t_ebox *)x) + 7;
+            rect.width -= ebox_getfontsize((t_ebox *)x) + 5;
             etexteditor_popup(x->f_editor,  &rect);
             x->f_firstchar = 0;
         }
