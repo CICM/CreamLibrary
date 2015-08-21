@@ -119,8 +119,8 @@ static void number_getdrawparams(t_number *x, t_object *patcherview, t_edrawpara
 static void number_oksize(t_number *x, t_rect *newrect)
 {
     const float size = ebox_getfontsize((t_ebox *)x);
-    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(size) * 3 + 8);
-    newrect->height = size + 4;
+    newrect->width  = pd_clip_min(newrect->width, (size + 4.f) * 2.f);
+    newrect->height = size + 4.f;
 }
 
 static void draw_background(t_number *x, t_object *view, t_rect *rect)
@@ -128,23 +128,22 @@ static void draw_background(t_number *x, t_object *view, t_rect *rect)
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     if(g)
     {
+        const float width = ebox_getfontsize((t_ebox *)x) + 4;
         t_etext *jtl = etext_layout_create();
         if(jtl)
         {
-            const float width = sys_fontwidth(ebox_getfontsize((t_ebox *)x)) + 6;
-            etext_layout_set(jtl, "©", &x->j_box.b_font, 1.f, 0., width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
-            
+            etext_layout_set(jtl, "©", &x->j_box.b_font, 0.f, 0.f, width, width, ETEXT_CENTRED, ETEXT_NOWRAP);
             etext_layout_settextcolor(jtl, &x->f_color_text);
             etext_layout_draw(jtl, g);
-            
-            egraphics_set_line_width(g, 2);
-            egraphics_set_color_rgba(g, &x->f_color_border);
-            egraphics_move_to(g, width, 0);
-            egraphics_line_to(g, width,  rect->height );
-            egraphics_stroke(g);
-            ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
-            etext_layout_destroy(jtl);
         }
+        egraphics_set_line_width(g, 2.f);
+        egraphics_set_color_rgba(g, &x->f_color_border);
+        egraphics_move_to(g, width, 0);
+        egraphics_line_to(g, width,  rect->height);
+        egraphics_stroke(g);
+        
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        etext_layout_destroy(jtl);
     }
     ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
@@ -157,7 +156,7 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
         t_etext *jtl = etext_layout_create();
         if(jtl)
         {
-            const float width = sys_fontwidth(ebox_getfontsize((t_ebox *)x)) + 8;
+            const float width = ebox_getfontsize((t_ebox *)x) + 8;
             char number[256];
             if(!x->f_ndecimal)
                 sprintf(number, "%i.", (int)x->f_value);
@@ -177,9 +176,9 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
             etext_layout_set(jtl, number, &x->j_box.b_font, width, 0., rect->width - width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
-            ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
             etext_layout_destroy(jtl);
         }
+        ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
     }
     ebox_paint_layer((t_ebox *)x, cream_sym_value_layer, 0., 0.);
 }
@@ -192,18 +191,15 @@ static void draw_value_text(t_number *x,  t_object *view, t_rect *rect)
         t_etext *jtl = etext_layout_create();
         if(jtl)
         {
-            const float width = sys_fontwidth(ebox_getfontsize((t_ebox *)x)) + 8;
+            const float width = ebox_getfontsize((t_ebox *)x) + 8;
             char number[256];
-            
             sprintf(number, "%s|", x->f_textvalue);
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            
-            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0., rect->width - 3, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
-            
+            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0., rect->width - width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             etext_layout_draw(jtl, g);
-            ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
             etext_layout_destroy(jtl);
         }
+        ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
     }
     ebox_paint_layer((t_ebox *)x, cream_sym_value_layer, 0., 0.);
 }
@@ -222,7 +218,7 @@ static void number_paint(t_number *x, t_object *view)
 
 void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-	float text_width = sys_fontwidth(x->j_box.b_font.c_size);
+	float text_width = ebox_getfontsize((t_ebox *)x);
     x->f_mode = 0;
     if( pt.x >= text_width + 6)
     {
