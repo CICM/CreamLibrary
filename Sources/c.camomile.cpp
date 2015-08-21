@@ -31,8 +31,8 @@ static void camomile_getdrawparams(t_camomile *x, t_object *patcherview, t_edraw
 
 static void camomile_oksize(t_camomile *x, t_rect *newrect)
 {
-    newrect->width = pd_clip_min(newrect->width, 15.);
-    newrect->height = pd_clip_min(newrect->height, 15.);
+    newrect->width = pd_clip_min(newrect->width, 600.f);
+    newrect->height = pd_clip_min(newrect->height, 400.f);
 }
 
 static void camomile_bang(t_camomile *x)

@@ -95,7 +95,7 @@ static t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sen
 {
 	if (msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant)
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant || s == cream_sym_decimal)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
@@ -216,6 +216,19 @@ static void number_paint(t_number *x, t_object *view)
         draw_value_text(x, view, &rect);
 }
 
+static void number_texteditor_keypress(t_number *x, t_etexteditor *editor, int key)
+{
+    post("%c", (char)key);
+}
+
+static void number_texteditor_keyfilter(t_number *x, t_etexteditor *editor, ekey_flags key)
+{
+    if(editor)
+    {
+        //post(editor->c_text);
+    }
+}
+
 void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
 	float text_width = ebox_getfontsize((t_ebox *)x);
@@ -272,13 +285,24 @@ void number_mousedrag(t_number *x, t_object *patcherview, t_pt pt, long modifier
 
 void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
+    t_rect rect;
+    ebox_get_rect_for_view((t_ebox *)x, &rect);
     if(x->f_mode == 0)
     {
         x->f_mode = 1;
-        //sprintf(x->f_textvalue, "");
         memset(x->f_textvalue, '\0', 256*sizeof(char));
         ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
+        rect.x += ebox_getfontsize((t_ebox *)x) + 6;
+        rect.width -= ebox_getfontsize((t_ebox *)x) + 6;
+        t_etexteditor* editor = etexteditor_create((t_eobj *)x, gensym("editor"));
+        etexteditor_settext(editor, "zazi dans le metro");
+        etexteditor_setbackgroundcolor(editor, &x->f_color_background);
+        etexteditor_settextcolor(editor, &x->f_color_text);
+        etexteditor_setfont(editor, ebox_getfont((t_ebox *)x));
+        etexteditor_setwrap(editor, 0);
+        etexteditor_popup(editor,  &rect);
+        //etexteditor_destroy(editor);
     }
 }
 
@@ -322,7 +346,7 @@ void number_key(t_number *x, t_object *patcherview, char textcharacter, long mod
     ebox_redraw((t_ebox *)x);
 }
 
-void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, long modifiers)
+static void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, long modifiers)
 {
     if(!x->f_mode)
         return;
@@ -359,7 +383,7 @@ void number_keyfilter(t_number *x, t_object *patcherview, char textcharacter, lo
     }
 }
 
-void number_mouseleave(t_number *x)
+static void number_mouseleave(t_number *x)
 {
     x->f_mode = 0;
     memset(x->f_textvalue, '\0', CREAM_MAXITEMS * sizeof(char));
@@ -372,7 +396,7 @@ static void number_preset(t_number *x, t_binbuf *b)
     binbuf_addv(b, (char *)"sf", &s_float, x->f_value);
 }
 
-t_pd_err number_min_set(t_number *x, t_object *attr, int ac, t_atom *av)
+static t_pd_err number_min_set(t_number *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -397,7 +421,7 @@ t_pd_err number_min_set(t_number *x, t_object *attr, int ac, t_atom *av)
     return 0;
 }
 
-t_pd_err number_max_set(t_number *x, t_object *attr, int ac, t_atom *av)
+static t_pd_err number_max_set(t_number *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -415,28 +439,6 @@ t_pd_err number_max_set(t_number *x, t_object *attr, int ac, t_atom *av)
     }
     else
     {
-        atom_setsym(&x->f_max, s_cream_empty);
-    }
-
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
-    ebox_redraw((t_ebox *)x);
-    return 0;
-}
-
-static t_pd_err number_minmax_set(t_number *x, t_object *attr, int ac, t_atom *av)
-{
-    if(ac == 1)
-    {
-        return number_min_set(x, attr, ac, av);
-    }
-    else if(ac > 1 && av)
-    {
-        number_min_set(x, attr, 1, av);
-        number_max_set(x, attr, 1, av+1);
-    }
-    else
-    {
-        atom_setsym(&x->f_min, s_cream_empty);
         atom_setsym(&x->f_max, s_cream_empty);
     }
 
@@ -473,7 +475,7 @@ extern "C" void setup_c0x2enumber(void)
     
     if(c)
     {
-        eclass_guiinit(c, 0);
+        eclass_guiinit(c, 0 | EBOX_TEXTFIELD);
         eclass_addmethod(c, (method) number_paint,           "paint",            A_NULL, 0);
         eclass_addmethod(c, (method) number_notify,          "notify",           A_NULL, 0);
         eclass_addmethod(c, (method) number_getdrawparams,   "getdrawparams",    A_NULL, 0);
@@ -488,6 +490,9 @@ extern "C" void setup_c0x2enumber(void)
         eclass_addmethod(c, (method) number_key,              "key",             A_NULL, 0);
         eclass_addmethod(c, (method) number_keyfilter,        "keyfilter",       A_NULL, 0);
         eclass_addmethod(c, (method) number_mouseleave,        "mouseleave",        A_NULL, 0);
+        
+        eclass_addmethod(c, (method) number_texteditor_keypress, "texteditor_keypress", A_NULL, 0);
+        eclass_addmethod(c, (method) number_texteditor_keyfilter, "texteditor_keyfilter", A_NULL, 0);
         
         eclass_addmethod(c, (method) number_preset,           "preset",          A_NULL, 0);
         
@@ -510,10 +515,9 @@ extern "C" void setup_c0x2enumber(void)
         CLASS_ATTR_LONG                 (c, "decimal", 0, t_number, f_ndecimal);
         CLASS_ATTR_ORDER                (c, "decimal", 0, "3");
         CLASS_ATTR_LABEL                (c, "decimal", 0, "Number of decimal");
-        CLASS_ATTR_DEFAULT              (c, "decimal", 0, "6");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "decimal", 0, "4");
         CLASS_ATTR_FILTER_MIN           (c, "decimal", 0);
         CLASS_ATTR_FILTER_MAX           (c, "decimal", 6);
-        CLASS_ATTR_SAVE                 (c, "decimal", 1);
         CLASS_ATTR_STYLE                (c, "decimal", 0, "number");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_number, f_color_background);
