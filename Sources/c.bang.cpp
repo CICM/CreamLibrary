@@ -300,24 +300,23 @@ static void bang_paint(t_bang *x, t_object *view)
     {
         
         const  float size = rect.width * 0.5;
-        // We set up the bang color is the t_bang is currently active.
-        // Otherwise we use the background color.
+        // If is the t_bang is currently active.
         if(x->b_active)
         {
+            // We change the color.
             egraphics_set_color_rgba(g, &x->b_color_bang);
+            // We add a circle at the center the t_elayer.
+            egraphics_circle(g, size, size, (size - 4.f));
+            // We fill the t_elayer with the drawing.
+            egraphics_fill(g);
         }
-        else
-        {
-            egraphics_set_color_rgba(g, &x->b_color_background);
-        }
-        // We add a circle at the center the t_elayer.
-        egraphics_circle(g, size, size, (size - 2.f));
-        // We fill the t_elayer with the drawing.
-        egraphics_fill_preserve(g);
+        
         // We change the color.
         egraphics_set_color_rgba(g, &x->b_color_border);
         // We change the color.
         egraphics_set_line_width(g, 2.f);
+        // We add a circle at the center the t_elayer.
+        egraphics_circle(g, size, size, (size - 2.f));
         // We stroke the t_elayer with the drawing.
         egraphics_stroke(g);
         // We mark the layer as ready to be painted.

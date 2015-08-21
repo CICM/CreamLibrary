@@ -75,16 +75,16 @@ static t_pd_err knob_notify(t_knob *x, t_symbol *s, t_symbol *msg, void *sender,
 
 static void knob_getdrawparams(t_knob *x, t_object *patcherview, t_edrawparams *params)
 {
-    params->d_borderthickness   = 2;
-    params->d_cornersize        = 2;
+    params->d_borderthickness   = 2.f;
+    params->d_cornersize        = 2.f;
     params->d_bordercolor       = x->f_color_border;
     params->d_boxfillcolor      = x->f_color_background;
 }
 
 static void knob_oksize(t_knob *x, t_rect *newrect)
 {
-    newrect->width = pd_clip_min(newrect->width, 25.);
-    newrect->height = pd_clip_min(newrect->height, 25.);
+    newrect->width = pd_clip_min(newrect->width, 30.f);
+    newrect->height = pd_clip_min(newrect->height, 30.f);
 }
 
 static void draw_background(t_knob *x, t_object *view, t_rect *rect)

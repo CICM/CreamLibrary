@@ -246,7 +246,7 @@ extern "C" void setup_c0x2eplane(void)
         CLASS_ATTR_RGBA                 (c, "ptcolor", 0, t_plane, f_color_point);
         CLASS_ATTR_LABEL                (c, "ptcolor", 0, "Point Color");
         CLASS_ATTR_ORDER                (c, "ptcolor", 0, "3");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "ptcolor", 0, "0. 0. 0. 1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "ptcolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "ptcolor", 0, "color");
         
         eclass_register(CLASS_BOX, c);

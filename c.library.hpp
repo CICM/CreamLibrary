@@ -75,7 +75,10 @@ static t_symbol* cream_sym_signal_layer         = gensym("signal_layer");
 static t_symbol* cream_sym_leds_layer           = gensym("leds_layer");
 static t_symbol* cream_sym_items_layer          = gensym("items_layer");
 static t_symbol* cream_sym_needle_layer         = gensym("needle_layer");
+static t_symbol* cream_sym_picked_layer         = gensym("picked_layer");
+static t_symbol* cream_sym_hover_layer          = gensym("hover_layer");
 
+static t_symbol* cream_sym_arcolor              = gensym("arcolor");
 static t_symbol* cream_sym_bacolor              = gensym("bacolor");
 static t_symbol* cream_sym_bgcolor              = gensym("bgcolor");
 static t_symbol* cream_sym_bdcolor 				= gensym("bdcolor");

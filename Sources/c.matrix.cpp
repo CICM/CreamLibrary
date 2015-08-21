@@ -40,7 +40,7 @@ static void matrixctrl_output(t_matrixctrl *x, const int i, const int j)
         outlet_list(x->f_out_cell, &s_list, 3, av);
         if(send)
         {
-            pd_list(ebox_getsender((t_ebox *) x), &s_list, 3, av);
+            pd_list(send, &s_list, 3, av);
         }
     }
 }
@@ -167,24 +167,19 @@ static void matrixctrl_getdrawparams(t_matrixctrl *x, t_object *patcherview, t_e
 static void matrixctrl_oksize(t_matrixctrl *x, t_rect *newrect)
 {
     float ratio;
-    newrect->width = pd_clip_min(newrect->width, 30.);
-    newrect->height = pd_clip_min(newrect->height, 10.);
+    newrect->width = pd_clip_min(newrect->width, x->f_size[0] * 17.f);
+    newrect->height = pd_clip_min(newrect->height, x->f_size[1] * 17.f);
     
     ratio = (newrect->width - 1.) / (float)x->f_size[0];
     if(ratio - (int)ratio != 0)
     {
-        ratio = floorf(ratio);
-        newrect->width = ratio * (float)x->f_size[0] + 1.;
+        newrect->width = floorf(ratio) * (float)x->f_size[0] + 1.;
     }
     ratio = (newrect->height - 1.) / (float)x->f_size[1];
     if(ratio - (int)ratio != 0)
     {
-        ratio = floorf(ratio);
-        newrect->height = ratio * (float)x->f_size[1] + 1.;
+        newrect->height = floorf(ratio) * (float)x->f_size[1] + 1.;
     }
-    
-    newrect->width = pd_clip_min(newrect->width, 30.);
-    newrect->height = pd_clip_min(newrect->height, 10.);
 }
 
 static t_pd_err matrixctrl_notify(t_matrixctrl *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
@@ -204,21 +199,28 @@ static void matrixctrl_paint(t_matrixctrl *x, t_object *view)
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
     if(g)
     {
-        const int block_width = rect.width / x->f_size[0];
-        const int block_height = rect.height / x->f_size[1];
-        for(int incx = 0, i = 0; i < x->f_size[0]; i++, incx += block_width)
+        const float block_width = rect.width / float(x->f_size[0]);
+        const float block_height = rect.height / float(x->f_size[1]);
+        egraphics_set_line_width(g, 2.f);
+        
+        float incx = 0.f;
+        for(int i = 0; i < x->f_size[0]; i++)
         {
-            for(int incY = 0, j = 0; j < x->f_size[1]; j++, incY += block_height)
+            float incY = 0.f;
+            for(int j = 0; j < x->f_size[1]; j++)
             {
-                egraphics_rectangle_rounded(g, incx + 1.f, incY + 1.f, block_width - 2.f, block_height - 2.f, 1.f);
                 if(x->f_values[i][j])
                 {
+                    egraphics_rectangle(g, incx + 4.f, incY + 4.f, block_width - 8.f, block_height - 8.f);
                     egraphics_set_color_rgba(g, &x->f_color_on);
-                    egraphics_fill_preserve(g);
+                    egraphics_fill(g);
                 }
+                egraphics_rectangle(g, incx + 2.f, incY + 2.f, block_width - 4.f, block_height - 4.f);
                 egraphics_set_color_rgba(g, &x->f_color_border);
                 egraphics_stroke(g);
+                incY += block_height;
             }
+            incx += block_width;
         }
         
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
