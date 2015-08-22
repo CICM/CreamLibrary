@@ -352,7 +352,6 @@ static t_pd_err number_max_set(t_number *x, t_object *attr, int ac, t_atom *av)
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
         x->f_max = av[0];
-
         if(atom_gettype(&x->f_min) == A_FLOAT && atom_getfloat(&x->f_max) < atom_getfloat(&x->f_min))
         {
             x->f_max = x->f_min;
@@ -435,14 +434,14 @@ extern "C" void setup_c0x2enumber(void)
         CLASS_ATTR_ATOM                 (c, "min", 0, t_number, f_min);
         CLASS_ATTR_ORDER                (c, "min", 0, "3");
         CLASS_ATTR_LABEL                (c, "min", 0, "Min Value");
-        CLASS_ATTR_DEFAULT              (c, "min", 0, "  ");
+        CLASS_ATTR_DEFAULT              (c, "min", 0, "empty");
         CLASS_ATTR_ACCESSORS            (c, "min", NULL, number_min_set);
         CLASS_ATTR_SAVE                 (c, "min", 1);
         
         CLASS_ATTR_ATOM                 (c, "max", 0, t_number, f_min);
         CLASS_ATTR_ORDER                (c, "max", 0, "3");
         CLASS_ATTR_LABEL                (c, "max", 0, "Max Value");
-        CLASS_ATTR_DEFAULT              (c, "max", 0, "  ");
+        CLASS_ATTR_DEFAULT              (c, "max", 0, "empty");
         CLASS_ATTR_ACCESSORS            (c, "max", NULL, number_max_set);
         CLASS_ATTR_SAVE                 (c, "max", 1);
         

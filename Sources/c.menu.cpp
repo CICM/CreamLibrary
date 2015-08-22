@@ -623,13 +623,13 @@ extern "C" void setup_c0x2emenu(void)
     CLASS_ATTR_LABEL                (c, "items", 0, "Items");
     CLASS_ATTR_ACCESSORS            (c, "items", menu_items_get, menu_items_set);
     CLASS_ATTR_ORDER                (c, "items", 0, "1");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "items", 0, "");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "items", 0, " ");
     
     CLASS_ATTR_LONG_VARSIZE         (c, "states", 0, t_menu, f_states, f_states_size, MAXITEMS);
     CLASS_ATTR_LABEL                (c, "states", 0, "Items Disable State");
     CLASS_ATTR_ACCESSORS            (c, "states", NULL, menu_states_set);
     CLASS_ATTR_ORDER                (c, "states", 0, "1");
-    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "states", 0, "0");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "states", 0, " ");
     
     CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_menu, f_color_background);
     CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
