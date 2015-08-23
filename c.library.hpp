@@ -100,7 +100,6 @@ static t_symbol* cream_sym_itcolor              = gensym("itcolor");
 static t_symbol* cream_sym_secolor              = gensym("secolor");
 static t_symbol* cream_sym_hocolor              = gensym("hocolor");
 static t_symbol* cream_sym_necolor              = gensym("necolor");
-static t_symbol* cream_sym_decimal              = gensym("decimal");
 
 static t_symbol* cream_sym_fontsize             = gensym("fontsize");
 static t_symbol* cream_sym_fontname             = gensym("fontname");
@@ -125,6 +124,7 @@ static t_symbol* cream_sym_items                = gensym("items");
 static t_symbol* cream_sym_orientation          = gensym("orientation");
 static t_symbol* cream_sym_lowkey               = gensym("lowkey");
 static t_symbol* cream_sym_highkey              = gensym("highkey");
+static t_symbol* cream_sym_decimal              = gensym("decimal");
 
 static t_symbol* cream_sym_nothing              = gensym("''");
 static t_symbol* cream_sym_left_bracket         = gensym("[");

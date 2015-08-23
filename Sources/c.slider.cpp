@@ -18,13 +18,13 @@ typedef struct _slider
 	t_rgba          f_color_border;
 	t_rgba          f_color_knob;
     t_eparameter    f_parameter;
-    char        f_direction;
-    float       f_min;
-    float       f_max;
-    float       f_value;
-    float       f_value_ref;
-    float       f_value_last;
-    long        f_mode;
+    char            f_direction;
+    float           f_min;
+    float           f_max;
+    float           f_value;
+    float           f_value_ref;
+    float           f_value_last;
+    long            f_mode;
 } t_slider;
 
 static t_eclass *slider_class;
@@ -244,7 +244,6 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
         x->f_out = outlet_new((t_object *)x, &s_float);
-        eparameter_init(&x->f_parameter, (t_ebox *)x, gensym("value"));
         ebox_attrprocess_viabinbuf(x, d);
         x->f_value = x->f_min;
         ebox_ready((t_ebox *)x);

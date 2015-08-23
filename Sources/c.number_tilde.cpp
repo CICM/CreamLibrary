@@ -80,7 +80,7 @@ static t_pd_err number_tilde_notify(t_number_tilde *x, t_symbol *s, t_symbol *ms
 		}
         if(s == cream_sym_fontsize)
         {
-            eobj_attr_setvalueof(x, s_size, 0, NULL);
+            eobj_attr_setvalueof(x, s_cream_size, 0, NULL);
         }
         ebox_redraw((t_ebox *)x);
 	}

@@ -140,6 +140,10 @@ static void incdec_paint(t_incdec *x, t_object *view)
         {
             egraphics_set_color_rgba(g, &x->f_color_background);
         }
+        else
+        {
+            egraphics_set_color_rgba(g, &x->f_color_arrow);
+        }
         egraphics_move_to(g, 2.f, rect.height * 0.5f + 3.f);
         egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f + 3.f);
         egraphics_line_to(g, rect.width * 0.5f, rect.height - 2.f);

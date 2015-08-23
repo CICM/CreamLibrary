@@ -368,7 +368,7 @@ static t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av)
             ebox_get_rect_for_view((t_ebox *)x, &rect);
             x->f_nitems = nitems;
             memset(x->f_items, 0, (size_t)x->f_nitems * sizeof(int));
-            ebox_notify((t_ebox *)x, s_size, cream_sym_attr_modified, NULL, NULL);
+            ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
         }
     }
     return 0;

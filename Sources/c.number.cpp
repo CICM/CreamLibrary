@@ -104,7 +104,7 @@ static t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sen
 		}
         if(s == cream_sym_fontsize || s == cream_sym_fontname)
         {
-            ebox_notify((t_ebox *)x, s_size, cream_sym_attr_modified, NULL, NULL);
+            ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
         }
 	}
 	return 0;
@@ -134,7 +134,7 @@ static void draw_background(t_number *x, t_object *view, t_rect *rect)
         t_etext *jtl = etext_layout_create();
         if(jtl)
         {
-            etext_layout_set(jtl, "©", &x->j_box.b_font, 0.f, 0.f, width, width, ETEXT_CENTRED, ETEXT_NOWRAP);
+            etext_layout_set(jtl, "©", &x->j_box.b_font, 0.f, 0.f, width, rect->height, ETEXT_CENTRED, ETEXT_NOWRAP);
             etext_layout_settextcolor(jtl, &x->f_color_text);
             etext_layout_draw(jtl, g);
         }
@@ -177,7 +177,7 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
                 sprintf(number, "%.6g", x->f_value);
             
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0., rect->width - width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0.f, rect->width - width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             etext_layout_destroy(jtl);
@@ -246,7 +246,7 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
     t_rect rect;
     if(!x->f_editor)
     {
-        x->f_editor = etexteditor_create((t_ebox *)x, gensym("editor"));
+        x->f_editor = etexteditor_create((t_ebox *)x);
         if(x->f_editor)
         {
             ebox_get_rect_for_view((t_ebox *)x, &rect);

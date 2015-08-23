@@ -375,7 +375,7 @@ static t_pd_err tab_notify(t_tab *x, t_symbol *s, t_symbol *msg, void *sender, v
                 s == cream_sym_orientation ||
                 s == cream_sym_items)
         {
-            ebox_notify((t_ebox *)x, s_size, cream_sym_attr_modified, NULL, NULL);
+            ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
         }
 	}
 	return 0;
