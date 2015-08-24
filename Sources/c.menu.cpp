@@ -10,16 +10,14 @@
 
 #include "../c.library.hpp"
 
-#define MAXITEMS 100
-
 typedef struct  _menu
 {
 	t_ebox      j_box;
     t_outlet*   f_out_index;
     t_outlet*   f_out_item;
     t_epopup*   f_popup;
-    t_symbol*   f_items[MAXITEMS];
-    long        f_states[MAXITEMS];
+    t_symbol*   f_items[CREAM_MAXITEMS];
+    long        f_states[CREAM_MAXITEMS];
     long        f_items_size;
     long        f_states_size;
     long        f_item_selected;
@@ -141,7 +139,7 @@ void menu_delete(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             for(i = atom_getfloat(argv); i < x->f_items_size - 1; i++)
                 x->f_items[i] = x->f_items[i+1];
             x->f_items_size--;
-            for(i = (int)x->f_items_size; i < MAXITEMS; i++)
+            for(i = (int)x->f_items_size; i < CREAM_MAXITEMS; i++)
                 x->f_items[i] = NULL;
             
             ebox_invalidate_layer((t_ebox *)x, gensym("list_layer"));
@@ -155,7 +153,7 @@ void menu_delete(t_menu *x, t_symbol *s, int argc, t_atom *argv)
 void menu_clear(t_menu *x, t_symbol *s, int argc, t_atom *argv)
 {
     int i;
-    for(i = 0; i < MAXITEMS; i++)
+    for(i = 0; i < CREAM_MAXITEMS; i++)
     {
         x->f_items[i] = NULL;
     }
@@ -313,20 +311,30 @@ static void menu_paint(t_menu *x, t_object *view)
         // Arraw Up
         egraphics_move_to(g, rect.width - rect.height + 2.f, rect.height * 0.5f - 2.f);
         egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f - 2.f);
-        egraphics_line_to(g, rect.width - (rect.height - 4.f) * 0.5, 2.f);
+        egraphics_line_to(g, rect.width - rect.height * 0.5, 2.f);
         egraphics_close_path(g);
         egraphics_fill(g);
         
         // Arraw Down
         egraphics_move_to(g, rect.width - rect.height + 2.f, rect.height * 0.5f + 2.f);
         egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f + 2.f);
-        egraphics_line_to(g, rect.width - (rect.height - 4.f) * 0.5, rect.height - 2.f);
+        egraphics_line_to(g, rect.width - rect.height * 0.5, rect.height - 2.f);
         egraphics_close_path(g);
         egraphics_fill(g);
         
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
     }
     ebox_paint_layer((t_ebox *)x, cream_sym_background_layer,  0., 0.);
+}
+
+static void menu_popup(t_menu *x, t_epopup *popup, long itemid)
+{
+    if(x->f_popup && popup == x->f_popup)
+    {
+        menu_float(x, (float)itemid);
+        epopupmenu_destroy(x->f_popup);
+        x->f_popup = NULL;
+    }
 }
 
 static void menu_mousedown(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -338,26 +346,55 @@ static void menu_mousedown(t_menu *x, t_object *patcherview, t_pt pt, long modif
             epopupmenu_destroy(x->f_popup);
             x->f_popup = NULL;
         }
-        else
+        x->f_popup = epopupmenu_create((t_eobj  *)x);
+        if(x->f_popup)
         {
-            x->f_popup = epopupmenu_create((t_eobj  *)x);
-            for(long i = 0; i < x->f_items_size; i++)
+            t_rect rect;
+            t_canvas* cnv = eobj_getcanvas(x);
+            if(cnv)
             {
-                epopupmenu_additem(x->f_popup, i, x->f_items[i]->s_name, 0, x->f_states[i]);
+                ebox_get_rect_for_view((t_ebox *)x, &rect);
+                for(long i = 0; i < x->f_items_size; i++)
+                {
+                    epopupmenu_additem(x->f_popup, (int)i, x->f_items[i]->s_name,
+                                       (char)(x->f_item_selected == i), x->f_states[i]);
+                }
+                epopupmenu_setfont(x->f_popup, ebox_getfont((t_ebox *)x));
+                epopupmenu_setbackgroundcolor(x->f_popup, &x->f_color_background);
+                epopupmenu_settextcolor(x->f_popup, &x->f_color_text);
+                epopupmenu_popup(x->f_popup, &rect);
             }
-            epopupmenu_popup(x->f_popup, {10.f, 10.f});
         }
     }
 }
 
-static void menu_mousemove(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
+static void menu_mouseenter(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    if(x->f_hover && !x->f_popup)
+    if(x->f_hover)
     {
-        x->f_popup = epopupmenu_create((t_eobj  *)x);
-        for(long i = 0; i < x->f_items_size; i++)
+        if(x->f_popup)
         {
-            epopupmenu_additem(x->f_popup, i, x->f_items[i]->s_name, 0, x->f_states[i]);
+            epopupmenu_destroy(x->f_popup);
+            x->f_popup = NULL;
+        }
+        x->f_popup = epopupmenu_create((t_eobj  *)x);
+        if(x->f_popup)
+        {
+            t_rect rect;
+            t_canvas* cnv = eobj_getcanvas(x);
+            if(cnv)
+            {
+                ebox_get_rect_for_view((t_ebox *)x, &rect);
+                for(long i = 0; i < x->f_items_size; i++)
+                {
+                    epopupmenu_additem(x->f_popup, (int)i, x->f_items[i]->s_name,
+                                       (char)(x->f_item_selected == i), x->f_states[i]);
+                }
+                epopupmenu_setfont(x->f_popup, ebox_getfont((t_ebox *)x));
+                epopupmenu_setbackgroundcolor(x->f_popup, &x->f_color_background);
+                epopupmenu_settextcolor(x->f_popup, &x->f_color_text);
+                epopupmenu_popup(x->f_popup, &rect);
+            }
         }
     }
 }
@@ -398,7 +435,7 @@ static t_pd_err menu_items_set(t_menu *x, t_object *attr, int ac, t_atom *av)
 static t_pd_err menu_items_get(t_menu *x, t_object *attr, int* ac, t_atom **av)
 {
     int i;
-    *ac = x->f_items_size;
+    *ac = (int)x->f_items_size;
     *av = (t_atom *)malloc((size_t)*ac * sizeof(t_atom));
     if(*av)
     {
@@ -466,7 +503,8 @@ extern "C" void setup_c0x2emenu(void)
     eclass_addmethod(c, (method) menu_output,          "bang",             A_NULL, 0);
     
     eclass_addmethod(c, (method) menu_mousedown,        "mousedown",       A_NULL, 0);
-    eclass_addmethod(c, (method) menu_mousemove,        "mousemove",       A_NULL, 0);
+    eclass_addmethod(c, (method) menu_mouseenter,       "mouseenter",      A_NULL, 0);
+    eclass_addmethod(c, (method) menu_popup,            "popup",           A_NULL, 0);
     eclass_addmethod(c, (method) menu_preset,           "preset",          A_NULL, 0);
     
     CLASS_ATTR_DEFAULT              (c, "size", 0, "100 13");
@@ -478,13 +516,13 @@ extern "C" void setup_c0x2emenu(void)
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "hover", 0, "0");
     CLASS_ATTR_STYLE                (c, "hover", 0, "onoff");
     
-    CLASS_ATTR_SYMBOL_VARSIZE       (c, "items", 0, t_menu, f_items, f_items_size, MAXITEMS);
+    CLASS_ATTR_SYMBOL_VARSIZE       (c, "items", 0, t_menu, f_items, f_items_size, CREAM_MAXITEMS);
     CLASS_ATTR_LABEL                (c, "items", 0, "Items");
     CLASS_ATTR_ACCESSORS            (c, "items", menu_items_get, menu_items_set);
     CLASS_ATTR_ORDER                (c, "items", 0, "1");
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "items", 0, " ");
     
-    CLASS_ATTR_LONG_VARSIZE         (c, "states", 0, t_menu, f_states, f_states_size, MAXITEMS);
+    CLASS_ATTR_LONG_VARSIZE         (c, "states", 0, t_menu, f_states, f_states_size, CREAM_MAXITEMS);
     CLASS_ATTR_LABEL                (c, "states", 0, "Items Disable State");
     CLASS_ATTR_ACCESSORS            (c, "states", NULL, menu_states_set);
     CLASS_ATTR_ORDER                (c, "states", 0, "1");
