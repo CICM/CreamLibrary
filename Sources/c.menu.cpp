@@ -296,7 +296,7 @@ static void menu_paint(t_menu *x, t_object *view)
             if(jtl)
             {
                 etext_layout_set(jtl, x->f_items[x->f_item_selected]->s_name, ebox_getfont((t_ebox *)x),
-                             1.5f, 0, rect.width - rect.height - 2.f, rect.height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
+                             2.f, 0.f, rect.width - rect.height - 2.f, rect.height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
                 etext_layout_settextcolor(jtl, &x->f_color_text);
                 etext_layout_draw(jtl, g);
                 etext_layout_destroy(jtl);
@@ -309,16 +309,16 @@ static void menu_paint(t_menu *x, t_object *view)
         egraphics_line_fast(g, rect.width - rect.height, 0., rect.width - rect.height, rect.height);
         
         // Arraw Up
-        egraphics_move_to(g, rect.width - rect.height + 2.f, rect.height * 0.5f - 2.f);
+        egraphics_move_to(g, rect.width - rect.height + 3.f, rect.height * 0.5f - 2.f);
         egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f - 2.f);
-        egraphics_line_to(g, rect.width - rect.height * 0.5, 2.f);
+        egraphics_line_to(g, rect.width - rect.height * 0.5f + 1.f, 2.f);
         egraphics_close_path(g);
         egraphics_fill(g);
         
         // Arraw Down
-        egraphics_move_to(g, rect.width - rect.height + 2.f, rect.height * 0.5f + 2.f);
+        egraphics_move_to(g, rect.width - rect.height + 3.f, rect.height * 0.5f + 2.f);
         egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f + 2.f);
-        egraphics_line_to(g, rect.width - rect.height * 0.5, rect.height - 2.f);
+        egraphics_line_to(g, rect.width - rect.height * 0.5f + 1.f, rect.height - 2.f);
         egraphics_close_path(g);
         egraphics_fill(g);
         

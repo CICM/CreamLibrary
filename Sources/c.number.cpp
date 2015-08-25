@@ -213,7 +213,7 @@ static void number_texteditor_keyfilter(t_number *x, t_etexteditor *editor, ekey
     char* text = NULL;
     if(editor && editor == x->f_editor)
     {
-        if(key == EKEY_ENTER)
+        if(key == EKEY_RETURN)
         {
             etexteditor_gettext(editor, &text);
             if(text && isdigit(text[0]))
