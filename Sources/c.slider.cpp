@@ -236,7 +236,14 @@ static void slider_preset(t_slider *x, t_binbuf *b)
 
 static t_pd_err slider_param_set(t_slider *x, t_symbol* name, float f)
 {
-    slider_float(x, f);
+    if(x->f_min < x->f_max)
+        x->f_value = pd_clip_minmax(f, x->f_min, x->f_max);
+    else
+        x->f_value = pd_clip_minmax(f, x->f_max, x->f_min);
+    
+    slider_output(x);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    //ebox_redraw((t_ebox *)x);
     return 0;
 }
 
@@ -261,7 +268,7 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
         ebox_parameter_new((t_ebox *)x, gensym("value"));
         ebox_parameter_minmax((t_ebox *)x, gensym("value"), x->f_min, x->f_max);
         ebox_parameter_default((t_ebox *)x, gensym("value"), x->f_min);
-        ebox_parameter_methods((t_ebox *)x, gensym("value"), (t_err_method)slider_param_get, (t_err_method)slider_param_set);
+        ebox_parameter_methods((t_ebox *)x, gensym("value"), (t_param_getter)slider_param_get, (t_param_setter)slider_param_set);
         
         ebox_ready((t_ebox *)x);
         return x;
