@@ -17,7 +17,6 @@ typedef struct _slider
 	t_rgba          f_color_background;
 	t_rgba          f_color_border;
 	t_rgba          f_color_knob;
-    t_eparameter    f_parameter;
     char            f_direction;
     float           f_min;
     float           f_max;
@@ -235,6 +234,18 @@ static void slider_preset(t_slider *x, t_binbuf *b)
     binbuf_addv(b, (char *)"sf", &s_float, (float)x->f_value);
 }
 
+static t_pd_err slider_param_set(t_slider *x, t_symbol* name, float f)
+{
+    slider_float(x, f);
+    return 0;
+}
+
+static t_pd_err slider_param_get(t_slider *x, t_symbol* name, float* f)
+{
+    *f = x->f_value;
+    return 0;
+}
+
 static void *slider_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_slider *x = (t_slider *)eobj_new(slider_class);
@@ -246,6 +257,12 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
         x->f_out = outlet_new((t_object *)x, &s_float);
         ebox_attrprocess_viabinbuf(x, d);
         x->f_value = x->f_min;
+        
+        ebox_parameter_new((t_ebox *)x, gensym("value"));
+        ebox_parameter_minmax((t_ebox *)x, gensym("value"), x->f_min, x->f_max);
+        ebox_parameter_default((t_ebox *)x, gensym("value"), x->f_min);
+        ebox_parameter_methods((t_ebox *)x, gensym("value"), (t_err_method)slider_param_get, (t_err_method)slider_param_set);
+        
         ebox_ready((t_ebox *)x);
         return x;
     }

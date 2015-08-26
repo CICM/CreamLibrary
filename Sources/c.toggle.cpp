@@ -113,76 +113,6 @@ static void toggle_preset(t_toggle *x, t_binbuf *b)
     binbuf_add(b, 2, av);
 }
 
-static void toggle_presetinfos(t_toggle* x, int* nppresets, t_preset** presets)
-{
-    *nppresets = 1;
-    *presets = (t_preset *)malloc(sizeof(t_preset));
-    if(*presets)
-    {
-        presets[0]->p_name   = cream_sym_state;
-        presets[0]->p_natoms = 1;
-        presets[0]->p_atoms  = (t_atom *)malloc(sizeof(t_atom *));
-        if(presets[0]->p_atoms)
-        {
-            atom_setfloat(presets[0]->p_atoms, 0.f);
-        }
-        else
-        {
-            presets[0]->p_natoms = 0;
-        }
-    }
-    else
-    {
-        *nppresets = 0;
-    }
-}
-
-static void toggle_presetget(t_toggle* x, t_preset* preset)
-{
-    if(preset && preset->p_name == cream_sym_state)
-    {
-        preset->p_natoms = 1;
-        preset->p_atoms  = (t_atom *)malloc(sizeof(t_atom *));
-        if(preset->p_atoms)
-        {
-            atom_setfloat(preset->p_atoms, (float)x->f_active);
-        }
-        else
-        {
-            preset->p_natoms = 0;
-        }
-    }
-}
-
-static void toggle_presetset(t_toggle* x, t_preset* preset1, t_preset* preset2, float delta)
-{
-    if(preset1 && preset2)
-    {
-        if(preset1->p_natoms && atom_gettype(preset1->p_atoms) == A_FLOAT &&
-           preset2->p_natoms && atom_gettype(preset2->p_atoms) == A_FLOAT)
-        {
-            x->f_active = (char)pd_clip_min(atom_getfloat(preset1->p_atoms), atom_getfloat(preset2->p_atoms));
-            toggle_output(x);
-        }
-    }
-    else if(preset1)
-    {
-        if(preset1->p_natoms && atom_gettype(preset1->p_atoms) == A_FLOAT)
-        {
-            x->f_active = (char)atom_getfloat(preset1->p_atoms);
-            toggle_output(x);
-        }
-    }
-    else if(preset2)
-    {
-        if(preset2->p_natoms && atom_gettype(preset2->p_atoms) == A_FLOAT)
-        {
-            x->f_active = (char)atom_getfloat(preset2->p_atoms);
-            toggle_output(x);
-        }
-    }
-}
-
 static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_toggle *x = (t_toggle *)eobj_new(toggle_class);
@@ -217,10 +147,6 @@ extern "C" void setup_c0x2etoggle(void)
         eclass_addmethod(c, (method) toggle_bang,            "bang",             A_NULL, 0);
         eclass_addmethod(c, (method) toggle_mousedown,       "mousedown",        A_NULL, 0);
         eclass_addmethod(c, (method) toggle_preset,          "preset",           A_NULL, 0);
-        
-        eclass_addmethod(c, (method) toggle_presetinfos,     "presetinfos",      A_CANT, 0);
-        eclass_addmethod(c, (method) toggle_presetget,       "presetget",        A_CANT, 0);
-        eclass_addmethod(c, (method) toggle_presetset,       "presetset",        A_CANT, 0);
         
         CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
         CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
