@@ -236,7 +236,6 @@ static void slider_preset(t_slider *x, t_binbuf *b)
 
 static t_pd_err slider_param_set(t_slider *x, t_symbol* name, float f)
 {
-    post("slider_param_set %f", f);
     if(x->f_min < x->f_max)
         x->f_value = pd_clip_minmax(f, x->f_min, x->f_max);
     else
