@@ -46,15 +46,7 @@ static void meter_tick(t_meter *x)
 {
     if(canvas_dspstate)
     {
-        if(x->f_peak > 0.)
-        {
-            x->f_peak = 20. * log10(x->f_peak);
-        }
-        else
-        {
-            x->f_peak = -90.;
-        }
-        if(x->f_peak >= 0)
+        if(x->f_peak >= 1.)
         {
             x->f_overled = 1;
         }
@@ -177,7 +169,7 @@ static void draw_background(t_meter *x,  t_object *view, t_rect *rect)
 }
 
 
-static void draw_leds(t_meter *x, t_object *view, t_rect *rect)
+static void draw_leds(t_meter *x, t_object *view, t_rect *rect, float peak, char overled)
 {
     float i;
     float dB;
@@ -185,8 +177,6 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect)
     
     if (g)
     {
-        const float peak = x->f_peak;
-        const long overload = x->f_overled;
         float led_height = rect->height / 13.f;
         float led_width = rect->width / 13.f;
         for(i = 12, dB = -39; i > 0; i--, dB += 3.f)
@@ -218,7 +208,7 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect)
                 egraphics_fill(g);
             }
         }
-        if(overload)
+        if(overled)
         {
             egraphics_set_color_rgba(g, &x->f_color_signal_over);
             if(!x->f_direction)
@@ -241,9 +231,11 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect)
 static void meter_paint(t_meter *x, t_object *view)
 {
     t_rect rect;
+    const float peak = x->f_peak > 0. ? 20. * log10(x->f_peak) : -90.;
+    const char overled = x->f_overled;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     draw_background(x, view, &rect);
-    draw_leds(x, view, &rect);
+    draw_leds(x, view, &rect, peak, overled);
 }
 
 static void *meter_new(t_symbol *s, int argc, t_atom *argv)

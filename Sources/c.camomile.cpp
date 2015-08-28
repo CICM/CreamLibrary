@@ -31,8 +31,8 @@ static void camomile_getdrawparams(t_camomile *x, t_object *patcherview, t_edraw
 
 static void camomile_oksize(t_camomile *x, t_rect *newrect)
 {
-    newrect->width = pd_clip_min(newrect->width, 600.f);
-    newrect->height = pd_clip_min(newrect->height, 400.f);
+    newrect->width = pd_clip_min(newrect->width, 200.f);
+    newrect->height = pd_clip_min(newrect->height, 80.f);
 }
 
 static void camomile_bang(t_camomile *x)
@@ -120,7 +120,7 @@ static void *camomile_new(t_symbol *s, int argc, t_atom *argv)
     
     if(x && d)
     {
-        ebox_new((t_ebox *)x, 0 | EBOX_GROWNO | EBOX_IGNORELOCKCLICK);
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK);
         x->f_nboxes = 0;
         x->f_boxes  = NULL;
         ebox_attrprocess_viabinbuf(x, d);
