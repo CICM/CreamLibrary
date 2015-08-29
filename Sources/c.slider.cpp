@@ -24,6 +24,7 @@ typedef struct _slider
     float           f_value_ref;
     float           f_value_last;
     long            f_mode;
+    t_symbol*       f_plabel;
 } t_slider;
 
 static t_eclass *slider_class;
@@ -268,8 +269,10 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
         ebox_parameter_new((t_ebox *)x, s_cream_empty);
         ebox_parameter_minmax((t_ebox *)x, s_cream_empty, x->f_min, x->f_max);
         ebox_parameter_default((t_ebox *)x, s_cream_empty, x->f_min);
-        ebox_parameter_methods((t_ebox *)x, s_cream_empty, (t_param_getter)slider_param_get, (t_param_setter)slider_param_set);
-        
+        ebox_parameter_methods((t_ebox *)x, s_cream_empty,
+                               (t_param_getter)slider_param_get,
+                               (t_param_setter)slider_param_set);
+        ebox_parameter_label((t_ebox *)x, s_cream_empty, x->f_plabel);
         ebox_ready((t_ebox *)x);
         return x;
     }
@@ -340,6 +343,12 @@ extern "C" void setup_c0x2eslider(void)
         CLASS_ATTR_ORDER                (c, "kncolor", 0, "3");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "kncolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "kncolor", 0, "color");
+        
+        CLASS_ATTR_SYMBOL               (c, "plabel", 0, t_slider, f_plabel);
+        CLASS_ATTR_LABEL                (c, "plabel", 0, "Parameter Label");
+        CLASS_ATTR_ORDER                (c, "plabel", 0, "4");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "plabel", 0, "");
+        CLASS_ATTR_STYLE                (c, "plabel", 0, "entry");
         
         eclass_register(CLASS_BOX, c);
         slider_class = c;
