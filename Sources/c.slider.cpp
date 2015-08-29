@@ -265,10 +265,10 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
         ebox_attrprocess_viabinbuf(x, d);
         x->f_value = x->f_min;
         
-        ebox_parameter_new((t_ebox *)x, gensym("value"));
-        ebox_parameter_minmax((t_ebox *)x, gensym("value"), x->f_min, x->f_max);
-        ebox_parameter_default((t_ebox *)x, gensym("value"), x->f_min);
-        ebox_parameter_methods((t_ebox *)x, gensym("value"), (t_param_getter)slider_param_get, (t_param_setter)slider_param_set);
+        ebox_parameter_new((t_ebox *)x, s_cream_empty);
+        ebox_parameter_minmax((t_ebox *)x, s_cream_empty, x->f_min, x->f_max);
+        ebox_parameter_default((t_ebox *)x, s_cream_empty, x->f_min);
+        ebox_parameter_methods((t_ebox *)x, s_cream_empty, (t_param_getter)slider_param_get, (t_param_setter)slider_param_set);
         
         ebox_ready((t_ebox *)x);
         return x;
