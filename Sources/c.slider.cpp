@@ -21,6 +21,7 @@ typedef struct _slider
     long            f_mode;
     float           f_value_ref;
     float           f_value_last;
+    void*           f_dummy;
 } t_slider;
 
 static t_eclass *slider_class;
@@ -213,11 +214,6 @@ static void slider_mouseup(t_slider *x, t_object *patcherview, t_pt pt, long mod
      ebox_parameter_end_changes((t_ebox *)x, 0);
 }
 
-static void slider_preset(t_slider *x, t_binbuf *b)
-{
-    binbuf_addv(b, (char *)"sf", &s_float, (float)ebox_parameter_getvalue((t_ebox *)x, 0));
-}
-
 static void *slider_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_slider *x = (t_slider *)eobj_new(slider_class);
@@ -225,8 +221,8 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
     
     if(x && d)
     {
-        ebox_parameter_create((t_ebox *)x, 0);
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
+        ebox_parameter_create((t_ebox *)x, 0);
         x->f_out = outlet_new((t_object *)x, &s_float);
         
         ebox_attrprocess_viabinbuf(x, d);
@@ -237,6 +233,11 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
     return NULL;
 }
 
+static _FUNCTION_DEPRECTAED_ void slider_preset(t_slider *x, t_binbuf *b)
+{
+    binbuf_addv(b, (char *)"sf", &s_float, (float)ebox_parameter_getvalue((t_ebox *)x, 0));
+}
+
 extern "C" void setup_c0x2eslider(void)
 {
     t_eclass *c = eclass_new("c.slider", (method)slider_new, (method)ebox_free, (short)sizeof(t_slider), 0L, A_GIMME, 0);
@@ -244,18 +245,18 @@ extern "C" void setup_c0x2eslider(void)
     {
         eclass_guiinit(c, 0);
         
-        eclass_addmethod(c, (method) slider_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) slider_notify,          "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) slider_getdrawparams,   "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) slider_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (method) slider_paint,          "paint",            A_NULL, 0);
+        eclass_addmethod(c, (method) slider_notify,         "notify",           A_NULL, 0);
+        eclass_addmethod(c, (method) slider_getdrawparams,  "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (method) slider_oksize,         "oksize",           A_NULL, 0);
         
-        eclass_addmethod(c, (method) slider_set,             "set",              A_FLOAT,0);
-        eclass_addmethod(c, (method) slider_float,           "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) slider_output,          "bang",             A_NULL, 0);
+        eclass_addmethod(c, (method) slider_set,            "set",              A_FLOAT,0);
+        eclass_addmethod(c, (method) slider_float,          "float",            A_FLOAT,0);
+        eclass_addmethod(c, (method) slider_bang,           "bang",             A_NULL, 0);
         
-        eclass_addmethod(c, (method) slider_mousedown,       "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) slider_mousedrag,       "mousedrag",        A_NULL, 0);
-        eclass_addmethod(c, (method) slider_mouseup,         "mouseup",          A_NULL, 0);
+        eclass_addmethod(c, (method) slider_mousedown,      "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (method) slider_mousedrag,      "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (method) slider_mouseup,        "mouseup",          A_NULL, 0);
         
         eclass_addmethod(c, (method) slider_preset,          "preset",           A_NULL, 0);
         
@@ -291,33 +292,31 @@ extern "C" void setup_c0x2eslider(void)
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "kncolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "kncolor", 0, "color");
         
-        /*
-        CLASS_ATTR_SYMBOL               (c, "p1name", 0, t_slider, NULL);
-        CLASS_ATTR_LABEL                (c, "p1name", 0, "Parameter Name");
-        CLASS_ATTR_ORDER                (c, "p1name", 0, "6");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "p1name", 0, "");
-        CLASS_ATTR_STYLE                (c, "p1name", 0, "entry");
+        CLASS_ATTR_SYMBOL               (c, "name", 0, t_slider, f_dummy);
+        CLASS_ATTR_LABEL                (c, "name", 0, "Parameter Name");
+        CLASS_ATTR_ORDER                (c, "name", 0, "6");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "name", 0, "");
+        CLASS_ATTR_STYLE                (c, "name", 0, "entry");
         
-        CLASS_ATTR_SYMBOL               (c, "p1label", 0, t_slider, NULL);
-        CLASS_ATTR_LABEL                (c, "p1label", 0, "Parameter Label");
-        CLASS_ATTR_ORDER                (c, "p1label", 0, "7");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "p1label", 0, "");
-        CLASS_ATTR_STYLE                (c, "p1label", 0, "entry");
+        CLASS_ATTR_SYMBOL               (c, "label", 0, t_slider, f_dummy);
+        CLASS_ATTR_LABEL                (c, "label", 0, "Parameter Label");
+        CLASS_ATTR_ORDER                (c, "label", 0, "7");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "label", 0, "");
+        CLASS_ATTR_STYLE                (c, "label", 0, "entry");
         
-        CLASS_ATTR_FLOAT                (c, "p1min", 0, t_slider, f_param->p_min);
-        CLASS_ATTR_LABEL                (c, "p1min", 0, "Minimum Parameter Value");
-        CLASS_ATTR_ORDER                (c, "p1min", 0, "1");
-        CLASS_ATTR_DEFAULT              (c, "p1min", 0, "0.");
-        CLASS_ATTR_SAVE                 (c, "p1min", 1);
-        CLASS_ATTR_STYLE                (c, "p1min", 0, "number");
+        CLASS_ATTR_FLOAT                (c, "min", 0, t_slider, f_dummy);
+        CLASS_ATTR_LABEL                (c, "min", 0, "Minimum Parameter Value");
+        CLASS_ATTR_ORDER                (c, "min", 0, "1");
+        CLASS_ATTR_DEFAULT              (c, "min", 0, "0.");
+        CLASS_ATTR_SAVE                 (c, "min", 1);
+        CLASS_ATTR_STYLE                (c, "min", 0, "number");
         
-        CLASS_ATTR_FLOAT                (c, "p1max", 0, t_slider, f_param->p_max);
-        CLASS_ATTR_LABEL                (c, "p1max", 0, "Maximum Parameter Value");
-        CLASS_ATTR_ORDER                (c, "p1max", 0, "2");
-        CLASS_ATTR_DEFAULT              (c, "p1max", 0, "1.");
-        CLASS_ATTR_SAVE                 (c, "p1max", 1);
-        CLASS_ATTR_STYLE                (c, "p1max", 0, "number");
-         */
+        CLASS_ATTR_FLOAT                (c, "max", 0, t_slider, f_dummy);
+        CLASS_ATTR_LABEL                (c, "max", 0, "Maximum Parameter Value");
+        CLASS_ATTR_ORDER                (c, "max", 0, "2");
+        CLASS_ATTR_DEFAULT              (c, "max", 0, "1.");
+        CLASS_ATTR_SAVE                 (c, "max", 1);
+        CLASS_ATTR_STYLE                (c, "max", 0, "number");
         
         eclass_register(CLASS_BOX, c);
         slider_class = c;
