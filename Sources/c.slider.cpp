@@ -166,11 +166,11 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
         x->f_value_last =  ebox_parameter_getvalue((t_ebox *)x, 0);
         if(min < max)
         {
-            x->f_value_ref = pd_clip_minmax(slider_getvalue(x, &rect, &pt, min, max), min, max);
+            x->f_value_ref = pd_clip(slider_getvalue(x, &rect, &pt, min, max), min, max);
         }
         else
         {
-            x->f_value_ref = pd_clip_minmax(slider_getvalue(x, &rect, &pt, min, max), max, min);
+            x->f_value_ref = pd_clip(slider_getvalue(x, &rect, &pt, min, max), max, min);
         }
     }
     else
@@ -260,10 +260,6 @@ extern "C" void setup_c0x2eslider(void)
         
         eclass_addmethod(c, (method) slider_preset,          "preset",           A_NULL, 0);
         
-        CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
         
         CLASS_ATTR_LONG                 (c, "mode", 0, t_slider, f_mode);
@@ -291,7 +287,7 @@ extern "C" void setup_c0x2eslider(void)
         CLASS_ATTR_ORDER                (c, "kncolor", 0, "5");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "kncolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "kncolor", 0, "color");
-        
+        /*
         CLASS_ATTR_SYMBOL               (c, "name", 0, t_slider, f_dummy);
         CLASS_ATTR_LABEL                (c, "name", 0, "Parameter Name");
         CLASS_ATTR_ORDER                (c, "name", 0, "6");
@@ -317,7 +313,7 @@ extern "C" void setup_c0x2eslider(void)
         CLASS_ATTR_DEFAULT              (c, "max", 0, "1.");
         CLASS_ATTR_SAVE                 (c, "max", 1);
         CLASS_ATTR_STYLE                (c, "max", 0, "number");
-        
+        */
         eclass_register(CLASS_BOX, c);
         slider_class = c;
     }

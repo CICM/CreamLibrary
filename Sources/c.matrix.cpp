@@ -232,8 +232,8 @@ static void matrixctrl_mousedown(t_matrixctrl *x, t_object *patcherview, t_pt pt
 {
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    x->f_selected[0] = (int)pd_clip_minmax(pt.x / (rect.width / (float)x->f_size[0]), 0.f, (float)x->f_size[0] - 1.f);
-    x->f_selected[1] = (int)pd_clip_minmax(pt.y / (rect.height / (float)x->f_size[1]), 0.f, (float)x->f_size[1] - 1.f);
+    x->f_selected[0] = (int)pd_clip(pt.x / (rect.width / (float)x->f_size[0]), 0.f, (float)x->f_size[0] - 1.f);
+    x->f_selected[1] = (int)pd_clip(pt.y / (rect.height / (float)x->f_size[1]), 0.f, (float)x->f_size[1] - 1.f);
     if(x->f_selected[0] >= 0 && x->f_selected[0] < x->f_size[0] && x->f_selected[1] >= 0 && x->f_selected[1] < x->f_size[1])
     {
         x->f_values[x->f_selected[0]][x->f_selected[1]] = !x->f_values[x->f_selected[0]][x->f_selected[1]];
@@ -248,8 +248,8 @@ static void matrixctrl_mousedrag(t_matrixctrl *x, t_object *patcherview, t_pt pt
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     int newpt[2];
-    newpt[0] = (int)pd_clip_minmax(pt.x / (rect.width / (float)x->f_size[0]), 0.f, (float)x->f_size[0] - 1.f);
-    newpt[1] = (int)pd_clip_minmax(pt.y / (rect.height / (float)x->f_size[1]), 0.f, (float)x->f_size[1] - 1.f);
+    newpt[0] = (int)pd_clip(pt.x / (rect.width / (float)x->f_size[0]), 0.f, (float)x->f_size[0] - 1.f);
+    newpt[1] = (int)pd_clip(pt.y / (rect.height / (float)x->f_size[1]), 0.f, (float)x->f_size[1] - 1.f);
     if(newpt[0] != x->f_selected[0] || newpt[1] != x->f_selected[1])
     {
         x->f_selected[0] = newpt[0];
@@ -297,8 +297,8 @@ static t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, int ac, t
 {
     if(ac > 1 && av && atom_gettype(av) == A_FLOAT && atom_gettype(av+1) == A_FLOAT)
     {
-        x->f_size[0] = (int)pd_clip_minmax(atom_getfloat(av), 1, 256);
-        x->f_size[1] = (int)pd_clip_minmax(atom_getfloat(av+1), 1, 256);
+        x->f_size[0] = (int)pd_clip(atom_getfloat(av), 1, 256);
+        x->f_size[1] = (int)pd_clip(atom_getfloat(av+1), 1, 256);
         for(int i = 0; i < 256; i++)
         {
             x->f_values[i] = (char *)malloc(256 * sizeof(char));

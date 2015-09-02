@@ -20,6 +20,8 @@ typedef struct  _number_tilde
     t_outlet*   f_peaks_outlet;
     float       f_peak_value;
     int         f_max_decimal;
+    
+    t_efont     f_font;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_text;
@@ -103,7 +105,7 @@ static void draw_background(t_number_tilde *x, t_object *view, t_rect *rect)
             egraphics_set_line_width(g, 2);
             egraphics_set_color_rgba(g, &x->f_color_border);
             egraphics_move_to(g, 0, 0);
-            egraphics_line_to(g, sys_fontwidth(x->j_box.b_font.c_size) + 6,  rect->height / 2.);
+            egraphics_line_to(g, sys_fontwidth(x->f_font.size) + 6,  rect->height / 2.);
             egraphics_line_to(g, 0, rect->height);
             egraphics_stroke(g);
             
@@ -138,7 +140,7 @@ static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
             else
                 sprintf(number, "%.6f", x->f_peak_value);
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->j_box.b_font, sys_fontwidth(x->j_box.b_font.c_size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->j_box.b_font, sys_fontwidth(x->f_font.size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
@@ -152,11 +154,11 @@ static void number_tilde_paint(t_number_tilde *x, t_object *view)
 {
     t_rect rect;
 #ifdef __APPLE__
-    float fontwidth = sys_fontwidth(x->j_box.b_font.c_size);
+    float fontwidth = sys_fontwidth(x->f_font.size);
 #elif _WINDOWS
-    float fontwidth = sys_fontwidth(x->j_box.b_font.c_size);
+    float fontwidth = sys_fontwidth(x->f_font.size);
 #else
-    float fontwidth = sys_fontwidth(x->j_box.b_font.c_size) + 3;
+    float fontwidth = sys_fontwidth(x->f_font.size) + 3;
 #endif
     
     ebox_get_rect_for_view((t_ebox *)x, &rect);
@@ -182,13 +184,13 @@ static void number_tilde_getdrawparams(t_number_tilde *x, t_object *patcherview,
 static void number_tilde_oksize(t_number_tilde *x, t_rect *newrect)
 {
 #ifdef __APPLE__
-    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->j_box.b_font.c_size) * 3 + 8);
+    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->f_font.size) * 3 + 8);
 #elif _WINDOWS
-    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->j_box.b_font.c_size) * 3 + 8);
+    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->f_font.size) * 3 + 8);
 #else
-    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->j_box.b_font.c_size) * 3 + 11);
+    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->f_font.size) * 3 + 11);
 #endif
-    newrect->height = sys_fontheight(x->j_box.b_font.c_size) + 4;
+    newrect->height = sys_fontheight(x->f_font.size) + 4;
 }
 
 static void number_tilde_free(t_number_tilde *x)

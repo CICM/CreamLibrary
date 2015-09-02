@@ -32,16 +32,16 @@ static void plane_set(t_plane *x, t_symbol *s, int ac, t_atom *av)
         if(ac)
         {
             if(x->f_boundaries.x < x->f_boundaries.width)
-                x->f_position.x = pd_clip_minmax(atom_getfloat(av), x->f_boundaries.x, x->f_boundaries.width);
+                x->f_position.x = pd_clip(atom_getfloat(av), x->f_boundaries.x, x->f_boundaries.width);
             else
-                x->f_position.x = pd_clip_minmax(atom_getfloat(av), x->f_boundaries.width, x->f_boundaries.x);
+                x->f_position.x = pd_clip(atom_getfloat(av), x->f_boundaries.width, x->f_boundaries.x);
         }
         if(ac > 1)
         {
             if(x->f_boundaries.y < x->f_boundaries.height)
-                x->f_position.y = pd_clip_minmax(atom_getfloat(av+1), x->f_boundaries.y, x->f_boundaries.height);
+                x->f_position.y = pd_clip(atom_getfloat(av+1), x->f_boundaries.y, x->f_boundaries.height);
             else
-                x->f_position.y = pd_clip_minmax(atom_getfloat(av+1), x->f_boundaries.height, x->f_boundaries.y);
+                x->f_position.y = pd_clip(atom_getfloat(av+1), x->f_boundaries.height, x->f_boundaries.y);
         }
         
         ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);

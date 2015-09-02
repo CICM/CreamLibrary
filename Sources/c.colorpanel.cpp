@@ -117,9 +117,9 @@ static void colorpanel_set(t_colorpanel *x, t_symbol *s, int ac, t_atom *av)
     if(ac > 1 && av)
     {
         if(atom_gettype(av) == A_FLOAT)
-            x->f_color_picked.x = pd_clip_minmax((int)atom_getfloat(av), 0, x->f_matrix_sizes.x-1);
+            x->f_color_picked.x = pd_clip((int)atom_getfloat(av), 0, x->f_matrix_sizes.x-1);
         if(atom_gettype(av+1) == A_FLOAT)
-            x->f_color_picked.y = pd_clip_minmax((int)atom_getfloat(av+1), 0, x->f_matrix_sizes.y-1);
+            x->f_color_picked.y = pd_clip((int)atom_getfloat(av+1), 0, x->f_matrix_sizes.y-1);
 
         ebox_invalidate_layer((t_ebox *)x, cream_sym_picked_layer);
         ebox_redraw((t_ebox *)x);
@@ -131,9 +131,9 @@ static void colorpanel_list(t_colorpanel *x, t_symbol *s, int ac, t_atom *av)
     if(ac > 1 && av)
     {
         if(atom_gettype(av) == A_FLOAT)
-            x->f_color_picked.x = pd_clip_minmax((int)atom_getfloat(av), 0, x->f_matrix_sizes.x-1);
+            x->f_color_picked.x = pd_clip((int)atom_getfloat(av), 0, x->f_matrix_sizes.x-1);
         if(atom_gettype(av+1) == A_FLOAT)
-            x->f_color_picked.y = pd_clip_minmax((int)atom_getfloat(av+1), 0, x->f_matrix_sizes.y-1);
+            x->f_color_picked.y = pd_clip((int)atom_getfloat(av+1), 0, x->f_matrix_sizes.y-1);
 
         colorpanel_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_picked_layer);
@@ -263,8 +263,8 @@ static void colorpanel_paint(t_colorpanel *x, t_object *view)
 
 void colorpanel_mousemove(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    x->f_color_hover.x = pd_clip_minmax((int)(pt.x / (x->j_box.b_rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
-    x->f_color_hover.y = pd_clip_minmax((int)(pt.y / (x->j_box.b_rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
+    x->f_color_hover.x = pd_clip((int)(pt.x / (x->j_box.b_rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
+    x->f_color_hover.y = pd_clip((int)(pt.y / (x->j_box.b_rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_hover_layer);
     ebox_redraw((t_ebox *)x);
 }
@@ -272,8 +272,8 @@ void colorpanel_mousedown(t_colorpanel *x, t_object *patcherview, t_pt pt, long 
 {
     x->f_color_hover.x = -10;
     x->f_color_hover.y = -10;
-    x->f_color_picked.x = pd_clip_minmax((int)(pt.x / (x->j_box.b_rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
-    x->f_color_picked.y = pd_clip_minmax((int)(pt.y / (x->j_box.b_rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
+    x->f_color_picked.x = pd_clip((int)(pt.x / (x->j_box.b_rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
+    x->f_color_picked.y = pd_clip((int)(pt.y / (x->j_box.b_rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_hover_layer);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_picked_layer);
     ebox_redraw((t_ebox *)x);
@@ -374,7 +374,7 @@ t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, int ac, t_at
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
-        x->f_saturation = pd_clip_minmax(atom_getfloat(av), 0., 1.);
+        x->f_saturation = pd_clip(atom_getfloat(av), 0., 1.);
         colorpanel_computecolors(x);
     }
     return 0;
@@ -384,7 +384,7 @@ t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
-        x->f_hue = pd_clip_minmax(atom_getfloat(av), 0., 1.);
+        x->f_hue = pd_clip(atom_getfloat(av), 0., 1.);
         colorpanel_computecolors(x);
     }
     return 0;
@@ -394,7 +394,7 @@ t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, int ac, t_ato
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
-        x->f_lightness = pd_clip_minmax(atom_getfloat(av), 0., 1.);
+        x->f_lightness = pd_clip(atom_getfloat(av), 0., 1.);
         colorpanel_computecolors(x);
     }
     return 0;
@@ -404,7 +404,7 @@ t_pd_err colorpanel_reverse_set(t_colorpanel *x, t_object *attr, int ac, t_atom 
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
-        x->f_reverse = pd_clip_minmax((int)atom_getfloat(av), 0., 1.);
+        x->f_reverse = pd_clip((int)atom_getfloat(av), 0., 1.);
         colorpanel_computecolors(x);
     }
     return 0;

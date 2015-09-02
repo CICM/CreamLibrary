@@ -143,7 +143,7 @@ static void blackboard_color(t_blackboard *x, t_symbol *s, int argc, t_atom *arg
 
 static void blackboard_fill(t_blackboard *x, float f)
 {
-    x->f_fill = pd_clip_minmax(f, 0, 1);
+    x->f_fill = pd_clip(f, 0, 1);
 }
 
 static void blackboard_line(t_blackboard *x, t_symbol *s, int argc, t_atom *argv)
@@ -358,7 +358,8 @@ static void blackboard_text(t_blackboard *x, t_symbol *s, int argc, t_atom *argv
                 strncat(x->f_instructions[x->f_ninstructions], buffer, length);
             }
             
-            sprintf(buffer, "} -font {%s %d %s} -fill %s", x->j_box.b_font.c_family->s_name, (int)x->j_box.b_font.c_size, x->j_box.b_font.c_weight->s_name, x->f_color->s_name);
+            int todo;
+            //sprintf(buffer, "} -font {%s %d %s} -fill %s", x->j_box.b_font.c_family->s_name, (int)x->j_box.b_font.c_size, x->j_box.b_font.c_weight->s_name, x->f_color->s_name);
             length = strlen(buffer);
             strncat(x->f_instructions[x->f_ninstructions], buffer, length);
             

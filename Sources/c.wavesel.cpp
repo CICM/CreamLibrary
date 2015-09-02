@@ -173,9 +173,9 @@ static void wavesel_draw_selection(t_wavesel *x, t_rect *rect)
         // Simulation of the alpha color
         float alpha = 0.2f;
         t_rgba color;
-        color.red = pd_clip_minmax(x->f_color_background.red + x->f_color_selection.red * alpha, 0.f, 1.f);
-        color.green = pd_clip_minmax(x->f_color_background.green + x->f_color_selection.green * alpha, 0.f, 1.f);
-        color.blue = pd_clip_minmax(x->f_color_background.green + x->f_color_selection.blue * alpha, 0.f, 1.f);
+        color.red = pd_clip(x->f_color_background.red + x->f_color_selection.red * alpha, 0.f, 1.f);
+        color.green = pd_clip(x->f_color_background.green + x->f_color_selection.green * alpha, 0.f, 1.f);
+        color.blue = pd_clip(x->f_color_background.green + x->f_color_selection.blue * alpha, 0.f, 1.f);
         
         egraphics_set_color_rgba(g, &color);
         egraphics_rectangle(g, start, 0.f, end - start, rect->height);
@@ -198,9 +198,9 @@ static void wavesel_draw_selection(t_wavesel *x, t_rect *rect)
             x->x_samplesPerColumn = (t_float)x->x_arraysize / rect->width;
             x->x_outputFactor = x->x_samplesPerColumn / x->x_ksr;
         }
-        color.red = pd_clip_minmax(x->f_color_waveform.red + x->f_color_selection.red * alpha, 0.f, 1.f);
-        color.green = pd_clip_minmax(x->f_color_waveform.green + x->f_color_selection.green * alpha, 0.f, 1.f);
-        color.blue = pd_clip_minmax(x->f_color_waveform.green + x->f_color_selection.blue * alpha, 0.f, 1.f);
+        color.red = pd_clip(x->f_color_waveform.red + x->f_color_selection.red * alpha, 0.f, 1.f);
+        color.green = pd_clip(x->f_color_waveform.green + x->f_color_selection.green * alpha, 0.f, 1.f);
+        color.blue = pd_clip(x->f_color_waveform.green + x->f_color_selection.blue * alpha, 0.f, 1.f);
         egraphics_set_color_rgba(g, &color);
         if(vec && size)
         {

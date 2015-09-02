@@ -199,7 +199,7 @@ void gain_oksize(t_gain *x, t_rect *newrect)
 
 void gain_set(t_gain *x, float f)
 {
-    x->f_value = pd_clip_minmax(f, -90., 18.);
+    x->f_value = pd_clip(f, -90., 18.);
     x->f_amp_old = x->f_amp;
     x->f_amp = powf(10., x->f_value * 0.05);
     x->f_amp_step = (float)(x->f_amp - x->f_amp_old) / (float)x->f_ramp_sample;
@@ -216,7 +216,7 @@ void gain_float(t_gain *x, float f)
 
 void gain_linear(t_gain *x, float f)
 {
-    f = pd_clip_minmax(f, 0.00001, 8.);
+    f = pd_clip(f, 0.00001, 8.);
     f = (20.f * log10f(f));
     
     if(f < -90)
@@ -306,7 +306,7 @@ void draw_background(t_gain *x, t_object *view, t_rect *rect)
         if(x->f_direction)
         {
             ratio = 90.f / 108.f;
-            egraphics_set_line_width(g, pd_clip_minmax(rect->height * 0.1f, 2.f, 4.f));
+            egraphics_set_line_width(g, pd_clip(rect->height * 0.1f, 2.f, 4.f));
             
             egraphics_set_color_rgba(g, &x->f_color_border);
             egraphics_line_fast(g, rect->width * ratio, 0, rect->width * ratio, rect->height);
@@ -320,7 +320,7 @@ void draw_background(t_gain *x, t_object *view, t_rect *rect)
         else
         {
             ratio = 1.f - 90.f / 108.f;
-            egraphics_set_line_width(g, pd_clip_minmax(rect->width * 0.1f, 2.f, 4.f));
+            egraphics_set_line_width(g, pd_clip(rect->width * 0.1f, 2.f, 4.f));
             
             egraphics_set_color_rgba(g, &x->f_color_border);
             egraphics_line_fast(g, 0, rect->height * ratio, rect->width, rect->height * ratio);
@@ -348,13 +348,13 @@ void draw_knob(t_gain *x, t_object *view, t_rect *rect)
         egraphics_set_color_rgba(g, &x->f_color_knob);
         if(x->f_direction)
         {
-            ratio = pd_clip_minmax(rect->width * 0.05, 4., 12.);
+            ratio = pd_clip(rect->width * 0.05, 4., 12.);
             egraphics_set_line_width(g, ratio);
             egraphics_line_fast(g, value * rect->width, -2, value * rect->width, rect->height+4);
         }
         else
         {
-            ratio = pd_clip_minmax(rect->height * 0.05, 4., 12.);
+            ratio = pd_clip(rect->height * 0.05, 4., 12.);
             egraphics_set_line_width(g, ratio);
             egraphics_line_fast(g, -2, (1. - value) * rect->height, rect->width+4, (1. - value) * rect->height);
         }
@@ -371,22 +371,22 @@ void gain_mousedown(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
         x->f_value_last = x->f_value;
         if(x->f_direction)
         {
-            x->f_value_ref = pd_clip_minmax(pt.x / x->j_box.b_rect.width * 108. - 90., -90., 18.);
+            x->f_value_ref = pd_clip(pt.x / x->j_box.b_rect.width * 108. - 90., -90., 18.);
         }
         else
         {
-            x->f_value_ref = pd_clip_minmax((x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * 108. - 90., -90., 18.);
+            x->f_value_ref = pd_clip((x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * 108. - 90., -90., 18.);
         }
     }
     else
     {
         if(x->f_direction)
         {
-            value = pd_clip_minmax(pt.x / x->j_box.b_rect.width * 108. - 90., -90., 18.);
+            value = pd_clip(pt.x / x->j_box.b_rect.width * 108. - 90., -90., 18.);
         }
         else
         {
-            value = pd_clip_minmax((x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * 108. - 90., -90., 18.);
+            value = pd_clip((x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * 108. - 90., -90., 18.);
         }
         gain_float(x, value);
     }
@@ -405,7 +405,7 @@ void gain_mousedrag(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
         {
             newvalue = (x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * 108. - 90.;
         }
-        value = pd_clip_minmax(x->f_value_last + newvalue - x->f_value_ref, -90., 18.);
+        value = pd_clip(x->f_value_last + newvalue - x->f_value_ref, -90., 18.);
         
         if(value == -90. || value == 18.)
         {
@@ -417,11 +417,11 @@ void gain_mousedrag(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
     {
         if(x->f_direction)
         {
-            value = pd_clip_minmax(pt.x / x->j_box.b_rect.width * 108. - 90., -90., 18.);
+            value = pd_clip(pt.x / x->j_box.b_rect.width * 108. - 90., -90., 18.);
         }
         else
         {
-            value = pd_clip_minmax((x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * 108. - 90., -90., 18.);
+            value = pd_clip((x->j_box.b_rect.height - pt.y) / x->j_box.b_rect.height * 108. - 90., -90., 18.);
         }
     }
     

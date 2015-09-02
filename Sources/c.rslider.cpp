@@ -78,22 +78,22 @@ static void rslider_set(t_rslider *x, t_symbol* s, int argc, t_atom *argv)
     {
         if(x->f_min < x->f_max)
         {
-            x->f_value_low = pd_clip_minmax(atom_getfloat(argv), x->f_min, x->f_max);
+            x->f_value_low = pd_clip(atom_getfloat(argv), x->f_min, x->f_max);
         }
         else
         {
-            x->f_value_low = pd_clip_minmax(atom_getfloat(argv), x->f_max, x->f_min);
+            x->f_value_low = pd_clip(atom_getfloat(argv), x->f_max, x->f_min);
         }
     }
     if(argc > 1 && atom_gettype(argv+1) == A_FLOAT)
     {
         if(x->f_min < x->f_max)
         {
-            x->f_value_high = pd_clip_minmax(atom_getfloat(argv+1), x->f_min, x->f_max);
+            x->f_value_high = pd_clip(atom_getfloat(argv+1), x->f_min, x->f_max);
         }
         else
         {
-            x->f_value_high = pd_clip_minmax(atom_getfloat(argv+1), x->f_max, x->f_min);
+            x->f_value_high = pd_clip(atom_getfloat(argv+1), x->f_max, x->f_min);
         }
     }
     
@@ -115,22 +115,22 @@ static void rslider_float(t_rslider *x, float f)
     {
         if(x->f_min < x->f_max)
         {
-            x->f_value_low = pd_clip_minmax(f, x->f_min, x->f_max);
+            x->f_value_low = pd_clip(f, x->f_min, x->f_max);
         }
         else
         {
-            x->f_value_low = pd_clip_minmax(f, x->f_max, x->f_min);
+            x->f_value_low = pd_clip(f, x->f_max, x->f_min);
         }
     }
     else
     {
         if(x->f_min < x->f_max)
         {
-            x->f_value_high = pd_clip_minmax(f, x->f_min, x->f_max);
+            x->f_value_high = pd_clip(f, x->f_min, x->f_max);
         }
         else
         {
-            x->f_value_high = pd_clip_minmax(f, x->f_max, x->f_min);
+            x->f_value_high = pd_clip(f, x->f_max, x->f_min);
         }
     }
     rslider_output(x);
@@ -271,16 +271,16 @@ static void rslider_mousedown(t_rslider *x, t_object *patcherview, t_pt pt, long
     if(x->f_direction)
     {
         if(x->f_min < x->f_max)
-            value = pd_clip_minmax(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
+            value = pd_clip(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
         else
-            value= pd_clip_minmax((rect.width - pt.x) / rect.width * ratio + x->f_max, x->f_max, x->f_min);
+            value= pd_clip((rect.width - pt.x) / rect.width * ratio + x->f_max, x->f_max, x->f_min);
     }
     else
     {
         if(x->f_min < x->f_max)
-            value = pd_clip_minmax(pt.y / rect.height * ratio + x->f_min, x->f_min, x->f_max);
+            value = pd_clip(pt.y / rect.height * ratio + x->f_min, x->f_min, x->f_max);
         else
-            value = pd_clip_minmax((rect.height - pt.y) / rect.height * ratio + x->f_max, x->f_max, x->f_min);
+            value = pd_clip((rect.height - pt.y) / rect.height * ratio + x->f_max, x->f_max, x->f_min);
     }
     
     if(modifiers == EMOD_SHIFT)
@@ -322,16 +322,16 @@ static void rslider_mousedrag(t_rslider *x, t_object *patcherview, t_pt pt, long
     if(x->f_direction)
     {
         if(x->f_min < x->f_max)
-            value = pd_clip_minmax(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
+            value = pd_clip(pt.x / rect.width * ratio + x->f_min, x->f_min, x->f_max);
         else
-            value = pd_clip_minmax((rect.width - pt.x) / rect.width * ratio + x->f_max, x->f_max, x->f_min);
+            value = pd_clip((rect.width - pt.x) / rect.width * ratio + x->f_max, x->f_max, x->f_min);
     }
     else
     {
         if(x->f_min < x->f_max)
-            value = pd_clip_minmax(pt.y / rect.height * ratio + x->f_min, x->f_min, x->f_max);
+            value = pd_clip(pt.y / rect.height * ratio + x->f_min, x->f_min, x->f_max);
         else
-            value = pd_clip_minmax((rect.height - pt.y) / rect.height * ratio + x->f_max, x->f_max, x->f_min);
+            value = pd_clip((rect.height - pt.y) / rect.height * ratio + x->f_max, x->f_max, x->f_min);
     }
     
     if(x->f_loworhigh)

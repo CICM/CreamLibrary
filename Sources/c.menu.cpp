@@ -22,6 +22,8 @@ typedef struct  _menu
     long        f_states_size;
     long        f_item_selected;
     long        f_hover;
+    
+    t_efont     f_font;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_text;
@@ -259,8 +261,8 @@ static void menu_getdrawparams(t_menu *x, t_object *patcherview, t_edrawparams *
 
 static void menu_oksize(t_menu *x, t_rect *newrect)
 {
-    newrect->width = pd_clip_min(newrect->width, ebox_getfontsize((t_ebox *)x) * 3 + 8);
-    newrect->height = newrect->height = ebox_getfontsize((t_ebox *)x) + 4;
+    newrect->width = pd_clip_min(newrect->width, x->f_font.size * 3 + 8);
+    newrect->height = newrect->height = x->f_font.size + 4;
 }
 
 static t_pd_err menu_notify(t_menu *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
@@ -295,7 +297,7 @@ static void menu_paint(t_menu *x, t_object *view)
             t_etext *jtl = etext_layout_create();
             if(jtl)
             {
-                etext_layout_set(jtl, x->f_items[x->f_item_selected]->s_name, ebox_getfont((t_ebox *)x),
+                etext_layout_set(jtl, x->f_items[x->f_item_selected]->s_name, &x->f_font,
                              2.f, 0.f, rect.width - rect.height - 2.f, rect.height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
                 etext_layout_settextcolor(jtl, &x->f_color_text);
                 etext_layout_draw(jtl, g);
@@ -359,7 +361,7 @@ static void menu_mousedown(t_menu *x, t_object *patcherview, t_pt pt, long modif
                     epopupmenu_additem(x->f_popup, (int)i, x->f_items[i]->s_name,
                                        (char)(x->f_item_selected == i), x->f_states[i]);
                 }
-                epopupmenu_setfont(x->f_popup, ebox_getfont((t_ebox *)x));
+                epopupmenu_setfont(x->f_popup, &x->f_font);
                 epopupmenu_setbackgroundcolor(x->f_popup, &x->f_color_background);
                 epopupmenu_settextcolor(x->f_popup, &x->f_color_text);
                 epopupmenu_popup(x->f_popup, &rect);
@@ -390,7 +392,7 @@ static void menu_mouseenter(t_menu *x, t_object *patcherview, t_pt pt, long modi
                     epopupmenu_additem(x->f_popup, (int)i, x->f_items[i]->s_name,
                                        (char)(x->f_item_selected == i), x->f_states[i]);
                 }
-                epopupmenu_setfont(x->f_popup, ebox_getfont((t_ebox *)x));
+                epopupmenu_setfont(x->f_popup, &x->f_font);
                 epopupmenu_setbackgroundcolor(x->f_popup, &x->f_color_background);
                 epopupmenu_settextcolor(x->f_popup, &x->f_color_text);
                 epopupmenu_popup(x->f_popup, &rect);

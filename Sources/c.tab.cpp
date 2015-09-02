@@ -25,6 +25,8 @@ typedef struct  _tab
 
     long        f_toggle;
     long        f_orientation;
+    
+    t_efont     f_font;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_text;
@@ -342,13 +344,13 @@ static void tab_oksize(t_tab *x, t_rect *newrect)
 {
     if(x->f_orientation)
     {
-        newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->j_box.b_font.c_size) * 3);
-        newrect->height = pd_clip_min(newrect->height, (sys_fontheight(x->j_box.b_font.c_size) + 4) * pd_clip_min(x->f_nitems, 1));
+        newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->f_font.size) * 3);
+        newrect->height = pd_clip_min(newrect->height, (x->f_font.size + 4) * pd_clip_min(x->f_nitems, 1));
     }
     else
     {
-        newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->j_box.b_font.c_size) * 3 * pd_clip_min(x->f_nitems, 1));
-        newrect->height = pd_clip_min(newrect->height, sys_fontheight(x->j_box.b_font.c_size) + 4);
+        newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->f_font.size) * 3 * pd_clip_min(x->f_nitems, 1));
+        newrect->height = pd_clip_min(newrect->height, x->f_font.size + 4);
     }
 }
 
@@ -469,7 +471,7 @@ static void draw_text(t_tab *x, t_object *view, t_rect *rect)
                 {
                     if(x->f_items[i])
                     {
-                        etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font,
+                        etext_layout_set(jtl, x->f_items[i]->s_name, &x->f_font,
                                          rect->width * 0.5,
                                          ratio * (i + 0.5),
                                          rect->width,
@@ -486,7 +488,7 @@ static void draw_text(t_tab *x, t_object *view, t_rect *rect)
                     if(x->f_items[i])
                     {
                         etext_layout_settextcolor(jtl, &x->f_color_text);
-                        etext_layout_set(jtl, x->f_items[i]->s_name, &x->j_box.b_font,
+                        etext_layout_set(jtl, x->f_items[i]->s_name, &x->f_font,
                                          ratio * (i + 0.5),
                                          rect->height * 0.5,
                                          ratio - 2,
@@ -518,7 +520,7 @@ static void tab_mousedown(t_tab *x, t_object *patcherview, t_pt pt, long modifie
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     const int index = x->f_orientation ? (pt.y / (rect.height / (float)x->f_nitems)) : (pt.x / (rect.width / (float)x->f_nitems));
-    x->f_item_selected = pd_clip_minmax(index, 0, x->f_nitems-1);
+    x->f_item_selected = pd_clip(index, 0, x->f_nitems-1);
     
     tab_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
@@ -555,7 +557,7 @@ static void tab_mousemove(t_tab *x, t_object *patcherview, t_pt pt, long modifie
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     const int index = x->f_orientation ? (pt.y / (rect.height / (float)x->f_nitems)) : (pt.x / (rect.width / (float)x->f_nitems));
-    x->f_item_hover = pd_clip_minmax(index, 0, x->f_nitems - 1);
+    x->f_item_hover = pd_clip(index, 0, x->f_nitems - 1);
     
     outlet_float(x->f_out_hover, x->f_item_hover);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);

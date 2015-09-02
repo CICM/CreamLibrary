@@ -18,7 +18,8 @@ typedef struct _presetobj
     t_binbuf**  f_binbuf;
     int         f_binbuf_selected;
     int         f_binbuf_hover;
-    float       f_point_size;
+    
+    t_efont     f_font;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_button_stored;
@@ -72,7 +73,7 @@ static void preset_float(t_presetobj *x, float f)
     t_canvas *cnv = eobj_getcanvas(x);
     if(cnv && !cnv->gl_loading)
     {
-        x->f_binbuf_selected = pd_clip_minmax(f, 1, CREAM_MAXITEMS) - 1;
+        x->f_binbuf_selected = pd_clip(f, 1, CREAM_MAXITEMS) - 1;
         t_binbuf* b = x->f_binbuf[x->f_binbuf_selected];
         if(b && binbuf_getnatom(b) && binbuf_getvec(b))
         {
@@ -133,8 +134,8 @@ void preset_interpolate(t_presetobj *x, float f)
     if(max < 1)
         return;
 
-    indexdo = pd_clip_minmax(floorf(f)-1, 0, max-1);
-    indexup = pd_clip_minmax(ceilf(f)-1, 0, max-1);
+    indexdo = pd_clip(floorf(f)-1, 0, max-1);
+    indexup = pd_clip(ceilf(f)-1, 0, max-1);
     if(indexdo == indexup || f <= 1 || f >= max)
     {
         preset_float(x, f);
@@ -330,7 +331,7 @@ static void draw_background(t_presetobj *x, t_object *view, t_rect *rect)
 
 	if (g && jtl)
 	{
-        for(xc = x->f_point_size * 1.25, yc = x->f_point_size * 1.25, i = 1;  yc + x->f_point_size / 2. < rect->height; )
+        for(xc = x->f_font.size * 1.25, yc = x->f_font.size * 1.25, i = 1;  yc + x->f_font.size / 2. < rect->height; )
         {
             if(x->f_binbuf_selected == i-1 && binbuf_getnatom(x->f_binbuf[i-1])){
                 color = rgba_addContrast(x->f_color_button_selected, 0.1);}
@@ -342,20 +343,20 @@ static void draw_background(t_presetobj *x, t_object *view, t_rect *rect)
             egraphics_set_color_rgba(g, &color);
             if(x->f_binbuf_hover != i)
             {
-                egraphics_circle(g, xc, yc, x->f_point_size);
+                egraphics_circle(g, xc, yc, x->f_font.size);
                 egraphics_fill(g);
             }
 
             sprintf(number, "%i", i);
-            etext_layout_set(jtl, number, &x->j_box.b_font, xc, yc, rect->width, 0, ETEXT_CENTRED, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->f_font, xc, yc, rect->width, 0, ETEXT_CENTRED, ETEXT_NOWRAP);
             etext_layout_settextcolor(jtl, &x->f_color_text);
             etext_layout_draw(jtl, g);
 
-            xc += x->f_point_size * 2.5;
-            if(xc + x->f_point_size / 2. > rect->width)
+            xc += x->f_font.size * 2.5;
+            if(xc + x->f_font.size / 2. > rect->width)
             {
-                xc = x->f_point_size * 1.25;
-                yc += x->f_point_size * 2.5;
+                xc = x->f_font.size * 1.25;
+                yc += x->f_font.size * 2.5;
             }
             i++;
         }
@@ -368,29 +369,17 @@ static void draw_background(t_presetobj *x, t_object *view, t_rect *rect)
 static void preset_paint(t_presetobj *x, t_object *view)
 {
     t_rect rect;
-#ifdef __APPLE__
-    x->j_box.b_font.c_size -= 3;
-#elif _WINDOWS
-    x->j_box.b_font.c_size -= 2;
-#endif
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    x->f_point_size = ebox_getfontsize((t_ebox *)x);
     draw_background(x, view, &rect);
-
-#ifdef __APPLE__
-    x->j_box.b_font.c_size += 3;
-#elif _WINDOWS
-    x->j_box.b_font.c_size += 2;
-#endif
 }
 
 static void preset_mousemove(t_presetobj *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     int index;
-    int n_row_button = (x->j_box.b_rect.width - x->f_point_size * 1.24) / (x->f_point_size * 2.5) + 1;
+    int n_row_button = (x->j_box.b_rect.width - x->f_font.size * 1.24) / (x->f_font.size * 2.5) + 1;
 
-    index = (int)((pt.y) / (x->f_point_size * 2.5)) * n_row_button;
-    index += pd_clip_max((pt.x) / (x->f_point_size * 2.5) + 1, n_row_button);
+    index = (int)((pt.y) / (x->f_font.size * 2.5)) * n_row_button;
+    index += pd_clip_max((pt.x) / (x->f_font.size * 2.5) + 1, n_row_button);
     x->f_binbuf_hover = index;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
@@ -399,9 +388,9 @@ static void preset_mousemove(t_presetobj *x, t_object *patcherview, t_pt pt, lon
 static void preset_mousedown(t_presetobj *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     int index;
-    int n_row_button = (x->j_box.b_rect.width - x->f_point_size * 1.24) / (x->f_point_size * 2.5) + 1;
-    index = (int)((pt.y) / (x->f_point_size * 2.5)) * n_row_button;
-    index += pd_clip_max((pt.x) / (x->f_point_size * 2.5) + 1, n_row_button);
+    int n_row_button = (x->j_box.b_rect.width - x->f_font.size * 1.24) / (x->f_font.size * 2.5) + 1;
+    index = (int)((pt.y) / (x->f_font.size * 2.5)) * n_row_button;
+    index += pd_clip_max((pt.x) / (x->f_font.size * 2.5) + 1, n_row_button);
     x->f_binbuf_hover = index;
 
     if(modifiers == EMOD_ALT)

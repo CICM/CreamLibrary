@@ -16,21 +16,16 @@ typedef struct  _number
     t_outlet*       f_outlet;
     t_outlet*       f_outtab;
     t_etexteditor*  f_editor;
-    char            f_mode;
     char            f_firstchar;
 
-    float       f_value;
-    float       f_refvalue;
-    float       f_deriv;
-    float       f_inc;
-
-    long        f_ndecimal;
-    t_atom      f_min;
-    t_atom      f_max;
-
-	t_rgba		f_color_background;
-	t_rgba		f_color_border;
-	t_rgba		f_color_text;
+    float           f_refvalue;
+    float           f_deriv;
+    float           f_inc;
+    int             f_ndecimal;
+    t_efont         f_font;
+	t_rgba          f_color_background;
+	t_rgba          f_color_border;
+	t_rgba          f_color_text;
 } t_number;
 
 static t_eclass *number_class;
@@ -38,32 +33,17 @@ static t_eclass *number_class;
 static void number_output(t_number *x)
 {
     t_pd* send = ebox_getsender((t_ebox *) x);
-    outlet_float(x->f_outlet, x->f_value);
+    const float val = ebox_parameter_getvalue((t_ebox *) x, 0);
+    outlet_float(x->f_outlet, val);
     if(send)
     {
-        pd_float(send, x->f_value);
+        pd_float(send, val);
     }
 }
 
 static void number_float(t_number *x, float f)
 {
-    if(atom_gettype(&x->f_max) == A_FLOAT && atom_gettype(&x->f_min) == A_FLOAT)
-    {
-        x->f_value = f = pd_clip_minmax(f, atom_getfloat(&x->f_min), atom_getfloat(&x->f_max));
-    }
-    if(atom_gettype(&x->f_max) == A_FLOAT)
-    {
-        x->f_value = pd_clip_max(f, atom_getfloat(&x->f_max));
-    }
-    if(atom_gettype(&x->f_min) == A_FLOAT)
-    {
-        x->f_value = pd_clip_min(f, atom_getfloat(&x->f_min));
-    }
-    else
-    {
-        x->f_value = f;
-    }
-    
+    ebox_parameter_setvalue((t_ebox *) x, 0, f, 1);
     number_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
@@ -71,43 +51,15 @@ static void number_float(t_number *x, float f)
 
 static void number_set(t_number *x, float f)
 {
-    if(atom_gettype(&x->f_max) == A_FLOAT && atom_gettype(&x->f_min) == A_FLOAT)
-    {
-        x->f_value = f = pd_clip_minmax(f, atom_getfloat(&x->f_min), atom_getfloat(&x->f_max));
-    }
-    if(atom_gettype(&x->f_max) == A_FLOAT)
-    {
-        x->f_value = pd_clip_max(f, atom_getfloat(&x->f_max));
-    }
-    if(atom_gettype(&x->f_min) == A_FLOAT)
-    {
-        x->f_value = pd_clip_min(f, atom_getfloat(&x->f_min));
-    }
-    else
-    {
-        x->f_value = f;
-    }
-    
+    ebox_parameter_setvalue((t_ebox *) x, 0, f, 0);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+static void number_bang(t_number *x, float f)
 {
-	if(msg == cream_sym_attr_modified)
-	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == cream_sym_fontsize ||
-           s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant || s == cream_sym_decimal)
-		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
-		}
-        if(s == cream_sym_fontsize || s == cream_sym_fontname)
-        {
-            ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
-        }
-	}
-	return 0;
+    ebox_parameter_notify_changes((t_ebox *) x, 0);
+    number_output(x);
 }
 
 static void number_getdrawparams(t_number *x, t_object *patcherview, t_edrawparams *params)
@@ -120,9 +72,28 @@ static void number_getdrawparams(t_number *x, t_object *patcherview, t_edrawpara
 
 static void number_oksize(t_number *x, t_rect *newrect)
 {
-    const float size = ebox_getfontsize((t_ebox *)x);
-    newrect->width  = pd_clip_min(newrect->width, (size + 4.f) * 2.f);
-    newrect->height = size + 4.f;
+    newrect->width  = pd_clip_min(newrect->width, (x->f_font.size + 4.f) * 2.f);
+    newrect->height = x->f_font.size + 4.f;
+}
+
+static t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+{
+	if(msg == cream_sym_attr_modified)
+	{
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor ||
+           s == cream_sym_font || s == cream_sym_decimal)
+		{
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+		}
+	}
+    else if(msg == cream_sym_param_changed)
+    {
+        number_output(x);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_redraw((t_ebox *)x);
+    }
+	return 0;
 }
 
 static void draw_background(t_number *x, t_object *view, t_rect *rect)
@@ -130,11 +101,11 @@ static void draw_background(t_number *x, t_object *view, t_rect *rect)
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
     if(g)
     {
-        const float width = ebox_getfontsize((t_ebox *)x) + 4;
+        const float width = x->f_font.size + 4;
         t_etext *jtl = etext_layout_create();
         if(jtl)
         {
-            etext_layout_set(jtl, "©", &x->j_box.b_font, 0.f, 0.f, width, rect->height, ETEXT_CENTRED, ETEXT_NOWRAP);
+            etext_layout_set(jtl, "©", &x->f_font, 0.f, 0.f, width, rect->height, ETEXT_CENTRED, ETEXT_NOWRAP);
             etext_layout_settextcolor(jtl, &x->f_color_text);
             etext_layout_draw(jtl, g);
         }
@@ -158,26 +129,27 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
         t_etext *jtl = etext_layout_create();
         if(jtl)
         {
-            const float width = ebox_getfontsize((t_ebox *)x) + 8;
+            const float width = x->f_font.size + 8;
+            const float val = ebox_parameter_getvalue((t_ebox *) x, 0);
             char number[512];
             memset(number, 0, sizeof(char) * 512);
             if(!x->f_ndecimal)
-                sprintf(number, "%i", (int)x->f_value);
+                sprintf(number, "%i", (int)val);
             else if(x->f_ndecimal == 1)
-                sprintf(number, "%.1g", x->f_value);
+                sprintf(number, "%.1g", val);
             else if(x->f_ndecimal == 2)
-                sprintf(number, "%.2g", x->f_value);
+                sprintf(number, "%.2g", val);
             else if(x->f_ndecimal == 3)
-                sprintf(number, "%.3g", x->f_value);
+                sprintf(number, "%.3g", val);
             else if(x->f_ndecimal == 4)
-                sprintf(number, "%.4g", x->f_value);
+                sprintf(number, "%.4g", val);
             else if(x->f_ndecimal == 5)
-                sprintf(number, "%.5g", x->f_value);
+                sprintf(number, "%.5g", val);
             else
-                sprintf(number, "%.6g", x->f_value);
+                sprintf(number, "%.6g", val);
             
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->j_box.b_font, width, 0.f, rect->width - width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->f_font, width, 0.f, rect->width - width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             etext_layout_destroy(jtl);
@@ -218,7 +190,8 @@ static void number_texteditor_keyfilter(t_number *x, t_etexteditor *editor, ekey
             etexteditor_gettext(editor, &text);
             if(text && isdigit(text[0]))
             {
-                x->f_value = atof(text);
+                ebox_parameter_setvalue((t_ebox *) x, 0, atof(text), 1);
+                number_output(x);
                 free(text);
             }
         }
@@ -227,7 +200,8 @@ static void number_texteditor_keyfilter(t_number *x, t_etexteditor *editor, ekey
             etexteditor_gettext(editor, &text);
             if(text && isdigit(text[0]))
             {
-                x->f_value = atof(text);
+                ebox_parameter_setvalue((t_ebox *) x, 0, atof(text), 1);
+                number_output(x);
                 free(text);
             }
             outlet_bang(x->f_outtab);
@@ -252,11 +226,11 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
             ebox_get_rect_for_view((t_ebox *)x, &rect);
             etexteditor_setbackgroundcolor(x->f_editor, &x->f_color_background);
             etexteditor_settextcolor(x->f_editor, &x->f_color_text);
-            etexteditor_setfont(x->f_editor, ebox_getfont((t_ebox *)x));
+            etexteditor_setfont(x->f_editor, &x->f_font);
             etexteditor_setwrap(x->f_editor, 0);
-            rect.x = ebox_getfontsize((t_ebox *)x) + 5;
+            rect.x = x->f_font.size + 5;
             rect.y = 0;
-            rect.width -= ebox_getfontsize((t_ebox *)x) + 5;
+            rect.width -= x->f_font.size + 5;
             etexteditor_popup(x->f_editor,  &rect);
             x->f_firstchar = 0;
         }
@@ -270,15 +244,16 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
 
 static void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-	float text_width = ebox_getfontsize((t_ebox *)x) * 2. / 3.;
-    x->f_mode = 0;
+	const float text_width = x->f_font.size * 2. / 3.;
+    ebox_parameter_begin_changes((t_ebox *)x, 0);
     if(pt.x >= text_width + 8)
     {
         int i = 1;
         int n_integer = 1;
         float pos = pt.x - text_width + 8 / text_width;
         x->f_deriv = pt.y;
-        x->f_refvalue = x->f_value;
+        
+        x->f_refvalue = ebox_parameter_getvalue((t_ebox *)x, 0);
         while(fabs(x->f_refvalue) >= powf(10, n_integer))
             n_integer++;
 
@@ -299,77 +274,22 @@ static void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long m
             else
                 x->f_inc = -1. / powf(10, (i - n_integer - 1));
         }
-        x->f_inc = pd_clip_minmax(x->f_inc, -100., -0.000001);
+        x->f_inc = pd_clip(x->f_inc, -100., -0.000001);
     }
 }
 
 static void number_mousedrag(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    x->f_mode = 0;
     ebox_set_cursor((t_ebox *)x, 2);
-    const float value = x->f_refvalue + (pt.y - x->f_deriv) * x->f_inc * 0.5;
-    if(PD_BADFLOAT(value) || PD_BIGORSMALL(value))
-        return;
-
-    x->f_value = value;
+    ebox_parameter_setvalue((t_ebox *)x, 0, x->f_refvalue + (pt.y - x->f_deriv) * x->f_inc * 0.5, 0);
     number_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void number_preset(t_number *x, t_binbuf *b)
+static void number_mouseup(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    binbuf_addv(b, (char *)"sf", &s_float, x->f_value);
-}
-
-static t_pd_err number_min_set(t_number *x, t_object *attr, int ac, t_atom *av)
-{
-    if(ac && av && atom_gettype(av) == A_FLOAT)
-    {
-        x->f_min = av[0];
-
-        if(atom_gettype(&x->f_max) == A_FLOAT && atom_getfloat(&x->f_max) < atom_getfloat(&x->f_min))
-        {
-            x->f_min = x->f_max;
-            x->f_max = av[0];
-        }
-
-        if(atom_gettype(&x->f_max) == A_FLOAT)
-            x->f_value = pd_clip_max(x->f_value, atom_getfloat(&x->f_max));
-        x->f_value = pd_clip_min(x->f_value, atom_getfloat(&x->f_min));
-    }
-    else
-    {
-        atom_setsym(&x->f_min, s_cream_empty);
-    }
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
-    ebox_redraw((t_ebox *)x);
-    return 0;
-}
-
-static t_pd_err number_max_set(t_number *x, t_object *attr, int ac, t_atom *av)
-{
-    if(ac && av && atom_gettype(av) == A_FLOAT)
-    {
-        x->f_max = av[0];
-        if(atom_gettype(&x->f_min) == A_FLOAT && atom_getfloat(&x->f_max) < atom_getfloat(&x->f_min))
-        {
-            x->f_max = x->f_min;
-            x->f_min = av[0];
-        }
-
-        if(atom_gettype(&x->f_min) == A_FLOAT)
-            x->f_value = pd_clip_min(x->f_value, atom_getfloat(&x->f_min));
-        x->f_value = pd_clip_max(x->f_value, atom_getfloat(&x->f_max));
-    }
-    else
-    {
-        atom_setsym(&x->f_max, s_cream_empty);
-    }
-
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
-    ebox_redraw((t_ebox *)x);
-    return 0;
+    ebox_parameter_end_changes((t_ebox *)x, 0);
 }
 
 static void number_free(t_number *x)
@@ -384,16 +304,16 @@ static void number_free(t_number *x)
 static void *number_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_number *x = (t_number *)eobj_new(number_class);
-    t_binbuf* d = binbuf_via_atoms(argc,argv);
+    t_binbuf* d = binbuf_via_atoms(argc, argv);
     
     if(x && d)
     {
-        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
+        efont_init(&x->f_font, gensym("DejaVu"), 0, 0, 11);
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_FONTSIZE);
+        ebox_parameter_create((t_ebox *)x, 0);
         x->f_outlet   = outlet_new((t_object *)x, &s_float);
         x->f_outtab   = outlet_new((t_object *)x, &s_bang);
         x->f_editor   = NULL;
-        x->f_mode     = 0.f;
-        x->f_value    = 0;
         
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
@@ -404,6 +324,11 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
     return NULL;
 }
 
+static _FUNCTION_DEPRECTAED_ void number_preset(t_number *x, t_binbuf *b)
+{
+    binbuf_addv(b, (char *)"sf", &s_float, ebox_parameter_getvalue((t_ebox *)x, 0));
+}
+
 extern "C" void setup_c0x2enumber(void)
 {
     t_eclass *c = eclass_new("c.number", (method)number_new, (method)number_free, (short)sizeof(t_number), 0L, A_GIMME, 0);
@@ -411,16 +336,17 @@ extern "C" void setup_c0x2enumber(void)
     if(c)
     {
         eclass_guiinit(c, 0 | EBOX_TEXTFIELD);
-        eclass_addmethod(c, (method) number_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) number_notify,          "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) number_getdrawparams,   "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) number_oksize,          "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) number_float,           "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) number_set,             "set",              A_FLOAT,0);
-        eclass_addmethod(c, (method) number_output,          "bang",             A_NULL, 0);
+        eclass_addmethod(c, (method) number_paint,              "paint",            A_NULL, 0);
+        eclass_addmethod(c, (method) number_notify,             "notify",           A_NULL, 0);
+        eclass_addmethod(c, (method) number_getdrawparams,      "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (method) number_oksize,             "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (method) number_float,              "float",            A_FLOAT,0);
+        eclass_addmethod(c, (method) number_set,                "set",              A_FLOAT,0);
+        eclass_addmethod(c, (method) number_bang,               "bang",             A_NULL, 0);
         
-        eclass_addmethod(c, (method) number_mousedown,        "mousedown",       A_NULL, 0);
-        eclass_addmethod(c, (method) number_mousedrag,        "mousedrag",       A_NULL, 0);
+        eclass_addmethod(c, (method) number_mousedown,          "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (method) number_mousedrag,          "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (method) number_mouseup,            "mouseup",          A_NULL, 0);
         
         eclass_addmethod(c, (method) number_dblclick,            "dblclick",            A_NULL, 0);
         eclass_addmethod(c, (method) number_dblclick,            "select",              A_NULL, 0);
@@ -429,23 +355,9 @@ extern "C" void setup_c0x2enumber(void)
         
         eclass_addmethod(c, (method) number_preset,           "preset",          A_NULL, 0);
         
-        CLASS_ATTR_DEFAULT			(c, "size", 0, "53 13");
+        CLASS_ATTR_DEFAULT              (c, "size", 0, "53 13");
         
-        CLASS_ATTR_ATOM                 (c, "min", 0, t_number, f_min);
-        CLASS_ATTR_ORDER                (c, "min", 0, "3");
-        CLASS_ATTR_LABEL                (c, "min", 0, "Min Value");
-        CLASS_ATTR_DEFAULT              (c, "min", 0, "empty");
-        CLASS_ATTR_ACCESSORS            (c, "min", NULL, number_min_set);
-        CLASS_ATTR_SAVE                 (c, "min", 1);
-        
-        CLASS_ATTR_ATOM                 (c, "max", 0, t_number, f_min);
-        CLASS_ATTR_ORDER                (c, "max", 0, "3");
-        CLASS_ATTR_LABEL                (c, "max", 0, "Max Value");
-        CLASS_ATTR_DEFAULT              (c, "max", 0, "empty");
-        CLASS_ATTR_ACCESSORS            (c, "max", NULL, number_max_set);
-        CLASS_ATTR_SAVE                 (c, "max", 1);
-        
-        CLASS_ATTR_LONG                 (c, "decimal", 0, t_number, f_ndecimal);
+        CLASS_ATTR_INT                  (c, "decimal", 0, t_number, f_ndecimal);
         CLASS_ATTR_ORDER                (c, "decimal", 0, "3");
         CLASS_ATTR_LABEL                (c, "decimal", 0, "Number of decimal");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "decimal", 0, "4");
@@ -459,6 +371,11 @@ extern "C" void setup_c0x2enumber(void)
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
         CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
         
+        CLASS_ATTR_FONT                 (c, "font", 0, t_number, f_font);
+        CLASS_ATTR_LABEL                (c, "font", 0, "Font");
+        CLASS_ATTR_SAVE                 (c, "font", 0);
+        CLASS_ATTR_PAINT                (c, "font", 0);
+        
         CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_number, f_color_border);
         CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
         CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
@@ -470,6 +387,22 @@ extern "C" void setup_c0x2enumber(void)
         CLASS_ATTR_ORDER                (c, "textcolor", 0, "3");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
         CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
+        
+        /*
+        CLASS_ATTR_ATOM                 (c, "min", 0, t_number, f_min);
+        CLASS_ATTR_ORDER                (c, "min", 0, "3");
+        CLASS_ATTR_LABEL                (c, "min", 0, "Min Value");
+        CLASS_ATTR_DEFAULT              (c, "min", 0, "empty");
+        CLASS_ATTR_ACCESSORS            (c, "min", NULL, number_min_set);
+        CLASS_ATTR_SAVE                 (c, "min", 1);
+        
+        CLASS_ATTR_ATOM                 (c, "max", 0, t_number, f_min);
+        CLASS_ATTR_ORDER                (c, "max", 0, "3");
+        CLASS_ATTR_LABEL                (c, "max", 0, "Max Value");
+        CLASS_ATTR_DEFAULT              (c, "max", 0, "empty");
+        CLASS_ATTR_ACCESSORS            (c, "max", NULL, number_max_set);
+        CLASS_ATTR_SAVE                 (c, "max", 1);
+        */
         
         eclass_register(CLASS_BOX, c);
         number_class = c;

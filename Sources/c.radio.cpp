@@ -361,7 +361,7 @@ static t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
-        const int nitems = pd_clip_minmax(atom_getfloat(av), 1, CREAM_MAXITEMS);
+        const int nitems = pd_clip(atom_getfloat(av), 1, CREAM_MAXITEMS);
         if(nitems != x->f_nitems)
         {
             t_rect rect;

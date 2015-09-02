@@ -33,6 +33,7 @@ typedef struct _breakpoints
     float       f_range_abscissa[2];
     float       f_range_ordinate[2];
 
+    t_efont     f_font;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_point;
@@ -114,7 +115,7 @@ static float breakpoints_cubic(t_breakpoints *x, float f)
 
 static float breakpoints_interpolation(t_breakpoints *x, float f)
 {
-    f = pd_clip_minmax(f, x->f_range_abscissa[0], x->f_range_abscissa[1]);
+    f = pd_clip(f, x->f_range_abscissa[0], x->f_range_abscissa[1]);
     if(x->f_outline == cream_sym_Linear)
         return breakpoints_linear(x, f);
     else if(x->f_outline == cream_sym_Cosine || x->f_npoints == 2)
@@ -237,8 +238,8 @@ static void breakpoints_add(t_breakpoints *x, t_symbol* s, int argc, t_atom* arg
     {
         if(argc == 2 && atom_gettype(argv) == A_FLOAT && atom_gettype(argv+1) == A_FLOAT)
         {
-            float abs = pd_clip_minmax(atom_getfloat(argv), x->f_range_abscissa[0], x->f_range_abscissa[1]);
-            float ord = pd_clip_minmax(atom_getfloat(argv+1), x->f_range_ordinate[0], x->f_range_ordinate[1]);
+            float abs = pd_clip(atom_getfloat(argv), x->f_range_abscissa[0], x->f_range_abscissa[1]);
+            float ord = pd_clip(atom_getfloat(argv+1), x->f_range_ordinate[0], x->f_range_ordinate[1]);
             if(!x->f_points)
             {
                 x->f_points = (t_pt *)malloc(sizeof(t_pt));
@@ -330,7 +331,7 @@ static void breakpoints_remove(t_breakpoints *x, t_symbol* s, int argc, t_atom* 
     {
         if(argc == 1 && atom_gettype(argv) == A_FLOAT)
         {
-            int index = pd_clip_minmax(atom_getfloat(argv), 0, x->f_npoints-1);
+            int index = pd_clip(atom_getfloat(argv), 0, x->f_npoints-1);
             if(x->f_npoints > 1)
             {
                 memcpy(x->f_points+index, x->f_points+index+1, (size_t)(x->f_npoints - index - 1) * sizeof(t_pt));
@@ -364,23 +365,23 @@ static void breakpoints_move(t_breakpoints *x, t_symbol* s, int argc, t_atom* ar
         if(index >= 0 && index < x->f_npoints)
         {
             float abs = atom_getfloat(argv+1);
-            float ord = pd_clip_minmax(atom_getfloat(argv+2), x->f_range_ordinate[0], x->f_range_ordinate[1]);
+            float ord = pd_clip(atom_getfloat(argv+2), x->f_range_ordinate[0], x->f_range_ordinate[1]);
             if(index == 0)
             {
                 if(x->f_npoints > 1)
-                    x->f_points[0].x = pd_clip_minmax(abs, x->f_range_abscissa[0], x->f_points[1].x);
+                    x->f_points[0].x = pd_clip(abs, x->f_range_abscissa[0], x->f_points[1].x);
                 else
-                    x->f_points[0].x = pd_clip_minmax(abs, x->f_range_abscissa[0], x->f_range_abscissa[1]);
+                    x->f_points[0].x = pd_clip(abs, x->f_range_abscissa[0], x->f_range_abscissa[1]);
                 x->f_points[0].y = ord;
             }
             else if(index == x->f_npoints-1)
             {
-                x->f_points[index].x = pd_clip_minmax(abs, x->f_points[index-1].x, x->f_range_abscissa[1]);
+                x->f_points[index].x = pd_clip(abs, x->f_points[index-1].x, x->f_range_abscissa[1]);
                 x->f_points[index].y = ord;
             }
             else
             {
-                x->f_points[index].x = pd_clip_minmax(abs, x->f_points[index-1].x, x->f_points[index+1].x);
+                x->f_points[index].x = pd_clip(abs, x->f_points[index-1].x, x->f_points[index+1].x);
                 x->f_points[index].y = ord;
             }
             
@@ -568,8 +569,8 @@ static t_pd_err breakpoints_notify(t_breakpoints *x, t_symbol *s, t_symbol *msg,
             }
             for(int i = 0; i < x->f_npoints; i++)
             {
-                x->f_points[i].x = pd_clip_minmax(x->f_points[i].x, x->f_range_abscissa[0], x->f_range_abscissa[1]);
-                x->f_points[i].y = pd_clip_minmax(x->f_points[i].y, x->f_range_ordinate[0], x->f_range_ordinate[1]);
+                x->f_points[i].x = pd_clip(x->f_points[i].x, x->f_range_abscissa[0], x->f_range_abscissa[1]);
+                x->f_points[i].y = pd_clip(x->f_points[i].y, x->f_range_ordinate[0], x->f_range_ordinate[1]);
             }
             ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
         }
@@ -590,7 +591,7 @@ static void breakpoints_mousemove(t_breakpoints *x, t_object *patcherview, t_pt 
 {
     int i;
     float abs, ord;
-    float height = sys_fontheight(ebox_getfontsize((t_ebox *)x)) + 2;
+    float height = x->f_font.size + 2;
     float distx = (3. / (x->f_size.x - 4.)) * (x->f_range_abscissa[1] - x->f_range_abscissa[0]);
     float disty = (3. / (x->f_size.y - 4. - height)) * (x->f_range_ordinate[1] - x->f_range_ordinate[0]);
     
@@ -617,7 +618,7 @@ static void breakpoints_mousedown(t_breakpoints *x, t_object *patcherview, t_pt 
     int i;
     t_atom av[2];
     float abs, ord;
-    float height = sys_fontheight(ebox_getfontsize((t_ebox *)x)) + 2;
+    float height = x->f_font.size + 2;
     float distx = (3. / (x->f_size.x - 4.)) * (x->f_range_abscissa[1] - x->f_range_abscissa[0]);
     float disty = (3. / (x->f_size.y - 4. - height)) * (x->f_range_ordinate[1] - x->f_range_ordinate[0]);
     
@@ -667,7 +668,7 @@ static void breakpoints_mousedrag(t_breakpoints *x, t_object *patcherview, t_pt 
 {
     t_atom av[3];
     float abs, ord;
-    float height = sys_fontheight(ebox_getfontsize((t_ebox *)x)) + 2;
+    float height = x->f_font.size + 2;
     abs = ((pt.x - 3.) / (x->f_size.x - 4.)) * (x->f_range_abscissa[1] - x->f_range_abscissa[0]) + x->f_range_abscissa[0];
     ord = ((x->f_size.y - (pt.y - 4.) - 4.) / (x->f_size.y - 4. - height)) * (x->f_range_ordinate[1] - x->f_range_ordinate[0]) + x->f_range_ordinate[0];
     
@@ -699,7 +700,7 @@ static void breakpoints_mouseleave(t_breakpoints *x, t_object *patcherview, t_pt
 static void breakpoints_mouseup(t_breakpoints *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     float abs, ord;
-    float height = sys_fontheight(ebox_getfontsize((t_ebox *)x)) + 2;
+    float height = x->f_font.size + 2;
     abs = ((pt.x - 3.) / (x->f_size.x - 4.)) * (x->f_range_abscissa[1] - x->f_range_abscissa[0]) + x->f_range_abscissa[0];
     ord = ((x->f_size.y - (pt.y - 4.) - 4.) / (x->f_size.y - 4. - height)) * (x->f_range_ordinate[1] - x->f_range_ordinate[0]) + x->f_range_ordinate[0];
     
@@ -720,15 +721,15 @@ static void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
     t_etext *jtl = etext_layout_create();
     if(g && jtl)
     {
-        float height = sys_fontheight(ebox_getfontsize((t_ebox *)x)) + 1;
+        float height = x->f_font.size + 1;
         if (x->f_point_selected != -1)
         {
             sprintf(number, "x : %.2f y : %.2f", x->f_points[x->f_point_selected].x, x->f_points[x->f_point_selected].y);
         }
         else if(x->f_mouse.x != -666666 && x->f_mouse.y != -666666)
         {
-            x->f_mouse.x = pd_clip_minmax(x->f_mouse.x, x->f_range_abscissa[0], x->f_range_abscissa[1]);
-            x->f_mouse.y = pd_clip_minmax(x->f_mouse.y, x->f_range_ordinate[0], x->f_range_ordinate[1]);
+            x->f_mouse.x = pd_clip(x->f_mouse.x, x->f_range_abscissa[0], x->f_range_abscissa[1]);
+            x->f_mouse.y = pd_clip(x->f_mouse.y, x->f_range_ordinate[0], x->f_range_ordinate[1]);
             sprintf(number, "x : %.2f y : %.2f", x->f_mouse.x, x->f_mouse.y);
         }
         else
@@ -737,7 +738,7 @@ static void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
             ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
             return;
         }
-        etext_layout_set(jtl, number, &x->j_box.b_font, 5, height * 0.5, rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
+        etext_layout_set(jtl, number, &x->f_font, 5, height * 0.5, rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
         etext_layout_settextcolor(jtl, &x->f_color_text);
         etext_layout_draw(jtl, g);
         
@@ -757,7 +758,7 @@ static void draw_points(t_breakpoints *x, t_object *view, t_rect *rect)
     float max, inc;
     float abs2;
     float ratiox, ratioy;
-    float height = sys_fontheight(ebox_getfontsize((t_ebox *)x)) + 2;
+    float height = x->f_font.size + 2;
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_points_layer, rect->width, rect->height);
     
     if (g && x->f_npoints)
