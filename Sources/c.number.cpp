@@ -33,8 +33,8 @@ static t_eclass *number_class;
 
 static void number_output(t_number *x)
 {
-    t_pd* send = ebox_getsender((t_ebox *) x);
-    const float val = ebox_parameter_getvalue((t_ebox *) x, 0);
+    t_pd* send = ebox_getsender((t_ebox *)x);
+    const float val = ebox_parameter_getvalue((t_ebox *)x, 1);
     outlet_float(x->f_outlet, val);
     if(send)
     {
@@ -44,7 +44,7 @@ static void number_output(t_number *x)
 
 static void number_float(t_number *x, float f)
 {
-    ebox_parameter_setvalue((t_ebox *) x, 0, f, 1);
+    ebox_parameter_setvalue((t_ebox *)x, 1, f, 1);
     number_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
@@ -52,14 +52,14 @@ static void number_float(t_number *x, float f)
 
 static void number_set(t_number *x, float f)
 {
-    ebox_parameter_setvalue((t_ebox *) x, 0, f, 0);
+    ebox_parameter_setvalue((t_ebox *)x , 1, f, 0);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 static void number_bang(t_number *x, float f)
 {
-    ebox_parameter_notify_changes((t_ebox *) x, 0);
+    ebox_parameter_notify_changes((t_ebox *)x, 1);
     number_output(x);
 }
 
@@ -131,7 +131,7 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
         if(jtl)
         {
             const float width = x->f_font.size + 8;
-            const float val = ebox_parameter_getvalue((t_ebox *) x, 0);
+            const float val = ebox_parameter_getvalue((t_ebox *)x, 1);
             char number[512];
             memset(number, 0, sizeof(char) * 512);
             if(!x->f_ndecimal)
@@ -191,7 +191,7 @@ static void number_texteditor_keyfilter(t_number *x, t_etexteditor *editor, ekey
             etexteditor_gettext(editor, &text);
             if(text && isdigit(text[0]))
             {
-                ebox_parameter_setvalue((t_ebox *) x, 0, atof(text), 1);
+                ebox_parameter_setvalue((t_ebox *)x, 1, atof(text), 1);
                 number_output(x);
                 free(text);
             }
@@ -201,7 +201,7 @@ static void number_texteditor_keyfilter(t_number *x, t_etexteditor *editor, ekey
             etexteditor_gettext(editor, &text);
             if(text && isdigit(text[0]))
             {
-                ebox_parameter_setvalue((t_ebox *) x, 0, atof(text), 1);
+                ebox_parameter_setvalue((t_ebox *)x, 1, atof(text), 1);
                 number_output(x);
                 free(text);
             }
@@ -246,7 +246,7 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
 static void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
 	const float text_width = x->f_font.size * 2. / 3.;
-    ebox_parameter_begin_changes((t_ebox *)x, 0);
+    ebox_parameter_begin_changes((t_ebox *)x, 1);
     if(pt.x >= text_width + 8)
     {
         int i = 1;
@@ -254,7 +254,7 @@ static void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long m
         float pos = pt.x - text_width + 8 / text_width;
         x->f_deriv = pt.y;
         
-        x->f_refvalue = ebox_parameter_getvalue((t_ebox *)x, 0);
+        x->f_refvalue = ebox_parameter_getvalue((t_ebox *)x, 1);
         while(fabs(x->f_refvalue) >= powf(10, n_integer))
             n_integer++;
 
@@ -282,7 +282,7 @@ static void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long m
 static void number_mousedrag(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     ebox_set_cursor((t_ebox *)x, 2);
-    ebox_parameter_setvalue((t_ebox *)x, 0, x->f_refvalue + (pt.y - x->f_deriv) * x->f_inc * 0.5, 0);
+    ebox_parameter_setvalue((t_ebox *)x, 1, x->f_refvalue + (pt.y - x->f_deriv) * x->f_inc * 0.5, 0);
     number_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
@@ -290,7 +290,7 @@ static void number_mousedrag(t_number *x, t_object *patcherview, t_pt pt, long m
 
 static void number_mouseup(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    ebox_parameter_end_changes((t_ebox *)x, 0);
+    ebox_parameter_end_changes((t_ebox *)x, 1);
 }
 
 static void number_free(t_number *x)
@@ -311,9 +311,11 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
     {
         efont_init(&x->f_font, gensym("DejaVu"), 0, 0, 11);
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_FONTSIZE);
-        ebox_parameter_create((t_ebox *)x, 0);
-        ebox_parameter_setmin((t_ebox *)x, 0, -FLT_MAX);
-        ebox_parameter_setmax((t_ebox *)x, 0, FLT_MAX);
+        ebox_parameter_create((t_ebox *)x, 1);
+        ebox_parameter_setmin((t_ebox *)x, 1, -FLT_MAX);
+        ebox_parameter_setmax((t_ebox *)x, 1, FLT_MAX);
+        ebox_parameter_setflags((t_ebox *)x, 1, 0 | EPARAM_STATIC_INVERTED);
+        
         x->f_outlet   = outlet_new((t_object *)x, &s_float);
         x->f_outtab   = outlet_new((t_object *)x, &s_bang);
         x->f_editor   = NULL;
@@ -329,7 +331,7 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
 
 static _FUNCTION_DEPRECTAED_ void number_preset(t_number *x, t_binbuf *b)
 {
-    binbuf_addv(b, (char *)"sf", &s_float, ebox_parameter_getvalue((t_ebox *)x, 0));
+    binbuf_addv(b, (char *)"sf", &s_float, ebox_parameter_getvalue((t_ebox *)x, 1));
 }
 
 extern "C" void setup_c0x2enumber(void)
@@ -390,22 +392,6 @@ extern "C" void setup_c0x2enumber(void)
         CLASS_ATTR_ORDER                (c, "textcolor", 0, "3");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "textcolor", 0, "0. 0. 0. 1.");
         CLASS_ATTR_STYLE                (c, "textcolor", 0, "color");
-        
-        /*
-        CLASS_ATTR_ATOM                 (c, "min", 0, t_number, f_min);
-        CLASS_ATTR_ORDER                (c, "min", 0, "3");
-        CLASS_ATTR_LABEL                (c, "min", 0, "Min Value");
-        CLASS_ATTR_DEFAULT              (c, "min", 0, "empty");
-        CLASS_ATTR_ACCESSORS            (c, "min", NULL, number_min_set);
-        CLASS_ATTR_SAVE                 (c, "min", 1);
-        
-        CLASS_ATTR_ATOM                 (c, "max", 0, t_number, f_min);
-        CLASS_ATTR_ORDER                (c, "max", 0, "3");
-        CLASS_ATTR_LABEL                (c, "max", 0, "Max Value");
-        CLASS_ATTR_DEFAULT              (c, "max", 0, "empty");
-        CLASS_ATTR_ACCESSORS            (c, "max", NULL, number_max_set);
-        CLASS_ATTR_SAVE                 (c, "max", 1);
-        */
         
         eclass_register(CLASS_BOX, c);
         number_class = c;

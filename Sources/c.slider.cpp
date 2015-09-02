@@ -29,7 +29,7 @@ static t_eclass *slider_class;
 static void slider_output(t_slider *x)
 {
     t_pd* send = ebox_getsender((t_ebox *) x);
-    const float val = ebox_parameter_getvalue((t_ebox *) x, 0);
+    const float val = ebox_parameter_getvalue((t_ebox *)x, 1);
     outlet_float(x->f_out, val);
     if(send)
     {
@@ -39,7 +39,7 @@ static void slider_output(t_slider *x)
 
 static void slider_float(t_slider *x, float f)
 {
-    ebox_parameter_setvalue((t_ebox *) x, 0, f, 1);
+    ebox_parameter_setvalue((t_ebox *)x, 1, f, 1);
     slider_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
@@ -47,14 +47,14 @@ static void slider_float(t_slider *x, float f)
 
 static void slider_set(t_slider *x, float f)
 {
-    ebox_parameter_setvalue((t_ebox *) x, 0, f, 0);
+    ebox_parameter_setvalue((t_ebox *)x, 1, f, 0);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 static void slider_bang(t_slider *x, float f)
 {
-    ebox_parameter_notify_changes((t_ebox *) x, 0);
+    ebox_parameter_notify_changes((t_ebox *)x, 1);
     slider_output(x);
 }
 
@@ -108,8 +108,8 @@ static void slider_paint(t_slider *x, t_object *view)
     
     if (g)
     {
-        const float temp  = ebox_parameter_getvalue_normalized((t_ebox *)x, 0);
-        const float value = (ebox_parameter_isinverted((t_ebox *)x, 0)) ? (1.f -  temp) : (temp);
+        const float temp  = ebox_parameter_getvalue_normalized((t_ebox *)x, 1);
+        const float value = (ebox_parameter_isinverted((t_ebox *)x, 1)) ? (1.f -  temp) : (temp);
         egraphics_set_color_rgba(g, &x->f_color_knob);
         egraphics_set_line_width(g, 2);
         if(x->f_direction)
@@ -157,13 +157,13 @@ static float slider_getvalue(t_slider *x, t_rect const* rect, t_pt const* pt, fl
 static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     t_rect rect;
-    const float min = ebox_parameter_getmin((t_ebox *)x, 0);
-    const float max = ebox_parameter_getmax((t_ebox *)x, 0);
+    const float min = ebox_parameter_getmin((t_ebox *)x, 1);
+    const float max = ebox_parameter_getmax((t_ebox *)x, 1);
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    ebox_parameter_begin_changes((t_ebox *)x, 0);
+    ebox_parameter_begin_changes((t_ebox *)x, 1);
     if(x->f_mode)
     {
-        x->f_value_last =  ebox_parameter_getvalue((t_ebox *)x, 0);
+        x->f_value_last =  ebox_parameter_getvalue((t_ebox *)x, 1);
         if(min < max)
         {
             x->f_value_ref = pd_clip(slider_getvalue(x, &rect, &pt, min, max), min, max);
@@ -175,7 +175,7 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
     }
     else
     {
-        ebox_parameter_setvalue((t_ebox *)x, 0, slider_getvalue(x, &rect, &pt, min, max), 0);
+        ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x, &rect, &pt, min, max), 0);
         slider_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
@@ -185,14 +185,14 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
 static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     t_rect rect;
-    const float min = ebox_parameter_getmin((t_ebox *)x, 0);
-    const float max = ebox_parameter_getmax((t_ebox *)x, 0);
+    const float min = ebox_parameter_getmin((t_ebox *)x, 1);
+    const float max = ebox_parameter_getmax((t_ebox *)x, 1);
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     if(x->f_mode)
     {
         const float refvalue = slider_getvalue(x, &rect, &pt, min, max);
-        ebox_parameter_setvalue((t_ebox *)x, 0, x->f_value_last + refvalue - x->f_value_ref, 0);
-        const float newvalue = ebox_parameter_getvalue((t_ebox *)x, 0);
+        ebox_parameter_setvalue((t_ebox *)x, 1, x->f_value_last + refvalue - x->f_value_ref, 0);
+        const float newvalue = ebox_parameter_getvalue((t_ebox *)x, 1);
         if(newvalue == min || newvalue == max)
         {
             x->f_value_last = newvalue;
@@ -201,7 +201,7 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
     }
     else
     {
-         ebox_parameter_setvalue((t_ebox *)x, 0, slider_getvalue(x, &rect, &pt, min, max), 0);
+         ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x, &rect, &pt, min, max), 0);
     }
     
     slider_output(x);
@@ -211,7 +211,7 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
 
 static void slider_mouseup(t_slider *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-     ebox_parameter_end_changes((t_ebox *)x, 0);
+     ebox_parameter_end_changes((t_ebox *)x, 1);
 }
 
 static void *slider_new(t_symbol *s, int argc, t_atom *argv)
@@ -222,7 +222,7 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
-        ebox_parameter_create((t_ebox *)x, 0);
+        ebox_parameter_create((t_ebox *)x, 1);
         x->f_out = outlet_new((t_object *)x, &s_float);
         
         ebox_attrprocess_viabinbuf(x, d);
@@ -235,7 +235,7 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
 
 static _FUNCTION_DEPRECTAED_ void slider_preset(t_slider *x, t_binbuf *b)
 {
-    binbuf_addv(b, (char *)"sf", &s_float, (float)ebox_parameter_getvalue((t_ebox *)x, 0));
+    binbuf_addv(b, (char *)"sf", &s_float, (float)ebox_parameter_getvalue((t_ebox *)x, 1));
 }
 
 extern "C" void setup_c0x2eslider(void)

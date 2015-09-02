@@ -27,7 +27,7 @@ static t_eclass *knob_class;
 static void knob_output(t_knob *x)
 {
     t_pd* send = ebox_getsender((t_ebox *) x);
-    const float val = ebox_parameter_getvalue((t_ebox *) x, 0);
+    const float val = ebox_parameter_getvalue((t_ebox *)x, 1);
     outlet_float(x->f_outlet, val);
     if(send)
     {
@@ -39,12 +39,12 @@ static void knob_float(t_knob *x, float f)
 {
     if(x->f_endless)
     {
-        const float min = ebox_parameter_getmin((t_ebox *)x, 0);
-        const float max = ebox_parameter_getmax((t_ebox *)x, 0);
+        const float min = ebox_parameter_getmin((t_ebox *)x, 1);
+        const float max = ebox_parameter_getmax((t_ebox *)x, 1);
         f = pd_wrap(f, min, max);
     }
     
-    ebox_parameter_setvalue((t_ebox *) x, 0, f, 1);
+    ebox_parameter_setvalue((t_ebox *)x, 1, f, 1);
     knob_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
     ebox_redraw((t_ebox *)x);
@@ -54,18 +54,18 @@ static void knob_set(t_knob *x, float f)
 {
     if(x->f_endless)
     {
-        const float min = ebox_parameter_getmin((t_ebox *)x, 0);
-        const float max = ebox_parameter_getmax((t_ebox *)x, 0);
+        const float min = ebox_parameter_getmin((t_ebox *)x, 1);
+        const float max = ebox_parameter_getmax((t_ebox *)x, 1);
         f = pd_wrap(f, min, max);
     }
-    ebox_parameter_setvalue((t_ebox *) x, 0, f, 0);
+    ebox_parameter_setvalue((t_ebox *)x, 1, f, 0);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 static void knob_bang(t_knob *x, float f)
 {
-    ebox_parameter_notify_changes((t_ebox *) x, 0);
+    ebox_parameter_notify_changes((t_ebox *)x, 1);
     knob_output(x);
 }
 
@@ -127,8 +127,8 @@ static void draw_needle(t_knob *x, t_object *view, t_rect *rect)
         const float size    = rect->width * 0.5f;
         const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
         const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
-        const float inver   = ebox_parameter_isinverted((t_ebox *)x, 0) ? -1.f : 1.f;
-        const float angle   = ebox_parameter_getvalue_normalized((t_ebox *)x, 0) * inver * ratio1 + ratio2;
+        const float inver   = ebox_parameter_isinverted((t_ebox *)x, 1) ? -1.f : 1.f;
+        const float angle   = ebox_parameter_getvalue_normalized((t_ebox *)x, 1) * inver * ratio1 + ratio2;
         
         egraphics_set_color_rgba(g, &x->f_color_needle);
         egraphics_set_line_width(g, 2.f);
@@ -161,7 +161,7 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
 {
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    ebox_parameter_begin_changes((t_ebox *)x, 0);
+    ebox_parameter_begin_changes((t_ebox *)x, 1);
     if(x->f_circular)
     {
         const float size  = rect.width * 0.5f;
@@ -169,12 +169,12 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
         if(x->f_endless)
         {
             const float value = pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f);
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 0, value, 0.);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
         }
         else
         {
             const float value = (pd_clip(pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f), 0.125f, 0.875f) - 0.125f) / 0.75f;
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 0, value, 0.);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
         }
         
         knob_output(x);
@@ -198,12 +198,12 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
         if(x->f_endless)
         {
             const float value = pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f);
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 0, value, 0.);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
         }
         else
         {
             const float value = (pd_clip(pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f), 0.125f, 0.875f) - 0.125f) / 0.75f;
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 0, value, 0.);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
         }
         
         knob_output(x);
@@ -212,16 +212,16 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
     }
     else
     {
-        const float inver   = ebox_parameter_isinverted((t_ebox *)x, 0) ? -1.f : 1.f;
-        const float current = ebox_parameter_getvalue_normalized((t_ebox *)x, 0);
+        const float inver   = ebox_parameter_isinverted((t_ebox *)x, 1) ? -1.f : 1.f;
+        const float current = ebox_parameter_getvalue_normalized((t_ebox *)x, 1);
         const float diff    = (x->f_reference - pt.y) / (rect.width) * inver;
         if(x->f_endless)
         {
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 0, pd_wrap(current + diff, 0.f, 1.f), 0.);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_wrap(current + diff, 0.f, 1.f), 0.);
         }
         else
         {
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 0, pd_clip(current + diff, 0.f, 1.f), 0.);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_clip(current + diff, 0.f, 1.f), 0.);
         }
         x->f_reference      = pt.y;
     }
@@ -232,7 +232,7 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
 
 static void knob_mouseup(t_knob *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    ebox_parameter_end_changes((t_ebox *)x, 0);
+    ebox_parameter_end_changes((t_ebox *)x, 1);
 }
 
 static void *knob_new(t_symbol *s, int argc, t_atom *argv)
@@ -243,7 +243,7 @@ static void *knob_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
-        ebox_parameter_create((t_ebox *)x, 0);
+        ebox_parameter_create((t_ebox *)x, 1);
         x->f_outlet = outlet_new((t_object *)x, &s_float);
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
@@ -256,7 +256,7 @@ static void *knob_new(t_symbol *s, int argc, t_atom *argv)
 
 static _FUNCTION_DEPRECTAED_ void knob_preset(t_knob *x, t_binbuf *b)
 {
-    binbuf_addv(b, (char *)"sf", &s_float, ebox_parameter_getvalue((t_ebox *)x, 0));
+    binbuf_addv(b, (char *)"sf", &s_float, ebox_parameter_getvalue((t_ebox *)x, 1));
 }
 
 extern "C" void setup_c0x2eknob(void)
