@@ -10,6 +10,7 @@
 
 #include "../c.library.hpp"
 #include <stdlib.h>
+#include <float.h>
 typedef struct  _number
 {
 	t_ebox          j_box;
@@ -311,6 +312,8 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
         efont_init(&x->f_font, gensym("DejaVu"), 0, 0, 11);
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_FONTSIZE);
         ebox_parameter_create((t_ebox *)x, 0);
+        ebox_parameter_setmin((t_ebox *)x, 0, -FLT_MAX);
+        ebox_parameter_setmax((t_ebox *)x, 0, FLT_MAX);
         x->f_outlet   = outlet_new((t_object *)x, &s_float);
         x->f_outtab   = outlet_new((t_object *)x, &s_bang);
         x->f_editor   = NULL;
