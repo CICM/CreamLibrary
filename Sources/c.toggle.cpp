@@ -115,6 +115,34 @@ static void toggle_mousedown(t_toggle *x, t_object *patcherview, t_pt pt, long m
     toggle_bang(x);
 }
 
+static void toggle_setter_t(t_toggle *x, int index, char const* text)
+{
+    if(!strcmp(text, "on"))
+    {
+        ebox_parameter_setvalue((t_ebox *)x, index, 1.f, 0);
+    }
+    else if(!strcmp(text, "off"))
+    {
+        ebox_parameter_setvalue((t_ebox *)x, index, 0.f, 0);
+    }
+    else if(isdigit(text[0]))
+    {
+        ebox_parameter_setvalue((t_ebox *)x, index, atof(text), 0);
+    }
+}
+
+static void toggle_getter_t(t_toggle *x, int index, char* text)
+{
+    if(ebox_parameter_getvalue((t_ebox *)x, index))
+    {
+        sprintf(text, "on");
+    }
+    else
+    {
+        sprintf(text, "off");
+    }
+}
+
 static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_toggle *x = (t_toggle *)eobj_new(toggle_class);
@@ -124,10 +152,11 @@ static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
         ebox_parameter_create((t_ebox *)x, 1);
-        ebox_parameter_setmin((t_ebox *)x, 1, 0);
-        ebox_parameter_setmax((t_ebox *)x, 1, 1);
-        ebox_parameter_setstep((t_ebox *)x, 1, 1);
-        ebox_parameter_setflags((t_ebox *)x, 1, 0 | EPARAM_STATIC_MIN | EPARAM_STATIC_MAX);
+        ebox_parameter_setminmax((t_ebox *)x, 1, 0, 1);
+        ebox_parameter_setnstep((t_ebox *)x, 1, 2);
+        ebox_parameter_setflags((t_ebox *)x, 1, 0 | EPARAM_STATIC_MIN | EPARAM_STATIC_MAX | EPARAM_STATIC_NSTEPS);
+        ebox_parameter_setsettergetter_text((t_ebox *)x, 1, (t_param_setter_t)toggle_setter_t, t_param_getter_t(toggle_getter_t));
+        
         x->f_outlet = outlet_new((t_object *)x, &s_float);
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
@@ -136,11 +165,6 @@ static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
     }
     
     return NULL;
-}
-
-static _FUNCTION_DEPRECTAED_ void toggle_preset(t_toggle *x, t_binbuf *b)
-{
-    binbuf_addv(b, (char *)"sf", &s_float, ebox_parameter_getvalue((t_ebox *)x, 1));
 }
 
 extern "C" void setup_c0x2etoggle(void)
@@ -156,10 +180,8 @@ extern "C" void setup_c0x2etoggle(void)
         eclass_addmethod(c, (method) toggle_float,           "float",            A_FLOAT,0);
         eclass_addmethod(c, (method) toggle_set,             "set",              A_FLOAT,0);
         eclass_addmethod(c, (method) toggle_bang,            "bang",             A_NULL, 0);
-        
         eclass_addmethod(c, (method) toggle_mousedown,       "mousedown",        A_NULL, 0);
-        
-        eclass_addmethod(c, (method) toggle_preset,          "preset",           A_NULL, 0);
+    
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 15.");
         

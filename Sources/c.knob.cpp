@@ -131,7 +131,7 @@ static void draw_needle(t_knob *x, t_object *view, t_rect *rect)
         {
             const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
             const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
-            const float angle   = ebox_parameter_getvalue_normalized((t_ebox *)x, 1) * ratio1 + ratio2;
+            const float angle   = (1.f - ebox_parameter_getvalue_normalized((t_ebox *)x, 1)) * ratio1 + ratio2;
             
             egraphics_line(g,
                            pd_abscissa(size - 10.f, angle) + size,
@@ -183,12 +183,27 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
         if(x->f_endless)
         {
             const float value = pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f);
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+            if(ebox_parameter_isinverted((t_ebox *)x, 1))
+            {
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 0.);
+            }
+            else
+            {
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+            }
+            
         }
         else
         {
             const float value = (pd_clip(pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f), 0.125f, 0.875f) - 0.125f) / 0.75f;
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+            if(ebox_parameter_isinverted((t_ebox *)x, 1))
+            {
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 0.);
+            }
+            else
+            {
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+            }
         }
         
         knob_output(x);
@@ -212,12 +227,26 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
         if(x->f_endless)
         {
             const float value = pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f);
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+            if(ebox_parameter_isinverted((t_ebox *)x, 1))
+            {
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 0.);
+            }
+            else
+            {
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+            }
         }
         else
         {
             const float value = (pd_clip(pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f), 0.125f, 0.875f) - 0.125f) / 0.75f;
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+            if(ebox_parameter_isinverted((t_ebox *)x, 1))
+            {
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 0.);
+            }
+            else
+            {
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+            }
         }
         
         knob_output(x);
@@ -227,7 +256,7 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
     else
     {
         const float current = ebox_parameter_getvalue_normalized((t_ebox *)x, 1);
-        const float diff    = (x->f_reference - pt.y) / (rect.width);
+        const float diff    = (x->f_reference - pt.y) / (rect.width) * (ebox_parameter_isinverted((t_ebox *)x, 1) ? -1.f : 1.f);
         if(x->f_endless)
         {
             ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_wrap(current + diff, 0.f, 1.f), 0.);
