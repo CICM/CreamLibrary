@@ -125,20 +125,34 @@ static void draw_needle(t_knob *x, t_object *view, t_rect *rect)
     if(g)
 	{
         const float size    = rect->width * 0.5f;
-        const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
-        const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
-        const float inver   = ebox_parameter_isinverted((t_ebox *)x, 1) ? -1.f : 1.f;
-        const float angle   = ebox_parameter_getvalue_normalized((t_ebox *)x, 1) * inver * ratio1 + ratio2;
-        
         egraphics_set_color_rgba(g, &x->f_color_needle);
         egraphics_set_line_width(g, 2.f);
+        if(ebox_parameter_isinverted((t_ebox *)x, 1))
+        {
+            const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
+            const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
+            const float angle   = ebox_parameter_getvalue_normalized((t_ebox *)x, 1) * ratio1 + ratio2;
+            
+            egraphics_line(g,
+                           pd_abscissa(size - 10.f, angle) + size,
+                           pd_ordinate(size - 10.f, angle) + size,
+                           pd_abscissa(size - 2.f, angle) + size,
+                           pd_ordinate(size - 2.f, angle) + size);
+        }
+        else
+        {
+            const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
+            const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
+            const float angle   = ebox_parameter_getvalue_normalized((t_ebox *)x, 1) * ratio1 + ratio2;
+            
+            egraphics_line(g,
+                           pd_abscissa(size - 10.f, angle) + size,
+                           pd_ordinate(size - 10.f, angle) + size,
+                           pd_abscissa(size - 2.f, angle) + size,
+                           pd_ordinate(size - 2.f, angle) + size);
+        }
         
-        egraphics_line(g,
-                       pd_abscissa(size - 10.f, angle) + size,
-                       pd_ordinate(size - 10.f, angle) + size,
-                       pd_abscissa(size - 2.f, angle) + size,
-                       pd_ordinate(size - 2.f, angle) + size);
-
+        
         egraphics_stroke(g);
         ebox_end_layer((t_ebox*)x, cream_sym_needle_layer);
     }
@@ -212,9 +226,8 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
     }
     else
     {
-        const float inver   = ebox_parameter_isinverted((t_ebox *)x, 1) ? -1.f : 1.f;
         const float current = ebox_parameter_getvalue_normalized((t_ebox *)x, 1);
-        const float diff    = (x->f_reference - pt.y) / (rect.width) * inver;
+        const float diff    = (x->f_reference - pt.y) / (rect.width);
         if(x->f_endless)
         {
             ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_wrap(current + diff, 0.f, 1.f), 0.);

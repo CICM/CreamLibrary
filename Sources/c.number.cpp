@@ -329,11 +329,6 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
     return NULL;
 }
 
-static _FUNCTION_DEPRECTAED_ void number_preset(t_number *x, t_binbuf *b)
-{
-    binbuf_addv(b, (char *)"sf", &s_float, ebox_parameter_getvalue((t_ebox *)x, 1));
-}
-
 extern "C" void setup_c0x2enumber(void)
 {
     t_eclass *c = eclass_new("c.number", (method)number_new, (method)number_free, (short)sizeof(t_number), 0L, A_GIMME, 0);
@@ -357,8 +352,6 @@ extern "C" void setup_c0x2enumber(void)
         eclass_addmethod(c, (method) number_dblclick,            "select",              A_NULL, 0);
         eclass_addmethod(c, (method) number_texteditor_keypress, "texteditor_keypress", A_NULL, 0);
         eclass_addmethod(c, (method) number_texteditor_keyfilter,"texteditor_keyfilter",A_NULL, 0);
-        
-        eclass_addmethod(c, (method) number_preset,           "preset",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "53 13");
         
