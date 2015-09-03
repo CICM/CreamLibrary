@@ -85,12 +85,15 @@ static t_pd_err slider_notify(t_slider *x, t_symbol *s, t_symbol *msg, void *sen
 {
 	if(msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_kncolor)
+		if(s == cream_sym_bgcolor ||
+           s == cream_sym_bdcolor ||
+           s == cream_sym_kncolor ||
+           s == ebox_parameter_getbind((t_ebox *)x, 1))
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
 	}
-    else if(msg == cream_sym_param_changed)
+    else if(msg == cream_sym_value_changed)
     {
         slider_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);

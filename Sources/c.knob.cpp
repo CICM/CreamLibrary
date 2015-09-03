@@ -87,13 +87,17 @@ static t_pd_err knob_notify(t_knob *x, t_symbol *s, t_symbol *msg, void *sender,
 {
 	if(msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_necolor || s == cream_sym_endless)
+		if(s == cream_sym_bgcolor ||
+           s == cream_sym_bdcolor ||
+           s == cream_sym_necolor ||
+           s == cream_sym_endless ||
+           s == ebox_parameter_getbind((t_ebox *)x, 1))
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
             ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
 	}
-    else if(msg == cream_sym_param_changed)
+    else if(msg == cream_sym_value_changed)
     {
         knob_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);

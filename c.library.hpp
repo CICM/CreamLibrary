@@ -64,7 +64,7 @@ static t_symbol* cream_sym_delete               = gensym("delete");
 static t_symbol* cream_sym_past                 = gensym("paste");
 
 static t_symbol* cream_sym_attr_modified        = gensym("attr_modified");
-static t_symbol* cream_sym_param_changed        = gensym("param_changed");
+static t_symbol* cream_sym_value_changed        = gensym("value_changed");
 
 static t_symbol* cream_sym_background_layer     = gensym("background_layer");
 static t_symbol* cream_sym_text_layer           = gensym("text_layer");
