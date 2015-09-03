@@ -309,7 +309,6 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
     
     if(x && d)
     {
-        efont_init(&x->f_font, gensym("DejaVu"), 0, 0, 11);
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_FONTSIZE);
         ebox_parameter_create((t_ebox *)x, 1);
         ebox_parameter_setminmax((t_ebox *)x, 1, -FLT_MAX, FLT_MAX);

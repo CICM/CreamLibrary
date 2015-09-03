@@ -296,11 +296,6 @@ static void *knob_new(t_symbol *s, int argc, t_atom *argv)
     return NULL;
 }
 
-static _FUNCTION_DEPRECTAED_ void knob_preset(t_knob *x, t_binbuf *b)
-{
-    binbuf_addv(b, (char *)"sf", &s_float, ebox_parameter_getvalue((t_ebox *)x, 1));
-}
-
 extern "C" void setup_c0x2eknob(void)
 {
     t_eclass *c = eclass_new("c.knob", (method)knob_new, (method)ebox_free, (short)sizeof(t_knob), 0L, A_GIMME, 0);
@@ -320,8 +315,6 @@ extern "C" void setup_c0x2eknob(void)
         eclass_addmethod(c, (method) knob_mousedown,        "mousedown",        A_NULL, 0);
         eclass_addmethod(c, (method) knob_mousedrag,        "mousedrag",        A_NULL, 0);
         eclass_addmethod(c, (method) knob_mouseup,          "mouseup",          A_NULL, 0);
-        
-        eclass_addmethod(c, (method) knob_preset,          "preset",            A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "50. 50.");
         
