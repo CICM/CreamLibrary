@@ -189,11 +189,11 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
             const float value = pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f);
             if(ebox_parameter_isinverted((t_ebox *)x, 1))
             {
-                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 0.);
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 1);
             }
             else
             {
-                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 1);
             }
             
         }
@@ -202,11 +202,11 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
             const float value = (pd_clip(pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f), 0.125f, 0.875f) - 0.125f) / 0.75f;
             if(ebox_parameter_isinverted((t_ebox *)x, 1))
             {
-                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 0.);
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 1);
             }
             else
             {
-                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 1);
             }
         }
         
@@ -233,11 +233,11 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
             const float value = pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f);
             if(ebox_parameter_isinverted((t_ebox *)x, 1))
             {
-                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 0.);
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 1);
             }
             else
             {
-                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 1);
             }
         }
         else
@@ -245,11 +245,11 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
             const float value = (pd_clip(pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f), 0.125f, 0.875f) - 0.125f) / 0.75f;
             if(ebox_parameter_isinverted((t_ebox *)x, 1))
             {
-                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 0.);
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 1);
             }
             else
             {
-                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 0.);
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 1);
             }
         }
         
@@ -263,11 +263,11 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
         const float diff    = (x->f_reference - pt.y) / (rect.width) * (ebox_parameter_isinverted((t_ebox *)x, 1) ? -1.f : 1.f);
         if(x->f_endless)
         {
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_wrap(current + diff, 0.f, 1.f), 0.);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_wrap(current + diff, 0.f, 1.f), 1);
         }
         else
         {
-            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_clip(current + diff, 0.f, 1.f), 0.);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_clip(current + diff, 0.f, 1.f), 1);
         }
         x->f_reference      = pt.y;
     }
