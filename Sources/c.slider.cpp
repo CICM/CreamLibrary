@@ -178,7 +178,7 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
     }
     else
     {
-        ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x, &rect, &pt, min, max), 0);
+        ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x, &rect, &pt, min, max), 1);
         slider_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
@@ -194,7 +194,7 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
     if(x->f_mode)
     {
         const float refvalue = slider_getvalue(x, &rect, &pt, min, max);
-        ebox_parameter_setvalue((t_ebox *)x, 1, x->f_value_last + refvalue - x->f_value_ref, 0);
+        ebox_parameter_setvalue((t_ebox *)x, 1, x->f_value_last + refvalue - x->f_value_ref, 1);
         const float newvalue = ebox_parameter_getvalue((t_ebox *)x, 1);
         if(newvalue == min || newvalue == max)
         {
@@ -204,7 +204,7 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
     }
     else
     {
-         ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x, &rect, &pt, min, max), 0);
+         ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x, &rect, &pt, min, max), 1);
     }
     
     slider_output(x);
@@ -236,11 +236,6 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
     return NULL;
 }
 
-static _FUNCTION_DEPRECTAED_ void slider_preset(t_slider *x, t_binbuf *b)
-{
-    binbuf_addv(b, (char *)"sf", &s_float, (float)ebox_parameter_getvalue((t_ebox *)x, 1));
-}
-
 extern "C" void setup_c0x2eslider(void)
 {
     t_eclass *c = eclass_new("c.slider", (method)slider_new, (method)ebox_free, (short)sizeof(t_slider), 0L, A_GIMME, 0);
@@ -260,8 +255,6 @@ extern "C" void setup_c0x2eslider(void)
         eclass_addmethod(c, (method) slider_mousedown,      "mousedown",        A_NULL, 0);
         eclass_addmethod(c, (method) slider_mousedrag,      "mousedrag",        A_NULL, 0);
         eclass_addmethod(c, (method) slider_mouseup,        "mouseup",          A_NULL, 0);
-        
-        eclass_addmethod(c, (method) slider_preset,          "preset",           A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
         
@@ -290,33 +283,7 @@ extern "C" void setup_c0x2eslider(void)
         CLASS_ATTR_ORDER                (c, "kncolor", 0, "5");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "kncolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "kncolor", 0, "color");
-        /*
-        CLASS_ATTR_SYMBOL               (c, "name", 0, t_slider, f_dummy);
-        CLASS_ATTR_LABEL                (c, "name", 0, "Parameter Name");
-        CLASS_ATTR_ORDER                (c, "name", 0, "6");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "name", 0, "");
-        CLASS_ATTR_STYLE                (c, "name", 0, "entry");
-        
-        CLASS_ATTR_SYMBOL               (c, "label", 0, t_slider, f_dummy);
-        CLASS_ATTR_LABEL                (c, "label", 0, "Parameter Label");
-        CLASS_ATTR_ORDER                (c, "label", 0, "7");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "label", 0, "");
-        CLASS_ATTR_STYLE                (c, "label", 0, "entry");
-        
-        CLASS_ATTR_FLOAT                (c, "min", 0, t_slider, f_dummy);
-        CLASS_ATTR_LABEL                (c, "min", 0, "Minimum Parameter Value");
-        CLASS_ATTR_ORDER                (c, "min", 0, "1");
-        CLASS_ATTR_DEFAULT              (c, "min", 0, "0.");
-        CLASS_ATTR_SAVE                 (c, "min", 1);
-        CLASS_ATTR_STYLE                (c, "min", 0, "number");
-        
-        CLASS_ATTR_FLOAT                (c, "max", 0, t_slider, f_dummy);
-        CLASS_ATTR_LABEL                (c, "max", 0, "Maximum Parameter Value");
-        CLASS_ATTR_ORDER                (c, "max", 0, "2");
-        CLASS_ATTR_DEFAULT              (c, "max", 0, "1.");
-        CLASS_ATTR_SAVE                 (c, "max", 1);
-        CLASS_ATTR_STYLE                (c, "max", 0, "number");
-        */
+
         eclass_register(CLASS_BOX, c);
         slider_class = c;
     }

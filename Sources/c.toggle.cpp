@@ -115,7 +115,9 @@ static void toggle_paint(t_toggle *x, t_object *view)
 
 static void toggle_mousedown(t_toggle *x, t_object *patcherview, t_pt pt, long modifiers)
 {
+    ebox_parameter_begin_changes((t_ebox *)x, 1);
     toggle_bang(x);
+    ebox_parameter_end_changes((t_ebox *)x, 1);
 }
 
 static void toggle_setter_t(t_toggle *x, int index, char const* text)
