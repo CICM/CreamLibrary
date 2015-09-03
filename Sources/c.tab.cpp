@@ -339,7 +339,8 @@ static t_pd_err tab_notify(t_tab *x, t_symbol *s, t_symbol *msg, void *sender, v
            s == cream_sym_fontsize ||
            s == cream_sym_fontname ||
            s == cream_sym_fontweight ||
-           s == cream_sym_fontslant)
+           s == cream_sym_fontslant ||
+           s == cream_sym_font)
 		{
             ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
             ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
