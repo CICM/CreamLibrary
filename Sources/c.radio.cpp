@@ -13,14 +13,14 @@
 typedef struct _radio
 {
 	t_ebox      j_box;
-    t_outlet*   f_out;
+    t_outlet*   f_out_list;
+    t_outlet*   f_out_flag;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_item;
     char        f_direction;
-    char        f_items[CREAM_MAXITEMS];
     int         f_nitems;
-    int         f_mode;
+    int         f_checklist;
 } t_radio;
 
 static t_eclass *radio_class;
@@ -28,82 +28,71 @@ static t_eclass *radio_class;
 static void radio_output(t_radio *x)
 {
     int i;
-    t_atom av[CREAM_MAXITEMS];
+    t_atom argv[CREAM_MAXITEMS];
     t_pd* send = ebox_getsender((t_ebox *) x);
-    if(x->f_mode)
+    const int flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
+    if(x->f_checklist)
     {
         for(i = 0; i < x->f_nitems; i++)
         {
-            atom_setfloat(av+i, (float)x->f_items[i]);
+            atom_setfloat(argv+i, (flags & (1<<i) ? 1 : 0));
         }
-        outlet_list(x->f_out, &s_list, (int)x->f_nitems, av);
+        outlet_list(x->f_out_list, &s_list, x->f_nitems, argv);
         if(send)
         {
-            pd_list(send, &s_list, (int)x->f_nitems, av);
+            pd_list(send, &s_list, x->f_nitems, argv);
         }
     }
     else
     {
         for(i = 0; i < x->f_nitems; i++)
         {
-            if(x->f_items[i] != 0)
+            if(flags & (1<<i))
             {
-                outlet_float(x->f_out, (float)i);
+                outlet_float(x->f_out_list, (float)i);
                 if(send)
                 {
                     pd_float(send, (float)i);
                 }
+                break;
             }
         }
     }
-}
-
-static void radio_set_one(t_radio *x, int f)
-{
-    if(f >= 0 && f < x->f_nitems)
-    {
-        memset(x->f_items, 0, (size_t)x->f_nitems * sizeof(int));
-        x->f_items[f] = 1;
-    }
-}
-
-static void radio_set_list(t_radio *x, int argc, t_atom *argv)
-{
-    for(int i = 0; i < argc && i < x->f_nitems; i++)
-    {
-        x->f_items[i] = (atom_gettype(argv+i) == A_FLOAT && atom_getfloat(argv+i) == 0) ? 0 : 1;
-    }
-}
-
-static void radio_set(t_radio *x, t_symbol* s, int argc, t_atom *argv)
-{
-    if(argc && argv)
-    {
-        if(x->f_mode)
-        {
-            radio_set_list(x, argc, argv);
-        }
-        else if(atom_gettype(argv) == A_FLOAT)
-        {
-            radio_set_one(x, (int)atom_getfloat(argv));
-        }
-        
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
-        ebox_redraw((t_ebox *)x);
-    }
+    outlet_float(x->f_out_flag, (float)flags);
 }
 
 static void radio_float(t_radio *x, float f)
 {
-    if(x->f_mode)
+    if(x->f_checklist)
     {
-        t_atom av;
-        atom_setfloat(&av, f);
-        radio_set_list(x, 1, &av);
+        const int flags = ebox_parameter_getvalue((t_ebox *)x, 1);
+        if(f)
+        {
+            if(flags & (1<<0))
+            {
+                ebox_parameter_notify_changes((t_ebox *)x, 1);
+            }
+            else
+            {
+                ebox_parameter_setvalue((t_ebox *)x, 1, (float)(flags | (1<<0)), 1);
+            }
+        }
+        else
+        {
+            if(flags & (1<<0))
+            {
+                ebox_parameter_setvalue((t_ebox *)x, 1, (float)(flags & ~(1<<0)), 1);
+            }
+            else
+            {
+                ebox_parameter_notify_changes((t_ebox *)x, 1);
+            }
+        }
     }
     else
     {
-        radio_set_one(x, (int)f);
+        int index = (int)pd_clip(f, 0.f, (float)x->f_nitems - 1);
+        ebox_parameter_setvalue((t_ebox *)x, 1, (float)(1<<index), 1);
     }
     
     radio_output(x);
@@ -111,23 +100,112 @@ static void radio_float(t_radio *x, float f)
     ebox_redraw((t_ebox *)x);
 }
 
-static void radio_list(t_radio *x, t_symbol* s, int argc, t_atom *argv)
+static void radio_flags(t_radio *x, float f)
 {
+    int i, flags = 0;
+    if(x->f_checklist)
+    {
+        for(i = 0; i < x->f_nitems; i++)
+        {
+            if((int)(f) & (1<<i))
+            {
+                flags |= (1<<i);
+            }
+        }
+    }
+    else
+    {
+        flags = 1<<0;
+        for(i = 0; i < x->f_nitems; i++)
+        {
+            if((int)(f) < (1<<i))
+            {
+                break;
+            }
+            flags = (1<<i);
+        }
+    }
+    ebox_parameter_setvalue((t_ebox *)x, 1, flags, 1);
+    radio_output(x);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+    ebox_redraw((t_ebox *)x);
+}
+
+static void radio_set(t_radio *x, t_symbol* s, int argc, t_atom *argv)
+{
+    int i;
     if(argc && argv)
     {
-        if(x->f_mode)
+        if(x->f_checklist)
         {
-            radio_set_list(x, argc, argv);
+            int flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
+            for(i = 0; i < x->f_nitems && i < argc; i++)
+            {
+                if(atom_gettype(argv+i) == A_FLOAT)
+                {
+                    if(atom_getfloat(argv+i) != 0 && !(flags & (1<<i)))
+                    {
+                        flags = flags | (1<<i);
+                    }
+                    else if(atom_getfloat(argv+i) == 0.f && (flags & (1<<i)))
+                    {
+                        flags = flags & ~(1<<i);
+                    }
+                }
+            }
+            ebox_parameter_setvalue((t_ebox *)x, 1, flags, 0);
         }
         else if(atom_gettype(argv) == A_FLOAT)
         {
-            radio_set_one(x, (int)atom_getfloat(argv));
+            int index = (int)pd_clip(atom_getfloat(argv), 0.f, (float)x->f_nitems - 1);
+            ebox_parameter_setvalue((t_ebox *)x, 1, (float)(1<<index), 0);
+        }
+        
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        ebox_redraw((t_ebox *)x);
+    }
+}
+
+static void radio_list(t_radio *x, t_symbol* s, int argc, t_atom *argv)
+{
+    int i;
+    if(argc && argv)
+    {
+        if(x->f_checklist)
+        {
+            int flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
+            for(i = 0; i < x->f_nitems && i < argc; i++)
+            {
+                if(atom_gettype(argv+i) == A_FLOAT)
+                {
+                    if(atom_getfloat(argv+i) != 0 && !(flags & (1<<i)))
+                    {
+                        flags = flags | (1<<i);
+                    }
+                    else if(atom_getfloat(argv+i) == 0.f && (flags & (1<<i)))
+                    {
+                        flags = flags & ~(1<<i);
+                    }
+                }
+            }
+            ebox_parameter_setvalue((t_ebox *)x, 1, flags, 1);
+        }
+        else if(atom_gettype(argv) == A_FLOAT)
+        {
+            int index = (int)pd_clip(atom_getfloat(argv), 0.f, (float)x->f_nitems - 1);
+            ebox_parameter_setvalue((t_ebox *)x, 1, (float)(1<<index), 0);
         }
         
         radio_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
         ebox_redraw((t_ebox *)x);
     }
+}
+
+static void radio_bang(t_radio *x)
+{
+    ebox_parameter_notify_changes((t_ebox *)x, 1);
+    radio_output(x);
 }
 
 static t_pd_err radio_notify(t_radio *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
@@ -139,7 +217,19 @@ static t_pd_err radio_notify(t_radio *x, t_symbol *s, t_symbol *msg, void *sende
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
             ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
 		}
+        else if(s == cream_sym_checklist)
+        {
+            ebox_parameter_setvalue((t_ebox *)x, 1, 0, 1);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        }
 	}
+    else if(msg == cream_sym_value_changed)
+    {
+        radio_output(x);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+        ebox_redraw((t_ebox *)x);
+    }
 	return 0;
 }
 
@@ -177,7 +267,7 @@ static void draw_background(t_radio *x, t_object *view, t_rect *rect)
         egraphics_set_color_rgba(g, &x->f_color_border);
         egraphics_set_line_width(g, 2.f);
         const float ratio = x->f_direction ? ((rect->width - 4.f) / x->f_nitems) : (rect->height - 4.f) / x->f_nitems;
-        if(x->f_mode)
+        if(x->f_checklist)
         {
             const float offset = x->f_direction ? (rect->height * 0.5f - 2.f) : (rect->width * 0.5f - 2.f);
             const float dist = offset * 2.f;
@@ -229,12 +319,12 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
 {
 	int i;
 	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_items_layer, rect->width, rect->height);
-    
 	if (g)
 	{
         egraphics_set_color_rgba(g, &x->f_color_item);
+        const int   flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
         const float ratio = x->f_direction ? ((rect->width - 4.f) / x->f_nitems) : (rect->height - 4.f) / x->f_nitems;
-        if(x->f_mode)
+        if(x->f_checklist)
         {
             egraphics_set_line_width(g, 2.f);
             const float offset = x->f_direction ? (rect->height * 0.5f - 4.f) : (rect->width * 0.5f - 4.f);
@@ -243,7 +333,7 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    if(x->f_items[i])
+                    if(flags & (1<<i))
                     {
                         const float val = (i + 0.5f) * ratio - offset + 2.f;
                         egraphics_line_fast(g, val, 4.f, val + dist, 4.f + dist);
@@ -255,7 +345,7 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    if(x->f_items[i])
+                    if(flags & (1<<i))
                     {
                         const float val = (i + 0.5f) * ratio - offset + 2.f;
                         egraphics_line_fast(g, 4.f, val, 4.f + dist, val + dist);
@@ -271,10 +361,11 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
                 const float height = rect->height * 0.5f;
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    if(x->f_items[i])
+                    if(flags & (1<<i))
                     {
                         egraphics_circle(g, (i + 0.5f) * ratio + 2.f, height, height - 4.f);
                         egraphics_fill(g);
+                        break;
                     }
                 }
             }
@@ -283,10 +374,11 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
                 const float width = rect->width * 0.5f;
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    if(x->f_items[i])
+                    if(flags & (1<<i))
                     {
                         egraphics_circle(g, width, (i + 0.5f) * ratio + 2.f, width - 4.f);
                         egraphics_fill(g);
+                        break;
                     }
                 }
             }
@@ -307,53 +399,33 @@ static void radio_paint(t_radio *x, t_object *view)
 
 static void radio_mousedown(t_radio *x, t_object *patcherview, t_pt pt, long modifiers)
 {
-    int i;
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    const int index = x->f_direction ? (pt.x / rect.width * x->f_nitems) : (pt.y / rect.height * x->f_nitems);
+    const float rel = x->f_direction ? ((pt.x - 2.f) / (rect.width - 4.f)) : ((pt.y - 2.f) / (rect.height - 4.f));
+    const int index = (int)pd_clip(rel * (float)x->f_nitems, 0.f, (float)x->f_nitems - 1.f);
     if(index >= 0 && index < x->f_nitems)
     {
-        if(x->f_mode)
+        ebox_parameter_begin_changes((t_ebox *)x, 1);
+        if(x->f_checklist)
         {
-            if(x->f_items[index] == 0)
-                x->f_items[index] = 1;
+            const int flags = ebox_parameter_getvalue((t_ebox *)x, 1);
+            if(flags & (1<<index))
+            {
+                ebox_parameter_setvalue((t_ebox *)x, 1, (float)(flags & ~(1<<index)), 1);
+            }
             else
-                x->f_items[index] = 0;
+            {
+                ebox_parameter_setvalue((t_ebox *)x, 1, (float)(flags | 1<<index), 1);
+            }
         }
         else
         {
-            for(i = 0; i < x->f_nitems; i++)
-                x->f_items[i] = 0;
-            x->f_items[index] = 1;
+            ebox_parameter_setvalue((t_ebox *)x, 1, (float)(0 | 1<<index), 1);
         }
-        
+        ebox_parameter_end_changes((t_ebox *)x, 1);
         radio_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
         ebox_redraw((t_ebox *)x);
-    }
-}
-
-static void radio_preset(t_radio *x, t_binbuf *b)
-{
-    int i;
-    if(x->f_mode)
-    {
-        binbuf_addv(b, (char *)"s", &s_list);
-        for(i = 0; i < x->f_nitems; i++)
-        {
-            binbuf_addv(b, (char *)"f", (float)x->f_items[i]);
-        }
-
-    }
-    else
-    {
-        for(i = 0; i < x->f_nitems; i++)
-        {
-            if(x->f_items[i])
-            {
-                binbuf_addv(b, (char *)"sf", &s_float, (float)i);
-            }
-        }
     }
 }
 
@@ -361,32 +433,10 @@ static t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
-        const int nitems = pd_clip(atom_getfloat(av), 1, CREAM_MAXITEMS);
-        if(nitems != x->f_nitems)
-        {
-            t_rect rect;
-            ebox_get_rect_for_view((t_ebox *)x, &rect);
-            x->f_nitems = nitems;
-            memset(x->f_items, 0, (size_t)x->f_nitems * sizeof(int));
-            ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
-        }
-    }
-    return 0;
-}
-
-static t_pd_err radio_mode_set(t_radio *x, t_object *attr, int ac, t_atom *av)
-{
-    if(ac && av && atom_gettype(av) == A_FLOAT)
-    {
-        const char mode = atom_getfloat(av) == 0 ? 0 : 1;
-        if(mode != x->f_mode)
-        {
-            x->f_mode = mode;
-            memset(x->f_items, 0, (size_t)x->f_nitems * sizeof(int));
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
-            ebox_redraw((t_ebox *)x);
-        }
+        x->f_nitems = pd_clip(atom_getfloat(av), 1, CREAM_MAXITEMS);
+        ebox_parameter_setvalue((t_ebox *)x, 1, 0, 0);
+        ebox_parameter_setminmax((t_ebox *)x, 1, 0.f, powf(2., (float)(x->f_nitems)) - 1.f);
+        ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
     }
     return 0;
 }
@@ -399,11 +449,12 @@ static void *radio_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
-        x->f_out = outlet_new((t_object *)x, &s_anything);
-        binbuf_get_attribute_int(d, gensym("nitems"), &x->f_nitems);
+        ebox_parameter_create((t_ebox *)x, 1);
+        x->f_out_list = outlet_new((t_object *)x, &s_anything);
+        x->f_out_flag = outlet_new((t_object *)x, &s_float);
+
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
-        
         return x;
     }
     return NULL;
@@ -419,12 +470,14 @@ extern "C" void setup_c0x2eradio(void)
         eclass_addmethod(c, (method) radio_notify,          "notify",           A_NULL, 0);
         eclass_addmethod(c, (method) radio_getdrawparams,   "getdrawparams",    A_NULL, 0);
         eclass_addmethod(c, (method) radio_oksize,          "oksize",           A_NULL, 0);
+        
         eclass_addmethod(c, (method) radio_set,             "set",              A_GIMME,0);
         eclass_addmethod(c, (method) radio_list,            "list",             A_GIMME,0);
         eclass_addmethod(c, (method) radio_float,           "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) radio_output,          "bang",             A_NULL, 0);
+        eclass_addmethod(c, (method) radio_bang,            "bang",             A_NULL, 0);
+        eclass_addmethod(c, (method) radio_flags,           "flags",            A_FLOAT, 0);
+        
         eclass_addmethod(c, (method) radio_mousedown,       "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) radio_preset,          "preset",           A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
         
@@ -437,15 +490,15 @@ extern "C" void setup_c0x2eradio(void)
         CLASS_ATTR_SAVE                 (c, "nitems", 1);
         CLASS_ATTR_STYLE                (c, "nitems", 0, "number");
         
-        int change_name;
-        CLASS_ATTR_INT                  (c, "mode", 0, t_radio, f_mode);
-        CLASS_ATTR_LABEL                (c, "mode", 0, "Check List Mode");
-        CLASS_ATTR_ACCESSORS			(c, "mode", NULL, radio_mode_set);
-        CLASS_ATTR_ORDER                (c, "mode", 0, "1");
-        CLASS_ATTR_FILTER_CLIP          (c, "mode", 0, 1);
-        CLASS_ATTR_DEFAULT              (c, "mode", 0, "0");
-        CLASS_ATTR_SAVE                 (c, "mode", 1);
-        CLASS_ATTR_STYLE                (c, "mode", 0, "onoff");
+        CLASS_ATTR_INT                  (c, "checklist", 0, t_radio, f_checklist);
+        CLASS_ATTR_LABEL                (c, "checklist", 0, "Check List Mode");
+        CLASS_ATTR_ACCESSORS			(c, "checklist", NULL, NULL);
+        CLASS_ATTR_ORDER                (c, "checklist", 0, "1");
+        CLASS_ATTR_FILTER_CLIP          (c, "checklist", 0, 1);
+        CLASS_ATTR_DEFAULT              (c, "checklist", 0, "0");
+        CLASS_ATTR_SAVE                 (c, "checklist", 1);
+        CLASS_ATTR_STYLE                (c, "checklist", 0, "onoff");
+        CLASS_ATTR_PAINT                (c, "checklist", 0);
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_radio, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

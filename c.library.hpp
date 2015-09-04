@@ -102,6 +102,7 @@ static t_symbol* cream_sym_secolor              = gensym("secolor");
 static t_symbol* cream_sym_hocolor              = gensym("hocolor");
 static t_symbol* cream_sym_necolor              = gensym("necolor");
 static t_symbol* cream_sym_font                 = gensym("font");
+static t_symbol* cream_sym_checklist            = gensym("checklist");
 
 static t_symbol* cream_sym_fontsize             = gensym("fontsize");
 static t_symbol* cream_sym_fontname             = gensym("fontname");
