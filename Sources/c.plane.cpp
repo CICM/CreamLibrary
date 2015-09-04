@@ -166,11 +166,6 @@ static void plane_mousedrag(t_plane *x, t_object *patcherview, t_pt pt, long mod
     }
 }
 
-static void plane_preset(t_plane *x, t_binbuf *b)
-{
-    binbuf_addv(b, (char *)"sff", &s_list, x->f_position.x, x->f_position.y);
-}
-
 static void *plane_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_plane *x = (t_plane *)eobj_new(plane_class);
@@ -209,7 +204,6 @@ extern "C" void setup_c0x2eplane(void)
         eclass_addmethod(c, (method) plane_output,          "bang",             A_NULL, 0);
         eclass_addmethod(c, (method) plane_mousedrag,       "mousedown",        A_NULL, 0);
         eclass_addmethod(c, (method) plane_mousedrag,       "mousedrag",        A_NULL, 0);
-        eclass_addmethod(c, (method) plane_preset,          "preset",           A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "120 120");
         

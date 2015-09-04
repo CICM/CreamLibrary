@@ -9,6 +9,7 @@
  */
 
 #include "../c.library.hpp"
+#include <float.h>
 
 typedef struct _slider
 {
@@ -204,6 +205,38 @@ static void slider_mouseup(t_slider *x, t_object *patcherview, t_pt pt, long mod
      ebox_parameter_end_changes((t_ebox *)x, 1);
 }
 
+static t_pd_err slider_minmax_set(t_slider *x, t_object *attr, int ac, t_atom *av)
+{
+    if(ac && av)
+    {
+        const float min = pd_clip((atom_gettype(av) == A_FLOAT) ? atom_getfloat(av) : ebox_parameter_getmin((t_ebox *)x, 1), -FLT_MAX, FLT_MAX);
+        const float max = pd_clip((ac > 1  && atom_gettype(av+1) == A_FLOAT) ? atom_getfloat(av+1) : ebox_parameter_getmax((t_ebox *)x, 1), -FLT_MAX, FLT_MAX);
+        ebox_parameter_setminmax((t_ebox *)x, 1, min, max);
+    }
+    
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+    ebox_redraw((t_ebox *)x);
+    return 0;
+}
+
+
+static t_pd_err slider_minmax_get(t_slider *x, t_object *attr, int* ac, t_atom **av)
+{
+    *ac = 2;
+    *av = (t_atom *)malloc(2 * sizeof(t_atom));
+    if(*av)
+    {
+        atom_setfloat(*av, ebox_parameter_getmin((t_ebox *)x, 1));
+        atom_setfloat(*av+1, ebox_parameter_getmax((t_ebox *)x, 1));
+    }
+    else
+    {
+        *ac = 0;
+    }
+    return 0;
+}
+
+
 static void *slider_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_slider *x = (t_slider *)eobj_new(slider_class);
@@ -244,6 +277,13 @@ extern "C" void setup_c0x2eslider(void)
         eclass_addmethod(c, (method) slider_mouseup,        "mouseup",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
+        
+        CLASS_ATTR_FLOAT_ARRAY          (c, "minmax", 0, t_slider, f_dummy, 2);
+        CLASS_ATTR_ORDER                (c, "minmax", 0, "3");
+        CLASS_ATTR_LABEL                (c, "minmax", 0, "Min/Max Values");
+        CLASS_ATTR_DEFAULT              (c, "minmax", 0, "0 1");
+        CLASS_ATTR_ACCESSORS            (c, "minmax", slider_minmax_get, slider_minmax_set);
+        CLASS_ATTR_SAVE                 (c, "minmax", 1);
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_slider, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

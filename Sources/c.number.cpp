@@ -11,6 +11,7 @@
 #include "../c.library.hpp"
 #include <stdlib.h>
 #include <float.h>
+
 typedef struct  _number
 {
 	t_ebox          j_box;
@@ -18,7 +19,7 @@ typedef struct  _number
     t_outlet*       f_outtab;
     t_etexteditor*  f_editor;
     char            f_firstchar;
-
+    
     float           f_refvalue;
     float           f_deriv;
     float           f_inc;
@@ -27,6 +28,7 @@ typedef struct  _number
 	t_rgba          f_color_background;
 	t_rgba          f_color_border;
 	t_rgba          f_color_text;
+    void*           f_dummy;
 } t_number;
 
 static t_eclass *number_class;
@@ -297,6 +299,38 @@ static void number_mouseup(t_number *x, t_object *patcherview, t_pt pt, long mod
     ebox_parameter_end_changes((t_ebox *)x, 1);
 }
 
+static t_pd_err number_minmax_set(t_number *x, t_object *attr, int ac, t_atom *av)
+{
+    if(ac && av)
+    {
+        const float min = pd_clip((atom_gettype(av) == A_FLOAT) ? atom_getfloat(av) : ebox_parameter_getmin((t_ebox *)x, 1), -FLT_MAX, FLT_MAX);
+        const float max = pd_clip((ac > 1  && atom_gettype(av+1) == A_FLOAT) ? atom_getfloat(av+1) : ebox_parameter_getmax((t_ebox *)x, 1), -FLT_MAX, FLT_MAX);
+        ebox_parameter_setminmax((t_ebox *)x, 1, ((min < max) ? min : max), ((min < max) ? max : min));
+    }
+    
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+    ebox_redraw((t_ebox *)x);
+    return 0;
+}
+
+
+static t_pd_err number_minmax_get(t_number *x, t_object *attr, int* ac, t_atom **av)
+{
+    *ac = 2;
+    *av = (t_atom *)malloc(2 * sizeof(t_atom));
+    if(*av)
+    {
+        atom_setfloat(*av, ebox_parameter_getmin((t_ebox *)x, 1));
+        atom_setfloat(*av+1, ebox_parameter_getmax((t_ebox *)x, 1));
+    }
+    else
+    {
+        *ac = 0;
+    }
+    return 0;
+}
+
+
 static void number_free(t_number *x)
 {
     if(x->f_editor)
@@ -365,16 +399,23 @@ extern "C" void setup_c0x2enumber(void)
         CLASS_ATTR_FILTER_MAX           (c, "decimal", 6);
         CLASS_ATTR_STYLE                (c, "decimal", 0, "number");
         
-        CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_number, f_color_background);
-        CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
-        CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
-        CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
+        CLASS_ATTR_FLOAT_ARRAY          (c, "minmax", 0, t_number, f_dummy, 2);
+        CLASS_ATTR_ORDER                (c, "minmax", 0, "3");
+        CLASS_ATTR_LABEL                (c, "minmax", 0, "Min/Max Values");
+        CLASS_ATTR_DEFAULT              (c, "minmax", 0, "-3.40282347e+38f 3.40282347e+38f");
+        CLASS_ATTR_ACCESSORS            (c, "minmax", number_minmax_get, number_minmax_set);
+        CLASS_ATTR_SAVE                 (c, "minmax", 1);
         
         CLASS_ATTR_FONT                 (c, "font", 0, t_number, f_font);
         CLASS_ATTR_LABEL                (c, "font", 0, "Font");
         CLASS_ATTR_SAVE                 (c, "font", 0);
         CLASS_ATTR_PAINT                (c, "font", 0);
+        
+        CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_number, f_color_background);
+        CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
+        CLASS_ATTR_ORDER                (c, "bgcolor", 0, "1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bgcolor", 0, "0.75 0.75 0.75 1.");
+        CLASS_ATTR_STYLE                (c, "bgcolor", 0, "color");
         
         CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_number, f_color_border);
         CLASS_ATTR_LABEL                (c, "bdcolor", 0, "Border Color");
