@@ -171,6 +171,28 @@ static void number_paint(t_number *x, t_object *view)
     draw_value_drag(x, view, &rect);
 }
 
+static void number_key(t_number *x, t_object *patcherview, char textcharacter, long modifiers)
+{
+    if(!x->f_editor)
+    {
+        if(textcharacter == 'R')
+        {
+            ebox_parameter_setvalue((t_ebox *)x, 1, ebox_parameter_getvalue((t_ebox *)x, 1) + 1.f, 1);
+            number_output(x);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+            ebox_redraw((t_ebox *)x);
+        }
+        else if(textcharacter == 'T')
+        {
+            ebox_parameter_setvalue((t_ebox *)x, 1, ebox_parameter_getvalue((t_ebox *)x, 1) - 1.f, 1);
+            number_output(x);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+            ebox_redraw((t_ebox *)x);
+        }
+        
+    }
+}
+
 static void number_texteditor_keypress(t_number *x, t_etexteditor *editor, int key)
 {
     if(editor && editor == x->f_editor && !x->f_firstchar && !isdigit((char)key))
@@ -380,6 +402,7 @@ extern "C" void setup_c0x2enumber(void)
         
         eclass_addmethod(c, (method) number_dblclick,            "dblclick",            A_NULL, 0);
         eclass_addmethod(c, (method) number_dblclick,            "select",              A_NULL, 0);
+        eclass_addmethod(c, (method) number_key,                 "key",                 A_NULL, 0);
         eclass_addmethod(c, (method) number_texteditor_keypress, "texteditor_keypress", A_NULL, 0);
         eclass_addmethod(c, (method) number_texteditor_keyfilter,"texteditor_keyfilter",A_NULL, 0);
         
