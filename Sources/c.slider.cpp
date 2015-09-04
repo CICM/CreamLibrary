@@ -18,7 +18,7 @@ typedef struct _slider
 	t_rgba          f_color_border;
 	t_rgba          f_color_knob;
     char            f_direction;
-    long            f_mode;
+    char            f_relative;
     float           f_value_ref;
     float           f_value_last;
     void*           f_dummy;
@@ -130,31 +130,16 @@ static void slider_paint(t_slider *x, t_object *view)
     ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
-static float slider_getvalue(t_slider *x, t_rect const* rect, t_pt const* pt, float min, float max)
+static float slider_getvalue(char direction, t_rect const* rect, t_pt const* pt, float min, float max)
 {
-    const float ratio = ( min <  max) ?  max -  min :  min -  max;
-    if(x->f_direction)
-    {
-        if( min <  max)
-        {
-            return (pt->x - 4.f) / (rect->width - 4.f) * ratio +  min;
-        }
-        else
-        {
-            return (rect->width - pt->x - 8.f) / (rect->width - 4.f) * ratio +  max;
-        }
-    }
-    else
-    {
-        if( min <  max)
-        {
-            return (rect->height - pt->y) / (rect->height - 4.f) * ratio +  min;
-        }
-        else
-        {
-            return (pt->y - 2.f) / (rect->height - 4.f) * ratio +  max;
-        }
-    }
+    const char inverted = (char)(min < max);
+    if(direction && inverted)
+        return (pt->x - 2.f) * (max - min) / (rect->width - 4.f) + min;
+    else if(direction && !inverted)
+        return (rect->width - pt->x - 2.f) * (min - max) / (rect->width - 4.f) + max;
+    else if(!direction && inverted)
+        return (rect->height - pt->y - 2.f) * (max - min) / (rect->height - 4.f) + min;
+    return (pt->y - 2.f) * (min - max) / (rect->height - 4.f) + max;
 }
 
 static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long modifiers)
@@ -164,21 +149,23 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
     const float max = ebox_parameter_getmax((t_ebox *)x, 1);
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     ebox_parameter_begin_changes((t_ebox *)x, 1);
-    if(x->f_mode)
+    if(modifiers == EMOD_SHIFT)
     {
+        x->f_relative = 1;
         x->f_value_last =  ebox_parameter_getvalue((t_ebox *)x, 1);
         if(min < max)
         {
-            x->f_value_ref = pd_clip(slider_getvalue(x, &rect, &pt, min, max), min, max);
+            x->f_value_ref = pd_clip(slider_getvalue(x->f_direction, &rect, &pt, min, max), min, max);
         }
         else
         {
-            x->f_value_ref = pd_clip(slider_getvalue(x, &rect, &pt, min, max), max, min);
+            x->f_value_ref = pd_clip(slider_getvalue(x->f_direction, &rect, &pt, min, max), max, min);
         }
     }
     else
     {
-        ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x, &rect, &pt, min, max), 1);
+        x->f_relative = 0;
+        ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x->f_direction, &rect, &pt, min, max), 1);
         slider_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
@@ -191,9 +178,9 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
     const float min = ebox_parameter_getmin((t_ebox *)x, 1);
     const float max = ebox_parameter_getmax((t_ebox *)x, 1);
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    if(x->f_mode)
+    if(x->f_relative)
     {
-        const float refvalue = slider_getvalue(x, &rect, &pt, min, max);
+        const float refvalue = slider_getvalue(x->f_direction, &rect, &pt, min, max);
         ebox_parameter_setvalue((t_ebox *)x, 1, x->f_value_last + refvalue - x->f_value_ref, 1);
         const float newvalue = ebox_parameter_getvalue((t_ebox *)x, 1);
         if(newvalue == min || newvalue == max)
@@ -204,7 +191,7 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
     }
     else
     {
-         ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x, &rect, &pt, min, max), 1);
+         ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x->f_direction, &rect, &pt, min, max), 1);
     }
     
     slider_output(x);
@@ -257,14 +244,6 @@ extern "C" void setup_c0x2eslider(void)
         eclass_addmethod(c, (method) slider_mouseup,        "mouseup",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
-        
-        CLASS_ATTR_LONG                 (c, "mode", 0, t_slider, f_mode);
-        CLASS_ATTR_LABEL                (c, "mode", 0, "Relative Mode");
-        CLASS_ATTR_ORDER                (c, "mode", 0, "1");
-        CLASS_ATTR_FILTER_CLIP          (c, "mode", 0, 1);
-        CLASS_ATTR_DEFAULT              (c, "mode", 0, "0");
-        CLASS_ATTR_SAVE                 (c, "mode", 1);
-        CLASS_ATTR_STYLE                (c, "mode", 0, "onoff");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_slider, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

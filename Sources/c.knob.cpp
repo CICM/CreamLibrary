@@ -180,8 +180,9 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
     ebox_parameter_begin_changes((t_ebox *)x, 1);
-    if(x->f_circular)
+    if(modifiers == EMOD_SHIFT)
     {
+        x->f_circular = 1;
         const float size  = rect.width * 0.5f;
         const float angle = pd_angle(pt.x - size, -(size - pt.y));
         if(x->f_endless)
@@ -216,6 +217,7 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
     }
     else
     {
+        x->f_circular = 0;
         x->f_reference = pt.y;
     }
 }
@@ -330,14 +332,6 @@ extern "C" void setup_c0x2eknob(void)
         CLASS_ATTR_SAVE                 (c, "endless", 0);
         CLASS_ATTR_STYLE                (c, "endless", 0, "onoff");
         CLASS_ATTR_PAINT                (c, "endless", 0);
-        
-        CLASS_ATTR_CHAR                 (c, "circular", 0, t_knob, f_circular);
-        CLASS_ATTR_LABEL                (c, "circular", 0, "Circular Mouse Tracking");
-        CLASS_ATTR_ORDER                (c, "circular", 0, "1");
-        CLASS_ATTR_FILTER_CLIP          (c, "circular", 0, 1);
-        CLASS_ATTR_DEFAULT              (c, "circular", 0, "0");
-        CLASS_ATTR_SAVE                 (c, "circular", 0);
-        CLASS_ATTR_STYLE                (c, "circular", 0, "onoff");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_knob, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

@@ -211,10 +211,6 @@ extern "C" void setup_c0x2eplane(void)
         eclass_addmethod(c, (method) plane_mousedrag,       "mousedrag",        A_NULL, 0);
         eclass_addmethod(c, (method) plane_preset,          "preset",           A_NULL, 0);
         
-        CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
         CLASS_ATTR_DEFAULT              (c, "size", 0, "120 120");
         
         CLASS_ATTR_FLOAT_ARRAY          (c, "bound", 0, t_plane, f_boundaries, 4);
