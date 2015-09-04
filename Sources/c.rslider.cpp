@@ -33,15 +33,8 @@ static void rslider_output(t_rslider *x)
     const float hval = ebox_parameter_getvalue((t_ebox *)x, 2);
     atom_setfloat(argv, lval);
     atom_setfloat(argv+1, hval);
-    if(x->f_listmode)
-    {
-        outlet_list(x->f_out_left, &s_list, 2, argv);
-    }
-    else
-    {
-        outlet_float(x->f_out_left, lval);
-        outlet_float(x->f_out_right, hval);
-    }
+    outlet_list(x->f_out_left, &s_list, 2, argv);
+    outlet_float(x->f_out_right, hval);
     if(send)
     {
         pd_list(send, &s_list, 2, argv);
@@ -332,14 +325,6 @@ extern "C" void setup_c0x2erslider(void)
         eclass_addmethod(c, (method) rslider_mouseup,           "mouseup",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
-        
-        CLASS_ATTR_CHAR                 (c, "listmode", 0, t_rslider, f_listmode);
-        CLASS_ATTR_LABEL                (c, "listmode", 0, "List Mode");
-        CLASS_ATTR_FILTER_CLIP          (c, "listmode", 0, 1);
-        CLASS_ATTR_ORDER                (c, "listmode", 0, "1");
-        CLASS_ATTR_DEFAULT              (c, "listmode", 0, "0");
-        CLASS_ATTR_SAVE                 (c, "listmode", 1);
-        CLASS_ATTR_STYLE                (c, "listmode", 0, "onoff");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_rslider, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

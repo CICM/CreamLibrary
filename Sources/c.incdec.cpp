@@ -203,11 +203,6 @@ extern "C" void setup_c0x2eincdec(void)
     eclass_addmethod(c, (method) incdec_mousedown,       "mousedown",        A_NULL, 0);
     eclass_addmethod(c, (method) incdec_mouseup,         "mouseup",          A_NULL, 0);
     
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
-    CLASS_ATTR_INVISIBLE            (c, "send", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "13 20");
     
     CLASS_ATTR_FLOAT                (c, "step", 0, t_incdec, f_increment);
