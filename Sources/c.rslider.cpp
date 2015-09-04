@@ -45,12 +45,11 @@ static void rslider_output(t_rslider *x)
 
 static void rslider_float(t_rslider *x, float f)
 {
-    ebox_parameter_setvalue((t_ebox *)x, 1, f, eobj_getproxy(x) + 1);
+    ebox_parameter_setvalue((t_ebox *)x, eobj_getproxy(x) + 1, f, 1);
     rslider_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
 }
-
 
 static void rslider_set(t_rslider *x, t_symbol* s, int argc, t_atom *argv)
 {
@@ -60,7 +59,7 @@ static void rslider_set(t_rslider *x, t_symbol* s, int argc, t_atom *argv)
     }
     if(argc > 1 && atom_gettype(argv+1) == A_FLOAT)
     {
-        ebox_parameter_setvalue((t_ebox *)x, 1, atom_getfloat(argv+1), 0);
+        ebox_parameter_setvalue((t_ebox *)x, 2, atom_getfloat(argv+1), 0);
     }
     ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
@@ -81,7 +80,7 @@ static void rslider_list(t_rslider *x, t_symbol* s, int argc, t_atom *argv)
     }
     if(argc > 1 && atom_gettype(argv+1) == A_FLOAT)
     {
-        ebox_parameter_setvalue((t_ebox *)x, 1, atom_getfloat(argv+1), 1);
+        ebox_parameter_setvalue((t_ebox *)x, 2, atom_getfloat(argv+1), 1);
     }
     rslider_output(x);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
@@ -115,18 +114,9 @@ static t_pd_err rslider_notify(t_rslider *x, t_symbol *s, t_symbol *msg, void *s
 {
     if(msg == cream_sym_attr_modified)
     {
-        if(s == cream_sym_bgcolor ||
-           s == cream_sym_bdcolor ||
-           s == cream_sym_kncolor)
+        if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_kncolor)
         {
             ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-        }
-        else if(s == ebox_parameter_getbind((t_ebox *)x, 1))
-        {
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-            ebox_parameter_setmin((t_ebox *)x, 2, ebox_parameter_getmin((t_ebox *)x, 1));
-            ebox_parameter_setmax((t_ebox *)x, 2, ebox_parameter_getmax((t_ebox *)x, 1));
-            ebox_parameter_setnstep((t_ebox *)x, 2, ebox_parameter_getnstep((t_ebox *)x, 1));
         }
     }
     else if(msg == cream_sym_value_changed)
@@ -289,11 +279,10 @@ static t_pd_err rslider_minmax_set(t_rslider *x, t_object *attr, int ac, t_atom 
         ebox_parameter_setminmax((t_ebox *)x, 2, min, max);
     }
     
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
 }
-
 
 static t_pd_err rslider_minmax_get(t_rslider *x, t_object *attr, int* ac, t_atom **av)
 {
@@ -311,7 +300,6 @@ static t_pd_err rslider_minmax_get(t_rslider *x, t_object *attr, int* ac, t_atom
     return 0;
 }
 
-
 static void *rslider_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_rslider *x = (t_rslider *)eobj_new(rslider_class);
@@ -322,8 +310,6 @@ static void *rslider_new(t_symbol *s, int argc, t_atom *argv)
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
         ebox_parameter_create((t_ebox *)x, 1);
         ebox_parameter_create((t_ebox *)x, 2);
-        ebox_parameter_setflags((t_ebox *)x, 2, EPARAM_STATIC_MIN | EPARAM_STATIC_MAX |
-                                EPARAM_STATIC_INVERTED | EPARAM_STATIC_NSTEPS),
         eobj_proxynew(x);
         eobj_proxynew(x);
         x->f_out_left = outlet_new((t_object *)x, &s_list);

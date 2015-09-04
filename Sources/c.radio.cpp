@@ -426,10 +426,6 @@ extern "C" void setup_c0x2eradio(void)
         eclass_addmethod(c, (method) radio_mousedown,       "mousedown",        A_NULL, 0);
         eclass_addmethod(c, (method) radio_preset,          "preset",           A_NULL, 0);
         
-        CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
         
         CLASS_ATTR_INT                  (c, "nitems", 0, t_radio, f_nitems);
@@ -441,6 +437,7 @@ extern "C" void setup_c0x2eradio(void)
         CLASS_ATTR_SAVE                 (c, "nitems", 1);
         CLASS_ATTR_STYLE                (c, "nitems", 0, "number");
         
+        int change_name;
         CLASS_ATTR_INT                  (c, "mode", 0, t_radio, f_mode);
         CLASS_ATTR_LABEL                (c, "mode", 0, "Check List Mode");
         CLASS_ATTR_ACCESSORS			(c, "mode", NULL, radio_mode_set);

@@ -9,6 +9,7 @@
  */
 
 #include "../c.library.hpp"
+#include <float.h>
 
 typedef struct  _plane
 {
@@ -16,58 +17,74 @@ typedef struct  _plane
     t_outlet*   f_out_x;
     t_outlet*   f_out_y;
     float       f_size;
-    t_pt        f_position;
-    t_rect      f_boundaries;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_point;
+    void*       f_dummy;
 } t_plane;
 
 static t_eclass *plane_class;
 
-static void plane_set(t_plane *x, t_symbol *s, int ac, t_atom *av)
-{
-    if(ac && av)
-    {
-        if(ac)
-        {
-            if(x->f_boundaries.x < x->f_boundaries.width)
-                x->f_position.x = pd_clip(atom_getfloat(av), x->f_boundaries.x, x->f_boundaries.width);
-            else
-                x->f_position.x = pd_clip(atom_getfloat(av), x->f_boundaries.width, x->f_boundaries.x);
-        }
-        if(ac > 1)
-        {
-            if(x->f_boundaries.y < x->f_boundaries.height)
-                x->f_position.y = pd_clip(atom_getfloat(av+1), x->f_boundaries.y, x->f_boundaries.height);
-            else
-                x->f_position.y = pd_clip(atom_getfloat(av+1), x->f_boundaries.height, x->f_boundaries.y);
-        }
-        
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
-        ebox_redraw((t_ebox *)x);
-    }
-}
-
 static void plane_output(t_plane *x)
 {
     t_atom argv[2];
-    outlet_float(x->f_out_x, x->f_position.x);
-    outlet_float(x->f_out_y, x->f_position.y);
     t_pd* send = ebox_getsender((t_ebox *) x);
+    const float xval = ebox_parameter_getvalue((t_ebox *)x, 1);
+    const float yval = ebox_parameter_getvalue((t_ebox *)x, 2);
+    atom_setfloat(argv, xval);
+    atom_setfloat(argv+1, yval);
+    outlet_list(x->f_out_x, &s_list, 2, argv);
+    outlet_float(x->f_out_y, yval);
     if(send)
     {
-        atom_setfloat(argv, x->f_position.x);
-        atom_setfloat(argv+1, x->f_position.y);
         pd_list(send, &s_list, 2, argv);
     }
 }
 
-static void plane_list(t_plane *x, t_symbol *s, int ac, t_atom *av)
+static void plane_float(t_plane *x, float f)
 {
-    plane_set(x, NULL, ac, av);
+    ebox_parameter_setvalue((t_ebox *)x, 1, f, eobj_getproxy(x) + 1);
+    plane_output(x);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+    ebox_redraw((t_ebox *)x);
+}
+
+static void plane_set(t_plane *x, t_symbol* s, int argc, t_atom *argv)
+{
+    if(argc > 0 && atom_gettype(argv) == A_FLOAT)
+    {
+        ebox_parameter_setvalue((t_ebox *)x, 1, atom_getfloat(argv), 0);
+    }
+    if(argc > 1 && atom_gettype(argv+1) == A_FLOAT)
+    {
+        ebox_parameter_setvalue((t_ebox *)x, 1, atom_getfloat(argv+1), 0);
+    }
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+    ebox_redraw((t_ebox *)x);
+}
+
+static void plane_bang(t_plane *x)
+{
+    ebox_parameter_notify_changes((t_ebox *)x, 1);
+    ebox_parameter_notify_changes((t_ebox *)x, 2);
     plane_output(x);
 }
+
+static void plane_list(t_plane *x, t_symbol* s, int argc, t_atom *argv)
+{
+    if(argc > 0 && atom_gettype(argv) == A_FLOAT)
+    {
+        ebox_parameter_setvalue((t_ebox *)x, 1, atom_getfloat(argv), 1);
+    }
+    if(argc > 1 && atom_gettype(argv+1) == A_FLOAT)
+    {
+        ebox_parameter_setvalue((t_ebox *)x, 1, atom_getfloat(argv+1), 1);
+    }
+    plane_output(x);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+    ebox_redraw((t_ebox *)x);
+}
+
 
 static void plane_getdrawparams(t_plane *x, t_object *patcherview, t_edrawparams *params)
 {
@@ -91,58 +108,38 @@ static t_pd_err plane_notify(t_plane *x, t_symbol *s, t_symbol *msg, void *sende
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
 		}
-        ebox_redraw((t_ebox *)x);
-        
 	}
-	return 0;
-}
-
-static t_pd_err plane_bound_set(t_plane *x, t_object *attr, int ac, t_atom *av)
-{
-	t_atom argv[2];
-    if(ac && av)
+    else if(msg == cream_sym_value_changed)
     {
-        if(ac && atom_gettype(av) == A_FLOAT)
-            x->f_boundaries.x = atom_getfloat(av);
-        if(ac > 1 && atom_gettype(av+1) == A_FLOAT)
-            x->f_boundaries.y = atom_getfloat(av+1);
-        if(ac > 2 && atom_gettype(av+2) == A_FLOAT)
-            x->f_boundaries.width = atom_getfloat(av+2);
-        if(ac > 3 && atom_gettype(av+3) == A_FLOAT)
-            x->f_boundaries.height = atom_getfloat(av+3);
-        
-        if(x->f_boundaries.x == x->f_boundaries.width)
-        {
-            x->f_boundaries.width += 0.1;
-        }
-        if(x->f_boundaries.y == x->f_boundaries.height)
-        {
-            x->f_boundaries.height += 0.1;
-        }
-        
-        atom_setfloat(argv, x->f_position.x);
-        atom_setfloat(argv+1, x->f_position.y);
-        plane_set(x, NULL, 2, argv);
+        plane_output(x);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+        ebox_redraw((t_ebox *)x);
     }
-    return 0;
+	return 0;
 }
 
 static void plane_paint(t_plane *x, t_object *view)
 {
 	t_rect rect;
 	ebox_get_rect_for_view((t_ebox *)x, &rect);
-    
-    const float ratiox = (rect.width - x->f_size * 2.f) / (x->f_boundaries.width - x->f_boundaries.x);
-    const float ratioy = (rect.height - x->f_size * 2.f) / (x->f_boundaries.height - x->f_boundaries.y);
-    
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_points_layer, rect.width, rect.height);
-    if(g && ratiox && ratioy)
+    if(g)
     {
+        const float size = x->f_size;
+        const char inv1 = ebox_parameter_isinverted((t_ebox *)x, 1);
+        const char inv2 = ebox_parameter_isinverted((t_ebox *)x, 2);
+        const float valx = ebox_parameter_getvalue_normalized((t_ebox *)x, 1);
+        const float valy = ebox_parameter_getvalue_normalized((t_ebox *)x, 2);
         egraphics_set_color_rgba(g, &x->f_color_point);
-        egraphics_circle(g,
-                         (x->f_position.x - x->f_boundaries.x) * ratiox + x->f_size,
-                         rect.height - ((x->f_position.y - x->f_boundaries.y) * ratioy + x->f_size),
-                         x->f_size);
+        if(!inv1 && !inv2)
+            egraphics_circle(g, valx * (rect.width - size * 2.f) + size, (1.f - valy) * (rect.height - size * 2.f) + size, size);
+        else if(!inv1 && inv2)
+            egraphics_circle(g, valx * (rect.width - size * 2.f) + size, valy * (rect.height - size * 2.f) + size, size);
+        else if(inv1 && !inv2)
+            egraphics_circle(g, (1.f - valx) * (rect.width - size * 2.f) + size, (1.f - valy) * (rect.height - size * 2.f) + size, size);
+        else
+            egraphics_circle(g, (1.f - valx) * (rect.width - size * 2.f) + size, valy * (rect.height - size * 2.f) + size, size);
+        
         egraphics_fill(g);
         ebox_end_layer((t_ebox*)x, cream_sym_points_layer);
     }
@@ -150,20 +147,92 @@ static void plane_paint(t_plane *x, t_object *view)
     
 }
 
-static void plane_mousedrag(t_plane *x, t_object *patcherview, t_pt pt, long modifiers)
+static float plane_getvalue(t_rect const* rect, float p, float min, float max, float size)
 {
-    t_atom argv[2];
+    const char inverted = (char)(min < max);
+    if(inverted)
+        return (p - size) * (max - min) / (rect->width - size * 2.f) + min;
+    else
+        return (rect->width - p - size) * (min - max) / (rect->width - size * 2.f) + max;
+}
+
+static void plane_mousedown(t_plane *x, t_object *patcherview, t_pt pt, long modifiers)
+{
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    const float ratiox = (x->f_boundaries.width - x->f_boundaries.x) / (rect.width - x->f_size * 2.f);
-    const float ratioy = (x->f_boundaries.height - x->f_boundaries.y) / (rect.height - x->f_size * 2.f);
-    if(ratiox && ratioy)
+    ebox_parameter_begin_changes((t_ebox *)x, 1);
+    ebox_parameter_begin_changes((t_ebox *)x, 2);
+    const float minx = ebox_parameter_getmin((t_ebox *)x, 1);
+    const float maxx = ebox_parameter_getmax((t_ebox *)x, 1);
+    const float miny = ebox_parameter_getmin((t_ebox *)x, 2);
+    const float maxy = ebox_parameter_getmax((t_ebox *)x, 2);
+    const float valx = plane_getvalue(&rect, pt.x, minx, maxx, x->f_size);
+    const float valy = plane_getvalue(&rect, pt.y, miny, maxy, x->f_size);
+    ebox_parameter_setvalue((t_ebox *)x, 1, valx, 1);
+    ebox_parameter_setvalue((t_ebox *)x, 2, valy, 1);
+}
+
+static void plane_mousedrag(t_plane *x, t_object *patcherview, t_pt pt, long modifiers)
+{
+    t_rect rect;
+    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    const float minx = ebox_parameter_getmin((t_ebox *)x, 1);
+    const float maxx = ebox_parameter_getmax((t_ebox *)x, 1);
+    const float miny = ebox_parameter_getmin((t_ebox *)x, 2);
+    const float maxy = ebox_parameter_getmax((t_ebox *)x, 2);
+    const float valx = plane_getvalue(&rect, pt.x, minx, maxx, x->f_size);
+    const float valy = plane_getvalue(&rect, (rect.height - pt.y), miny, maxy, x->f_size);
+    ebox_parameter_setvalue((t_ebox *)x, 1, valx, 1);
+    ebox_parameter_setvalue((t_ebox *)x, 2, valy, 1);
+    
+    plane_output(x);
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+    ebox_redraw((t_ebox *)x);
+}
+
+static void plane_mouseup(t_plane *x, t_object *patcherview, t_pt pt, long modifiers)
+{
+    ebox_parameter_end_changes((t_ebox *)x, 1);
+    ebox_parameter_end_changes((t_ebox *)x, 2);
+}
+
+static t_pd_err plane_bounds_set(t_plane *x, t_object *attr, int ac, t_atom *av)
+{
+    if(ac && av)
     {
-        atom_setfloat(argv, (pt.x - x->f_size) * ratiox + x->f_boundaries.x);
-        atom_setfloat(argv+1, (rect.height - pt.y - x->f_size * 0.5f) * ratioy + x->f_boundaries.y);
-        plane_set(x, NULL, 2, argv);
-        plane_output(x);
+        if(ac && av)
+        {
+            const float minx = pd_clip((atom_gettype(av) == A_FLOAT) ? atom_getfloat(av) : ebox_parameter_getmin((t_ebox *)x, 1), -FLT_MAX, FLT_MAX);
+            const float miny = pd_clip((ac > 1  && atom_gettype(av+1) == A_FLOAT) ? atom_getfloat(av+1) : ebox_parameter_getmin((t_ebox *)x, 2), -FLT_MAX, FLT_MAX);
+            const float maxx = pd_clip((ac > 2  && atom_gettype(av+2) == A_FLOAT) ? atom_getfloat(av+2) : ebox_parameter_getmax((t_ebox *)x, 1), -FLT_MAX, FLT_MAX);
+            const float maxy = pd_clip((ac > 3  && atom_gettype(av+3) == A_FLOAT) ? atom_getfloat(av+3) : ebox_parameter_getmax((t_ebox *)x, 2), -FLT_MAX, FLT_MAX);
+            
+            ebox_parameter_setminmax((t_ebox *)x, 1, minx, maxx);
+            ebox_parameter_setminmax((t_ebox *)x, 2, miny, maxy);
+        }
+        
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+        ebox_redraw((t_ebox *)x);
     }
+    return 0;
+}
+
+static t_pd_err plane_bounds_get(t_plane *x, t_object *attr, int* ac, t_atom **av)
+{
+    *ac = 4;
+    *av = (t_atom *)malloc(4 * sizeof(t_atom));
+    if(*av)
+    {
+        atom_setfloat(*av, ebox_parameter_getmin((t_ebox *)x, 1));
+        atom_setfloat(*av+1, ebox_parameter_getmin((t_ebox *)x, 2));
+        atom_setfloat(*av+2, ebox_parameter_getmax((t_ebox *)x, 1));
+        atom_setfloat(*av+3, ebox_parameter_getmax((t_ebox *)x, 2));
+    }
+    else
+    {
+        *ac = 0;
+    }
+    return 0;
 }
 
 static void *plane_new(t_symbol *s, int argc, t_atom *argv)
@@ -173,11 +242,12 @@ static void *plane_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
+        eobj_proxynew(x);
+        eobj_proxynew(x);
+        ebox_parameter_create((t_ebox *)x, 1);
+        ebox_parameter_create((t_ebox *)x, 2);
         x->f_out_x = outlet_new((t_object *)x, &s_float);
         x->f_out_y = outlet_new((t_object *)x, &s_float);
-        
-        x->f_position.x = 0.;
-        x->f_position.y = 0.;
         
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
@@ -189,7 +259,7 @@ static void *plane_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2eplane(void)
 {
-    t_eclass *c = eclass_new("c.plane", (method)plane_new, (method)ebox_free, (short)sizeof(t_plane), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.plane", (method)plane_new, (method)ebox_free, (short)sizeof(t_plane), CLASS_NOINLET, A_GIMME, 0);
     
     if(c)
     {
@@ -199,19 +269,24 @@ extern "C" void setup_c0x2eplane(void)
         eclass_addmethod(c, (method) plane_notify,          "notify",           A_NULL, 0);
         eclass_addmethod(c, (method) plane_getdrawparams,   "getdrawparams",    A_NULL, 0);
         eclass_addmethod(c, (method) plane_oksize,          "oksize",           A_NULL, 0);
+        
+        eclass_addmethod(c, (method) plane_bang,            "bang",             A_FLOAT,0);
+        eclass_addmethod(c, (method) plane_float,           "float",            A_FLOAT,0);
         eclass_addmethod(c, (method) plane_set,             "set",              A_GIMME,0);
         eclass_addmethod(c, (method) plane_list,            "list",             A_GIMME,0);
         eclass_addmethod(c, (method) plane_output,          "bang",             A_NULL, 0);
-        eclass_addmethod(c, (method) plane_mousedrag,       "mousedown",        A_NULL, 0);
+        
+        eclass_addmethod(c, (method) plane_mousedown,       "mousedown",        A_NULL, 0);
         eclass_addmethod(c, (method) plane_mousedrag,       "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (method) plane_mouseup,         "mouseup",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "120 120");
         
-        CLASS_ATTR_FLOAT_ARRAY          (c, "bound", 0, t_plane, f_boundaries, 4);
-        CLASS_ATTR_LABEL                (c, "bound", 0, "Boundaries");
-        CLASS_ATTR_ACCESSORS			(c, "bound", NULL, plane_bound_set);
-        CLASS_ATTR_ORDER                (c, "bound", 0, "2");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bound", 0, "-1. -1. 1. 1.");
+        CLASS_ATTR_FLOAT_ARRAY          (c, "bounds", 0, t_plane, f_dummy, 4);
+        CLASS_ATTR_LABEL                (c, "bounds", 0, "Boundaries");
+        CLASS_ATTR_ACCESSORS			(c, "bounds", plane_bounds_get, plane_bounds_set);
+        CLASS_ATTR_ORDER                (c, "bounds", 0, "2");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bounds", 0, "-1. -1. 1. 1.");
         
         CLASS_ATTR_FLOAT                (c, "ptsize", 0, t_plane, f_size);
         CLASS_ATTR_LABEL                (c, "ptsize", 0, "Point size");

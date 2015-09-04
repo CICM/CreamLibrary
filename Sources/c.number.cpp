@@ -83,12 +83,8 @@ static t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sen
 {
 	if(msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor ||
-           s == cream_sym_bdcolor ||
-           s == cream_sym_textcolor ||
-           s == cream_sym_font ||
-           s == cream_sym_decimal ||
-           s == ebox_parameter_getbind((t_ebox *)x, 1))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor ||
+           s == cream_sym_font || s == cream_sym_decimal)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
@@ -349,8 +345,6 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_FONTSIZE);
         ebox_parameter_create((t_ebox *)x, 1);
-        ebox_parameter_setminmax((t_ebox *)x, 1, -FLT_MAX, FLT_MAX);
-        ebox_parameter_setflags((t_ebox *)x, 1, 0 | EPARAM_STATIC_INVERTED);
         
         x->f_outlet   = outlet_new((t_object *)x, &s_float);
         x->f_outtab   = outlet_new((t_object *)x, &s_bang);

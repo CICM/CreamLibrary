@@ -75,10 +75,7 @@ static t_pd_err toggle_notify(t_toggle *x, t_symbol *s, t_symbol *msg, void *sen
 {
 	if(msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor ||
-           s == cream_sym_bdcolor ||
-           s == cream_sym_crcolor ||
-           s == ebox_parameter_getbind((t_ebox *)x, 1))
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_crcolor)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 		}
@@ -159,8 +156,9 @@ static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
         ebox_parameter_create((t_ebox *)x, 1);
         ebox_parameter_setminmax((t_ebox *)x, 1, 0, 1);
         ebox_parameter_setnstep((t_ebox *)x, 1, 2);
-        ebox_parameter_setflags((t_ebox *)x, 1, 0 | EPARAM_STATIC_MIN | EPARAM_STATIC_MAX | EPARAM_STATIC_NSTEPS);
-        ebox_parameter_setsettergetter_text((t_ebox *)x, 1, (t_param_setter_t)toggle_setter_t, t_param_getter_t(toggle_getter_t));
+        ebox_parameter_setsettergetter_text((t_ebox *)x, 1,
+                                            (t_param_setter_t)toggle_setter_t,
+                                            (t_param_getter_t)toggle_getter_t);
         
         x->f_outlet = outlet_new((t_object *)x, &s_float);
         ebox_attrprocess_viabinbuf(x, d);
