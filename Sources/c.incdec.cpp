@@ -21,28 +21,10 @@ typedef struct _incdec
 	t_rgba		f_color_border;
 	t_rgba		f_color_arrow;
     char        f_mouse_down;
+    t_clock*    f_clock;
 } t_incdec;
 
 static t_eclass *incdec_class;
-
-static void *incdec_new(t_symbol *s, int argc, t_atom *argv)
-{
-	t_incdec *x = (t_incdec *)eobj_new(incdec_class);
-    t_binbuf* d = binbuf_via_atoms(argc,argv);
-	
-    if(x && d)
-    {
-        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
-        
-        x->f_value = 0.;
-        x->f_mouse_down = 0;
-        x->f_out = outlet_new((t_object *)x, &s_float);
-        ebox_attrprocess_viabinbuf(x, d);
-        ebox_ready((t_ebox *)x);
-    }
-    
-	return (x);
-}
 
 static void incdec_output(t_incdec *x)
 {
@@ -162,7 +144,7 @@ static void incdec_mousedown(t_incdec *x, t_object *patcherview, t_pt pt, long m
 {
     t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-    if(pt.y < rect.height * 0.5f)
+    if(pt.y - 2.f < rect.height * 0.5f)
     {
         incdec_inc(x);
         x->f_mouse_down = 1;
@@ -172,23 +154,63 @@ static void incdec_mousedown(t_incdec *x, t_object *patcherview, t_pt pt, long m
         incdec_dec(x);
         x->f_mouse_down = -1;
     }
+    clock_delay(x->f_clock, 250.);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-
 static void incdec_mouseup(t_incdec *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_mouse_down = 0;
+    clock_unset(x->f_clock);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
+}
+
+static void incdec_clock(t_incdec *x)
+{
+    if(x->f_mouse_down == 1)
+    {
+        incdec_inc(x);
+        clock_delay(x->f_clock, 50.);
+    }
+    else if(x->f_mouse_down == -1)
+    {
+        incdec_dec(x);
+        clock_delay(x->f_clock, 50.);
+    }
+}
+
+static void incdec_free(t_incdec *x)
+{
+    clock_free(x->f_clock);
+    ebox_free((t_ebox *)x);
+}
+
+static void *incdec_new(t_symbol *s, int argc, t_atom *argv)
+{
+    t_incdec *x = (t_incdec *)eobj_new(incdec_class);
+    t_binbuf* d = binbuf_via_atoms(argc,argv);
+    
+    if(x && d)
+    {
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
+        x->f_clock = clock_new(x, (t_method)incdec_clock);
+        x->f_value = 0.;
+        x->f_mouse_down = 0;
+        x->f_out = outlet_new((t_object *)x, &s_float);
+        ebox_attrprocess_viabinbuf(x, d);
+        ebox_ready((t_ebox *)x);
+    }
+    
+    return (x);
 }
 
 extern "C" void setup_c0x2eincdec(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.incdec", (method)incdec_new, (method)ebox_free, (short)sizeof(t_incdec), 0L, A_GIMME, 0);
+    c = eclass_new("c.incdec", (method)incdec_new, (method)incdec_free, (short)sizeof(t_incdec), 0L, A_GIMME, 0);
     
     eclass_guiinit(c, 0);
     eclass_addmethod(c, (method) incdec_paint,           "paint",            A_NULL, 0);
