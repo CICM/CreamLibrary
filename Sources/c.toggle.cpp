@@ -121,15 +121,21 @@ static void toggle_setter_t(t_toggle *x, int index, char const* text)
 {
     if(!strcmp(text, "on"))
     {
-        ebox_parameter_setvalue((t_ebox *)x, index, 1.f, 0);
+        ebox_parameter_setvalue((t_ebox *)x, 1, 1.f, 0);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_redraw((t_ebox *)x);
     }
     else if(!strcmp(text, "off"))
     {
-        ebox_parameter_setvalue((t_ebox *)x, index, 0.f, 0);
+        ebox_parameter_setvalue((t_ebox *)x, 1, 1.f, 0);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_redraw((t_ebox *)x);
     }
     else if(isdigit(text[0]))
     {
-        ebox_parameter_setvalue((t_ebox *)x, index, atof(text), 0);
+        ebox_parameter_setvalue((t_ebox *)x, 1, (atof(text) == 0.f) ? 0.f : 1.f, 0);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_redraw((t_ebox *)x);
     }
 }
 
