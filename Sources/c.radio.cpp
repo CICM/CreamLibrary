@@ -202,6 +202,8 @@ static void radio_list(t_radio *x, t_symbol* s, int argc, t_atom *argv)
     }
 }
 
+static void radio_setter_t(t_radio *x, int index, char const* text);
+
 static void radio_bang(t_radio *x)
 {
     ebox_parameter_notify_changes((t_ebox *)x, 1);
@@ -436,9 +438,76 @@ static t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av)
         x->f_nitems = pd_clip(atom_getfloat(av), 1, CREAM_MAXITEMS);
         ebox_parameter_setvalue((t_ebox *)x, 1, 0, 0);
         ebox_parameter_setminmax((t_ebox *)x, 1, 0.f, powf(2., (float)(x->f_nitems)) - 1.f);
+        ebox_parameter_setnstep((t_ebox *)x, 1,  (int)powf(2., (float)(x->f_nitems)));
         ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
     }
     return 0;
+}
+
+static void radio_setter_t(t_radio *x, int index, char const* text)
+{
+    if(x->f_checklist)
+    {
+        int i = 0;
+        int value;
+        int flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
+        size_t pos, len = strlen(text);
+        pos = strcspn(text, "01");
+        while(pos < len && i < x->f_nitems)
+        {
+            value = atoi(text+pos);
+            if(value && !(flags & (1<<i)))
+            {
+                flags = flags | (1<<i);
+            }
+            else if(!value && (flags & (1<<i)))
+            {
+               flags = flags & ~(1<<i);
+            }
+            i++;
+            pos += strcspn(text+pos+1, "01") + 1;
+        }
+        ebox_parameter_setvalue((t_ebox *)x, 1, flags, 0);
+        radio_output(x);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        ebox_redraw((t_ebox *)x);
+    }
+    else if(isdigit(text[0]))
+    {
+        const int _index = (int)pd_clip((float)atof(text), 0.f, (float)x->f_nitems - 1);
+        ebox_parameter_setvalue((t_ebox *)x, 1, (float)(1<<_index), 0);
+        
+        radio_output(x);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        ebox_redraw((t_ebox *)x);
+    }
+}
+
+static void radio_getter_t(t_radio *x, int index, char* text)
+{
+    int i;
+    char temp[2];
+    const int flags = ebox_parameter_getvalue((t_ebox *)x, index);
+    if(x->f_checklist)
+    {
+        sprintf(text, "%i ", (flags & (1<<0)) ? 1 : 0);
+        for(i = 0; i < x->f_nitems; i++)
+        {
+            sprintf(temp, "%i ", (flags & (1<<0)) ? 1 : 0);
+            strncat(text, temp, 2);
+        }
+    }
+    else
+    {
+        for(i = 0; i < x->f_nitems; i++)
+        {
+            if(flags & (1<<i))
+            {
+                sprintf(text, "%i",i);
+                break;
+            }
+        }
+    }
 }
 
 static void *radio_new(t_symbol *s, int argc, t_atom *argv)
@@ -450,6 +519,9 @@ static void *radio_new(t_symbol *s, int argc, t_atom *argv)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
         ebox_parameter_create((t_ebox *)x, 1);
+        ebox_parameter_setsettergetter_text((t_ebox *)x, 1,
+                                            (t_param_setter_t)radio_setter_t,
+                                            (t_param_getter_t)radio_getter_t);
         x->f_out_list = outlet_new((t_object *)x, &s_anything);
         x->f_out_flag = outlet_new((t_object *)x, &s_float);
 
