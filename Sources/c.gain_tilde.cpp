@@ -92,11 +92,7 @@ extern "C"  void setup_c0x2egain_tilde(void)
     eclass_addmethod(c, (method) gain_dblclick,        "dblclick",         A_NULL, 0);
     eclass_addmethod(c, (method) gain_preset,          "preset",           A_NULL, 0);
     
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
-	CLASS_ATTR_DEFAULT              (c, "size", 0, "20. 160.");
+	CLASS_ATTR_DEFAULT              (c, "size", 0, "13 85");
     
     CLASS_ATTR_LONG                 (c, "mode", 0, t_gain, f_mode);
 	CLASS_ATTR_LABEL                (c, "mode", 0, "Relative Mode");
@@ -262,7 +258,6 @@ void gain_perform(t_gain *x, t_object *d, t_sample **ins, long ni, t_sample **ou
     int i;
     for(i = 0; i < sf; i++)
     {
-        
         outs[0][i] = ins[0][i] * x->f_amp_old;
         x->f_amp_old += x->f_amp_step;
         if(x->f_counter++ >= x->f_ramp_sample)

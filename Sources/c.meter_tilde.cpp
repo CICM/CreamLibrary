@@ -281,10 +281,6 @@ extern "C" void setup_c0x2emeter_tilde(void)
     eclass_addmethod(c, (method) meter_getdrawparams,   "getdrawparams",    A_NULL, 0);
     eclass_addmethod(c, (method) meter_oksize,          "oksize",           A_NULL, 0);
     
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "13 85");
     
     CLASS_ATTR_LONG                 (c, "interval", 0, t_meter, f_interval);
