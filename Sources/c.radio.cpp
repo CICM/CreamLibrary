@@ -490,10 +490,10 @@ static void radio_getter_t(t_radio *x, int index, char* text)
     const int flags = ebox_parameter_getvalue((t_ebox *)x, index);
     if(x->f_checklist)
     {
-        sprintf(text, "%i ", (flags & (1<<0)) ? 1 : 0);
+        sprintf(text, "");
         for(i = 0; i < x->f_nitems; i++)
         {
-            sprintf(temp, "%i ", (flags & (1<<0)) ? 1 : 0);
+            sprintf(temp, "%i ", (flags & (1<<i)) ? 1 : 0);
             strncat(text, temp, 2);
         }
     }

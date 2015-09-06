@@ -19,7 +19,6 @@ typedef struct  _number_tilde
     long        f_ndecimal;
     t_outlet*   f_peaks_outlet;
     float       f_peak_value;
-    int         f_max_decimal;
     
     t_efont     f_font;
 	t_rgba		f_color_background;
@@ -58,6 +57,10 @@ static void number_tilde_dsp(t_number_tilde *x, t_object *dsp, short *count, dou
         object_method(dsp, gensym("dsp_add"), x, (method)number_tilde_perform, 0, NULL);
         x->f_startclock = 1;
     }
+    else
+    {
+        x->f_peak_value = 0;
+    }
 }
 
 static void number_tilde_tick(t_number_tilde *x)
@@ -75,16 +78,12 @@ static t_pd_err number_tilde_notify(t_number_tilde *x, t_symbol *s, t_symbol *ms
 {
 	if (msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant)
+        if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor ||
+           s == cream_sym_font || s == cream_sym_decimal || s == cream_sym_decimal)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
 		}
-        if(s == cream_sym_fontsize)
-        {
-            eobj_attr_setvalueof(x, s_cream_size, 0, NULL);
-        }
-        ebox_redraw((t_ebox *)x);
 	}
 	return 0;
 }
@@ -98,7 +97,7 @@ static void draw_background(t_number_tilde *x, t_object *view, t_rect *rect)
         jtl = etext_layout_create();
         if(jtl)
         {
-            etext_layout_set(jtl, "~", &x->j_box.b_font, 1, rect->height / 2., rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, "~", &x->f_font, 1, rect->height / 2., rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
             etext_layout_settextcolor(jtl, &x->f_color_text);
             etext_layout_draw(jtl, g);
             
@@ -125,22 +124,22 @@ static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
         if(jtl)
         {
             char number[256];
-            if(x->f_max_decimal == 0)
+            if(x->f_ndecimal == 0)
                 sprintf(number, "%i", (int)x->f_peak_value);
-            else if(x->f_max_decimal == 1)
-                sprintf(number, "%.1f", x->f_peak_value);
-            else if(x->f_max_decimal == 2)
-                sprintf(number, "%.2f", x->f_peak_value);
-            else if(x->f_max_decimal == 3)
-                sprintf(number, "%.3f", x->f_peak_value);
-            else if(x->f_max_decimal == 4)
-                sprintf(number, "%.4f", x->f_peak_value);
-            else if(x->f_max_decimal == 5)
-                sprintf(number, "%.5f", x->f_peak_value);
+            else if(x->f_ndecimal == 1)
+                sprintf(number, "%.1g", x->f_peak_value);
+            else if(x->f_ndecimal == 2)
+                sprintf(number, "%.2g", x->f_peak_value);
+            else if(x->f_ndecimal == 3)
+                sprintf(number, "%.3g", x->f_peak_value);
+            else if(x->f_ndecimal == 4)
+                sprintf(number, "%.4g", x->f_peak_value);
+            else if(x->f_ndecimal == 5)
+                sprintf(number, "%.5g", x->f_peak_value);
             else
-                sprintf(number, "%.6f", x->f_peak_value);
+                sprintf(number, "%.6g", x->f_peak_value);
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->j_box.b_font, sys_fontwidth(x->f_font.size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->f_font, sys_fontwidth(x->f_font.size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
@@ -153,22 +152,7 @@ static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
 static void number_tilde_paint(t_number_tilde *x, t_object *view)
 {
     t_rect rect;
-#ifdef __APPLE__
-    float fontwidth = sys_fontwidth(x->f_font.size);
-#elif _WINDOWS
-    float fontwidth = sys_fontwidth(x->f_font.size);
-#else
-    float fontwidth = sys_fontwidth(x->f_font.size) + 3;
-#endif
-    
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-#ifdef __APPLE__
-    x->f_max_decimal = (rect.width - fontwidth - 8) / fontwidth - 2;
-#elif _WINDOWS
-    x->f_max_decimal = (rect.width - fontwidth - 8) / fontwidth - 2;
-#else
-    x->f_max_decimal = (rect.width - fontwidth - 11) / fontwidth + 1;
-#endif
     draw_background(x, view, &rect);
     draw_value(x, view, &rect);
 }
@@ -183,14 +167,8 @@ static void number_tilde_getdrawparams(t_number_tilde *x, t_object *patcherview,
 
 static void number_tilde_oksize(t_number_tilde *x, t_rect *newrect)
 {
-#ifdef __APPLE__
-    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->f_font.size) * 3 + 8);
-#elif _WINDOWS
-    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->f_font.size) * 3 + 8);
-#else
-    newrect->width = pd_clip_min(newrect->width, sys_fontwidth(x->f_font.size) * 3 + 11);
-#endif
-    newrect->height = sys_fontheight(x->f_font.size) + 4;
+    newrect->width  = pd_clip_min(newrect->width, (x->f_font.size + 4.f) * 2.f);
+    newrect->height = x->f_font.size + 4.f;
 }
 
 static void number_tilde_free(t_number_tilde *x)
@@ -205,7 +183,7 @@ static void *number_tilde_new(t_symbol *s, int argc, t_atom *argv)
     t_number_tilde *x = (t_number_tilde *)eobj_new(number_tilde_class);
     if(x && d)
     {
-        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK);
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK | EBOX_FONTSIZE);
         eobj_dspsetup((t_ebox *)x, 1, 1);
         x->f_peaks_outlet   = outlet_new((t_object *)x, &s_float);
         x->f_peak_value     = 0.;
@@ -253,6 +231,11 @@ extern "C" void setup_c0x2enumber_tilde(void)
     CLASS_ATTR_FILTER_MAX           (c, "decimal", 6);
     CLASS_ATTR_SAVE                 (c, "decimal", 1);
     CLASS_ATTR_STYLE                (c, "decimal", 0, "number");
+    
+    CLASS_ATTR_FONT                 (c, "font", 0, t_number_tilde, f_font);
+    CLASS_ATTR_LABEL                (c, "font", 0, "Font");
+    CLASS_ATTR_SAVE                 (c, "font", 0);
+    CLASS_ATTR_PAINT                (c, "font", 0);
     
     CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_number_tilde, f_color_background);
     CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
