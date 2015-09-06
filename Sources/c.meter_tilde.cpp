@@ -148,8 +148,7 @@ static void draw_background(t_meter *x,  t_object *view, t_rect *rect)
             float ratio = rect->height / 13.f;
             for(i = 1; i < 13; i++)
             {
-                egraphics_move_to(g, 0., i * ratio);
-                egraphics_line_to(g, rect->width, i * ratio);
+                egraphics_line(g, 0.f, i * ratio, rect->width, i * ratio);
                 egraphics_stroke(g);
             }
         }
@@ -158,8 +157,7 @@ static void draw_background(t_meter *x,  t_object *view, t_rect *rect)
             float ratio = rect->width / 13.f;
             for(i = 1; i < 13; i++)
             {
-                egraphics_move_to(g, i * ratio, 0.f);
-                egraphics_line_to(g, i * ratio, rect->height);
+                egraphics_line(g, i * ratio, 0.f, i * ratio, rect->height);
                 egraphics_stroke(g);
             }
         }
@@ -194,16 +192,16 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect, float peak, char
                 if(!x->f_direction)
                 {
                     if(i > 11)
-                        egraphics_rectangle_rounded(g, 0, i * led_height + 1, rect->width, led_height, 1.f);
+                        egraphics_rectangle(g, 0, i * led_height + 1, rect->width, led_height);
                     else
-                        egraphics_rectangle_rounded(g, 0, i * led_height + 1, rect->width, led_height - 1, 1.f);
+                        egraphics_rectangle(g, 0, i * led_height + 1, rect->width, led_height - 1);
                 }
                 else
                 {
                     if(i > 11)
-                        egraphics_rectangle_rounded(g, 0, 0, led_width, rect->height, 1.);
+                        egraphics_rectangle(g, 0, 0, led_width, rect->height);
                     else
-                        egraphics_rectangle_rounded(g, (12 - i) * led_width + 1, 0, led_width - 1, rect->height, 1.);
+                        egraphics_rectangle(g, (12 - i) * led_width + 1, 0, led_width - 1, rect->height);
                 }
                 egraphics_fill(g);
             }
@@ -213,11 +211,11 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect, float peak, char
             egraphics_set_color_rgba(g, &x->f_color_signal_over);
             if(!x->f_direction)
             {
-                egraphics_rectangle_rounded(g, 0, 0, rect->width, led_height, 1.f);
+                egraphics_rectangle(g, 0, 0, rect->width, led_height);
             }
             else
             {
-                egraphics_rectangle_rounded(g, 12 * led_width + 1, 0, led_width,  rect->height, 1.);
+                egraphics_rectangle(g, 12 * led_width + 1, 0, led_width, rect->height);
                 
             }
             
