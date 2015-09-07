@@ -264,7 +264,6 @@ static void menu_set(t_menu *x, t_symbol *s, int argc, t_atom *argv)
     if(argc && argv && atom_gettype(argv) == A_FLOAT)
     {
         ebox_parameter_setvalue((t_ebox *)x, 1, atom_getfloat(argv), 0);
-        menu_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
@@ -277,8 +276,7 @@ static void menu_set(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             {
                 if(x->f_items[i] == item)
                 {
-                    ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 1);
-                    menu_output(x);
+                    ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 0);
                     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
                     ebox_redraw((t_ebox *)x);
                     return;
@@ -298,8 +296,7 @@ static void menu_setsymbol(t_menu *x, t_symbol *s, int argc, t_atom *argv)
         {
             if(x->f_items[i] == item)
             {
-                ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 1);
-                menu_output(x);
+                ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 0);
                 ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
                 ebox_redraw((t_ebox *)x);
                 return;
