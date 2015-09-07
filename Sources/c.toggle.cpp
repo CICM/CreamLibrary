@@ -56,7 +56,6 @@ static void toggle_bang(t_toggle *x)
     ebox_redraw((t_ebox *)x);
 }
 
-
 static void toggle_getdrawparams(t_toggle *x, t_object *patcherview, t_edrawparams *params)
 {
 	params->d_borderthickness   = 2;
