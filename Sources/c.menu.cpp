@@ -494,6 +494,28 @@ static t_pd_err menu_items_set(t_menu *x, t_object *attr, int ac, t_atom *av)
     return 0;
 }
 
+static void menu_setter_t(t_menu *x, int index, char const* text)
+{
+    int i;
+    t_symbol* s = gensym(text);
+    for(i = 0; i < x->f_nitems; i++)
+    {
+        if(x->f_items[i] == s)
+        {
+            ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 0);
+            menu_output(x);
+            ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+            ebox_redraw((t_ebox *)x);
+        }
+    }
+}
+
+static void menu_getter_t(t_menu *x, int index, char* text)
+{
+    const int _index = (int)ebox_parameter_getvalue((t_ebox *)x, index);
+    sprintf(text, "%s", x->f_items[_index]->s_name);
+}
+
 static void *menu_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_menu *x= (t_menu *)eobj_new(menu_class);
@@ -501,6 +523,9 @@ static void *menu_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_FONTSIZE);
+        ebox_parameter_setsettergetter_text((t_ebox *)x, 1,
+                                            (t_param_setter_t)menu_setter_t,
+                                            (t_param_getter_t)menu_getter_t);
         ebox_parameter_create((t_ebox *)x, 1);
         
         x->f_out_index      = outlet_new((t_object *)x, &s_float);
