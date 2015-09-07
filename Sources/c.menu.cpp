@@ -512,7 +512,7 @@ static void menu_setter_t(t_menu *x, int index, char const* text)
 
 static void menu_getter_t(t_menu *x, int index, char* text)
 {
-    const int _index = (int)ebox_parameter_getvalue((t_ebox *)x, index);
+    const int _index = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
     sprintf(text, "%s", x->f_items[_index]->s_name);
 }
 
@@ -523,10 +523,10 @@ static void *menu_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_FONTSIZE);
+        ebox_parameter_create((t_ebox *)x, 1);
         ebox_parameter_setsettergetter_text((t_ebox *)x, 1,
                                             (t_param_setter_t)menu_setter_t,
                                             (t_param_getter_t)menu_getter_t);
-        ebox_parameter_create((t_ebox *)x, 1);
         
         x->f_out_index      = outlet_new((t_object *)x, &s_float);
         x->f_out_item       = outlet_new((t_object *)x, &s_list);
