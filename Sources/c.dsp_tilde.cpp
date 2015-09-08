@@ -10,14 +10,6 @@
 
 #include "../c.library.hpp"
 
-#if (_MSC_VER >= 1800)
-static double round(double val)
-{
-	return floor(val + 0.5);
-}
-#endif
-
-
 typedef struct  _dsp_tilde
 {
 	t_ebox      j_box;
@@ -33,17 +25,12 @@ t_eclass *dsp_tildeclass;
 
 static void *dsp_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
-    long flags;
 	t_dsp_tilde *x  = (t_dsp_tilde *)eobj_new(dsp_tildeclass);
     t_binbuf* d     = binbuf_via_atoms(argc,argv);
 
     if(x && d)
     {
-        flags = 0
-        | EBOX_GROWLINK
-        ;
-        
-        ebox_new((t_ebox *)x, flags);
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
         eobj_proxynew(x);
         x->f_init = 0;
         ebox_attrprocess_viabinbuf(x, d);
@@ -90,14 +77,14 @@ static void draw_background(t_dsp_tilde *x,  t_object *view, t_rect *rect)
             egraphics_set_color_rgba(g, &x->f_color_border);
         }
         
-        egraphics_circle(g, round(rect->width * 0.5f - 0.5f), round(rect->width * 0.5f - 0.5f), round(rect->width * 0.15f - 0.5f));
+        egraphics_circle(g, rect->width * 0.5f - 0.5f, rect->width * 0.5f - 0.5f, rect->width * 0.15f - 0.5f);
         egraphics_fill(g);
         
         egraphics_set_line_width(g, 2.);
-        egraphics_arc(g, round(rect->width * 0.5f - 0.5f), round(rect->width * 0.5f - 0.5f), round(rect->width * 0.25f - 0.5f), EPD_PI, EPD_2PI);
+        egraphics_arc(g, rect->width * 0.5f - 0.5f, rect->width * 0.5f - 0.5f, rect->width * 0.25f - 0.5f, EPD_PI, EPD_2PI);
         egraphics_stroke(g);
         
-        egraphics_arc(g, round(rect->width * 0.5f - 0.5f), round(rect->width * 0.5f - 0.5f), round(rect->width * 0.35f - 0.5f), EPD_PI, EPD_2PI);
+        egraphics_arc(g, rect->width * 0.5f - 0.5f, rect->width * 0.5f - 0.5f, rect->width * 0.35f - 0.5f, EPD_PI, EPD_2PI);
         egraphics_stroke(g);
         
 		ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
@@ -128,6 +115,14 @@ static void dsp_tilde_anything(t_dsp_tilde *x, t_symbol* s, int argc, t_atom *ar
     }
 }
 
+static void dsp_tilde_dsp(t_dsp_tilde *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+{
+    x->f_state = 1;
+    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_redraw((t_ebox *)x);
+}
+
+
 static void dsp_tilde_open(t_dsp_tilde *x)
 {
     pd_typedmess(gensym("pd")->s_thing, gensym("audio-properties"), 0, NULL);
@@ -137,7 +132,14 @@ static void dsp_tilde_start(t_dsp_tilde *x)
 {
     t_atom av;
     atom_setfloat(&av, 1);
-    pd_typedmess((t_pd *)gensym("pd")->s_thing, gensym("dsp"), 1, &av);
+    if(ebox_isdrawable((t_ebox *)x) && x->j_box.b_have_window)
+    {
+        pd_typedmess((t_pd *)gensym("pd")->s_thing, gensym("dsp"), 1, &av);
+    }
+    if(x->j_box.b_obj.o_camo_id->s_thing)
+    {
+        pd_typedmess((t_pd *)x->j_box.b_obj.o_camo_id->s_thing, gensym("dsp"), 1, &av);
+    }
     x->f_state = 1;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
@@ -148,7 +150,14 @@ static void dsp_tilde_stop(t_dsp_tilde *x)
 {
     t_atom av;
     atom_setfloat(&av, 0);
-    pd_typedmess((t_pd *)gensym("pd")->s_thing, gensym("dsp"), 1, &av);
+    if(ebox_isdrawable((t_ebox *)x) && x->j_box.b_have_window)
+    {
+        pd_typedmess((t_pd *)gensym("pd")->s_thing, gensym("dsp"), 1, &av);
+    }
+    if(x->j_box.b_obj.o_camo_id->s_thing)
+    {
+        pd_typedmess((t_pd *)x->j_box.b_obj.o_camo_id->s_thing, gensym("dsp"), 1, &av);
+    }
     x->f_state = 0;
     ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
@@ -182,6 +191,7 @@ extern "C" void setup_c0x2edsp_tilde(void)
     eclass_addmethod(c, (method) dsp_tilde_open,            "settings",         A_NULL, 0);
     eclass_addmethod(c, (method) dsp_tilde_start,           "start",            A_NULL, 0);
     eclass_addmethod(c, (method) dsp_tilde_stop,            "stop",             A_NULL, 0);
+    eclass_addmethod(c, (method) dsp_tilde_dsp,             "dsp",              A_NULL, 0);
     
     CLASS_ATTR_DEFAULT              (c, "size", 0, "30 30");
     

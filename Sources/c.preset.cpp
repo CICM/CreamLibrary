@@ -47,7 +47,7 @@ static void preset_store(t_presetobj *x, float f)
         {
             binbuf_clear(b);
         }
-
+        /*
         for(t_gobj *y = eobj_getcanvas(x)->gl_list; y; y = y->g_next)
         {
             t_ebox *z = (t_ebox *)y;
@@ -65,6 +65,7 @@ static void preset_store(t_presetobj *x, float f)
             }
             mpreset = NULL;
         }
+         */
     }
 }
 
@@ -82,6 +83,7 @@ static void preset_float(t_presetobj *x, float f)
             {
                 t_ebox * z = (t_ebox *)y;
                 t_gotfn mpreset = zgetfn(&y->g_pd, cream_sym_preset);
+                /*
                 if(mpreset && z->b_preset_id && z->b_preset_id != cream_sym_nothing)
                 {
                     int ac = 0;
@@ -99,7 +101,7 @@ static void preset_float(t_presetobj *x, float f)
                     {
                         free(av);
                     }
-                }
+                }*/
                 mpreset = NULL;
             }
 
@@ -150,6 +152,7 @@ void preset_interpolate(t_presetobj *x, float f)
         z = (t_ebox *)y;
         mpreset = zgetfn(&y->g_pd, cream_sym_preset);
         // We find a preset method so we can send preset //
+        /*
         if(mpreset && z->b_preset_id && z->b_preset_id != cream_sym_nothing)
         {
             sprintf(id, "@%s", z->b_preset_id->s_name);
@@ -182,7 +185,7 @@ void preset_interpolate(t_presetobj *x, float f)
                     }
                 }
             }
-
+         
             // Look for all the preset from the biggest index to the top //
             for(j = indexup; j <= max && realup == -1; j++)
             {
@@ -258,7 +261,7 @@ void preset_interpolate(t_presetobj *x, float f)
             {
                 pd_typedmess((t_pd *)z, atom_getsymbol(avup+1), acup-2, avup+2);
             }
-        }
+        }*/
         mpreset = NULL;
     }
 
