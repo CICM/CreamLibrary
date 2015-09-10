@@ -487,6 +487,7 @@ static void radio_getter_t(t_radio *x, int index, char* text)
 {
     int i;
     char temp[2];
+    int il_y_a_un_bug_ici;
     const int flags = ebox_parameter_getvalue((t_ebox *)x, index);
     if(x->f_checklist)
     {

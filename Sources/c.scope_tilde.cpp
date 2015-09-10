@@ -249,10 +249,6 @@ extern "C" void setup_c0x2escope_tilde(void)
     eclass_addmethod(c, (method) scope_getdrawparams,   "getdrawparams",    A_NULL, 0);
     eclass_addmethod(c, (method) scope_oksize,          "oksize",           A_NULL, 0);
     
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "125 100");
     

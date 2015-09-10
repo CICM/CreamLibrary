@@ -37,7 +37,7 @@ typedef struct _breakpoints
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_point;
-    t_rgba		f_color_line;
+    t_rgba		 f_color_line;
     t_rgba		f_color_text;
 
 } t_breakpoints;

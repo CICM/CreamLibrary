@@ -271,6 +271,7 @@ static void matrixctrl_paint(t_matrixctrl *x, t_object *view)
 
 static void matrixctrl_mousedown(t_matrixctrl *x, t_object *patcherview, t_pt pt, long modifiers)
 {
+    int todo_clean_last_column;
     t_atom av[3];
     t_pd* send = ebox_getsender((t_ebox *) x);
     t_rect rect;
@@ -338,6 +339,7 @@ static void matrixctrl_mousedrag(t_matrixctrl *x, t_object *patcherview, t_pt pt
 static void matrixctrl_mouseup(t_matrixctrl *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_selected = -1;
+    ebox_parameter_end_changes((t_ebox *)x, 1);
 }
 
 static t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, int ac, t_atom *av)

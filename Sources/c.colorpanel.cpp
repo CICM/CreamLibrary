@@ -24,7 +24,7 @@ typedef struct  _colorpanel
     t_outlet*   f_out_hex;
     t_hsla**    f_matrix_colorpanel;
     t_pt        f_matrix_sizes;
-    long        f_reverse;
+    char        f_reverse;
     float       f_saturation;
     float       f_hue;
     float       f_lightness;
@@ -261,14 +261,15 @@ static void colorpanel_paint(t_colorpanel *x, t_object *view)
     draw_hover(x, view, &rect);
 }
 
-void colorpanel_mousemove(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
+static void colorpanel_mousemove(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_color_hover.x = pd_clip((int)(pt.x / (x->j_box.b_rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
     x->f_color_hover.y = pd_clip((int)(pt.y / (x->j_box.b_rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
     ebox_invalidate_layer((t_ebox *)x, cream_sym_hover_layer);
     ebox_redraw((t_ebox *)x);
 }
-void colorpanel_mousedown(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
+
+static void colorpanel_mousedown(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_color_hover.x = -10;
     x->f_color_hover.y = -10;
@@ -280,7 +281,7 @@ void colorpanel_mousedown(t_colorpanel *x, t_object *patcherview, t_pt pt, long 
     colorpanel_output(x);
 }
 
-void colorpanel_mouseleave(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
+static void colorpanel_mouseleave(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
 {
     x->f_color_hover.x = -10;
     x->f_color_hover.y = -10;
@@ -288,7 +289,7 @@ void colorpanel_mouseleave(t_colorpanel *x, t_object *patcherview, t_pt pt, long
     ebox_redraw((t_ebox *)x);
 }
 
-void colorpanel_preset(t_colorpanel *x, t_binbuf *b)
+static void colorpanel_preset(t_colorpanel *x, t_binbuf *b)
 {
    binbuf_addv(b, (char *)"sff", gensym("list"), x->f_color_picked.x, x->f_color_picked.y);
 }
@@ -347,7 +348,7 @@ static void colorpanel_computecolors(t_colorpanel *x)
     ebox_redraw((t_ebox *)x);
 }
 
-t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
+static t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     int i;
     if(ac > 1 && av && atom_gettype(av) == A_FLOAT && atom_gettype(av+1) == A_FLOAT)
@@ -370,7 +371,7 @@ t_pd_err colorpanel_matrix_set(t_colorpanel *x, t_object *attr, int ac, t_atom *
     return 0;
 }
 
-t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
+static t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -380,7 +381,7 @@ t_pd_err colorpanel_saturation_set(t_colorpanel *x, t_object *attr, int ac, t_at
     return 0;
 }
 
-t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
+static t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -390,7 +391,7 @@ t_pd_err colorpanel_hue_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
     return 0;
 }
 
-t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
+static t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -400,7 +401,7 @@ t_pd_err colorpanel_lightness_set(t_colorpanel *x, t_object *attr, int ac, t_ato
     return 0;
 }
 
-t_pd_err colorpanel_reverse_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
+static t_pd_err colorpanel_reverse_set(t_colorpanel *x, t_object *attr, int ac, t_atom *av)
 {
     if(ac && av && atom_gettype(av) == A_FLOAT)
     {
@@ -432,10 +433,6 @@ extern "C" void setup_c0x2ecolorpanel(void)
     
     eclass_addmethod(c, (method) colorpanel_preset,          "preset",           A_NULL, 0);
     
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "181 105");
     
@@ -446,7 +443,7 @@ extern "C" void setup_c0x2ecolorpanel(void)
     CLASS_ATTR_DEFAULT              (c, "matrix", 0, "24. 13.");
     CLASS_ATTR_SAVE                 (c, "matrix", 0);
     
-    CLASS_ATTR_LONG                 (c, "reverse", 0, t_colorpanel, f_reverse);
+    CLASS_ATTR_CHAR                 (c, "reverse", 0, t_colorpanel, f_reverse);
     CLASS_ATTR_LABEL                (c, "reverse", 0, "Matrix Reversed");
     CLASS_ATTR_ACCESSORS			(c, "reverse", NULL, colorpanel_reverse_set);
     CLASS_ATTR_ORDER                (c, "reverse", 0, "1");

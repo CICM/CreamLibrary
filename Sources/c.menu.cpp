@@ -414,6 +414,7 @@ static void menu_mousedown(t_menu *x, t_object *patcherview, t_pt pt, long modif
         {
             t_rect rect;
             ebox_get_rect_for_view((t_ebox *)x, &rect);
+            rect.y += rect.height + 2.f;
             const int index = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
             for(long i = 0; i < x->f_nitems; i++)
             {
@@ -441,6 +442,7 @@ static void menu_mouseenter(t_menu *x, t_object *patcherview, t_pt pt, long modi
         {
             t_rect rect;
             ebox_get_rect_for_view((t_ebox *)x, &rect);
+            rect.y += rect.height + 2.f;
             const int index = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
             for(long i = 0; i < x->f_nitems; i++)
             {
