@@ -136,6 +136,10 @@ static t_pd_err gain_notify(t_gain *x, t_symbol *s, t_symbol *msg, void *sender,
 	}
     else if(msg == cream_sym_value_changed)
     {
+        x->f_amp_old = x->f_amp;
+        x->f_amp = powf(10., ebox_parameter_getvalue((t_ebox *)x, 1) * 0.05);
+        x->f_amp_step = (float)(x->f_amp - x->f_amp_old) / (float)x->f_ramp_sample;
+        x->f_counter  = 0;
         gain_output(x);
         ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
