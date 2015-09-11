@@ -19,7 +19,7 @@ typedef struct _camomile
     t_rgba		f_color_txt;
 } t_camomile;
 
-t_eclass *camomile_class;
+static t_eclass *camomile_class;
 
 static void camomile_getdrawparams(t_camomile *x, t_object *patcherview, t_edrawparams *params)
 {
@@ -32,12 +32,12 @@ static void camomile_getdrawparams(t_camomile *x, t_object *patcherview, t_edraw
 static void camomile_oksize(t_camomile *x, t_rect *newrect)
 {
     newrect->width = pd_clip_min(newrect->width, 200.f);
-    newrect->height = pd_clip_min(newrect->height, 80.f);
+    newrect->height = pd_clip_min(newrect->height, 80.f + x->f_font.size + 4.f);
 }
 
 static t_pd_err camomile_notify(t_camomile *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if(msg == cream_sym_attr_modified && s == cream_sym_bgcolor)
+	if(msg == cream_sym_attr_modified && (s == cream_sym_bgcolor || s == cream_sym_bdcolor))
 	{
 		ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 	}
@@ -46,7 +46,18 @@ static t_pd_err camomile_notify(t_camomile *x, t_symbol *s, t_symbol *msg, void 
 
 static void camomile_paint(t_camomile *x, t_object *view)
 {
-    ;
+    t_rect rect;
+    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+    if(g)
+    {
+        egraphics_set_color_rgba(g, &x->f_color_border);
+        egraphics_set_line_width(g, 2.f);
+        egraphics_line(g, 0., x->f_font.size + 3.f, rect.width, x->f_font.size + 3.f);
+        egraphics_stroke(g);
+        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+    }
+    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
 static void *camomile_new(t_symbol *s, int argc, t_atom *argv)
@@ -56,7 +67,7 @@ static void *camomile_new(t_symbol *s, int argc, t_atom *argv)
     
     if(x && d)
     {
-        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK);
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK | EBOX_FONTSIZE);
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
     }
