@@ -16,6 +16,7 @@ typedef struct _camomile
     t_efont     f_font;
 	t_rgba		f_color_background;
     t_rgba		f_color_border;
+    t_rgba		f_color_txt;
 } t_camomile;
 
 t_eclass *camomile_class;
@@ -97,6 +98,12 @@ extern "C" void setup_c0x2ecamomile(void)
     CLASS_ATTR_ORDER                (c, "bdcolor", 0, "2");
     CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdcolor", 0, "0.5 0.5 0.5 1.");
     CLASS_ATTR_STYLE                (c, "bdcolor", 0, "color");
+    
+    CLASS_ATTR_RGBA                 (c, "txtcolor", 0, t_camomile, f_color_txt);
+    CLASS_ATTR_LABEL                (c, "txtcolor", 0, "Text Color");
+    CLASS_ATTR_ORDER                (c, "txtcolor", 0, "3");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "txtcolor", 0, "0.f 0.f 0.f 1.");
+    CLASS_ATTR_STYLE                (c, "txtcolor", 0, "color");
     
     eclass_register(CLASS_BOX, c);
     camomile_class = c;
