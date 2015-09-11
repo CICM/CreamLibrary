@@ -97,6 +97,7 @@ extern "C" void setup_c0x2ecamomile(void)
     CLASS_ATTR_LABEL                (c, "font", 0, "Font");
     CLASS_ATTR_ORDER                (c, "font", 0, "1");
     CLASS_ATTR_PAINT                (c, "font", 0);
+    CLASS_ATTR_SAVE                 (c, "font", 0);
     
     CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_camomile, f_color_background);
     CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

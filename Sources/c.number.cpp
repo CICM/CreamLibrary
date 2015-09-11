@@ -86,42 +86,16 @@ static t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sen
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor ||
            s == cream_sym_font || s == cream_sym_decimal)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
 		}
 	}
     else if(msg == cream_sym_value_changed)
     {
         number_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
 	return 0;
-}
-
-static void draw_background(t_number *x, t_object *view, t_rect *rect)
-{
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
-    if(g)
-    {
-        const float width = x->f_font.size + 4;
-        t_etext *jtl = etext_layout_create();
-        if(jtl)
-        {
-            etext_layout_set(jtl, "©", &x->f_font, 0.f, 0.f, width, rect->height, ETEXT_CENTRED, ETEXT_NOWRAP);
-            etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_draw(jtl, g);
-        }
-        egraphics_set_line_width(g, 2.f);
-        egraphics_set_color_rgba(g, &x->f_color_border);
-        egraphics_move_to(g, width, 0);
-        egraphics_line_to(g, width,  rect->height);
-        egraphics_stroke(g);
-        
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
-        etext_layout_destroy(jtl);
-    }
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
 }
 
 static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
@@ -132,7 +106,6 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
         t_etext *jtl = etext_layout_create();
         if(jtl)
         {
-            const float width = x->f_font.size + 8;
             const float val = ebox_parameter_getvalue((t_ebox *)x, 1);
             char number[512];
             memset(number, 0, sizeof(char) * 512);
@@ -152,7 +125,7 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
                 sprintf(number, "%.6g", val);
             
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->f_font, width, 0.f, rect->width - width, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->f_font, 2.f, 0.f, rect->width - 4.f, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             etext_layout_destroy(jtl);
@@ -166,8 +139,6 @@ static void number_paint(t_number *x, t_object *view)
 {
 	t_rect rect;
     ebox_get_rect_for_view((t_ebox *)x, &rect);
-
-    draw_background(x, view, &rect);
     draw_value_drag(x, view, &rect);
 }
 
@@ -253,9 +224,9 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
             etexteditor_settextcolor(x->f_editor, &x->f_color_text);
             etexteditor_setfont(x->f_editor, &x->f_font);
             etexteditor_setwrap(x->f_editor, 0);
-            rect.x = x->f_font.size + 5;
+            rect.x = 2.f;
             rect.y = 0;
-            rect.width -= x->f_font.size + 5;
+            rect.width -= 4.f;
             etexteditor_popup(x->f_editor,  &rect);
             x->f_firstchar = 0;
         }
@@ -271,11 +242,11 @@ static void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long m
 {
 	const float text_width = x->f_font.size * 2. / 3.;
     ebox_parameter_begin_changes((t_ebox *)x, 1);
-    if(pt.x >= text_width + 8)
+    if(pt.x >= 2.)
     {
         int i = 1;
         int n_integer = 1;
-        float pos = pt.x - text_width + 8 / text_width;
+        float pos = pt.x - text_width + 2.f;
         x->f_deriv = pt.y;
         
         x->f_refvalue = ebox_parameter_getvalue((t_ebox *)x, 1);
