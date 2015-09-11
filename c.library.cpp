@@ -65,6 +65,7 @@ extern "C" void cream_setup(void)
     setup_c0x2eslider();
     setup_c0x2etab();
     setup_c0x2etoggle();
+    setup_c0x2ecomment();
     
 #ifdef __APPLE__
     setup_c0x2ekeyboard();

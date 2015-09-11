@@ -119,6 +119,8 @@
 		8FB904511B64F2E9000A8449 /* c.keyboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB9044F1B64F2E9000A8449 /* c.keyboard.cpp */; };
 		8FB904541B6661D9000A8449 /* c.camomile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB904531B6661D9000A8449 /* c.camomile.cpp */; };
 		8FB904551B6661D9000A8449 /* c.camomile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FB904531B6661D9000A8449 /* c.camomile.cpp */; };
+		8FC219B91BA1B76000FD3F5E /* c.comment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FC219B81BA1B76000FD3F5E /* c.comment.cpp */; };
+		8FC219BA1BA1B76000FD3F5E /* c.comment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8FC219B81BA1B76000FD3F5E /* c.comment.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,6 +183,7 @@
 		8FB8EB6719007B1E005FAF6A /* c.library.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = c.library.hpp; sourceTree = "<group>"; };
 		8FB9044F1B64F2E9000A8449 /* c.keyboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.keyboard.cpp; path = Sources/c.keyboard.cpp; sourceTree = SOURCE_ROOT; };
 		8FB904531B6661D9000A8449 /* c.camomile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.camomile.cpp; path = Sources/c.camomile.cpp; sourceTree = SOURCE_ROOT; };
+		8FC219B81BA1B76000FD3F5E /* c.comment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.comment.cpp; path = Sources/c.comment.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				8F27CF801B31CC2500220A14 /* c.bang.cpp */,
+				8FC219B81BA1B76000FD3F5E /* c.comment.cpp */,
 				8F27CF941B31CC2500220A14 /* c.toggle.cpp */,
 				8F27CF8C1B31CC2500220A14 /* c.number.cpp */,
 				8F27CF871B31CC2500220A14 /* c.knob.cpp */,
@@ -444,6 +448,7 @@
 				8F27CFA71B31CC2500220A14 /* c.menu.cpp in Sources */,
 				8F27CF9D1B31CC2500220A14 /* c.dsp_tilde.cpp in Sources */,
 				8F27CFB71B31CC2500220A14 /* c.scope_tilde.cpp in Sources */,
+				8FC219B91BA1B76000FD3F5E /* c.comment.cpp in Sources */,
 				8F27CF6C1B31CA2300220A14 /* c.convolve_tilde.cpp in Sources */,
 				8F27CFAB1B31CC2500220A14 /* c.number_tilde.cpp in Sources */,
 				8F27CFA91B31CC2500220A14 /* c.meter_tilde.cpp in Sources */,
@@ -493,6 +498,7 @@
 				8F27CFA81B31CC2500220A14 /* c.menu.cpp in Sources */,
 				8F27CF9E1B31CC2500220A14 /* c.dsp_tilde.cpp in Sources */,
 				8F27CFB81B31CC2500220A14 /* c.scope_tilde.cpp in Sources */,
+				8FC219BA1BA1B76000FD3F5E /* c.comment.cpp in Sources */,
 				8F27CF6D1B31CA2300220A14 /* c.convolve_tilde.cpp in Sources */,
 				8F27CFAC1B31CC2500220A14 /* c.number_tilde.cpp in Sources */,
 				8F27CFAA1B31CC2500220A14 /* c.meter_tilde.cpp in Sources */,

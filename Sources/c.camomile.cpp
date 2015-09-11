@@ -13,10 +13,9 @@
 typedef struct _camomile
 {
 	t_ebox      j_box;
+    t_efont     f_font;
 	t_rgba		f_color_background;
     t_rgba		f_color_border;
-    t_ebox**    f_boxes;
-    int         f_nboxes;
 } t_camomile;
 
 t_eclass *camomile_class;
@@ -34,70 +33,6 @@ static void camomile_oksize(t_camomile *x, t_rect *newrect)
     newrect->width = pd_clip_min(newrect->width, 200.f);
     newrect->height = pd_clip_min(newrect->height, 80.f);
 }
-
-static void camomile_bang(t_camomile *x)
-{
-    int counter = 0;
-    t_ebox** temp;
-    t_canvas* cnv = eobj_getcanvas(x);
-    for(t_gobj* y = cnv->gl_list; y; y = y->g_next)
-    {
-        if(y != (t_gobj *)x && eobj_iscicm(y) && eobj_isbox(x))
-        {
-            t_ebox* z = (t_ebox *)y;
-            if(z->b_rect.x >= x->j_box.b_rect.x &&
-               z->b_rect.y >= x->j_box.b_rect.y &&
-               z->b_rect.x + z->b_rect.width <= x->j_box.b_rect.x + x->j_box.b_rect.width &&
-               z->b_rect.y + z->b_rect.height <= x->j_box.b_rect.y + x->j_box.b_rect.height)
-            {
-                ++counter;
-            }
-        }
-    }
-    if(x->f_nboxes && x->f_boxes)
-    {
-        temp = (t_ebox **)realloc(x->f_boxes, (size_t)counter * sizeof(t_ebox *));
-        if(temp)
-        {
-            x->f_boxes = temp;
-            x->f_nboxes = counter;
-        }
-        else
-        {
-            x->f_boxes = NULL;
-            x->f_nboxes = 0;
-        }
-    }
-    else
-    {
-        x->f_boxes = (t_ebox **)malloc((size_t)counter * sizeof(t_ebox *));
-        if(x->f_boxes)
-        {
-            x->f_nboxes = counter;
-        }
-        else
-        {
-            x->f_nboxes = 0;
-        }
-    }
-    counter = 0;
-    for(t_gobj* y = cnv->gl_list; y; y = y->g_next)
-    {
-        if(y != (t_gobj *)x && eobj_iscicm(y) && eobj_isbox(x))
-        {
-            t_ebox* z = (t_ebox *)y;
-            if(z->b_rect.x >= x->j_box.b_rect.x &&
-               z->b_rect.y >= x->j_box.b_rect.y &&
-               z->b_rect.x + z->b_rect.width <= x->j_box.b_rect.x + x->j_box.b_rect.width &&
-               z->b_rect.y + z->b_rect.height <= x->j_box.b_rect.y + x->j_box.b_rect.height)
-            {
-                x->f_boxes[counter++] = z;
-            }
-            
-        }
-    }
-}
-
 
 static t_pd_err camomile_notify(t_camomile *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
@@ -121,8 +56,6 @@ static void *camomile_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI | EBOX_IGNORELOCKCLICK);
-        x->f_nboxes = 0;
-        x->f_boxes  = NULL;
         ebox_attrprocess_viabinbuf(x, d);
         ebox_ready((t_ebox *)x);
     }
@@ -141,18 +74,17 @@ extern "C" void setup_c0x2ecamomile(void)
     eclass_addmethod(c, (method) camomile_notify,          "notify",           A_NULL, 0);
     eclass_addmethod(c, (method) camomile_getdrawparams,   "getdrawparams",    A_NULL, 0);
     eclass_addmethod(c, (method) camomile_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) camomile_bang,            "bang",             A_NULL, 0);
-    eclass_addmethod(c, (method) camomile_bang,            "loadbang",         A_NULL, 0);
     
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
     CLASS_ATTR_INVISIBLE            (c, "receive", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "600. 400.");
     CLASS_ATTR_DEFAULT              (c, "pinned", 0, "1");
     CLASS_ATTR_INVISIBLE            (c, "pinned", 1);
+    
+    CLASS_ATTR_FONT                 (c, "font", 0, t_camomile, f_font);
+    CLASS_ATTR_LABEL                (c, "font", 0, "Font");
+    CLASS_ATTR_ORDER                (c, "font", 0, "1");
+    CLASS_ATTR_PAINT                (c, "font", 0);
     
     CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_camomile, f_color_background);
     CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
