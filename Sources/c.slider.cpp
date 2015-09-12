@@ -15,6 +15,7 @@ typedef struct _slider
 {
 	t_ebox          j_box;
     t_outlet*       f_out;
+    int             f_bdsize;
 	t_rgba          f_color_background;
 	t_rgba          f_color_border;
 	t_rgba          f_color_knob;
@@ -61,7 +62,7 @@ static void slider_bang(t_slider *x, float f)
 
 static void slider_getdrawparams(t_slider *x, t_object *patcherview, t_edrawparams *params)
 {
-	params->d_borderthickness   = 2;
+	params->d_borderthickness   = x->f_bdsize;
 	params->d_cornersize        = 2;
     params->d_bordercolor       = x->f_color_border;
     params->d_boxfillcolor      = x->f_color_background;
@@ -281,6 +282,12 @@ extern "C" void setup_c0x2eslider(void)
         CLASS_ATTR_DEFAULT              (c, "minmax", 0, "0 1");
         CLASS_ATTR_ACCESSORS            (c, "minmax", slider_minmax_get, slider_minmax_set);
         CLASS_ATTR_SAVE                 (c, "minmax", 1);
+        
+        CLASS_ATTR_INT                  (c, "bdsize", 0, t_slider, f_bdsize);
+        CLASS_ATTR_LABEL                (c, "bdsize", 0, "Border Size");
+        CLASS_ATTR_ORDER                (c, "bdsize", 0, "1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdsize", 0, "2");
+        CLASS_ATTR_STYLE                (c, "bdsize", 0, "number");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_slider, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
