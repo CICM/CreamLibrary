@@ -25,6 +25,7 @@ typedef struct  _number
     float           f_inc;
     int             f_ndecimal;
     t_efont         f_font;
+    int             f_bdsize;
 	t_rgba          f_color_background;
 	t_rgba          f_color_border;
 	t_rgba          f_color_text;
@@ -67,7 +68,7 @@ static void number_bang(t_number *x, float f)
 
 static void number_getdrawparams(t_number *x, t_object *patcherview, t_edrawparams *params)
 {
-    params->d_borderthickness   = 2;
+    params->d_borderthickness   = x->f_bdsize;
     params->d_cornersize        = 2;
     params->d_bordercolor       = x->f_color_border;
     params->d_boxfillcolor      = x->f_color_background;
@@ -125,7 +126,8 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
                 sprintf(number, "%.6g", val);
             
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->f_font, 2.f, 0.f, rect->width - 4.f, rect->height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
+            etext_layout_set(jtl, number, &x->f_font, 2.f, 2.f, rect->width - 4.f, rect->height - 2.f,
+                             ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
             etext_layout_destroy(jtl);
@@ -225,8 +227,9 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
             etexteditor_setfont(x->f_editor, &x->f_font);
             etexteditor_setwrap(x->f_editor, 0);
             rect.x = 2.f;
-            rect.y = 0;
+            rect.y = 2.f;
             rect.width -= 4.f;
+            rect.height -= 2.f;
             etexteditor_popup(x->f_editor,  &rect);
             x->f_firstchar = 0;
         }
@@ -399,6 +402,13 @@ extern "C" void setup_c0x2enumber(void)
         CLASS_ATTR_LABEL                (c, "font", 0, "Font");
         CLASS_ATTR_SAVE                 (c, "font", 0);
         CLASS_ATTR_PAINT                (c, "font", 0);
+        
+        CLASS_ATTR_INT                  (c, "bdsize", 0, t_number, f_bdsize);
+        CLASS_ATTR_LABEL                (c, "bdsize", 0, "Border Size");
+        CLASS_ATTR_ORDER                (c, "bdsize", 0, "1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdsize", 0, "2");
+        CLASS_ATTR_FILTER_CLIP          (c, "bdsize", 0, 4);
+        CLASS_ATTR_STYLE                (c, "bdsize", 0, "number");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_number, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

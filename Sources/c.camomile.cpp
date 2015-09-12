@@ -14,6 +14,7 @@ typedef struct _camomile
 {
 	t_ebox      j_box;
     t_efont     f_font;
+    int         f_bdsize;
 	t_rgba		f_color_background;
     t_rgba		f_color_border;
     t_rgba		f_color_txt;
@@ -23,7 +24,7 @@ static t_eclass *camomile_class;
 
 static void camomile_getdrawparams(t_camomile *x, t_object *patcherview, t_edrawparams *params)
 {
-	params->d_borderthickness   = 2;
+	params->d_borderthickness   = x->f_bdsize;
 	params->d_cornersize        = 2;
     params->d_bordercolor       = x->f_color_border;
     params->d_boxfillcolor      = x->f_color_background;
@@ -32,12 +33,12 @@ static void camomile_getdrawparams(t_camomile *x, t_object *patcherview, t_edraw
 static void camomile_oksize(t_camomile *x, t_rect *newrect)
 {
     newrect->width = pd_clip_min(newrect->width, 200.f);
-    newrect->height = pd_clip_min(newrect->height, 80.f + x->f_font.size + 4.f);
+    newrect->height = pd_clip_min(newrect->height, 80.f + 20.f);
 }
 
 static t_pd_err camomile_notify(t_camomile *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if(msg == cream_sym_attr_modified && (s == cream_sym_bgcolor || s == cream_sym_bdcolor))
+	if(msg == cream_sym_attr_modified && (s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_bdsize))
 	{
 		ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 	}
@@ -52,8 +53,8 @@ static void camomile_paint(t_camomile *x, t_object *view)
     if(g)
     {
         egraphics_set_color_rgba(g, &x->f_color_border);
-        egraphics_set_line_width(g, 2.f);
-        egraphics_line(g, 0., x->f_font.size + 3.f, rect.width, x->f_font.size + 3.f);
+        egraphics_set_line_width(g, x->f_bdsize);
+        egraphics_line(g, 0., 20.f, rect.width, 20.f);
         egraphics_stroke(g);
         ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
     }
@@ -98,6 +99,13 @@ extern "C" void setup_c0x2ecamomile(void)
     CLASS_ATTR_ORDER                (c, "font", 0, "1");
     CLASS_ATTR_PAINT                (c, "font", 0);
     CLASS_ATTR_SAVE                 (c, "font", 0);
+    
+    CLASS_ATTR_INT                  (c, "bdsize", 0, t_camomile, f_bdsize);
+    CLASS_ATTR_LABEL                (c, "bdsize", 0, "Border Size");
+    CLASS_ATTR_ORDER                (c, "bdsize", 0, "1");
+    CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdsize", 0, "2");
+    CLASS_ATTR_FILTER_CLIP          (c, "bdsize", 0, 4);
+    CLASS_ATTR_STYLE                (c, "bdsize", 0, "number");
     
     CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_camomile, f_color_background);
     CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

@@ -287,6 +287,7 @@ extern "C" void setup_c0x2eslider(void)
         CLASS_ATTR_LABEL                (c, "bdsize", 0, "Border Size");
         CLASS_ATTR_ORDER                (c, "bdsize", 0, "1");
         CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdsize", 0, "2");
+        CLASS_ATTR_FILTER_CLIP          (c, "bdsize", 0, 4);
         CLASS_ATTR_STYLE                (c, "bdsize", 0, "number");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_slider, f_color_background);
