@@ -126,7 +126,7 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
                 sprintf(number, "%.6g", val);
             
             etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->f_font, 2.f, 2.f, rect->width - 4.f, rect->height - 2.f,
+            etext_layout_set(jtl, number, &x->f_font, 2.f, 2.f, rect->width - 4.f, rect->height - 4.f,
                              ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
             etext_layout_draw(jtl, g);
