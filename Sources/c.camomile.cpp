@@ -13,6 +13,7 @@
 typedef struct _camomile
 {
 	t_ebox      j_box;
+    t_symbol*   f_name;
     t_efont     f_font;
     int         f_bdsize;
 	t_rgba		f_color_background;
@@ -32,13 +33,14 @@ static void camomile_getdrawparams(t_camomile *x, t_object *patcherview, t_edraw
 
 static void camomile_oksize(t_camomile *x, t_rect *newrect)
 {
-    newrect->width = pd_clip_min(newrect->width, 200.f);
-    newrect->height = pd_clip_min(newrect->height, 80.f + 20.f);
+    newrect->width = pd_clip_min(newrect->width, 22.f);
+    newrect->height = pd_clip_min(newrect->height, 44.f);
 }
 
 static t_pd_err camomile_notify(t_camomile *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
 {
-	if(msg == cream_sym_attr_modified && (s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_bdsize))
+	if(msg == cream_sym_attr_modified &&
+       (s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_bdsize || s == cream_sym_name))
 	{
 		ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
 	}
@@ -52,6 +54,17 @@ static void camomile_paint(t_camomile *x, t_object *view)
     t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
     if(g)
     {
+        if(is_valid_symbol(x->f_name))
+        {
+            t_etext *jtl = etext_layout_create();
+            if(jtl)
+            {
+                etext_layout_settextcolor(jtl, &x->f_color_txt);
+                etext_layout_set(jtl, x->f_name->s_name, &x->f_font, 22.f, 0.f, rect.width - 22.f, 20.f,  ETEXT_CENTRED, ETEXT_NOWRAP);
+                etext_layout_draw(jtl, g);
+                etext_layout_destroy(jtl);
+            }
+        }
         egraphics_set_color_rgba(g, &x->f_color_border);
         egraphics_set_line_width(g, x->f_bdsize);
         egraphics_line(g, 0., 20.f, rect.width, 20.f);
@@ -90,9 +103,16 @@ extern "C" void setup_c0x2ecamomile(void)
     
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
     CLASS_ATTR_INVISIBLE            (c, "receive", 1);
-    CLASS_ATTR_DEFAULT              (c, "size", 0, "600. 400.");
+    CLASS_ATTR_DEFAULT              (c, "size", 0, "22. 44.");
     CLASS_ATTR_DEFAULT              (c, "pinned", 0, "1");
     CLASS_ATTR_INVISIBLE            (c, "pinned", 1);
+    
+    CLASS_ATTR_SYMBOL               (c, "name", 0, t_camomile, f_name);
+    CLASS_ATTR_LABEL                (c, "name", 0, "Name");
+    CLASS_ATTR_ORDER                (c, "name", 0, "1");
+    CLASS_ATTR_PAINT                (c, "name", 0);
+    CLASS_ATTR_SAVE                 (c, "name", 0);
+    CLASS_ATTR_DEFAULT              (c, "name", 0, "");
     
     CLASS_ATTR_FONT                 (c, "font", 0, t_camomile, f_font);
     CLASS_ATTR_LABEL                (c, "font", 0, "Font");
