@@ -15,6 +15,7 @@ typedef struct _knob
 {
 	t_ebox      j_box;
     t_outlet*   f_outlet;
+    int         f_bdsize;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_needle;
@@ -73,7 +74,7 @@ static void knob_bang(t_knob *x, float f)
 
 static void knob_getdrawparams(t_knob *x, t_object *patcherview, t_edrawparams *params)
 {
-    params->d_borderthickness   = 2.f;
+    params->d_borderthickness   = x->f_bdsize;
     params->d_cornersize        = 2.f;
     params->d_bordercolor       = x->f_color_border;
     params->d_boxfillcolor      = x->f_color_background;
@@ -110,7 +111,7 @@ static void draw_background(t_knob *x, t_object *view, t_rect *rect)
 	if (g)
 	{
         const float size = rect->width * 0.5f;
-        egraphics_set_color_rgba(g, &x->f_color_border);
+        egraphics_set_color_rgba(g, &x->f_color_needle);
         egraphics_set_line_width(g, 2.f);
         egraphics_circle(g, size, size, size - 2.f);
         egraphics_stroke(g);
@@ -368,6 +369,13 @@ extern "C" void setup_c0x2eknob(void)
         CLASS_ATTR_DEFAULT              (c, "minmax", 0, "0 1");
         CLASS_ATTR_ACCESSORS            (c, "minmax", knob_minmax_get, knob_minmax_set);
         CLASS_ATTR_SAVE                 (c, "minmax", 1);
+        
+        CLASS_ATTR_INT                  (c, "bdsize", 0, t_knob, f_bdsize);
+        CLASS_ATTR_LABEL                (c, "bdsize", 0, "Border Size");
+        CLASS_ATTR_ORDER                (c, "bdsize", 0, "1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdsize", 0, "2");
+        CLASS_ATTR_FILTER_CLIP          (c, "bdsize", 0, 4);
+        CLASS_ATTR_STYLE                (c, "bdsize", 0, "number");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_knob, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
