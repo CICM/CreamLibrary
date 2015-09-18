@@ -90,7 +90,8 @@ static t_pd_err knob_notify(t_knob *x, t_symbol *s, t_symbol *msg, void *sender,
 {
 	if(msg == cream_sym_attr_modified)
 	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_necolor || s == cream_sym_endless)
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor ||
+           s == cream_sym_necolor || s == cream_sym_endless || s == cream_sym_bdsize)
 		{
 			ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
             ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
@@ -112,7 +113,7 @@ static void draw_background(t_knob *x, t_object *view, t_rect *rect)
 	{
         const float size = rect->width * 0.5f;
         egraphics_set_color_rgba(g, &x->f_color_needle);
-        egraphics_set_line_width(g, 2.f);
+        egraphics_set_line_width(g, x->f_bdsize);
         egraphics_circle(g, size, size, size - 2.f);
         egraphics_stroke(g);
         
@@ -129,7 +130,7 @@ static void draw_needle(t_knob *x, t_object *view, t_rect *rect)
 	{
         const float size    = rect->width * 0.5f;
         egraphics_set_color_rgba(g, &x->f_color_needle);
-        egraphics_set_line_width(g, 2.f);
+        egraphics_set_line_width(g, x->f_bdsize);
         if(ebox_parameter_isinverted((t_ebox *)x, 1))
         {
             const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
