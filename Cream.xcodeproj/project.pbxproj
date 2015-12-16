@@ -39,30 +39,6 @@
 		8F27CF411B31C87900220A14 /* epopup.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF241B31C87900220A14 /* epopup.c */; };
 		8F27CF421B31C87900220A14 /* epopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F27CF251B31C87900220A14 /* epopup.h */; };
 		8F27CF431B31C87900220A14 /* epopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F27CF251B31C87900220A14 /* epopup.h */; };
-		8F27CF681B31CA2300220A14 /* AudioFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF5C1B31CA2300220A14 /* AudioFFT.cpp */; };
-		8F27CF691B31CA2300220A14 /* AudioFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF5C1B31CA2300220A14 /* AudioFFT.cpp */; };
-		8F27CF6A1B31CA2300220A14 /* AudioFFT.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F27CF5D1B31CA2300220A14 /* AudioFFT.h */; };
-		8F27CF6B1B31CA2300220A14 /* AudioFFT.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F27CF5D1B31CA2300220A14 /* AudioFFT.h */; };
-		8F27CF6C1B31CA2300220A14 /* c.convolve_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF5E1B31CA2300220A14 /* c.convolve_tilde.cpp */; };
-		8F27CF6D1B31CA2300220A14 /* c.convolve_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF5E1B31CA2300220A14 /* c.convolve_tilde.cpp */; };
-		8F27CF6E1B31CA2300220A14 /* c.freeverb_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF5F1B31CA2300220A14 /* c.freeverb_tilde.cpp */; };
-		8F27CF6F1B31CA2300220A14 /* c.freeverb_tilde.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF5F1B31CA2300220A14 /* c.freeverb_tilde.cpp */; };
-		8F27CF701B31CA2300220A14 /* c.pak.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF601B31CA2300220A14 /* c.pak.cpp */; };
-		8F27CF711B31CA2300220A14 /* c.pak.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF601B31CA2300220A14 /* c.pak.cpp */; };
-		8F27CF721B31CA2300220A14 /* c.patcherargs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF611B31CA2300220A14 /* c.patcherargs.cpp */; };
-		8F27CF731B31CA2300220A14 /* c.patcherargs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF611B31CA2300220A14 /* c.patcherargs.cpp */; };
-		8F27CF741B31CA2300220A14 /* c.patcherinfos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF621B31CA2300220A14 /* c.patcherinfos.cpp */; };
-		8F27CF751B31CA2300220A14 /* c.patcherinfos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF621B31CA2300220A14 /* c.patcherinfos.cpp */; };
-		8F27CF761B31CA2300220A14 /* c.patchermess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF631B31CA2300220A14 /* c.patchermess.cpp */; };
-		8F27CF771B31CA2300220A14 /* c.patchermess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF631B31CA2300220A14 /* c.patchermess.cpp */; };
-		8F27CF781B31CA2300220A14 /* FFTConvolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF641B31CA2300220A14 /* FFTConvolver.cpp */; };
-		8F27CF791B31CA2300220A14 /* FFTConvolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF641B31CA2300220A14 /* FFTConvolver.cpp */; };
-		8F27CF7A1B31CA2300220A14 /* FFTConvolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F27CF651B31CA2300220A14 /* FFTConvolver.h */; };
-		8F27CF7B1B31CA2300220A14 /* FFTConvolver.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F27CF651B31CA2300220A14 /* FFTConvolver.h */; };
-		8F27CF7C1B31CA2300220A14 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF661B31CA2300220A14 /* Utilities.cpp */; };
-		8F27CF7D1B31CA2300220A14 /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF661B31CA2300220A14 /* Utilities.cpp */; };
-		8F27CF7E1B31CA2300220A14 /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F27CF671B31CA2300220A14 /* Utilities.h */; };
-		8F27CF7F1B31CA2300220A14 /* Utilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F27CF671B31CA2300220A14 /* Utilities.h */; };
 		8F27CF951B31CC2500220A14 /* c.bang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF801B31CC2500220A14 /* c.bang.cpp */; };
 		8F27CF961B31CC2500220A14 /* c.bang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF801B31CC2500220A14 /* c.bang.cpp */; };
 		8F27CF971B31CC2500220A14 /* c.blackboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F27CF811B31CC2500220A14 /* c.blackboard.cpp */; };
@@ -117,10 +93,6 @@
 		8F4FFE291BCED91C0025CAE0 /* ecolor.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F4FFE261BCED91C0025CAE0 /* ecolor.c */; };
 		8F4FFE2A1BCED91C0025CAE0 /* ecolor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F4FFE271BCED91C0025CAE0 /* ecolor.h */; };
 		8F4FFE2B1BCED91C0025CAE0 /* ecolor.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F4FFE271BCED91C0025CAE0 /* ecolor.h */; };
-		8F823F831B33011600F5A69E /* c.loadmess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F811B33011600F5A69E /* c.loadmess.cpp */; };
-		8F823F841B33011600F5A69E /* c.loadmess.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F811B33011600F5A69E /* c.loadmess.cpp */; };
-		8F823F851B33011600F5A69E /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F821B33011600F5A69E /* c.prepend.cpp */; };
-		8F823F861B33011600F5A69E /* c.prepend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F823F821B33011600F5A69E /* c.prepend.cpp */; };
 		8F9D94F51BC951B2001FEC37 /* eattr.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F9D94F31BC951B2001FEC37 /* eattr.c */; };
 		8F9D94F61BC951B2001FEC37 /* eattr.c in Sources */ = {isa = PBXBuildFile; fileRef = 8F9D94F31BC951B2001FEC37 /* eattr.c */; };
 		8F9D94F71BC951B2001FEC37 /* eattr.h in Headers */ = {isa = PBXBuildFile; fileRef = 8F9D94F41BC951B2001FEC37 /* eattr.h */; };
@@ -181,18 +153,6 @@
 		8F27CF231B31C87900220A14 /* epdmax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = epdmax.h; path = ThirdParty/CicmWrapper/Sources/epdmax.h; sourceTree = SOURCE_ROOT; };
 		8F27CF241B31C87900220A14 /* epopup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = epopup.c; path = ThirdParty/CicmWrapper/Sources/epopup.c; sourceTree = SOURCE_ROOT; };
 		8F27CF251B31C87900220A14 /* epopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = epopup.h; path = ThirdParty/CicmWrapper/Sources/epopup.h; sourceTree = SOURCE_ROOT; };
-		8F27CF5C1B31CA2300220A14 /* AudioFFT.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AudioFFT.cpp; path = Deprecated/AudioFFT.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF5D1B31CA2300220A14 /* AudioFFT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioFFT.h; path = Deprecated/AudioFFT.h; sourceTree = SOURCE_ROOT; };
-		8F27CF5E1B31CA2300220A14 /* c.convolve_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.convolve_tilde.cpp; path = Deprecated/c.convolve_tilde.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF5F1B31CA2300220A14 /* c.freeverb_tilde.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.freeverb_tilde.cpp; path = Deprecated/c.freeverb_tilde.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF601B31CA2300220A14 /* c.pak.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.pak.cpp; path = Deprecated/c.pak.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF611B31CA2300220A14 /* c.patcherargs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.patcherargs.cpp; path = Deprecated/c.patcherargs.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF621B31CA2300220A14 /* c.patcherinfos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.patcherinfos.cpp; path = Deprecated/c.patcherinfos.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF631B31CA2300220A14 /* c.patchermess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.patchermess.cpp; path = Deprecated/c.patchermess.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF641B31CA2300220A14 /* FFTConvolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FFTConvolver.cpp; path = Deprecated/FFTConvolver.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF651B31CA2300220A14 /* FFTConvolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FFTConvolver.h; path = Deprecated/FFTConvolver.h; sourceTree = SOURCE_ROOT; };
-		8F27CF661B31CA2300220A14 /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Utilities.cpp; path = Deprecated/Utilities.cpp; sourceTree = SOURCE_ROOT; };
-		8F27CF671B31CA2300220A14 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Deprecated/Utilities.h; sourceTree = SOURCE_ROOT; };
 		8F27CF801B31CC2500220A14 /* c.bang.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.bang.cpp; path = Sources/c.bang.cpp; sourceTree = SOURCE_ROOT; };
 		8F27CF811B31CC2500220A14 /* c.blackboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.blackboard.cpp; path = Sources/c.blackboard.cpp; sourceTree = SOURCE_ROOT; };
 		8F27CF821B31CC2500220A14 /* c.breakpoints.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.breakpoints.cpp; path = Sources/c.breakpoints.cpp; sourceTree = SOURCE_ROOT; };
@@ -221,8 +181,6 @@
 		8F4FFE261BCED91C0025CAE0 /* ecolor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ecolor.c; path = ThirdParty/CicmWrapper/Sources/ecolor.c; sourceTree = SOURCE_ROOT; };
 		8F4FFE271BCED91C0025CAE0 /* ecolor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ecolor.h; path = ThirdParty/CicmWrapper/Sources/ecolor.h; sourceTree = SOURCE_ROOT; };
 		8F5401581B3420EC00A2E969 /* enative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = enative.h; path = ThirdParty/CicmWrapper/Sources/enative.h; sourceTree = SOURCE_ROOT; };
-		8F823F811B33011600F5A69E /* c.loadmess.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.loadmess.cpp; path = Deprecated/c.loadmess.cpp; sourceTree = SOURCE_ROOT; };
-		8F823F821B33011600F5A69E /* c.prepend.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = c.prepend.cpp; path = Deprecated/c.prepend.cpp; sourceTree = SOURCE_ROOT; };
 		8F9D94F31BC951B2001FEC37 /* eattr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = eattr.c; path = ThirdParty/CicmWrapper/Sources/eattr.c; sourceTree = SOURCE_ROOT; };
 		8F9D94F41BC951B2001FEC37 /* eattr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eattr.h; path = ThirdParty/CicmWrapper/Sources/eattr.h; sourceTree = SOURCE_ROOT; };
 		8F9D94F91BC9EF4D001FEC37 /* eflags.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = eflags.c; path = ThirdParty/CicmWrapper/Sources/eflags.c; sourceTree = SOURCE_ROOT; };
@@ -271,7 +229,6 @@
 				8F26F18A17E76273005FCB97 /* c.library.cpp */,
 				8FB8EB6719007B1E005FAF6A /* c.library.hpp */,
 				8FB8EB2D19007B04005FAF6A /* Sources */,
-				8FB8EB69190080E9005FAF6A /* Deprecated */,
 				8FD16282196FCA1A00D5104D /* CicmWrapper */,
 				59FB02F717A7FAA9001E977D /* Accelerate.framework */,
 				5913847015DAA36D0029AD16 /* Products */,
@@ -317,28 +274,6 @@
 			);
 			name = Sources;
 			path = Chocolate;
-			sourceTree = "<group>";
-		};
-		8FB8EB69190080E9005FAF6A /* Deprecated */ = {
-			isa = PBXGroup;
-			children = (
-				8F27CF5E1B31CA2300220A14 /* c.convolve_tilde.cpp */,
-				8F27CF5F1B31CA2300220A14 /* c.freeverb_tilde.cpp */,
-				8F27CF601B31CA2300220A14 /* c.pak.cpp */,
-				8F27CF611B31CA2300220A14 /* c.patcherargs.cpp */,
-				8F27CF621B31CA2300220A14 /* c.patcherinfos.cpp */,
-				8F27CF631B31CA2300220A14 /* c.patchermess.cpp */,
-				8F823F821B33011600F5A69E /* c.prepend.cpp */,
-				8F823F811B33011600F5A69E /* c.loadmess.cpp */,
-				8F27CF641B31CA2300220A14 /* FFTConvolver.cpp */,
-				8F27CF651B31CA2300220A14 /* FFTConvolver.h */,
-				8F27CF5C1B31CA2300220A14 /* AudioFFT.cpp */,
-				8F27CF5D1B31CA2300220A14 /* AudioFFT.h */,
-				8F27CF661B31CA2300220A14 /* Utilities.cpp */,
-				8F27CF671B31CA2300220A14 /* Utilities.h */,
-			);
-			name = Deprecated;
-			path = Coffee;
 			sourceTree = "<group>";
 		};
 		8FD16282196FCA1A00D5104D /* CicmWrapper */ = {
@@ -402,7 +337,6 @@
 				8F9D951B1BCC166F001FEC37 /* eview.h in Headers */,
 				8F27CF2A1B31C87900220A14 /* eparam.h in Headers */,
 				8F9D95091BCA958F001FEC37 /* eproxy.h in Headers */,
-				8F27CF6A1B31CA2300220A14 /* AudioFFT.h in Headers */,
 				8FB8EB6819007B1E005FAF6A /* c.library.hpp in Headers */,
 				8F9D95151BCBC7CD001FEC37 /* egui.h in Headers */,
 				8FBAC5361BCFBD160091F117 /* eguicontext.h in Headers */,
@@ -413,9 +347,7 @@
 				8F4FFE1E1BCEAF130025CAE0 /* epath.h in Headers */,
 				8F9D94F71BC951B2001FEC37 /* eattr.h in Headers */,
 				8F27CF3C1B31C87900220A14 /* eobj.h in Headers */,
-				8F27CF7E1B31CA2300220A14 /* Utilities.h in Headers */,
 				8F26A87E1BDF993E002F4395 /* eguiimp.h in Headers */,
-				8F27CF7A1B31CA2300220A14 /* FFTConvolver.h in Headers */,
 				8F27CF2E1B31C87900220A14 /* eclass.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,7 +365,6 @@
 				8F9D951C1BCC166F001FEC37 /* eview.h in Headers */,
 				8F27CF2B1B31C87900220A14 /* eparam.h in Headers */,
 				8F9D950A1BCA958F001FEC37 /* eproxy.h in Headers */,
-				8F27CF6B1B31CA2300220A14 /* AudioFFT.h in Headers */,
 				8FAC0BF21969731800E09ACB /* c.library.hpp in Headers */,
 				8F9D95161BCBC7CD001FEC37 /* egui.h in Headers */,
 				8FBAC5371BCFBD160091F117 /* eguicontext.h in Headers */,
@@ -444,9 +375,7 @@
 				8F4FFE1F1BCEAF130025CAE0 /* epath.h in Headers */,
 				8F9D94F81BC951B2001FEC37 /* eattr.h in Headers */,
 				8F27CF3D1B31C87900220A14 /* eobj.h in Headers */,
-				8F27CF7F1B31CA2300220A14 /* Utilities.h in Headers */,
 				8F26A87F1BDF993E002F4395 /* eguiimp.h in Headers */,
-				8F27CF7B1B31CA2300220A14 /* FFTConvolver.h in Headers */,
 				8F27CF2F1B31C87900220A14 /* eclass.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -520,8 +449,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F9D94F51BC951B2001FEC37 /* eattr.c in Sources */,
-				8F27CF741B31CA2300220A14 /* c.patcherinfos.cpp in Sources */,
-				8F27CF7C1B31CA2300220A14 /* Utilities.cpp in Sources */,
 				8F27CF9F1B31CC2500220A14 /* c.gain_tilde.cpp in Sources */,
 				8F27CF2C1B31C87900220A14 /* eclass.c in Sources */,
 				8F9D95011BCA8F91001FEC37 /* edsp.c in Sources */,
@@ -529,7 +456,6 @@
 				8F27CFA31B31CC2500220A14 /* c.knob.cpp in Sources */,
 				8F27CFA51B31CC2500220A14 /* c.matrix.cpp in Sources */,
 				8F4FFE1C1BCEAF130025CAE0 /* epath.c in Sources */,
-				8F823F851B33011600F5A69E /* c.prepend.cpp in Sources */,
 				8FC7BCB31C2180310093D69A /* eparam.c in Sources */,
 				8F27CF3A1B31C87900220A14 /* eobj.c in Sources */,
 				8F27CF971B31CC2500220A14 /* c.blackboard.cpp in Sources */,
@@ -537,32 +463,24 @@
 				8F27CFB11B31CC2500220A14 /* c.preset.cpp in Sources */,
 				8FBAC5341BCFBD160091F117 /* etcltk.c in Sources */,
 				8F27CF991B31CC2500220A14 /* c.breakpoints.cpp in Sources */,
-				8F27CF701B31CA2300220A14 /* c.pak.cpp in Sources */,
 				8F9D95131BCBC7CD001FEC37 /* egui.c in Sources */,
 				8F27CFBB1B31CC2500220A14 /* c.tab.cpp in Sources */,
-				8F27CF6E1B31CA2300220A14 /* c.freeverb_tilde.cpp in Sources */,
-				8F27CF721B31CA2300220A14 /* c.patcherargs.cpp in Sources */,
 				8F9D94FB1BC9EF4E001FEC37 /* eflags.c in Sources */,
 				8F27CF951B31CC2500220A14 /* c.bang.cpp in Sources */,
 				8F27CF301B31C87900220A14 /* ecommon.c in Sources */,
 				8F27CFB91B31CC2500220A14 /* c.slider.cpp in Sources */,
-				8F27CF761B31CA2300220A14 /* c.patchermess.cpp in Sources */,
 				8F4FFE221BCED7EF0025CAE0 /* etextlayout.c in Sources */,
 				8F27CF9B1B31CC2500220A14 /* c.colorpanel.cpp in Sources */,
 				8F4FFE281BCED91C0025CAE0 /* ecolor.c in Sources */,
 				8F27CFAD1B31CC2500220A14 /* c.number.cpp in Sources */,
 				8F27CF361B31C87900220A14 /* elayer.c in Sources */,
-				8F823F831B33011600F5A69E /* c.loadmess.cpp in Sources */,
 				8F27CFA71B31CC2500220A14 /* c.menu.cpp in Sources */,
 				8F27CF9D1B31CC2500220A14 /* c.dsp_tilde.cpp in Sources */,
 				8F27CFB71B31CC2500220A14 /* c.scope_tilde.cpp in Sources */,
 				8F9D95191BCC166F001FEC37 /* eview.c in Sources */,
 				8FC219B91BA1B76000FD3F5E /* c.comment.cpp in Sources */,
-				8F27CF6C1B31CA2300220A14 /* c.convolve_tilde.cpp in Sources */,
 				8F27CFAB1B31CC2500220A14 /* c.number_tilde.cpp in Sources */,
 				8F27CFA91B31CC2500220A14 /* c.meter_tilde.cpp in Sources */,
-				8F27CF781B31CA2300220A14 /* FFTConvolver.cpp in Sources */,
-				8F27CF681B31CA2300220A14 /* AudioFFT.cpp in Sources */,
 				8FB904541B6661D9000A8449 /* c.camomile.cpp in Sources */,
 				8F27CFB31B31CC2500220A14 /* c.radio.cpp in Sources */,
 				8F27CFAF1B31CC2500220A14 /* c.plane.cpp in Sources */,
@@ -579,8 +497,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F9D94F61BC951B2001FEC37 /* eattr.c in Sources */,
-				8F27CF751B31CA2300220A14 /* c.patcherinfos.cpp in Sources */,
-				8F27CF7D1B31CA2300220A14 /* Utilities.cpp in Sources */,
 				8F27CFA01B31CC2500220A14 /* c.gain_tilde.cpp in Sources */,
 				8F27CF2D1B31C87900220A14 /* eclass.c in Sources */,
 				8F9D95021BCA8F91001FEC37 /* edsp.c in Sources */,
@@ -588,39 +504,30 @@
 				8F27CFA41B31CC2500220A14 /* c.knob.cpp in Sources */,
 				8F27CFA61B31CC2500220A14 /* c.matrix.cpp in Sources */,
 				8F4FFE1D1BCEAF130025CAE0 /* epath.c in Sources */,
-				8F823F861B33011600F5A69E /* c.prepend.cpp in Sources */,
 				8F27CF3B1B31C87900220A14 /* eobj.c in Sources */,
 				8F27CF981B31CC2500220A14 /* c.blackboard.cpp in Sources */,
 				8F27CFB61B31CC2500220A14 /* c.rslider.cpp in Sources */,
 				8F27CFB21B31CC2500220A14 /* c.preset.cpp in Sources */,
 				8FBAC5351BCFBD160091F117 /* etcltk.c in Sources */,
 				8F27CF9A1B31CC2500220A14 /* c.breakpoints.cpp in Sources */,
-				8F27CF711B31CA2300220A14 /* c.pak.cpp in Sources */,
 				8F9D95141BCBC7CD001FEC37 /* egui.c in Sources */,
 				8F27CFBC1B31CC2500220A14 /* c.tab.cpp in Sources */,
-				8F27CF6F1B31CA2300220A14 /* c.freeverb_tilde.cpp in Sources */,
-				8F27CF731B31CA2300220A14 /* c.patcherargs.cpp in Sources */,
 				8F9D94FC1BC9EF4E001FEC37 /* eflags.c in Sources */,
 				8F27CF961B31CC2500220A14 /* c.bang.cpp in Sources */,
 				8F27CF311B31C87900220A14 /* ecommon.c in Sources */,
 				8F27CFBA1B31CC2500220A14 /* c.slider.cpp in Sources */,
-				8F27CF771B31CA2300220A14 /* c.patchermess.cpp in Sources */,
 				8F4FFE231BCED7EF0025CAE0 /* etextlayout.c in Sources */,
 				8F27CF9C1B31CC2500220A14 /* c.colorpanel.cpp in Sources */,
 				8F4FFE291BCED91C0025CAE0 /* ecolor.c in Sources */,
 				8F27CFAE1B31CC2500220A14 /* c.number.cpp in Sources */,
 				8F27CF371B31C87900220A14 /* elayer.c in Sources */,
-				8F823F841B33011600F5A69E /* c.loadmess.cpp in Sources */,
 				8F27CFA81B31CC2500220A14 /* c.menu.cpp in Sources */,
 				8F27CF9E1B31CC2500220A14 /* c.dsp_tilde.cpp in Sources */,
 				8F27CFB81B31CC2500220A14 /* c.scope_tilde.cpp in Sources */,
 				8F9D951A1BCC166F001FEC37 /* eview.c in Sources */,
 				8FC219BA1BA1B76000FD3F5E /* c.comment.cpp in Sources */,
-				8F27CF6D1B31CA2300220A14 /* c.convolve_tilde.cpp in Sources */,
 				8F27CFAC1B31CC2500220A14 /* c.number_tilde.cpp in Sources */,
 				8F27CFAA1B31CC2500220A14 /* c.meter_tilde.cpp in Sources */,
-				8F27CF791B31CA2300220A14 /* FFTConvolver.cpp in Sources */,
-				8F27CF691B31CA2300220A14 /* AudioFFT.cpp in Sources */,
 				8FB904551B6661D9000A8449 /* c.camomile.cpp in Sources */,
 				8F27CFB41B31CC2500220A14 /* c.radio.cpp in Sources */,
 				8F27CFB01B31CC2500220A14 /* c.plane.cpp in Sources */,
