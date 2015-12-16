@@ -181,10 +181,10 @@ extern "C" void setup_c0x2epatchermess(void)
 {
 	t_eclass *c;
     
-	c = eclass_new("c.patchermess", (method)patchermess_new, (method)eobj_free, (short)sizeof(t_patchermess), 0L, A_GIMME, 0);
+	c = eclass_new("c.patchermess", (t_method)patchermess_new, (t_method)eobj_free, (short)sizeof(t_patchermess), 0L, A_GIMME, 0);
     class_addcreator((t_newmethod)patchermess_new, gensym("c.canvasmess"), A_GIMME, 0);
 
-    eclass_addmethod(c, (method)patchermess_anything, "anything", A_GIMME, 0);
+    eclass_addmethod(c, (t_method)patchermess_anything, "anything", A_GIMME, 0);
     eclass_register(CLASS_OBJ, c);
     patchermess_class = c;
 }

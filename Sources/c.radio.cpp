@@ -96,7 +96,7 @@ static void radio_float(t_radio *x, float f)
     }
     
     radio_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -127,7 +127,7 @@ static void radio_flags(t_radio *x, float f)
     }
     ebox_parameter_setvalue((t_ebox *)x, 1, flags, 1);
     radio_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -161,7 +161,7 @@ static void radio_set(t_radio *x, t_symbol* s, int argc, t_atom *argv)
             ebox_parameter_setvalue((t_ebox *)x, 1, (float)(1<<index), 0);
         }
         
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -197,7 +197,7 @@ static void radio_list(t_radio *x, t_symbol* s, int argc, t_atom *argv)
         }
         
         radio_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -216,26 +216,26 @@ static t_pd_err radio_notify(t_radio *x, t_symbol *s, t_symbol *msg, void *sende
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_itcolor)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
 		}
         else if(s == cream_sym_checklist)
         {
             ebox_parameter_setvalue((t_ebox *)x, 1, 0, 1);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
         }
 	}
     else if(msg == cream_sym_value_changed)
     {
         radio_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
         ebox_redraw((t_ebox *)x);
     }
 	return 0;
 }
 
-static void radio_getdrawparams(t_radio *x, t_object *patcherview, t_edrawparams *params)
+static void radio_getdrawparams(t_radio *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -262,12 +262,12 @@ static void radio_oksize(t_radio *x, t_rect *newrect)
 static void draw_background(t_radio *x, t_object *view, t_rect *rect)
 {
 	int i;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
     
 	if (g)
 	{
-        egraphics_set_color_rgba(g, &x->f_color_border);
-        egraphics_set_line_width(g, 2.f);
+        elayer_set_color_rgba(g, &x->f_color_border);
+        elayer_set_line_width(g, 2.f);
         const float ratio = x->f_direction ? ((rect->width - 4.f) / x->f_nitems) : (rect->height - 4.f) / x->f_nitems;
         if(x->f_checklist)
         {
@@ -277,16 +277,16 @@ static void draw_background(t_radio *x, t_object *view, t_rect *rect)
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    egraphics_rectangle(g, (i + 0.5f) * ratio - offset + 2.f, 2.f, dist, dist);
-                    egraphics_stroke(g);
+                    elayer_rectangle(g, (i + 0.5f) * ratio - offset + 2.f, 2.f, dist, dist);
+                    elayer_stroke(g);
                 }
             }
             else
             {
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    egraphics_rectangle(g, 2.f, (i + 0.5) * ratio - offset + 2.f, dist, dist);
-                    egraphics_stroke(g);
+                    elayer_rectangle(g, 2.f, (i + 0.5) * ratio - offset + 2.f, dist, dist);
+                    elayer_stroke(g);
                 }
             }
         }
@@ -297,8 +297,8 @@ static void draw_background(t_radio *x, t_object *view, t_rect *rect)
                 const float height = rect->height * 0.5f;
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    egraphics_circle(g, (i + 0.5f) * ratio + 2.f, height, height - 2.f);
-                    egraphics_stroke(g);
+                    elayer_circle(g, (i + 0.5f) * ratio + 2.f, height, height - 2.f);
+                    elayer_stroke(g);
                 }
             }
             else
@@ -306,29 +306,29 @@ static void draw_background(t_radio *x, t_object *view, t_rect *rect)
                 const float width = rect->width * 0.5f;
                 for(i = 0; i < x->f_nitems; i++)
                 {
-                    egraphics_circle(g, width, (i + 0.5f) * ratio + 2.f, width - 2.f);
-                    egraphics_stroke(g);
+                    elayer_circle(g, width, (i + 0.5f) * ratio + 2.f, width - 2.f);
+                    elayer_stroke(g);
                 }
             }
         }
     
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
 static void draw_items(t_radio *x, t_object *view, t_rect *rect)
 {
 	int i;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_items_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_items_layer, rect->width, rect->height);
 	if (g)
 	{
-        egraphics_set_color_rgba(g, &x->f_color_item);
+        elayer_set_color_rgba(g, &x->f_color_item);
         const int   flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
         const float ratio = x->f_direction ? ((rect->width - 4.f) / x->f_nitems) : (rect->height - 4.f) / x->f_nitems;
         if(x->f_checklist)
         {
-            egraphics_set_line_width(g, 2.f);
+            elayer_set_line_width(g, 2.f);
             const float offset = x->f_direction ? (rect->height * 0.5f - 4.f) : (rect->width * 0.5f - 4.f);
             const float dist = offset * 2.f;
             if(x->f_direction)
@@ -338,8 +338,8 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
                     if(flags & (1<<i))
                     {
                         const float val = (i + 0.5f) * ratio - offset + 2.f;
-                        egraphics_line_fast(g, val, 4.f, val + dist, 4.f + dist);
-                        egraphics_line_fast(g, val, 4.f  + dist, val + dist, 4.f);
+                        elayer_line_fast(g, val, 4.f, val + dist, 4.f + dist);
+                        elayer_line_fast(g, val, 4.f  + dist, val + dist, 4.f);
                     }
                 }
             }
@@ -350,8 +350,8 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
                     if(flags & (1<<i))
                     {
                         const float val = (i + 0.5f) * ratio - offset + 2.f;
-                        egraphics_line_fast(g, 4.f, val, 4.f + dist, val + dist);
-                        egraphics_line_fast(g, 4.f + dist, val, 4.f, val + dist);
+                        elayer_line_fast(g, 4.f, val, 4.f + dist, val + dist);
+                        elayer_line_fast(g, 4.f + dist, val, 4.f, val + dist);
                     }
                 }
             }
@@ -365,8 +365,8 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
                 {
                     if(flags & (1<<i))
                     {
-                        egraphics_circle(g, (i + 0.5f) * ratio + 2.f, height, height - 4.f);
-                        egraphics_fill(g);
+                        elayer_circle(g, (i + 0.5f) * ratio + 2.f, height, height - 4.f);
+                        elayer_fill(g);
                         break;
                     }
                 }
@@ -378,31 +378,31 @@ static void draw_items(t_radio *x, t_object *view, t_rect *rect)
                 {
                     if(flags & (1<<i))
                     {
-                        egraphics_circle(g, width, (i + 0.5f) * ratio + 2.f, width - 4.f);
-                        egraphics_fill(g);
+                        elayer_circle(g, width, (i + 0.5f) * ratio + 2.f, width - 4.f);
+                        elayer_fill(g);
                         break;
                     }
                 }
             }
         }
         
-        ebox_end_layer((t_ebox*)x, cream_sym_items_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_items_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_items_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_items_layer, 0., 0.);
 }
 
 static void radio_paint(t_radio *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_background(x, view, &rect);
     draw_items(x, view, &rect);
 }
 
-static void radio_mousedown(t_radio *x, t_object *patcherview, t_pt pt, long modifiers)
+static void radio_mousedown(t_radio *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     const float rel = x->f_direction ? ((pt.x - 2.f) / (rect.width - 4.f)) : ((pt.y - 2.f) / (rect.height - 4.f));
     const int index = (int)pd_clip(rel * (float)x->f_nitems, 0.f, (float)x->f_nitems - 1.f);
     if(index >= 0 && index < x->f_nitems)
@@ -426,7 +426,7 @@ static void radio_mousedown(t_radio *x, t_object *patcherview, t_pt pt, long mod
         }
         ebox_parameter_end_changes((t_ebox *)x, 1);
         radio_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -439,7 +439,7 @@ static t_pd_err radio_nitems_set(t_radio *x, t_object *attr, int ac, t_atom *av)
         ebox_parameter_setvalue((t_ebox *)x, 1, 0, 0);
         ebox_parameter_setminmax((t_ebox *)x, 1, 0.f, powf(2., (float)(x->f_nitems)) - 1.f);
         ebox_parameter_setnstep((t_ebox *)x, 1,  (int)powf(2., (float)(x->f_nitems)));
-        ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
+        eobj_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
     }
     return 0;
 }
@@ -469,7 +469,7 @@ static void radio_setter_t(t_radio *x, int index, char const* text)
         }
         ebox_parameter_setvalue((t_ebox *)x, 1, flags, 0);
         radio_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
         ebox_redraw((t_ebox *)x);
     }
     else if(isdigit(text[0]))
@@ -478,7 +478,7 @@ static void radio_setter_t(t_radio *x, int index, char const* text)
         ebox_parameter_setvalue((t_ebox *)x, 1, (float)(1<<_index), 0);
         
         radio_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -526,7 +526,7 @@ static void *radio_new(t_symbol *s, int argc, t_atom *argv)
         x->f_out_list = outlet_new((t_object *)x, &s_anything);
         x->f_out_flag = outlet_new((t_object *)x, &s_float);
 
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         return x;
     }
@@ -535,22 +535,22 @@ static void *radio_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2eradio(void)
 {
-    t_eclass *c = eclass_new("c.radio", (method)radio_new, (method)ebox_free, (short)sizeof(t_radio), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.radio", (t_method)radio_new, (t_method)ebox_free, (short)sizeof(t_radio), 0L, A_GIMME, 0);
     if(c)
     {
         eclass_guiinit(c, 0);
-        eclass_addmethod(c, (method) radio_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) radio_notify,          "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) radio_getdrawparams,   "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) radio_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) radio_paint,           "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) radio_notify,          "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) radio_getdrawparams,   "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) radio_oksize,          "oksize",           A_NULL, 0);
         
-        eclass_addmethod(c, (method) radio_set,             "set",              A_GIMME,0);
-        eclass_addmethod(c, (method) radio_list,            "list",             A_GIMME,0);
-        eclass_addmethod(c, (method) radio_float,           "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) radio_bang,            "bang",             A_NULL, 0);
-        eclass_addmethod(c, (method) radio_flags,           "flags",            A_FLOAT, 0);
+        eclass_addmethod(c, (t_method) radio_set,             "set",              A_GIMME,0);
+        eclass_addmethod(c, (t_method) radio_list,            "list",             A_GIMME,0);
+        eclass_addmethod(c, (t_method) radio_float,           "float",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) radio_bang,            "bang",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) radio_flags,           "flags",            A_FLOAT, 0);
         
-        eclass_addmethod(c, (method) radio_mousedown,       "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) radio_mousedown,       "mousedown",        A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
         

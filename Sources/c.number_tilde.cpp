@@ -54,7 +54,8 @@ static void number_tilde_dsp(t_number_tilde *x, t_object *dsp, short *count, dou
 {
     if(count[0])
     {
-        object_method(dsp, gensym("dsp_add"), x, (method)number_tilde_perform, 0, NULL);
+        int todo;
+        //object_method(dsp, gensym("dsp_add"), x, (t_method)number_tilde_perform, 0, NULL);
         x->f_startclock = 1;
     }
     else
@@ -68,7 +69,7 @@ static void number_tilde_tick(t_number_tilde *x)
 	if(canvas_dspstate)
     {
         number_tilde_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
 		clock_delay(x->f_clock, x->f_interval);
     }
@@ -81,8 +82,8 @@ static t_pd_err number_tilde_notify(t_number_tilde *x, t_symbol *s, t_symbol *ms
         if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor ||
            s == cream_sym_font || s == cream_sym_decimal || s == cream_sym_decimal)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
 		}
 	}
 	return 0;
@@ -90,37 +91,37 @@ static t_pd_err number_tilde_notify(t_number_tilde *x, t_symbol *s, t_symbol *ms
 
 static void draw_background(t_number_tilde *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
-    t_etext *jtl;
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
+    t_etextlayout *jtl;
 	if(g)
 	{
-        jtl = etext_layout_create();
+        jtl = etextlayout_new();
         if(jtl)
         {
-            etext_layout_set(jtl, "~", &x->f_font, 1, rect->height / 2., rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
-            etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_draw(jtl, g);
+            etextlayout_set(jtl, "~", &x->f_font, 1, rect->height / 2., rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
+            etextlayout_settextcolor(jtl, &x->f_color_text);
+            etextlayout_draw(jtl, g);
             
-            egraphics_set_line_width(g, 2);
-            egraphics_set_color_rgba(g, &x->f_color_border);
-            egraphics_move_to(g, 0, 0);
-            egraphics_line_to(g, sys_fontwidth(x->f_font.size) + 6,  rect->height / 2.);
-            egraphics_line_to(g, 0, rect->height);
-            egraphics_stroke(g);
+            elayer_set_line_width(g, 2);
+            elayer_set_color_rgba(g, &x->f_color_border);
+            elayer_move_to(g, 0, 0);
+            elayer_line_to(g, sys_fontwidth(x->f_font.size) + 6,  rect->height / 2.);
+            elayer_line_to(g, 0, rect->height);
+            elayer_stroke(g);
             
-            ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
-            etext_layout_destroy(jtl);
+            ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
+            etextlayout_destroy(jtl);
         }
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
 static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_value_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_value_layer, rect->width, rect->height);
 	if(g)
 	{
-        t_etext *jtl = etext_layout_create();
+        t_etextlayout *jtl = etextlayout_new();
         if(jtl)
         {
             char number[256];
@@ -138,26 +139,26 @@ static void draw_value(t_number_tilde *x, t_object *view, t_rect *rect)
                 sprintf(number, "%.5g", x->f_peak_value);
             else
                 sprintf(number, "%.6g", x->f_peak_value);
-            etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->f_font, sys_fontwidth(x->f_font.size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_NOWRAP);
+            etextlayout_settextcolor(jtl, &x->f_color_text);
+            etextlayout_set(jtl, number, &x->f_font, sys_fontwidth(x->f_font.size) + 8, rect->height / 2., rect->width - 3, 0, ETEXT_LEFT, ETEXT_NOWRAP);
             
-            etext_layout_draw(jtl, g);
-            ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
-            etext_layout_destroy(jtl);
+            etextlayout_draw(jtl, g);
+            ebox_end_layer((t_ebox*)x, view, cream_sym_value_layer);
+            etextlayout_destroy(jtl);
         }
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_value_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_value_layer, 0., 0.);
 }
 
 static void number_tilde_paint(t_number_tilde *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_background(x, view, &rect);
     draw_value(x, view, &rect);
 }
 
-static void number_tilde_getdrawparams(t_number_tilde *x, t_object *patcherview, t_edrawparams *params)
+static void number_tilde_getdrawparams(t_number_tilde *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -189,7 +190,7 @@ static void *number_tilde_new(t_symbol *s, int argc, t_atom *argv)
         x->f_peak_value     = 0.;
         x->f_clock          = clock_new(x,(t_method)number_tilde_tick);
         x->f_startclock     = 0;
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
     }
     
@@ -200,18 +201,18 @@ extern "C" void setup_c0x2enumber_tilde(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.number~", (method)number_tilde_new, (method)number_tilde_free, (short)sizeof(t_number_tilde), 0L, A_GIMME, 0);
+    c = eclass_new("c.number~", (t_method)number_tilde_new, (t_method)number_tilde_free, (short)sizeof(t_number_tilde), 0L, A_GIMME, 0);
     
     eclass_dspinit(c);
     eclass_guiinit(c, 0);
 
     
-    eclass_addmethod(c, (method) number_tilde_dsp,             "dsp",              A_NULL, 0);
-    eclass_addmethod(c, (method) number_tilde_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) number_tilde_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) number_tilde_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) number_tilde_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) number_tilde_output,          "bang",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) number_tilde_dsp,             "dsp",              A_NULL, 0);
+    eclass_addmethod(c, (t_method) number_tilde_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) number_tilde_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) number_tilde_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) number_tilde_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) number_tilde_output,          "bang",             A_NULL, 0);
     
     CLASS_ATTR_DEFAULT              (c, "size", 0, "53 13");
     

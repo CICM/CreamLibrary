@@ -161,9 +161,9 @@ extern "C" void setup_c0x2epatcherargs(void)
 {
 	t_eclass *c;
 
-	c = eclass_new("c.patcherargs", (method)patcherargs_new, (method)patcherargs_free, (short)sizeof(t_patcherargs), 0L, A_GIMME, 0);
+	c = eclass_new("c.patcherargs", (t_method)patcherargs_new, (t_method)patcherargs_free, (short)sizeof(t_patcherargs), 0L, A_GIMME, 0);
     class_addcreator((t_newmethod)patcherargs_new, gensym("c.canvasargs"), A_GIMME, 0);
-    eclass_addmethod(c, (method)patcherargs_output,      "bang",       A_NULL, 0);
+    eclass_addmethod(c, (t_method)patcherargs_output,      "bang",       A_NULL, 0);
     eclass_register(CLASS_OBJ, c);
     patcherargs_class = c;
 }

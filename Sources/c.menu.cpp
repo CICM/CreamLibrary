@@ -138,7 +138,7 @@ static void menu_insert(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             x->f_nitems++;
             ebox_parameter_setminmax((t_ebox *)x, 1, 0.f, (float)x->f_nitems - 1.f);
             ebox_parameter_setnstep((t_ebox *)x, 1, (int)x->f_nitems);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -155,7 +155,7 @@ static void menu_setitem(t_menu *x, t_symbol *s, int argc, t_atom *argv)
         if(item)
         {
             x->f_items[index] = item;
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -172,7 +172,7 @@ static void menu_delete(t_menu *x, float f)
         x->f_nitems--;
         ebox_parameter_setminmax((t_ebox *)x, 1, 0.f, (float)x->f_nitems);
         ebox_parameter_setnstep((t_ebox *)x, 1, (int)x->f_nitems);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -182,7 +182,7 @@ static void menu_clear(t_menu *x)
     x->f_nitems = 0;
     ebox_parameter_setminmax((t_ebox *)x, 1, 0.f, 0.f);
     ebox_parameter_setnstep((t_ebox *)x, 1, 1);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -216,7 +216,7 @@ static void menu_next(t_menu *x)
     const float index = ebox_parameter_getvalue((t_ebox *)x, 1);
     ebox_parameter_setvalue((t_ebox *)x, 1, index+1, 1);
     menu_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -225,7 +225,7 @@ static void menu_prev(t_menu *x)
     const float index = ebox_parameter_getvalue((t_ebox *)x, 1);
     ebox_parameter_setvalue((t_ebox *)x, 1, index-1, 1);
     menu_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -233,7 +233,7 @@ static void menu_float(t_menu *x, t_floatarg f)
 {
     ebox_parameter_setvalue((t_ebox *)x, 1, f, 1);
     menu_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -249,7 +249,7 @@ static void menu_anything(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             {
                 ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 1);
                 menu_output(x);
-                ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+                ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
                 ebox_redraw((t_ebox *)x);
                 return;
             }
@@ -264,7 +264,7 @@ static void menu_set(t_menu *x, t_symbol *s, int argc, t_atom *argv)
     if(argc && argv && atom_gettype(argv) == A_FLOAT)
     {
         ebox_parameter_setvalue((t_ebox *)x, 1, atom_getfloat(argv), 0);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
     else if(argc && argv && atom_gettype(argv) == A_SYMBOL)
@@ -277,7 +277,7 @@ static void menu_set(t_menu *x, t_symbol *s, int argc, t_atom *argv)
                 if(x->f_items[i] == item)
                 {
                     ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 0);
-                    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+                    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
                     ebox_redraw((t_ebox *)x);
                     return;
                 }
@@ -297,7 +297,7 @@ static void menu_setsymbol(t_menu *x, t_symbol *s, int argc, t_atom *argv)
             if(x->f_items[i] == item)
             {
                 ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 0);
-                ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+                ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
                 ebox_redraw((t_ebox *)x);
                 return;
             }
@@ -309,7 +309,7 @@ static void menu_setsymbol(t_menu *x, t_symbol *s, int argc, t_atom *argv)
 //                                          Drawing                                         //
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-static void menu_getdrawparams(t_menu *x, t_object *patcherview, t_edrawparams *params)
+static void menu_getdrawparams(t_menu *x, t_object *view, t_edrawparams *params)
 {
 	params->d_borderthickness   = 2;
 	params->d_cornersize        = 2;
@@ -329,13 +329,13 @@ static t_pd_err menu_notify(t_menu *x, t_symbol *s, t_symbol *msg, void *sender,
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor || s == cream_sym_font)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
 		}
 	}
     else if(msg == cream_sym_value_changed)
     {
         menu_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 	return 0;
@@ -344,43 +344,43 @@ static t_pd_err menu_notify(t_menu *x, t_symbol *s, t_symbol *msg, void *sender,
 static void menu_paint(t_menu *x, t_object *view)
 {
 	t_rect rect;
-	ebox_get_rect_for_view((t_ebox *)x, &rect);
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+	ebox_getdrawbounds((t_ebox *)x, view,  &rect);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect.width, rect.height);
     if(g)
     {
         const int index = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
         if(x->f_nitems && index < x->f_nitems)
         {
-            t_etext *jtl = etext_layout_create();
+            t_etextlayout *jtl = etextlayout_new();
             if(jtl)
             {
-                etext_layout_set(jtl, x->f_items[index]->s_name, &x->f_font,
+                etextlayout_set(jtl, x->f_items[index]->s_name, &x->f_font,
                              2.f, 0.f, rect.width - rect.height - 2.f, rect.height, ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
-                etext_layout_settextcolor(jtl, &x->f_color_text);
-                etext_layout_draw(jtl, g);
-                etext_layout_destroy(jtl);
+                etextlayout_settextcolor(jtl, &x->f_color_text);
+                etextlayout_draw(jtl, g);
+                etextlayout_destroy(jtl);
             }
         }
         
-        egraphics_set_color_rgba(g, &x->f_color_border);
-        egraphics_set_line_width(g, 2);
-        egraphics_line_fast(g, rect.width - rect.height, 0., rect.width - rect.height, rect.height);
+        elayer_set_color_rgba(g, &x->f_color_border);
+        elayer_set_line_width(g, 2);
+        elayer_line_fast(g, rect.width - rect.height, 0., rect.width - rect.height, rect.height);
         
-        egraphics_move_to(g, rect.width - rect.height + 3.f, rect.height * 0.5f - 2.f);
-        egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f - 2.f);
-        egraphics_line_to(g, rect.width - rect.height * 0.5f + 1.f, 2.f);
-        egraphics_close_path(g);
-        egraphics_fill(g);
+        elayer_move_to(g, rect.width - rect.height + 3.f, rect.height * 0.5f - 2.f);
+        elayer_line_to(g, rect.width - 2.f, rect.height * 0.5f - 2.f);
+        elayer_line_to(g, rect.width - rect.height * 0.5f + 1.f, 2.f);
+        elayer_close_path(g);
+        elayer_fill(g);
         
-        egraphics_move_to(g, rect.width - rect.height + 3.f, rect.height * 0.5f + 2.f);
-        egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f + 2.f);
-        egraphics_line_to(g, rect.width - rect.height * 0.5f + 1.f, rect.height - 2.f);
-        egraphics_close_path(g);
-        egraphics_fill(g);
+        elayer_move_to(g, rect.width - rect.height + 3.f, rect.height * 0.5f + 2.f);
+        elayer_line_to(g, rect.width - 2.f, rect.height * 0.5f + 2.f);
+        elayer_line_to(g, rect.width - rect.height * 0.5f + 1.f, rect.height - 2.f);
+        elayer_close_path(g);
+        elayer_fill(g);
         
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer,  0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer,  0., 0.);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -393,14 +393,14 @@ static void menu_popup(t_menu *x, t_epopup *popup, long itemid)
     {
         ebox_parameter_setvalue((t_ebox *)x, 1, (float)itemid, 1);
         menu_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
         epopupmenu_destroy(x->f_popup);
         x->f_popup = NULL;
     }
 }
 
-static void menu_mousedown(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
+static void menu_mousedown(t_menu *x, t_object *view, t_pt pt, long modifiers)
 {
     if(!x->f_hover)
     {
@@ -413,7 +413,7 @@ static void menu_mousedown(t_menu *x, t_object *patcherview, t_pt pt, long modif
         if(x->f_popup)
         {
             t_rect rect;
-            ebox_get_rect_for_view((t_ebox *)x, &rect);
+            ebox_getdrawbounds((t_ebox *)x, view,  &rect);
             rect.y += rect.height + 2.f;
             const int index = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
             for(long i = 0; i < x->f_nitems; i++)
@@ -428,7 +428,7 @@ static void menu_mousedown(t_menu *x, t_object *patcherview, t_pt pt, long modif
     }
 }
 
-static void menu_mouseenter(t_menu *x, t_object *patcherview, t_pt pt, long modifiers)
+static void menu_mouseenter(t_menu *x, t_object *view, t_pt pt, long modifiers)
 {
     if(x->f_hover)
     {
@@ -441,7 +441,7 @@ static void menu_mouseenter(t_menu *x, t_object *patcherview, t_pt pt, long modi
         if(x->f_popup)
         {
             t_rect rect;
-            ebox_get_rect_for_view((t_ebox *)x, &rect);
+            ebox_getdrawbounds((t_ebox *)x, view,  &rect);
             rect.y += rect.height + 2.f;
             const int index = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
             for(long i = 0; i < x->f_nitems; i++)
@@ -488,7 +488,7 @@ static t_pd_err menu_items_set(t_menu *x, t_object *attr, int ac, t_atom *av)
     ebox_parameter_setminmax((t_ebox *)x, 1, 0, ac ? (float)(ac - 1) : 0.f);
     ebox_parameter_setnstep((t_ebox *)x, 1, ac);
     x->f_nitems = ac;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
 }
@@ -503,7 +503,7 @@ static void menu_setter_t(t_menu *x, int index, char const* text)
         {
             ebox_parameter_setvalue((t_ebox *)x, 1, (float)i, 0);
             menu_output(x);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_items_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_items_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -532,7 +532,7 @@ static void *menu_new(t_symbol *s, int argc, t_atom *argv)
         x->f_out_infos      = outlet_new((t_object *)x, &s_anything);
         x->f_nitems     = 0;
         x->f_popup          = NULL;
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         
         return (x);
@@ -544,34 +544,34 @@ extern "C" void setup_c0x2emenu(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.menu", (method)menu_new, (method)ebox_free, (short)sizeof(t_menu), 0L, A_GIMME, 0);
+    c = eclass_new("c.menu", (t_method)menu_new, (t_method)ebox_free, (short)sizeof(t_menu), 0L, A_GIMME, 0);
     
     eclass_guiinit(c, 0);
-    eclass_addmethod(c, (method) menu_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) menu_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) menu_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) menu_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_oksize,          "oksize",           A_NULL, 0);
     
-    eclass_addmethod(c, (method) menu_append,          "append",           A_GIMME,0);
-    eclass_addmethod(c, (method) menu_insert,          "insert",           A_GIMME,0);
-    eclass_addmethod(c, (method) menu_setitem,         "setitem",          A_GIMME,0);
-    eclass_addmethod(c, (method) menu_delete,          "delete",           A_FLOAT,0);
-    eclass_addmethod(c, (method) menu_clear,           "clear",            A_NULL, 0);
-    eclass_addmethod(c, (method) menu_state,           "state",            A_GIMME,0);
+    eclass_addmethod(c, (t_method) menu_append,          "append",           A_GIMME,0);
+    eclass_addmethod(c, (t_method) menu_insert,          "insert",           A_GIMME,0);
+    eclass_addmethod(c, (t_method) menu_setitem,         "setitem",          A_GIMME,0);
+    eclass_addmethod(c, (t_method) menu_delete,          "delete",           A_FLOAT,0);
+    eclass_addmethod(c, (t_method) menu_clear,           "clear",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_state,           "state",            A_GIMME,0);
     
-    eclass_addmethod(c, (method) menu_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) menu_anything,        "anything",         A_GIMME,0);
-    eclass_addmethod(c, (method) menu_set,             "set",              A_GIMME,0);
-    eclass_addmethod(c, (method) menu_setsymbol,       "setsymbol",        A_GIMME,0);
-    eclass_addmethod(c, (method) menu_bang,            "bang",             A_NULL, 0);
-    eclass_addmethod(c, (method) menu_next,            "next",             A_NULL, 0);
-    eclass_addmethod(c, (method) menu_prev,            "prev",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_float,           "float",            A_FLOAT,0);
+    eclass_addmethod(c, (t_method) menu_anything,        "anything",         A_GIMME,0);
+    eclass_addmethod(c, (t_method) menu_set,             "set",              A_GIMME,0);
+    eclass_addmethod(c, (t_method) menu_setsymbol,       "setsymbol",        A_GIMME,0);
+    eclass_addmethod(c, (t_method) menu_bang,            "bang",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_next,            "next",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_prev,            "prev",             A_NULL, 0);
     
-    eclass_addmethod(c, (method) menu_count,            "count",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_count,            "count",           A_NULL, 0);
     
-    eclass_addmethod(c, (method) menu_mousedown,        "mousedown",       A_NULL, 0);
-    eclass_addmethod(c, (method) menu_mouseenter,       "mouseenter",      A_NULL, 0);
-    eclass_addmethod(c, (method) menu_popup,            "popup",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_mousedown,        "mousedown",       A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_mouseenter,       "mouseenter",      A_NULL, 0);
+    eclass_addmethod(c, (t_method) menu_popup,            "popup",           A_NULL, 0);
     
     CLASS_ATTR_DEFAULT              (c, "size", 0, "100 13");
     

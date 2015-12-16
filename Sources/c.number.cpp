@@ -17,7 +17,7 @@ typedef struct  _number
 	t_ebox          j_box;
     t_outlet*       f_outlet;
     t_outlet*       f_outtab;
-    t_etexteditor*  f_editor;
+    t_etextlayouteditor*  f_editor;
     char            f_firstchar;
     
     float           f_refvalue;
@@ -49,14 +49,14 @@ static void number_float(t_number *x, float f)
 {
     ebox_parameter_setvalue((t_ebox *)x, 1, f, 1);
     number_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 static void number_set(t_number *x, float f)
 {
     ebox_parameter_setvalue((t_ebox *)x , 1, f, 0);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -66,7 +66,7 @@ static void number_bang(t_number *x, float f)
     number_output(x);
 }
 
-static void number_getdrawparams(t_number *x, t_object *patcherview, t_edrawparams *params)
+static void number_getdrawparams(t_number *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = x->f_bdsize;
     params->d_cornersize        = 2;
@@ -87,13 +87,13 @@ static t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sen
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor ||
            s == cream_sym_font || s == cream_sym_decimal)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
 		}
 	}
     else if(msg == cream_sym_value_changed)
     {
         number_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
 	return 0;
@@ -101,10 +101,10 @@ static t_pd_err number_notify(t_number *x, t_symbol *s, t_symbol *msg, void *sen
 
 static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
 {
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_value_layer, rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_value_layer, rect->width, rect->height);
     if(g)
     {
-        t_etext *jtl = etext_layout_create();
+        t_etextlayout *jtl = etextlayout_new();
         if(jtl)
         {
             const float val = ebox_parameter_getvalue((t_ebox *)x, 1);
@@ -125,26 +125,26 @@ static void draw_value_drag(t_number *x, t_object *view, t_rect *rect)
             else
                 sprintf(number, "%.6g", val);
             
-            etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_set(jtl, number, &x->f_font, 2.f, 2.f, rect->width - 4.f, rect->height - 4.f,
+            etextlayout_settextcolor(jtl, &x->f_color_text);
+            etextlayout_set(jtl, number, &x->f_font, 2.f, 2.f, rect->width - 4.f, rect->height - 4.f,
                              ETEXT_CENTREDLEFT, ETEXT_NOWRAP);
             
-            etext_layout_draw(jtl, g);
-            etext_layout_destroy(jtl);
+            etextlayout_draw(jtl, g);
+            etextlayout_destroy(jtl);
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_value_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_value_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_value_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_value_layer, 0., 0.);
 }
 
 static void number_paint(t_number *x, t_object *view)
 {
 	t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_value_drag(x, view, &rect);
 }
 
-static void number_key(t_number *x, t_object *patcherview, char textcharacter, long modifiers)
+static void number_key(t_number *x, t_object *view, char textcharacter, long modifiers)
 {
     if(!x->f_editor)
     {
@@ -152,21 +152,21 @@ static void number_key(t_number *x, t_object *patcherview, char textcharacter, l
         {
             ebox_parameter_setvalue((t_ebox *)x, 1, ebox_parameter_getvalue((t_ebox *)x, 1) + 1.f, 1);
             number_output(x);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
             ebox_redraw((t_ebox *)x);
         }
         else if(textcharacter == 'T')
         {
             ebox_parameter_setvalue((t_ebox *)x, 1, ebox_parameter_getvalue((t_ebox *)x, 1) - 1.f, 1);
             number_output(x);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
             ebox_redraw((t_ebox *)x);
         }
         
     }
 }
 
-static void number_texteditor_keypress(t_number *x, t_etexteditor *editor, int key)
+static void number_texteditor_keypress(t_number *x, t_etextlayouteditor *editor, int key)
 {
     if(editor && editor == x->f_editor && !x->f_firstchar && !isdigit((char)key))
     {
@@ -178,7 +178,7 @@ static void number_texteditor_keypress(t_number *x, t_etexteditor *editor, int k
     }
 }
 
-static void number_texteditor_keyfilter(t_number *x, t_etexteditor *editor, ekey_flags key)
+static void number_texteditor_keyfilter(t_number *x, t_etextlayouteditor *editor, ekey_flags key)
 {
     char* text = NULL;
     if(editor && editor == x->f_editor)
@@ -208,12 +208,12 @@ static void number_texteditor_keyfilter(t_number *x, t_etexteditor *editor, ekey
         etexteditor_destroy(editor);
         x->f_editor = NULL;
         
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
 
-static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
+static void number_dblclick(t_number *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
     if(!x->f_editor)
@@ -221,7 +221,7 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
         x->f_editor = etexteditor_create((t_ebox *)x);
         if(x->f_editor)
         {
-            ebox_get_rect_for_view((t_ebox *)x, &rect);
+            ebox_getdrawbounds((t_ebox *)x, view,  &rect);
             etexteditor_setbackgroundcolor(x->f_editor, &x->f_color_background);
             etexteditor_settextcolor(x->f_editor, &x->f_color_text);
             etexteditor_setfont(x->f_editor, &x->f_font);
@@ -241,7 +241,7 @@ static void number_dblclick(t_number *x, t_object *patcherview, t_pt pt, long mo
     etexteditor_grabfocus(x->f_editor);
 }
 
-static void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
+static void number_mousedown(t_number *x, t_object *view, t_pt pt, long modifiers)
 {
 	const float text_width = x->f_font.size * 2. / 3.;
     ebox_parameter_begin_changes((t_ebox *)x, 1);
@@ -277,16 +277,16 @@ static void number_mousedown(t_number *x, t_object *patcherview, t_pt pt, long m
     }
 }
 
-static void number_mousedrag(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
+static void number_mousedrag(t_number *x, t_object *view, t_pt pt, long modifiers)
 {
-    ebox_set_cursor((t_ebox *)x, 2);
+    ebox_setcursor((t_ebox *)x, view, ECURSOR_SDOUBLE_ARROW);
     ebox_parameter_setvalue((t_ebox *)x, 1, x->f_refvalue + (pt.y - x->f_deriv) * x->f_inc * 0.5, 1);
     number_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void number_mouseup(t_number *x, t_object *patcherview, t_pt pt, long modifiers)
+static void number_mouseup(t_number *x, t_object *view, t_pt pt, long modifiers)
 {
     ebox_parameter_end_changes((t_ebox *)x, 1);
 }
@@ -300,7 +300,7 @@ static t_pd_err number_minmax_set(t_number *x, t_object *attr, int ac, t_atom *a
         ebox_parameter_setminmax((t_ebox *)x, 1, ((min < max) ? min : max), ((min < max) ? max : min));
     }
     
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_value_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_value_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
 }
@@ -347,7 +347,7 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
         x->f_outtab   = outlet_new((t_object *)x, &s_bang);
         x->f_editor   = NULL;
         
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         
         return x;
@@ -358,28 +358,28 @@ static void *number_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2enumber(void)
 {
-    t_eclass *c = eclass_new("c.number", (method)number_new, (method)number_free, (short)sizeof(t_number), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.number", (t_method)number_new, (t_method)number_free, (short)sizeof(t_number), 0L, A_GIMME, 0);
     
     if(c)
     {
         eclass_guiinit(c, 0 | EBOX_TEXTFIELD);
-        eclass_addmethod(c, (method) number_paint,              "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) number_notify,             "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) number_getdrawparams,      "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) number_oksize,             "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) number_float,              "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) number_set,                "set",              A_FLOAT,0);
-        eclass_addmethod(c, (method) number_bang,               "bang",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_paint,              "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_notify,             "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_getdrawparams,      "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_oksize,             "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_float,              "float",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) number_set,                "set",              A_FLOAT,0);
+        eclass_addmethod(c, (t_method) number_bang,               "bang",             A_NULL, 0);
         
-        eclass_addmethod(c, (method) number_mousedown,          "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) number_mousedrag,          "mousedrag",        A_NULL, 0);
-        eclass_addmethod(c, (method) number_mouseup,            "mouseup",          A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_mousedown,          "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_mousedrag,          "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_mouseup,            "mouseup",          A_NULL, 0);
         
-        eclass_addmethod(c, (method) number_dblclick,            "dblclick",            A_NULL, 0);
-        eclass_addmethod(c, (method) number_dblclick,            "select",              A_NULL, 0);
-        eclass_addmethod(c, (method) number_key,                 "key",                 A_NULL, 0);
-        eclass_addmethod(c, (method) number_texteditor_keypress, "texteditor_keypress", A_NULL, 0);
-        eclass_addmethod(c, (method) number_texteditor_keyfilter,"texteditor_keyfilter",A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_dblclick,            "dblclick",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_dblclick,            "select",              A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_key,                 "key",                 A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_texteditor_keypress, "texteditor_keypress", A_NULL, 0);
+        eclass_addmethod(c, (t_method) number_texteditor_keyfilter,"texteditor_keyfilter",A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "53 13");
         

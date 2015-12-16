@@ -228,7 +228,7 @@ static void breakpoints_erase(t_breakpoints *x)
     x->f_npoints = 0;
     free(x->f_points);
     x->f_points = NULL;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -319,7 +319,7 @@ static void breakpoints_add(t_breakpoints *x, t_symbol* s, int argc, t_atom* arg
                     pd_error(x, "can't allocate memory.");
                 }
             }
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -351,7 +351,7 @@ static void breakpoints_remove(t_breakpoints *x, t_symbol* s, int argc, t_atom* 
                 x->f_npoints = 0;
             }
             
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -385,7 +385,7 @@ static void breakpoints_move(t_breakpoints *x, t_symbol* s, int argc, t_atom* ar
                 x->f_points[index].y = ord;
             }
             
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -410,7 +410,7 @@ static void breakpoints_scaleabs(t_breakpoints *x, t_symbol* s, int argc, t_atom
         {
             x->f_points[i].x = ((x->f_points[i].x - x->f_range_abscissa[0]) / ratio) * (max - min) + min;
         }
-        eobj_attr_setvalueof(x, cream_sym_absrange, argc, argv);
+        eobj_attr_setvalue(x, cream_sym_absrange, argc, argv);
     }
     
 }
@@ -434,7 +434,7 @@ static void breakpoints_scaleord(t_breakpoints *x, t_symbol* s, int argc, t_atom
         {
             x->f_points[i].y = ((x->f_points[i].y - x->f_range_ordinate[0]) / ratio) * (max - min) + min;
         }
-        eobj_attr_setvalueof(x, cream_sym_ordrange, argc, argv);
+        eobj_attr_setvalue(x, cream_sym_ordrange, argc, argv);
     }
 }
 
@@ -530,7 +530,7 @@ static void breakpoints_function(t_breakpoints *x, t_symbol* s, int argc, t_atom
     }
 }
 
-static void breakpoints_getdrawparams(t_breakpoints *x, t_object *patcherview, t_edrawparams *params)
+static void breakpoints_getdrawparams(t_breakpoints *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -550,8 +550,8 @@ static t_pd_err breakpoints_notify(t_breakpoints *x, t_symbol *s, t_symbol *msg,
     {
         if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_ptcolor || s == cream_sym_licolor || s == cream_sym_textcolor || s == cream_sym_fontsize || s == cream_sym_fontname || s ==cream_sym_fontweight || s == cream_sym_fontslant)
         {
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_text_layer);
         }
         else if(s == cream_sym_absrange || s == cream_sym_ordrange)
         {
@@ -572,7 +572,7 @@ static t_pd_err breakpoints_notify(t_breakpoints *x, t_symbol *s, t_symbol *msg,
                 x->f_points[i].x = pd_clip(x->f_points[i].x, x->f_range_abscissa[0], x->f_range_abscissa[1]);
                 x->f_points[i].y = pd_clip(x->f_points[i].y, x->f_range_ordinate[0], x->f_range_ordinate[1]);
             }
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
         }
         else if(s == cream_sym_outline)
         {
@@ -580,14 +580,14 @@ static t_pd_err breakpoints_notify(t_breakpoints *x, t_symbol *s, t_symbol *msg,
             {
                 x->f_outline = cream_sym_Linear;
             }
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
         }
         ebox_redraw((t_ebox *)x);
     }
     return 0;
 }
 
-static void breakpoints_mousemove(t_breakpoints *x, t_object *patcherview, t_pt pt, long modifiers)
+static void breakpoints_mousemove(t_breakpoints *x, t_object *view, t_pt pt, long modifiers)
 {
     int i;
     float abs, ord;
@@ -608,12 +608,12 @@ static void breakpoints_mousemove(t_breakpoints *x, t_object *patcherview, t_pt 
             x->f_point_hover = i;
         }
     }
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_text_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void breakpoints_mousedown(t_breakpoints *x, t_object *patcherview, t_pt pt, long modifiers)
+static void breakpoints_mousedown(t_breakpoints *x, t_object *view, t_pt pt, long modifiers)
 {
     int i;
     t_atom av[2];
@@ -631,7 +631,7 @@ static void breakpoints_mousedown(t_breakpoints *x, t_object *patcherview, t_pt 
     x->f_mouse.x = abs;
     x->f_mouse.y = ord;
     
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_text_layer);
     if(modifiers == EMOD_SHIFT)
     {
         atom_setfloat(av, abs);
@@ -664,7 +664,7 @@ static void breakpoints_mousedown(t_breakpoints *x, t_object *patcherview, t_pt 
     }
 }
 
-static void breakpoints_mousedrag(t_breakpoints *x, t_object *patcherview, t_pt pt, long modifiers)
+static void breakpoints_mousedrag(t_breakpoints *x, t_object *view, t_pt pt, long modifiers)
 {
     t_atom av[3];
     float abs, ord;
@@ -674,7 +674,7 @@ static void breakpoints_mousedrag(t_breakpoints *x, t_object *patcherview, t_pt 
     
     x->f_mouse.x = abs;
     x->f_mouse.y = ord;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_text_layer);
     if(x->f_point_selected != -1)
     {
         atom_setfloat(av, x->f_point_selected);
@@ -685,19 +685,19 @@ static void breakpoints_mousedrag(t_breakpoints *x, t_object *patcherview, t_pt 
     }
 }
 
-static void breakpoints_mouseleave(t_breakpoints *x, t_object *patcherview, t_pt pt, long modifiers)
+static void breakpoints_mouseleave(t_breakpoints *x, t_object *view, t_pt pt, long modifiers)
 {
     x->f_point_selected = -1;
     x->f_point_hover    = -1;
     x->f_mouse.x = -666666;
     x->f_mouse.y = -666666;
     
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void breakpoints_mouseup(t_breakpoints *x, t_object *patcherview, t_pt pt, long modifiers)
+static void breakpoints_mouseup(t_breakpoints *x, t_object *view, t_pt pt, long modifiers)
 {
     float abs, ord;
     float height = x->f_font.size + 2;
@@ -709,16 +709,16 @@ static void breakpoints_mouseup(t_breakpoints *x, t_object *patcherview, t_pt pt
     x->f_mouse.y = ord;
     x->f_point_selected    = -1;
     
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_text_layer);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_text_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 static void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
 {
     char number[512];
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_text_layer, rect->width, rect->height);
-    t_etext *jtl = etext_layout_create();
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_text_layer, rect->width, rect->height);
+    t_etextlayout *jtl = etextlayout_new();
     if(g && jtl)
     {
         float height = x->f_font.size + 1;
@@ -734,21 +734,21 @@ static void draw_text(t_breakpoints *x, t_object *view, t_rect *rect)
         }
         else
         {
-            ebox_end_layer((t_ebox*)x, cream_sym_text_layer);
-            ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
+            ebox_end_layer((t_ebox*)x, view, cream_sym_text_layer);
+            ebox_paint_layer((t_ebox *)x, view, cream_sym_text_layer, 0., 0.);
             return;
         }
-        etext_layout_set(jtl, number, &x->f_font, 5, height * 0.5, rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
-        etext_layout_settextcolor(jtl, &x->f_color_text);
-        etext_layout_draw(jtl, g);
+        etextlayout_set(jtl, number, &x->f_font, 5, height * 0.5, rect->width, 0, ETEXT_LEFT, ETEXT_NOWRAP);
+        etextlayout_settextcolor(jtl, &x->f_color_text);
+        etextlayout_draw(jtl, g);
         
-        ebox_end_layer((t_ebox*)x, cream_sym_text_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_text_layer);
     }
     if(jtl)
     {
-        etext_layout_destroy(jtl);
+        etextlayout_destroy(jtl);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_text_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_text_layer, 0., 0.);
 }
 
 static void draw_points(t_breakpoints *x, t_object *view, t_rect *rect)
@@ -759,34 +759,34 @@ static void draw_points(t_breakpoints *x, t_object *view, t_rect *rect)
     float abs2;
     float ratiox, ratioy;
     float height = x->f_font.size + 2;
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_points_layer, rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_points_layer, rect->width, rect->height);
     
     if (g && x->f_npoints)
     {
         ratiox = (rect->width - 4.) / (x->f_range_abscissa[1] - x->f_range_abscissa[0]);
         ratioy = (rect->height - height - 4.) / (x->f_range_ordinate[1] - x->f_range_ordinate[0]);
         
-        egraphics_set_line_width(g, 2);
-        egraphics_set_color_rgba(g, &x->f_color_line);
+        elayer_set_line_width(g, 2);
+        elayer_set_color_rgba(g, &x->f_color_line);
         
         if(x->f_outline == cream_sym_Linear)
         {
             abs = (x->f_points[0].x - x->f_range_abscissa[0]) * ratiox + 2.;
             ord = rect->height - (x->f_points[0].y - x->f_range_ordinate[0]) * ratioy - 2.;
-            egraphics_move_to(g, abs, ord);
+            elayer_move_to(g, abs, ord);
             for(i = 0; i < x->f_npoints; i++)
             {
                 abs = (x->f_points[i].x - x->f_range_abscissa[0]) * ratiox + 2.;
                 ord = rect->height - (x->f_points[i].y - x->f_range_ordinate[0]) * ratioy - 2.;
-                egraphics_line_to(g, abs, ord);
+                elayer_line_to(g, abs, ord);
             }
-            egraphics_stroke(g);
+            elayer_stroke(g);
         }
         else if (x->f_outline == cream_sym_Cosine || x->f_outline == cream_sym_Cubic)
         {
             abs = (x->f_points[0].x - x->f_range_abscissa[0]) * ratiox + 2.;
             ord = rect->height - (x->f_points[0].y - x->f_range_ordinate[0]) * ratioy - 2.;
-            egraphics_move_to(g, abs, ord);
+            elayer_move_to(g, abs, ord);
             
             max = (x->f_points[x->f_npoints-1].x - x->f_range_ordinate[0]) * ratiox + 2.;
             inc = (x->f_points[x->f_npoints-1].x - x->f_points[0].x) / (float)(max - abs);
@@ -796,7 +796,7 @@ static void draw_points(t_breakpoints *x, t_object *view, t_rect *rect)
                 for(i = abs; i <= max && abs2 <= x->f_points[x->f_npoints-1].x + inc; i++, abs2 += inc)
                 {
                     ord = rect->height - (breakpoints_interpolation(x, abs2) - x->f_range_ordinate[0]) * ratioy - 2.;
-                    egraphics_line_to(g, i, ord);
+                    elayer_line_to(g, i, ord);
                 }
             }
             else
@@ -804,41 +804,41 @@ static void draw_points(t_breakpoints *x, t_object *view, t_rect *rect)
                 for(i = abs; i <= max && abs2 <= x->f_points[x->f_npoints-1].x; i++, abs2 += inc)
                 {
                     ord = rect->height - (breakpoints_interpolation(x, abs2) - x->f_range_ordinate[0]) * ratioy - 2.;
-                    egraphics_line_to(g, i, ord);
+                    elayer_line_to(g, i, ord);
                 }
             }
             
-            egraphics_stroke(g);
+            elayer_stroke(g);
         }
         
-        egraphics_set_color_rgba(g, &x->f_color_point);
+        elayer_set_color_rgba(g, &x->f_color_point);
         for(i = 0; i < x->f_npoints; i++)
         {
             abs = (x->f_points[i].x - x->f_range_abscissa[0]) * ratiox + 2;
             ord = rect->height - (x->f_points[i].y - x->f_range_ordinate[0]) * ratioy - 2;
             if(i == x->f_point_hover || i == x->f_point_selected)
             {
-                egraphics_circle(g, abs, ord, 4.);
+                elayer_circle(g, abs, ord, 4.);
             }
             else
-                egraphics_circle(g, abs, ord, 3.);
-            egraphics_fill(g);
+                elayer_circle(g, abs, ord, 3.);
+            elayer_fill(g);
         }
     }
     if(g)
     {
-        egraphics_set_color_rgba(g, &x->f_color_border);
-        egraphics_set_line_width(g, 2.);
-        egraphics_line_fast(g, -2, height - 1, rect->width+4, height - 1);
-        ebox_end_layer((t_ebox*)x, cream_sym_points_layer);
+        elayer_set_color_rgba(g, &x->f_color_border);
+        elayer_set_line_width(g, 2.);
+        elayer_line_fast(g, -2, height - 1, rect->width+4, height - 1);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_points_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_points_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_points_layer, 0., 0.);
 }
 
 static void breakpoints_paint(t_breakpoints *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     x->f_size.x = rect.width;
     x->f_size.y = rect.height;
     draw_text(x, view, &rect);
@@ -879,7 +879,7 @@ static void *breakpoints_new(t_symbol *s, int argc, t_atom *argv)
         
         x->f_clock = clock_new(x, (t_method)breakpoints_inc);
         
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         breakpoints_init(x, d);
         ebox_ready((t_ebox *)x);
     }
@@ -891,41 +891,41 @@ extern "C" void setup_c0x2ebreakpoints(void)
 {
 	t_eclass *c;
 
-	c = eclass_new("c.breakpoints", (method)breakpoints_new, (method)breakpoints_free, (short)sizeof(t_breakpoints), 0L, A_GIMME, 0);
+	c = eclass_new("c.breakpoints", (t_method)breakpoints_new, (t_method)breakpoints_free, (short)sizeof(t_breakpoints), 0L, A_GIMME, 0);
 
 	eclass_guiinit(c, 0);
 
     
-	eclass_addmethod(c, (method) breakpoints_paint,           "paint",            A_NULL, 0);
-	eclass_addmethod(c, (method) breakpoints_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_oksize,          "oksize",           A_NULL, 0);
+	eclass_addmethod(c, (t_method) breakpoints_paint,           "paint",            A_NULL, 0);
+	eclass_addmethod(c, (t_method) breakpoints_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_oksize,          "oksize",           A_NULL, 0);
 
-    eclass_addmethod(c, (method) breakpoints_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) breakpoints_bang,            "bang",             A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_next,            "next",             A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_prev,            "prev",             A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_getlist,         "getlist",          A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_float,           "float",            A_FLOAT,0);
+    eclass_addmethod(c, (t_method) breakpoints_bang,            "bang",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_next,            "next",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_prev,            "prev",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_getlist,         "getlist",          A_NULL, 0);
 
-    eclass_addmethod(c, (method) breakpoints_add,             "add",              A_GIMME,0);
-    eclass_addmethod(c, (method) breakpoints_move,            "move",             A_GIMME,0);
-    eclass_addmethod(c, (method) breakpoints_remove,          "remove",           A_GIMME,0);
-    eclass_addmethod(c, (method) breakpoints_erase,           "erase",            A_NULL,0);
-    eclass_addmethod(c, (method) breakpoints_function,        "function",         A_GIMME,0);
+    eclass_addmethod(c, (t_method) breakpoints_add,             "add",              A_GIMME,0);
+    eclass_addmethod(c, (t_method) breakpoints_move,            "move",             A_GIMME,0);
+    eclass_addmethod(c, (t_method) breakpoints_remove,          "remove",           A_GIMME,0);
+    eclass_addmethod(c, (t_method) breakpoints_erase,           "erase",            A_NULL,0);
+    eclass_addmethod(c, (t_method) breakpoints_function,        "function",         A_GIMME,0);
 
-    eclass_addmethod(c, (method) breakpoints_scaleabs,        "scaleabs",         A_GIMME,0);
-    eclass_addmethod(c, (method) breakpoints_scaleord,        "scaleord",         A_GIMME,0);
+    eclass_addmethod(c, (t_method) breakpoints_scaleabs,        "scaleabs",         A_GIMME,0);
+    eclass_addmethod(c, (t_method) breakpoints_scaleord,        "scaleord",         A_GIMME,0);
 
-    eclass_addmethod(c, (method) breakpoints_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_mousemove,       "mousemove",        A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_mousedrag,       "mousedrag",        A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_mouseleave,      "mouseleave",       A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_mouseup,         "mouseup",          A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_mousemove,       "mousemove",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_mousedrag,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_mouseleave,      "mouseleave",       A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_mouseup,         "mouseup",          A_NULL, 0);
 
-    eclass_addmethod(c, (method) breakpoints_preset,          "preset",           A_NULL, 0);
-    eclass_addmethod(c, (method) breakpoints_read,            "read",             A_GIMME,0);
-    eclass_addmethod(c, (method) breakpoints_write,           "write",            A_GIMME,0);
-    eclass_addmethod(c, (method) breakpoints_save,            "save",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_preset,          "preset",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) breakpoints_read,            "read",             A_GIMME,0);
+    eclass_addmethod(c, (t_method) breakpoints_write,           "write",            A_GIMME,0);
+    eclass_addmethod(c, (t_method) breakpoints_save,            "save",             A_NULL, 0);
 
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
 	CLASS_ATTR_DEFAULT              (c, "size", 0, "150. 100.");

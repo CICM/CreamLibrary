@@ -31,7 +31,7 @@ static void pak_output(t_pak *x)
 
 static void pak_list(t_pak *x, t_symbol *s, int argc, t_atom *argv)
 {
-    int index = eobj_getproxy((t_ebox *)x);
+    size_t index = eobj_getproxy((t_ebox *)x);
     if(argc && x->f_selectors[index] == 0 && atom_gettype(argv) == A_FLOAT)
     {
         atom_setfloat(x->f_argv+index, atom_getfloat(argv));
@@ -46,7 +46,7 @@ static void pak_list(t_pak *x, t_symbol *s, int argc, t_atom *argv)
 
 static void pak_float(t_pak *x, float f)
 {
-    int index = eobj_getproxy((t_ebox *)x);
+    size_t index = eobj_getproxy((t_ebox *)x);
     if(x->f_selectors[index] == 0)
     {
         atom_setfloat(x->f_argv+index, f);
@@ -56,7 +56,7 @@ static void pak_float(t_pak *x, float f)
 
 static void pak_anything(t_pak *x, t_symbol *s, int argc, t_atom *argv)
 {
-    int index = eobj_getproxy((t_ebox *)x);
+    size_t index = eobj_getproxy((t_ebox *)x);
     if(x->f_selectors[index] == 1)
     {
         atom_setsym(x->f_argv+index, s);
@@ -66,7 +66,7 @@ static void pak_anything(t_pak *x, t_symbol *s, int argc, t_atom *argv)
 
 static void pak_symbol(t_pak *x, t_symbol *s)
 {
-    int index = eobj_getproxy((t_ebox *)x);
+    size_t index = eobj_getproxy((t_ebox *)x);
     if(x->f_selectors[index] == 1)
     {
         atom_setsym(x->f_argv+index, s);
@@ -185,13 +185,13 @@ extern "C" void setup_c0x2epak(void)
 {
 	t_eclass *c;
     
-	c = eclass_new("c.pak", (method)pak_new, (method)pak_free, (short)sizeof(t_pak), CLASS_NOINLET, A_GIMME, 0);
+	c = eclass_new("c.pak", (t_method)pak_new, (t_method)pak_free, (short)sizeof(t_pak), CLASS_NOINLET, A_GIMME, 0);
 
-    eclass_addmethod(c, (method)pak_anything,    "anything",       A_GIMME, 0);
-    eclass_addmethod(c, (method)pak_list,        "list",           A_GIMME, 0);
-    eclass_addmethod(c, (method)pak_float,       "float",          A_FLOAT, 0);
-    eclass_addmethod(c, (method)pak_symbol,      "symbol",         A_SYMBOL,0);
-    eclass_addmethod(c, (method)pak_output,      "bang",           A_NULL,  0);
+    eclass_addmethod(c, (t_method)pak_anything,    "anything",       A_GIMME, 0);
+    eclass_addmethod(c, (t_method)pak_list,        "list",           A_GIMME, 0);
+    eclass_addmethod(c, (t_method)pak_float,       "float",          A_FLOAT, 0);
+    eclass_addmethod(c, (t_method)pak_symbol,      "symbol",         A_SYMBOL,0);
+    eclass_addmethod(c, (t_method)pak_output,      "bang",           A_NULL,  0);
     eclass_register(CLASS_OBJ, c);
     pak_class = c;
 }

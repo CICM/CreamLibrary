@@ -44,8 +44,6 @@ extern "C" void setup_c0x2ecomment(void);
 #ifdef __APPLE__
 extern "C" void setup_c0x2ekeyboard(void);
 extern "C" void setup_c0x2ecamomile(void);
-
-extern "C" void setup_c0x2ewavesel(void);
 #endif
 
 // Deprecated
@@ -138,5 +136,14 @@ static t_symbol* cream_sym_left_bracket         = gensym("[");
 static t_symbol* cream_sym_right_bracket        = gensym("]");
 
 static t_symbol* cream_sym_state                = gensym("state");
+
+float pd_wrap(float f, const float min, const float max);
+float pd_clip(const float f, const float min, const float max);
+float pd_clip_min(const float f, const float min);
+float pd_clip_max(const float f, const float max);
+float pd_ordinate(const float radius, const float angle);
+float pd_abscissa(const float radius, const float angle);
+float pd_radius(const float x, const float y);
+float pd_angle(const float x, const float y);
 
 #endif

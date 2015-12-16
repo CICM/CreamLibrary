@@ -64,7 +64,7 @@ static void *colorpanel_new(t_symbol *s, int argc, t_atom *argv)
         x->f_out_hsl = outlet_new((t_object *)x, &s_list);
         x->f_out_hex = outlet_new((t_object *)x, &s_symbol);
         
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         return (x);
     }
@@ -121,7 +121,7 @@ static void colorpanel_set(t_colorpanel *x, t_symbol *s, int ac, t_atom *av)
         if(atom_gettype(av+1) == A_FLOAT)
             x->f_color_picked.y = pd_clip((int)atom_getfloat(av+1), 0, x->f_matrix_sizes.y-1);
 
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_picked_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_picked_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -136,7 +136,7 @@ static void colorpanel_list(t_colorpanel *x, t_symbol *s, int ac, t_atom *av)
             x->f_color_picked.y = pd_clip((int)atom_getfloat(av+1), 0, x->f_matrix_sizes.y-1);
 
         colorpanel_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_picked_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_picked_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -145,14 +145,14 @@ static t_pd_err colorpanel_notify(t_colorpanel *x, t_symbol *s, t_symbol *msg, v
 {
 	if(msg == cream_sym_attr_modified)
 	{
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_hover_layer);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_picked_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_hover_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_picked_layer);
 	}
 	return 0;
 }
 
-static void colorpanel_getdrawparams(t_colorpanel *x, t_object *patcherview, t_edrawparams *params)
+static void colorpanel_getdrawparams(t_colorpanel *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -185,7 +185,8 @@ static void colorpanel_oksize(t_colorpanel *x, t_rect *newrect)
 
 static void draw_background(t_colorpanel *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
+    t_rgba rgba;
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
 	if (g)
 	{
         const float block_width = rect->width / (float)x->f_matrix_sizes.x;
@@ -196,96 +197,103 @@ static void draw_background(t_colorpanel *x, t_object *view, t_rect *rect)
             float incY = 0.f;
             for(int j = 0; j < x->f_matrix_sizes.y; j++)
             {
-                egraphics_set_color_hsla(g, &x->f_matrix_colorpanel[i][j]);
-                egraphics_rectangle(g, incx + 1.f, incY + 1.f, block_width - 2.f, block_height - 2.f);
-                egraphics_fill(g);
+                rgba = hsla_to_rgba(&x->f_matrix_colorpanel[i][j]);
+                elayer_set_color_rgba(g, &rgba);
+                elayer_rectangle(g, incx + 1.f, incY + 1.f, block_width - 2.f, block_height - 2.f);
+                elayer_fill(g);
                 incY += block_height;
             }
             incx += block_width;
         }
 
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0, 0);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0, 0);
 }
 
 static void draw_picked(t_colorpanel *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_picked_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_picked_layer, rect->width, rect->height);
 	if(g)
 	{
         const float block_width = rect->width / (float)x->f_matrix_sizes.x;
         const float block_height = rect->height / (float)x->f_matrix_sizes.y;
         if(x->f_color_picked.x >= 0 && x->f_color_picked.y >= 0)
         {
-            egraphics_set_color_rgba(g, &x->f_color_border);
-            egraphics_set_line_width(g, 2);
-            egraphics_rectangle(g,  (float)x->f_color_picked.x * block_width + 1.f,
+            elayer_set_color_rgba(g, &x->f_color_border);
+            elayer_set_line_width(g, 2);
+            elayer_rectangle(g,  (float)x->f_color_picked.x * block_width + 1.f,
                                             (float)x->f_color_picked.y * block_height + 1.f,
                                             block_width - 2.f, block_height - 2.f);
-            egraphics_stroke(g);
+            elayer_stroke(g);
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_picked_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_picked_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_picked_layer, 0, 0);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_picked_layer, 0, 0);
 }
 
 static void draw_hover(t_colorpanel *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_hover_layer, rect->width, rect->height);
+    t_rgba rgba;
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_hover_layer, rect->width, rect->height);
 	if(g)
 	{
         const float block_width = rect->width / (float)x->f_matrix_sizes.x;
         const float block_height = rect->height / (float)x->f_matrix_sizes.y;
         if(x->f_color_hover.x >= 0 && x->f_color_hover.y >= 0)
         {
-            egraphics_set_color_hsla(g, &x->f_matrix_colorpanel[(int)x->f_color_hover.x][(int)x->f_color_hover.y]);
-            egraphics_set_line_width(g, 2);
-            egraphics_rectangle(g,  (float)x->f_color_hover.x * block_width,
+            rgba = hsla_to_rgba(&x->f_matrix_colorpanel[(int)x->f_color_hover.x][(int)x->f_color_hover.y]);
+            elayer_set_color_rgba(g, &rgba);
+            elayer_set_line_width(g, 2);
+            elayer_rectangle(g,  (float)x->f_color_hover.x * block_width,
                                     (float)x->f_color_hover.y * block_height,
                                     block_width, block_height);
-            egraphics_fill(g);
+            elayer_fill(g);
         }
         
-        ebox_end_layer((t_ebox*)x, cream_sym_hover_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_hover_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_hover_layer, 0, 0);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_hover_layer, 0, 0);
 }
 
 static void colorpanel_paint(t_colorpanel *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_background(x, view, &rect);
     draw_picked(x, view, &rect);
     draw_hover(x, view, &rect);
 }
 
-static void colorpanel_mousemove(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
+static void colorpanel_mousemove(t_colorpanel *x, t_object *view, t_pt pt, long modifiers)
 {
-    x->f_color_hover.x = pd_clip((int)(pt.x / (x->j_box.b_rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
-    x->f_color_hover.y = pd_clip((int)(pt.y / (x->j_box.b_rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_hover_layer);
+    t_rect rect;
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
+    x->f_color_hover.x = pd_clip((int)(pt.x / (rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
+    x->f_color_hover.y = pd_clip((int)(pt.y / (rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_hover_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void colorpanel_mousedown(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
+static void colorpanel_mousedown(t_colorpanel *x, t_object *view, t_pt pt, long modifiers)
 {
+    t_rect rect;
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     x->f_color_hover.x = -10;
     x->f_color_hover.y = -10;
-    x->f_color_picked.x = pd_clip((int)(pt.x / (x->j_box.b_rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
-    x->f_color_picked.y = pd_clip((int)(pt.y / (x->j_box.b_rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_hover_layer);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_picked_layer);
+    x->f_color_picked.x = pd_clip((int)(pt.x / (rect.width / (float)x->f_matrix_sizes.x)), 0, x->f_matrix_sizes.x-1);
+    x->f_color_picked.y = pd_clip((int)(pt.y / (rect.height / (float)x->f_matrix_sizes.y)), 0, x->f_matrix_sizes.y-1);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_hover_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_picked_layer);
     ebox_redraw((t_ebox *)x);
     colorpanel_output(x);
 }
 
-static void colorpanel_mouseleave(t_colorpanel *x, t_object *patcherview, t_pt pt, long modifiers)
+static void colorpanel_mouseleave(t_colorpanel *x, t_object *view, t_pt pt, long modifiers)
 {
     x->f_color_hover.x = -10;
     x->f_color_hover.y = -10;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_hover_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_hover_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -342,9 +350,9 @@ static void colorpanel_computecolors(t_colorpanel *x)
         }
     }
 
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_hover_layer);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_picked_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_hover_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_picked_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -415,23 +423,23 @@ extern "C" void setup_c0x2ecolorpanel(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.colorpanel", (method)colorpanel_new, (method)colorpanel_free, (short)sizeof(t_colorpanel), 0L, A_GIMME, 0);
+    c = eclass_new("c.colorpanel", (t_method)colorpanel_new, (t_method)colorpanel_free, (short)sizeof(t_colorpanel), 0L, A_GIMME, 0);
     eclass_guiinit(c, 0);
     
-    eclass_addmethod(c, (method) colorpanel_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) colorpanel_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) colorpanel_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) colorpanel_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) colorpanel_set,             "set",              A_GIMME,0);
-    eclass_addmethod(c, (method) colorpanel_list,            "list",             A_GIMME,0);
-    eclass_addmethod(c, (method) colorpanel_output,          "bang",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_set,             "set",              A_GIMME,0);
+    eclass_addmethod(c, (t_method) colorpanel_list,            "list",             A_GIMME,0);
+    eclass_addmethod(c, (t_method) colorpanel_output,          "bang",             A_NULL, 0);
     
-    eclass_addmethod(c, (method) colorpanel_mousemove,       "mousemove",        A_NULL, 0);
-    eclass_addmethod(c, (method) colorpanel_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) colorpanel_mousedown,       "mousedrag",        A_NULL, 0);
-    eclass_addmethod(c, (method) colorpanel_mouseleave,      "mouseleave",       A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_mousemove,       "mousemove",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_mousedown,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_mouseleave,      "mouseleave",       A_NULL, 0);
     
-    eclass_addmethod(c, (method) colorpanel_preset,          "preset",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) colorpanel_preset,          "preset",           A_NULL, 0);
     
     CLASS_ATTR_INVISIBLE            (c, "send", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "181 105");

@@ -105,7 +105,7 @@ static void preset_float(t_presetobj *x, float f)
                 mpreset = NULL;
             }
 
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -265,7 +265,7 @@ void preset_interpolate(t_presetobj *x, float f)
         mpreset = NULL;
     }
 
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -281,7 +281,7 @@ static void preset_clear(t_presetobj *x, float f)
         }
         binbuf_clear(x->f_binbuf[index]);
 
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -293,11 +293,11 @@ static void preset_clearall(t_presetobj *x)
         binbuf_clear(x->f_binbuf[i]);
     }
     x->f_binbuf_selected = 0;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void preset_getdrawparams(t_presetobj *x, t_object *patcherview, t_edrawparams *params)
+static void preset_getdrawparams(t_presetobj *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -317,7 +317,7 @@ static t_pd_err preset_notify(t_presetobj *x, t_symbol *s, t_symbol *msg, void *
     {
         if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_btcolor || s == cream_sym_fontsize || s == cream_sym_fontname || s == cream_sym_fontweight || s == cream_sym_fontslant)
         {
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         }
         ebox_redraw((t_ebox *)x);
     }
@@ -329,31 +329,31 @@ static void draw_background(t_presetobj *x, t_object *view, t_rect *rect)
 	int i, xc, yc;
     char number[256];
     t_rgba color;
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
-    t_etext *jtl = etext_layout_create();
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
+    t_etextlayout *jtl = etextlayout_new();
 
 	if (g && jtl)
 	{
         for(xc = x->f_font.size * 1.25, yc = x->f_font.size * 1.25, i = 1;  yc + x->f_font.size / 2. < rect->height; )
         {
             if(x->f_binbuf_selected == i-1 && binbuf_getnatom(x->f_binbuf[i-1])){
-                color = rgba_addContrast(x->f_color_button_selected, 0.1);}
+                color = rgba_add_contrast(&x->f_color_button_selected, 0.1);}
             else if(!binbuf_getnatom(x->f_binbuf[i-1]))
-                color = rgba_addContrast(x->f_color_button_empty, 0.1);
+                color = rgba_add_contrast(&x->f_color_button_empty, 0.1);
             else if(binbuf_getnatom(x->f_binbuf[i-1]))
-                color = rgba_addContrast(x->f_color_button_stored, -0.1);
+                color = rgba_add_contrast(&x->f_color_button_stored, -0.1);
 
-            egraphics_set_color_rgba(g, &color);
+            elayer_set_color_rgba(g, &color);
             if(x->f_binbuf_hover != i)
             {
-                egraphics_circle(g, xc, yc, x->f_font.size);
-                egraphics_fill(g);
+                elayer_circle(g, xc, yc, x->f_font.size);
+                elayer_fill(g);
             }
 
             sprintf(number, "%i", i);
-            etext_layout_set(jtl, number, &x->f_font, xc, yc, rect->width, 0, ETEXT_CENTRED, ETEXT_NOWRAP);
-            etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_draw(jtl, g);
+            etextlayout_set(jtl, number, &x->f_font, xc, yc, rect->width, 0, ETEXT_CENTRED, ETEXT_NOWRAP);
+            etextlayout_settextcolor(jtl, &x->f_color_text);
+            etextlayout_draw(jtl, g);
 
             xc += x->f_font.size * 2.5;
             if(xc + x->f_font.size / 2. > rect->width)
@@ -364,34 +364,38 @@ static void draw_background(t_presetobj *x, t_object *view, t_rect *rect)
             i++;
         }
 
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
 static void preset_paint(t_presetobj *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_background(x, view, &rect);
 }
 
-static void preset_mousemove(t_presetobj *x, t_object *patcherview, t_pt pt, long modifiers)
+static void preset_mousemove(t_presetobj *x, t_object *view, t_pt pt, long modifiers)
 {
     int index;
-    int n_row_button = (x->j_box.b_rect.width - x->f_font.size * 1.24) / (x->f_font.size * 2.5) + 1;
+    t_rect rect;
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
+    int n_row_button = (rect.width - x->f_font.size * 1.24) / (x->f_font.size * 2.5) + 1;
 
     index = (int)((pt.y) / (x->f_font.size * 2.5)) * n_row_button;
     index += pd_clip_max((pt.x) / (x->f_font.size * 2.5) + 1, n_row_button);
     x->f_binbuf_hover = index;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void preset_mousedown(t_presetobj *x, t_object *patcherview, t_pt pt, long modifiers)
+static void preset_mousedown(t_presetobj *x, t_object *view, t_pt pt, long modifiers)
 {
     int index;
-    int n_row_button = (x->j_box.b_rect.width - x->f_font.size * 1.24) / (x->f_font.size * 2.5) + 1;
+    t_rect rect;
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
+    int n_row_button = (rect.width - x->f_font.size * 1.24) / (x->f_font.size * 2.5) + 1;
     index = (int)((pt.y) / (x->f_font.size * 2.5)) * n_row_button;
     index += pd_clip_max((pt.x) / (x->f_font.size * 2.5) + 1, n_row_button);
     x->f_binbuf_hover = index;
@@ -403,10 +407,10 @@ static void preset_mousedown(t_presetobj *x, t_object *patcherview, t_pt pt, lon
     preset_float(x, index);
 }
 
-static void preset_mouseleave(t_presetobj *x, t_object *patcherview, t_pt pt, long modifiers)
+static void preset_mouseleave(t_presetobj *x, t_object *view, t_pt pt, long modifiers)
 {
     x->f_binbuf_hover = 0;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -482,7 +486,7 @@ static void preset_read(t_presetobj *x, t_symbol *s, int argc, t_atom *argv)
         else
         {
             preset_init(x, d);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
             post("preset : read %s.", atom_getsymbol(argv)->s_name);
         }
@@ -531,7 +535,7 @@ static void *preset_new(t_symbol *s, int argc, t_atom *argv)
         x->f_binbuf_hover    = 0;
 
         preset_init(x, d);
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
     }
 
@@ -550,33 +554,32 @@ static void preset_free(t_presetobj *x)
 
 extern "C" void setup_c0x2epreset(void)
 {
-    t_eclass* c = eclass_new("c.preset", (method)preset_new, (method)preset_free, (short)sizeof(t_presetobj), 0L, A_GIMME, 0);
+    t_eclass* c = eclass_new("c.preset", (t_method)preset_new, (t_method)preset_free, (short)sizeof(t_presetobj), 0L, A_GIMME, 0);
 
     if(c)
     {
         eclass_guiinit(c, 0);
         
-        eclass_addmethod(c, (method) preset_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) preset_notify,          "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) preset_getdrawparams,   "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) preset_oksize,          "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) preset_store,           "store",            A_FLOAT,0);
-        eclass_addmethod(c, (method) preset_clear,           "clear",            A_FLOAT,0);
-        eclass_addmethod(c, (method) preset_float,           "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) preset_interpolate,     "inter",            A_FLOAT,0);
-        eclass_addmethod(c, (method) preset_clearall,        "clearall",         A_NULL,0);
+        eclass_addmethod(c, (t_method) preset_paint,           "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) preset_notify,          "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) preset_getdrawparams,   "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) preset_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) preset_store,           "store",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) preset_clear,           "clear",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) preset_float,           "float",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) preset_interpolate,     "inter",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) preset_clearall,        "clearall",         A_NULL,0);
         
-        eclass_addmethod(c, (method) preset_mousemove,       "mousemove",        A_NULL, 0);
-        eclass_addmethod(c, (method) preset_mousedown,       "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) preset_mouseleave,      "mouseleave",       A_NULL, 0);
+        eclass_addmethod(c, (t_method) preset_mousemove,       "mousemove",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) preset_mousedown,       "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) preset_mouseleave,      "mouseleave",       A_NULL, 0);
         
-        eclass_addmethod(c, (method) preset_save,            "save",             A_NULL, 0);
-        eclass_addmethod(c, (method) preset_read,            "read",             A_GIMME,0);
-        eclass_addmethod(c, (method) preset_write,           "write",            A_GIMME,0);
+        eclass_addmethod(c, (t_method) preset_save,            "save",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) preset_read,            "read",             A_GIMME,0);
+        eclass_addmethod(c, (t_method) preset_write,           "write",            A_GIMME,0);
         
         CLASS_ATTR_INVISIBLE            (c, "send", 1);
         CLASS_ATTR_DEFAULT              (c, "size", 0, "102 34");
-        CLASS_ATTR_DEFAULT              (c, "fontsize", 0, "10");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_presetobj, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");

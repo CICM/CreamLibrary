@@ -73,9 +73,9 @@ static void *patcherinfos_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2epatcherinfos(void)
 {
-	t_eclass *c = eclass_new("c.patcherinfos", (method)patcherinfos_new, (method)eobj_free, (short)sizeof(t_patcherinfos), 0L, A_GIMME, 0);
+	t_eclass *c = eclass_new("c.patcherinfos", (t_method)patcherinfos_new, (t_method)eobj_free, (short)sizeof(t_patcherinfos), 0L, A_GIMME, 0);
     class_addcreator((t_newmethod)patcherinfos_new, gensym("c.canvasinfos"), A_GIMME, 0);
-    eclass_addmethod(c, (method)patcherinfos_output,      "bang",       A_NULL, 0);
+    eclass_addmethod(c, (t_method)patcherinfos_output,      "bang",       A_NULL, 0);
     eclass_register(CLASS_OBJ, c);
     patcherinfos_class = c;
 }

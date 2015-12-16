@@ -41,15 +41,15 @@ extern "C" void setup_c0x2eprepend(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.prepend", (method)prepend_new, (method)prepend_free, (short)sizeof(t_prepend), 0L, A_GIMME, 0);
+    c = eclass_new("c.prepend", (t_method)prepend_new, (t_method)prepend_free, (short)sizeof(t_prepend), 0L, A_GIMME, 0);
 
     
-    eclass_addmethod(c, (method)prepend_anything,    "anything",       A_GIMME, 0);
-    eclass_addmethod(c, (method)prepend_list,        "list",           A_GIMME, 0);
-    eclass_addmethod(c, (method)prepend_set,         "set",            A_GIMME, 0);
-    eclass_addmethod(c, (method)prepend_float,       "float",          A_FLOAT, 0);
-    eclass_addmethod(c, (method)prepend_symbol,      "symbol",         A_SYMBOL,0);
-    eclass_addmethod(c, (method)prepend_bang,        "bang",           A_NULL,  0);
+    eclass_addmethod(c, (t_method)prepend_anything,    "anything",       A_GIMME, 0);
+    eclass_addmethod(c, (t_method)prepend_list,        "list",           A_GIMME, 0);
+    eclass_addmethod(c, (t_method)prepend_set,         "set",            A_GIMME, 0);
+    eclass_addmethod(c, (t_method)prepend_float,       "float",          A_FLOAT, 0);
+    eclass_addmethod(c, (t_method)prepend_symbol,      "symbol",         A_SYMBOL,0);
+    eclass_addmethod(c, (t_method)prepend_bang,        "bang",           A_NULL,  0);
     eclass_register(CLASS_OBJ, c);
     prepend_class = c;
 }

@@ -115,11 +115,11 @@ extern "C" void setup_c0x2eloadmess(void)
 {
 	t_eclass *c;
     
-	c = eclass_new("c.loadmess", (method)loadmess_new, (method)loadmess_free, (short)sizeof(t_loadmess), 0L, A_GIMME, 0);
+	c = eclass_new("c.loadmess", (t_method)loadmess_new, (t_method)loadmess_free, (short)sizeof(t_loadmess), 0L, A_GIMME, 0);
 
-    eclass_addmethod(c, (method) loadmess_loadbang,    "loadbang",         A_NULL, 0);
-    eclass_addmethod(c, (method) loadmess_output,      "bang",             A_NULL, 0);
-	eclass_addmethod(c, (method) loadmess_click,       "click",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) loadmess_loadbang,    "loadbang",         A_NULL, 0);
+    eclass_addmethod(c, (t_method) loadmess_output,      "bang",             A_NULL, 0);
+	eclass_addmethod(c, (t_method) loadmess_click,       "click",            A_NULL, 0);
 	eclass_register(CLASS_OBJ, c);
     loadmess_class = c;
 }

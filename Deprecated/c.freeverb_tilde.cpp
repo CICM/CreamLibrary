@@ -225,17 +225,17 @@ extern "C"  void setup_c0x2efreeverb_tilde(void)
 {
 	t_eclass *c;
     
-	c = eclass_new("c.freeverb~", (method)freeverb_new, (method)freeverb_free, (short)sizeof(t_freeverb), 0L, A_GIMME, 0);
+	c = eclass_new("c.freeverb~", (t_method)freeverb_new, (t_method)freeverb_free, (short)sizeof(t_freeverb), 0L, A_GIMME, 0);
     
     eclass_dspinit(c);
 
     
-    eclass_addmethod(c, (method) freeverb_dsp,             "dsp",              A_NULL, 0);
-	eclass_addmethod(c, (method) freeverb_assist,          "assist",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) freeverb_dsp,             "dsp",              A_NULL, 0);
+	eclass_addmethod(c, (t_method) freeverb_assist,          "assist",           A_NULL, 0);
     
-    eclass_addmethod(c, (method) freeverb_roomsize,        "roomsize",         A_FLOAT, 0);
-    eclass_addmethod(c, (method) freeverb_damp,            "damp",             A_FLOAT, 0);
-    eclass_addmethod(c, (method) freeverb_freeze,          "freeze",           A_FLOAT, 0);
+    eclass_addmethod(c, (t_method) freeverb_roomsize,        "roomsize",         A_FLOAT, 0);
+    eclass_addmethod(c, (t_method) freeverb_damp,            "damp",             A_FLOAT, 0);
+    eclass_addmethod(c, (t_method) freeverb_freeze,          "freeze",           A_FLOAT, 0);
     eclass_register(CLASS_OBJ, c);
     freeverb_class = c;
 }
@@ -299,7 +299,8 @@ void freeverb_assist(t_freeverb *x, void *b, long m, long a, char *s)
 
 void freeverb_dsp(t_freeverb *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
-    object_method(dsp, gensym("dsp_add"), x, (method)freeverb_perform, 0, NULL);
+    int todo;
+    //object_method(dsp, gensym("dsp_add"), x, (t_method)freeverb_perform, 0, NULL);
 }
 
 void freeverb_perform(t_freeverb *x, t_object *d, t_sample **ins, long ni, t_sample **outs, long no, long sampleframes, long f,void *up)

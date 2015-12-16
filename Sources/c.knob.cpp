@@ -49,7 +49,7 @@ static void knob_float(t_knob *x, float f)
     
     ebox_parameter_setvalue((t_ebox *)x, 1, f, 1);
     knob_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -62,7 +62,7 @@ static void knob_set(t_knob *x, float f)
         f = pd_wrap(f, min, max);
     }
     ebox_parameter_setvalue((t_ebox *)x, 1, f, 0);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -72,7 +72,7 @@ static void knob_bang(t_knob *x, float f)
     knob_output(x);
 }
 
-static void knob_getdrawparams(t_knob *x, t_object *patcherview, t_edrawparams *params)
+static void knob_getdrawparams(t_knob *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = x->f_bdsize;
     params->d_cornersize        = 2.f;
@@ -93,14 +93,14 @@ static t_pd_err knob_notify(t_knob *x, t_symbol *s, t_symbol *msg, void *sender,
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor ||
            s == cream_sym_necolor || s == cream_sym_endless || s == cream_sym_bdsize)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
 		}
 	}
     else if(msg == cream_sym_value_changed)
     {
         knob_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 	return 0;
@@ -108,36 +108,36 @@ static t_pd_err knob_notify(t_knob *x, t_symbol *s, t_symbol *msg, void *sender,
 
 static void draw_background(t_knob *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
 	if (g)
 	{
         const float size = rect->width * 0.5f;
-        egraphics_set_color_rgba(g, &x->f_color_needle);
-        egraphics_set_line_width(g, x->f_bdsize);
-        egraphics_circle(g, size, size, size - 2.f);
-        egraphics_stroke(g);
+        elayer_set_color_rgba(g, &x->f_color_needle);
+        elayer_set_line_width(g, x->f_bdsize);
+        elayer_circle(g, size, size, size - 2.f);
+        elayer_stroke(g);
         
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
 static void draw_needle(t_knob *x, t_object *view, t_rect *rect)
 {
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_needle_layer, rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_needle_layer, rect->width, rect->height);
     
     if(g)
 	{
         const float size    = rect->width * 0.5f;
-        egraphics_set_color_rgba(g, &x->f_color_needle);
-        egraphics_set_line_width(g, x->f_bdsize);
+        elayer_set_color_rgba(g, &x->f_color_needle);
+        elayer_set_line_width(g, x->f_bdsize);
         if(ebox_parameter_isinverted((t_ebox *)x, 1))
         {
             const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
             const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
             const float angle   = (1.f - ebox_parameter_getvalue_normalized((t_ebox *)x, 1)) * ratio1 + ratio2;
             
-            egraphics_line(g,
+            elayer_line(g,
                            pd_abscissa(size - 10.f, angle) + size,
                            pd_ordinate(size - 10.f, angle) + size,
                            pd_abscissa(size - 2.f, angle) + size,
@@ -149,7 +149,7 @@ static void draw_needle(t_knob *x, t_object *view, t_rect *rect)
             const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
             const float angle   = ebox_parameter_getvalue_normalized((t_ebox *)x, 1) * ratio1 + ratio2;
             
-            egraphics_line(g,
+            elayer_line(g,
                            pd_abscissa(size - 10.f, angle) + size,
                            pd_ordinate(size - 10.f, angle) + size,
                            pd_abscissa(size - 2.f, angle) + size,
@@ -157,28 +157,28 @@ static void draw_needle(t_knob *x, t_object *view, t_rect *rect)
         }
         
         
-        egraphics_stroke(g);
-        ebox_end_layer((t_ebox*)x, cream_sym_needle_layer);
+        elayer_stroke(g);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_needle_layer);
     }
    
-    ebox_paint_layer((t_ebox *)x, cream_sym_needle_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_needle_layer, 0., 0.);
 
 }
 
 static void knob_paint(t_knob *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     
     draw_background(x, view, &rect);
     draw_needle(x, view, &rect);
 }
 
 
-static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modifiers)
+static void knob_mousedown(t_knob *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     ebox_parameter_begin_changes((t_ebox *)x, 1);
     if(modifiers == EMOD_SHIFT)
     {
@@ -212,7 +212,7 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
         }
         
         knob_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
         ebox_redraw((t_ebox *)x);
     }
     else
@@ -222,10 +222,10 @@ static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modif
     }
 }
 
-static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modifiers)
+static void knob_mousedrag(t_knob *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     if(x->f_circular)
     {
         const float size  = rect.width * 0.5f;
@@ -256,7 +256,7 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
         }
         
         knob_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
         ebox_redraw((t_ebox *)x);
     }
     else
@@ -274,11 +274,11 @@ static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modif
         x->f_reference      = pt.y;
     }
     knob_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void knob_mouseup(t_knob *x, t_object *patcherview, t_pt pt, long modifiers)
+static void knob_mouseup(t_knob *x, t_object *view, t_pt pt, long modifiers)
 {
     ebox_parameter_end_changes((t_ebox *)x, 1);
 }
@@ -292,7 +292,7 @@ static t_pd_err knob_minmax_set(t_knob *x, t_object *attr, int ac, t_atom *av)
         ebox_parameter_setminmax((t_ebox *)x, 1, min, max);
     }
     
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
 }
@@ -324,7 +324,7 @@ static void *knob_new(t_symbol *s, int argc, t_atom *argv)
         ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
         ebox_parameter_create((t_ebox *)x, 1);
         x->f_outlet = outlet_new((t_object *)x, &s_float);
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         
         return x;
@@ -335,23 +335,23 @@ static void *knob_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2eknob(void)
 {
-    t_eclass *c = eclass_new("c.knob", (method)knob_new, (method)ebox_free, (short)sizeof(t_knob), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.knob", (t_method)knob_new, (t_method)ebox_free, (short)sizeof(t_knob), 0L, A_GIMME, 0);
     
     if(c)
     {
         eclass_guiinit(c, 0);
         
-        eclass_addmethod(c, (method) knob_paint,            "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) knob_notify,           "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) knob_getdrawparams,    "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) knob_oksize,           "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) knob_set,              "set",              A_FLOAT,0);
-        eclass_addmethod(c, (method) knob_float,            "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) knob_bang,             "bang",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_paint,            "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_notify,           "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_getdrawparams,    "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_oksize,           "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_set,              "set",              A_FLOAT,0);
+        eclass_addmethod(c, (t_method) knob_float,            "float",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) knob_bang,             "bang",             A_NULL, 0);
         
-        eclass_addmethod(c, (method) knob_mousedown,        "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) knob_mousedrag,        "mousedrag",        A_NULL, 0);
-        eclass_addmethod(c, (method) knob_mouseup,          "mouseup",          A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_mousedown,        "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_mousedrag,        "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_mouseup,          "mouseup",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "50. 50.");
         

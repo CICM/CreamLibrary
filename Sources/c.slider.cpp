@@ -43,14 +43,14 @@ static void slider_float(t_slider *x, float f)
 {
     ebox_parameter_setvalue((t_ebox *)x, 1, f, 1);
     slider_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 static void slider_set(t_slider *x, float f)
 {
     ebox_parameter_setvalue((t_ebox *)x, 1, f, 0);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -60,7 +60,7 @@ static void slider_bang(t_slider *x, float f)
     slider_output(x);
 }
 
-static void slider_getdrawparams(t_slider *x, t_object *patcherview, t_edrawparams *params)
+static void slider_getdrawparams(t_slider *x, t_object *view, t_edrawparams *params)
 {
 	params->d_borderthickness   = x->f_bdsize;
 	params->d_cornersize        = 2;
@@ -89,13 +89,13 @@ static t_pd_err slider_notify(t_slider *x, t_symbol *s, t_symbol *msg, void *sen
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_kncolor)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
 		}
 	}
     else if(msg == cream_sym_value_changed)
     {
         slider_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 	return 0;
@@ -104,29 +104,29 @@ static t_pd_err slider_notify(t_slider *x, t_symbol *s, t_symbol *msg, void *sen
 static void slider_paint(t_slider *x, t_object *view)
 {
 	t_rect rect;
-	ebox_get_rect_for_view((t_ebox *)x, &rect);
+	ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect.width, rect.height);
     
     if (g)
     {
         const float temp  = ebox_parameter_getvalue_normalized((t_ebox *)x, 1);
         const float value = (ebox_parameter_isinverted((t_ebox *)x, 1)) ? (1.f -  temp) : (temp);
-        egraphics_set_color_rgba(g, &x->f_color_knob);
-        egraphics_set_line_width(g, 2);
+        elayer_set_color_rgba(g, &x->f_color_knob);
+        elayer_set_line_width(g, 2);
         if(x->f_direction)
         {
             const float pos = (rect.width - 4.f) * value + 2.f;
-            egraphics_line_fast(g, pos, 2.f, pos, rect.height - 2.f);
+            elayer_line_fast(g, pos, 2.f, pos, rect.height - 2.f);
         }
         else
         {
             const float pos = (rect.height - 4.f) * (1. - value) + 2.f;
-            egraphics_line_fast(g, 2.f, pos, rect.width - 2.f, pos);
+            elayer_line_fast(g, 2.f, pos, rect.width - 2.f, pos);
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
 static float slider_getvalue(char direction, t_rect const* rect, t_pt const* pt, float min, float max)
@@ -141,12 +141,12 @@ static float slider_getvalue(char direction, t_rect const* rect, t_pt const* pt,
     return (pt->y - 2.f) * (min - max) / (rect->height - 4.f) + max;
 }
 
-static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long modifiers)
+static void slider_mousedown(t_slider *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
     const float min = ebox_parameter_getmin((t_ebox *)x, 1);
     const float max = ebox_parameter_getmax((t_ebox *)x, 1);
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     ebox_parameter_begin_changes((t_ebox *)x, 1);
     if(modifiers == EMOD_SHIFT)
     {
@@ -166,17 +166,17 @@ static void slider_mousedown(t_slider *x, t_object *patcherview, t_pt pt, long m
         x->f_relative = 0;
         ebox_parameter_setvalue((t_ebox *)x, 1, slider_getvalue(x->f_direction, &rect, &pt, min, max), 1);
         slider_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
 
-static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long modifiers)
+static void slider_mousedrag(t_slider *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
     const float min = ebox_parameter_getmin((t_ebox *)x, 1);
     const float max = ebox_parameter_getmax((t_ebox *)x, 1);
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     if(x->f_relative)
     {
         const float refvalue = slider_getvalue(x->f_direction, &rect, &pt, min, max);
@@ -194,11 +194,11 @@ static void slider_mousedrag(t_slider *x, t_object *patcherview, t_pt pt, long m
     }
     
     slider_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void slider_mouseup(t_slider *x, t_object *patcherview, t_pt pt, long modifiers)
+static void slider_mouseup(t_slider *x, t_object *view, t_pt pt, long modifiers)
 {
      ebox_parameter_end_changes((t_ebox *)x, 1);
 }
@@ -212,7 +212,7 @@ static t_pd_err slider_minmax_set(t_slider *x, t_object *attr, int ac, t_atom *a
         ebox_parameter_setminmax((t_ebox *)x, 1, min, max);
     }
     
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     return 0;
 }
@@ -246,7 +246,7 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
         ebox_parameter_create((t_ebox *)x, 1);
         x->f_out = outlet_new((t_object *)x, &s_float);
         
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         return x;
     }
@@ -256,23 +256,23 @@ static void *slider_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2eslider(void)
 {
-    t_eclass *c = eclass_new("c.slider", (method)slider_new, (method)ebox_free, (short)sizeof(t_slider), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.slider", (t_method)slider_new, (t_method)ebox_free, (short)sizeof(t_slider), 0L, A_GIMME, 0);
     if(c)
     {
         eclass_guiinit(c, 0);
         
-        eclass_addmethod(c, (method) slider_paint,          "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) slider_notify,         "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) slider_getdrawparams,  "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) slider_oksize,         "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) slider_paint,          "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) slider_notify,         "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) slider_getdrawparams,  "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) slider_oksize,         "oksize",           A_NULL, 0);
         
-        eclass_addmethod(c, (method) slider_set,            "set",              A_FLOAT,0);
-        eclass_addmethod(c, (method) slider_float,          "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) slider_bang,           "bang",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) slider_set,            "set",              A_FLOAT,0);
+        eclass_addmethod(c, (t_method) slider_float,          "float",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) slider_bang,           "bang",             A_NULL, 0);
         
-        eclass_addmethod(c, (method) slider_mousedown,      "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) slider_mousedrag,      "mousedrag",        A_NULL, 0);
-        eclass_addmethod(c, (method) slider_mouseup,        "mouseup",          A_NULL, 0);
+        eclass_addmethod(c, (t_method) slider_mousedown,      "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) slider_mousedrag,      "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) slider_mouseup,        "mouseup",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 120.");
         

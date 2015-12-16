@@ -120,7 +120,7 @@ static void matrixctrl_clear(t_matrixctrl *x)
         }
     }
     ebox_parameter_setvalue((t_ebox *)x, 1, (float)flags, 1);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -149,7 +149,7 @@ static void matrixctrl_list(t_matrixctrl *x, t_symbol *s, int argc, t_atom *argv
             {
                 pd_list(send, &s_list, 3, av);
             }
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
         else if(!(flags & (1<<index)) && val)
@@ -164,7 +164,7 @@ static void matrixctrl_list(t_matrixctrl *x, t_symbol *s, int argc, t_atom *argv
             {
                 pd_list(send, &s_list, 3, av);
             }
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
@@ -185,20 +185,20 @@ static void matrixctrl_set(t_matrixctrl *x, t_symbol *s, int argc, t_atom *argv)
         {
             flags = flags & ~(1<<index);
             ebox_parameter_setvalue((t_ebox *)x, 1, (float)flags, 0);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
         else if(!(flags & (1<<index)) && val)
         {
             flags = flags | (1<<index);
             ebox_parameter_setvalue((t_ebox *)x, 1, (float)flags, 0);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
 }
 
-static void matrixctrl_getdrawparams(t_matrixctrl *x, t_object *patcherview, t_edrawparams *params)
+static void matrixctrl_getdrawparams(t_matrixctrl *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -218,13 +218,13 @@ static t_pd_err matrixctrl_notify(t_matrixctrl *x, t_symbol *s, t_symbol *msg, v
 	{
         if(s == cream_sym_bgcolor || s  == cream_sym_bdcolor || s == cream_sym_accolor)
         {
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         }
 	}
     else if(msg == cream_sym_value_changed)
     {
         matrixctrl_bang(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_points_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_points_layer);
         ebox_redraw((t_ebox *)x);
     }
 	return 0;
@@ -233,15 +233,15 @@ static t_pd_err matrixctrl_notify(t_matrixctrl *x, t_symbol *s, t_symbol *msg, v
 static void matrixctrl_paint(t_matrixctrl *x, t_object *view)
 {
 	t_rect rect;
-	ebox_get_rect_for_view((t_ebox *)x, &rect);
+	ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect.width, rect.height);
     if(g)
     {
         const float block_width = rect.width / float(x->f_size[0]);
         const float block_height = rect.height / float(x->f_size[1]);
         const int flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
-        egraphics_set_line_width(g, 2.f);
+        elayer_set_line_width(g, 2.f);
         
         float incx = 0.f;
         for(int i = 0; i < x->f_size[0]; i++)
@@ -252,30 +252,30 @@ static void matrixctrl_paint(t_matrixctrl *x, t_object *view)
                 const int index = i * x->f_size[1] + j;
                 if(flags & (1<<index))
                 {
-                    egraphics_rectangle(g, incx + 4.f, incY + 4.f, block_width - 8.f, block_height - 8.f);
-                    egraphics_set_color_rgba(g, &x->f_color_on);
-                    egraphics_fill(g);
+                    elayer_rectangle(g, incx + 4.f, incY + 4.f, block_width - 8.f, block_height - 8.f);
+                    elayer_set_color_rgba(g, &x->f_color_on);
+                    elayer_fill(g);
                 }
-                egraphics_rectangle(g, incx + 2.f, incY + 2.f, block_width - 4.f, block_height - 4.f);
-                egraphics_set_color_rgba(g, &x->f_color_border);
-                egraphics_stroke(g);
+                elayer_rectangle(g, incx + 2.f, incY + 2.f, block_width - 4.f, block_height - 4.f);
+                elayer_set_color_rgba(g, &x->f_color_border);
+                elayer_stroke(g);
                 incY += block_height;
             }
             incx += block_width;
         }
         
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0, 0);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0, 0);
 }
 
-static void matrixctrl_mousedown(t_matrixctrl *x, t_object *patcherview, t_pt pt, long modifiers)
+static void matrixctrl_mousedown(t_matrixctrl *x, t_object *view, t_pt pt, long modifiers)
 {
     int todo_clean_last_column;
     t_atom av[3];
     t_pd* send = ebox_getsender((t_ebox *) x);
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     const int i = (int)pd_clip(pt.x / (rect.width / (float)x->f_size[0]), 0.f, (float)x->f_size[0] - 1.f);
     const int j = (int)pd_clip(pt.y / (rect.height / (float)x->f_size[1]), 0.f, (float)x->f_size[1] - 1.f);
     const int flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
@@ -298,16 +298,16 @@ static void matrixctrl_mousedown(t_matrixctrl *x, t_object *patcherview, t_pt pt
     {
         pd_list(send, &s_list, 3, av);
     }
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void matrixctrl_mousedrag(t_matrixctrl *x, t_object *patcherview, t_pt pt, long modifiers)
+static void matrixctrl_mousedrag(t_matrixctrl *x, t_object *view, t_pt pt, long modifiers)
 {
     t_atom av[3];
     t_pd* send = ebox_getsender((t_ebox *) x);
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     const int i = (int)pd_clip(pt.x / (rect.width / (float)x->f_size[0]), 0.f, (float)x->f_size[0] - 1.f);
     const int j = (int)pd_clip(pt.y / (rect.height / (float)x->f_size[1]), 0.f, (float)x->f_size[1] - 1.f);
     const int flags = (int)ebox_parameter_getvalue((t_ebox *)x, 1);
@@ -331,12 +331,12 @@ static void matrixctrl_mousedrag(t_matrixctrl *x, t_object *patcherview, t_pt pt
         {
             pd_list(send, &s_list, 3, av);
         }
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
 
-static void matrixctrl_mouseup(t_matrixctrl *x, t_object *patcherview, t_pt pt, long modifiers)
+static void matrixctrl_mouseup(t_matrixctrl *x, t_object *view, t_pt pt, long modifiers)
 {
     x->f_selected = -1;
     ebox_parameter_end_changes((t_ebox *)x, 1);
@@ -351,7 +351,7 @@ static t_pd_err matrixctrl_matrix_set(t_matrixctrl *x, t_object *attr, int ac, t
         ebox_parameter_setvalue((t_ebox *)x, 1, 0, 0);
         ebox_parameter_setminmax((t_ebox *)x, 1, 0.f, powf(2., (float)(x->f_size[0] * x->f_size[1])) - 1.f);
         ebox_parameter_setnstep((t_ebox *)x, 1, (int)powf(2., (float)(x->f_size[0] * x->f_size[1])));
-        ebox_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
+        eobj_notify((t_ebox *)x, s_cream_size, cream_sym_attr_modified, NULL, NULL);
     }
     return 0;
 }
@@ -370,7 +370,7 @@ static void *matrixctrl_new(t_symbol *s, int argc, t_atom *argv)
         x->f_out_cell   = outlet_new((t_object *)x, &s_list);
         x->f_out_colrow = outlet_new((t_object *)x, &s_list);
         
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         
         return x;
@@ -381,25 +381,25 @@ static void *matrixctrl_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2ematrix(void)
 {
-    t_eclass *c = eclass_new("c.matrix", (method)matrixctrl_new, (method)ebox_free, (short)sizeof(t_matrixctrl), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.matrix", (t_method)matrixctrl_new, (t_method)ebox_free, (short)sizeof(t_matrixctrl), 0L, A_GIMME, 0);
     
     if(c)
     {
         eclass_guiinit(c, 0);
-        eclass_addmethod(c, (method) matrixctrl_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) matrixctrl_notify,          "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) matrixctrl_getdrawparams,   "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) matrixctrl_oksize,          "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) matrixctrl_set,             "set",              A_GIMME,0);
-        eclass_addmethod(c, (method) matrixctrl_list,            "list",             A_GIMME,0);
-        eclass_addmethod(c, (method) matrixctrl_bang,            "bang",             A_NULL, 0);
-        eclass_addmethod(c, (method) matrixctrl_clear,           "clear",            A_NULL, 0);
-        eclass_addmethod(c, (method) matrixctrl_getrow,          "getrow",           A_FLOAT,0);
-        eclass_addmethod(c, (method) matrixctrl_getcolumn,       "getcolumn",        A_FLOAT,0);
+        eclass_addmethod(c, (t_method) matrixctrl_paint,           "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_notify,          "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_getdrawparams,   "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_set,             "set",              A_GIMME,0);
+        eclass_addmethod(c, (t_method) matrixctrl_list,            "list",             A_GIMME,0);
+        eclass_addmethod(c, (t_method) matrixctrl_bang,            "bang",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_clear,           "clear",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_getrow,          "getrow",           A_FLOAT,0);
+        eclass_addmethod(c, (t_method) matrixctrl_getcolumn,       "getcolumn",        A_FLOAT,0);
         
-        eclass_addmethod(c, (method) matrixctrl_mousedown,       "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) matrixctrl_mousedrag,       "mousedrag",        A_NULL, 0);
-        eclass_addmethod(c, (method) matrixctrl_mouseup,         "mouseup",          A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_mousedown,       "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_mousedrag,       "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) matrixctrl_mouseup,         "mouseup",          A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "105 53");
         

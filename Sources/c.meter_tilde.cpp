@@ -60,7 +60,7 @@ static void meter_tick(t_meter *x)
         }
         
         meter_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_leds_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_leds_layer);
         ebox_redraw((t_ebox *)x);
         clock_delay(x->f_clock, x->f_interval);
     }
@@ -88,11 +88,12 @@ static void meter_perform(t_meter *x, t_object *dsp, t_sample **ins, long ni, t_
 
 static void meter_dsp(t_meter *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
 {
-    object_method(dsp, gensym("dsp_add"), x, (method)meter_perform, 0, NULL);
+    int todo;
+    //object_method(dsp, gensym("dsp_add"), x, (t_method)meter_perform, 0, NULL);
     x->f_startclock = 1;
 }
 
-static void meter_getdrawparams(t_meter *x, t_object *patcherview, t_edrawparams *params)
+static void meter_getdrawparams(t_meter *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2.;
     params->d_cornersize        = 2.;
@@ -106,8 +107,8 @@ static t_pd_err meter_notify(t_meter *x, t_symbol *s, t_symbol *msg, void *sende
     {
         if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_coldcolor || s == cream_sym_tepidcolor || s == cream_sym_warmcolor || s == cream_sym_hotcolor || s == cream_sym_overcolor)
         {
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_leds_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_leds_layer);
         }
     }
     return 0;
@@ -139,17 +140,17 @@ static void meter_oksize(t_meter *x, t_rect *newrect)
 static void draw_background(t_meter *x,  t_object *view, t_rect *rect)
 {
     int i;
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
     if (g)
     {
-        egraphics_set_color_rgba(g, &x->f_color_border);
+        elayer_set_color_rgba(g, &x->f_color_border);
         if(!x->f_direction)
         {
             float ratio = rect->height / 13.f;
             for(i = 1; i < 13; i++)
             {
-                egraphics_line(g, 0.f, i * ratio, rect->width, i * ratio);
-                egraphics_stroke(g);
+                elayer_line(g, 0.f, i * ratio, rect->width, i * ratio);
+                elayer_stroke(g);
             }
         }
         else
@@ -157,13 +158,13 @@ static void draw_background(t_meter *x,  t_object *view, t_rect *rect)
             float ratio = rect->width / 13.f;
             for(i = 1; i < 13; i++)
             {
-                egraphics_line(g, i * ratio, 0.f, i * ratio, rect->height);
-                egraphics_stroke(g);
+                elayer_line(g, i * ratio, 0.f, i * ratio, rect->height);
+                elayer_stroke(g);
             }
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0.f, 0.f);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0.f, 0.f);
 }
 
 
@@ -171,7 +172,7 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect, float peak, char
 {
     float i;
     float dB;
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_leds_layer, rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_leds_layer, rect->width, rect->height);
     
     if (g)
     {
@@ -182,48 +183,48 @@ static void draw_leds(t_meter *x, t_object *view, t_rect *rect, float peak, char
             if(peak >= dB)
             {
                 if(i > 9)
-                    egraphics_set_color_rgba(g, &x->f_color_signal_cold);
+                    elayer_set_color_rgba(g, &x->f_color_signal_cold);
                 else if(i > 6)
-                    egraphics_set_color_rgba(g, &x->f_color_signal_tepid);
+                    elayer_set_color_rgba(g, &x->f_color_signal_tepid);
                 else if(i > 3)
-                    egraphics_set_color_rgba(g, &x->f_color_signal_warm);
+                    elayer_set_color_rgba(g, &x->f_color_signal_warm);
                 else if(i > 0)
-                    egraphics_set_color_rgba(g, &x->f_color_signal_hot);
+                    elayer_set_color_rgba(g, &x->f_color_signal_hot);
                 if(!x->f_direction)
                 {
                     if(i > 11)
-                        egraphics_rectangle(g, 0, i * led_height + 1, rect->width, led_height);
+                        elayer_rectangle(g, 0, i * led_height + 1, rect->width, led_height);
                     else
-                        egraphics_rectangle(g, 0, i * led_height + 1, rect->width, led_height - 1);
+                        elayer_rectangle(g, 0, i * led_height + 1, rect->width, led_height - 1);
                 }
                 else
                 {
                     if(i > 11)
-                        egraphics_rectangle(g, 0, 0, led_width, rect->height);
+                        elayer_rectangle(g, 0, 0, led_width, rect->height);
                     else
-                        egraphics_rectangle(g, (12 - i) * led_width + 1, 0, led_width - 1, rect->height);
+                        elayer_rectangle(g, (12 - i) * led_width + 1, 0, led_width - 1, rect->height);
                 }
-                egraphics_fill(g);
+                elayer_fill(g);
             }
         }
         if(overled)
         {
-            egraphics_set_color_rgba(g, &x->f_color_signal_over);
+            elayer_set_color_rgba(g, &x->f_color_signal_over);
             if(!x->f_direction)
             {
-                egraphics_rectangle(g, 0, 0, rect->width, led_height);
+                elayer_rectangle(g, 0, 0, rect->width, led_height);
             }
             else
             {
-                egraphics_rectangle(g, 12 * led_width + 1, 0, led_width, rect->height);
+                elayer_rectangle(g, 12 * led_width + 1, 0, led_width, rect->height);
                 
             }
             
-            egraphics_fill(g);
+            elayer_fill(g);
         }
-        ebox_end_layer((t_ebox *)x, cream_sym_leds_layer);
+        ebox_end_layer((t_ebox *)x, view, cream_sym_leds_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_leds_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_leds_layer, 0., 0.);
 }
 
 static void meter_paint(t_meter *x, t_object *view)
@@ -231,7 +232,7 @@ static void meter_paint(t_meter *x, t_object *view)
     t_rect rect;
     const float peak = x->f_peak > 0. ? 20. * log10(x->f_peak) : -90.;
     const char overled = x->f_overled;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_background(x, view, &rect);
     draw_leds(x, view, &rect, peak, overled);
 }
@@ -250,7 +251,7 @@ static void *meter_new(t_symbol *s, int argc, t_atom *argv)
         x->f_clock          = clock_new(x,(t_method)meter_tick);
         x->f_startclock     = 0;
         x->f_overled = 0;
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
     }
     
@@ -268,16 +269,16 @@ extern "C" void setup_c0x2emeter_tilde(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.meter~", (method)meter_new, (method)meter_free, (short)sizeof(t_meter), 0L, A_GIMME, 0);
+    c = eclass_new("c.meter~", (t_method)meter_new, (t_method)meter_free, (short)sizeof(t_meter), 0L, A_GIMME, 0);
     
     eclass_dspinit(c);
     eclass_guiinit(c, 0);
     
-    eclass_addmethod(c, (method) meter_dsp,             "dsp",              A_NULL, 0);
-    eclass_addmethod(c, (method) meter_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) meter_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) meter_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) meter_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) meter_dsp,             "dsp",              A_NULL, 0);
+    eclass_addmethod(c, (t_method) meter_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) meter_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) meter_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) meter_oksize,          "oksize",           A_NULL, 0);
     
     CLASS_ATTR_DEFAULT              (c, "size", 0, "13 85");
     

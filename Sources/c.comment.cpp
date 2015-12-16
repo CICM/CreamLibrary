@@ -15,7 +15,7 @@
 typedef struct  _comment
 {
 	t_ebox          j_box;
-    t_etexteditor*  f_editor;
+    t_etextlayouteditor*  f_editor;
     char*           f_text;
     t_efont         f_font;
 	t_rgba          f_color_background;
@@ -25,7 +25,7 @@ typedef struct  _comment
 
 static t_eclass *comment_class;
 
-static void comment_getdrawparams(t_comment *x, t_object *patcherview, t_edrawparams *params)
+static void comment_getdrawparams(t_comment *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -46,7 +46,7 @@ static t_pd_err comment_notify(t_comment *x, t_symbol *s, t_symbol *msg, void *s
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_textcolor ||
            s == cream_sym_font)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
 		}
 	}
 	return 0;
@@ -55,26 +55,26 @@ static t_pd_err comment_notify(t_comment *x, t_symbol *s, t_symbol *msg, void *s
 static void comment_paint(t_comment *x, t_object *view)
 {
 	t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
 
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect.width, rect.height);
     if(g && x->f_text)
     {
-        t_etext *jtl = etext_layout_create();
+        t_etextlayout *jtl = etextlayout_new();
         if(jtl)
         {
-            etext_layout_set(jtl, x->f_text, &x->f_font, 2.f, 2.f, rect.width - 4.f, rect.height - 4.f, ETEXT_TOPLEFT, ETEXT_WRAP);
-            etext_layout_settextcolor(jtl, &x->f_color_text);
-            etext_layout_draw(jtl, g);
-            etext_layout_destroy(jtl);
+            etextlayout_set(jtl, x->f_text, &x->f_font, 2.f, 2.f, rect.width - 4.f, rect.height - 4.f, ETEXT_TOPLEFT, ETEXT_WRAP);
+            etextlayout_settextcolor(jtl, &x->f_color_text);
+            etextlayout_draw(jtl, g);
+            etextlayout_destroy(jtl);
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
         
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
-static void comment_texteditor_keypress(t_comment *x, t_etexteditor *editor, int key)
+static void comment_texteditor_keypress(t_comment *x, t_etextlayouteditor *editor, int key)
 {
     if(editor && editor == x->f_editor)
     {
@@ -82,7 +82,7 @@ static void comment_texteditor_keypress(t_comment *x, t_etexteditor *editor, int
     }
 }
 
-static void comment_texteditor_focus(t_comment *x, t_etexteditor *editor, int focus)
+static void comment_texteditor_focus(t_comment *x, t_etextlayouteditor *editor, int focus)
 {
     if(editor && editor == x->f_editor && !focus)
     {
@@ -94,12 +94,12 @@ static void comment_texteditor_focus(t_comment *x, t_etexteditor *editor, int fo
         etexteditor_gettext(editor, &x->f_text);
         etexteditor_destroy(editor);
         x->f_editor = NULL;
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
 
-static void comment_texteditor_keyfilter(t_comment *x, t_etexteditor *editor, ekey_flags key)
+static void comment_texteditor_keyfilter(t_comment *x, t_etextlayouteditor *editor, ekey_flags key)
 {
     if(editor && editor == x->f_editor)
     {
@@ -113,13 +113,13 @@ static void comment_texteditor_keyfilter(t_comment *x, t_etexteditor *editor, ek
             etexteditor_gettext(editor, &x->f_text);
             etexteditor_destroy(editor);
             x->f_editor = NULL;
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
             ebox_redraw((t_ebox *)x);
         }
     }
 }
 
-static void comment_dblclick(t_comment *x, t_object *patcherview, t_pt pt, long modifiers)
+static void comment_dblclick(t_comment *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
     if(!x->f_editor)
@@ -127,7 +127,7 @@ static void comment_dblclick(t_comment *x, t_object *patcherview, t_pt pt, long 
         x->f_editor = etexteditor_create((t_ebox *)x);
         if(x->f_editor)
         {
-            ebox_get_rect_for_view((t_ebox *)x, &rect);
+            ebox_getdrawbounds((t_ebox *)x, view,  &rect);
             etexteditor_setbackgroundcolor(x->f_editor, &x->f_color_background);
             etexteditor_settextcolor(x->f_editor, &x->f_color_text);
             etexteditor_setfont(x->f_editor, &x->f_font);
@@ -152,11 +152,10 @@ static void comment_dblclick(t_comment *x, t_object *patcherview, t_pt pt, long 
 
 static void comment_save(t_comment* x, t_binbuf *b)
 {
-    t_atom av;
     if(x->f_text)
     {
-        atom_setsym(&av, gensym(x->f_text));
-        binbuf_append_attribute(b, gensym("@text"), 1, &av);
+        binbuf_text(b, (char *)"@text", 10);
+        binbuf_text(b, x->f_text, strlen(x->f_text));
     }
 }
 
@@ -197,7 +196,7 @@ static void *comment_new(t_symbol *s, int argc, t_atom *argv)
                 }
             }
         }
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         
         return x;
@@ -208,21 +207,20 @@ static void *comment_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2ecomment(void)
 {
-    t_eclass *c = eclass_new("c.comment", (method)comment_new, (method)comment_free, (short)sizeof(t_comment), CLASS_NOINLET, A_GIMME, 0);
-    
+    t_eclass *c = eclass_new("c.comment", (t_method)comment_new, (t_method)comment_free, sizeof(t_comment), CLASS_NOINLET, A_GIMME, 0);
     if(c)
     {
         eclass_guiinit(c, 0 | EBOX_TEXTFIELD);
-        eclass_addmethod(c, (method) comment_paint,              "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) comment_notify,             "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) comment_getdrawparams,      "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) comment_oksize,             "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) comment_save,               "save",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_paint,              "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_notify,             "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_getdrawparams,      "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_oksize,             "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_save,               "save",             A_NULL, 0);
         
-        eclass_addmethod(c, (method) comment_dblclick,            "dblclick",            A_NULL, 0);
-        eclass_addmethod(c, (method) comment_texteditor_keypress, "texteditor_keypress", A_NULL, 0);
-        eclass_addmethod(c, (method) comment_texteditor_keyfilter,"texteditor_keyfilter",A_NULL, 0);
-        eclass_addmethod(c, (method) comment_texteditor_focus,    "texteditor_focus",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_dblclick,            "dblclick",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_texteditor_keypress, "texteditor_keypress", A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_texteditor_keyfilter,"texteditor_keyfilter",A_NULL, 0);
+        eclass_addmethod(c, (t_method) comment_texteditor_focus,    "texteditor_focus",    A_NULL, 0);
         
         CLASS_ATTR_DEFAULT              (c, "size", 0, "53 13");
         

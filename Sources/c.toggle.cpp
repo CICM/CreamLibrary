@@ -36,14 +36,14 @@ static void toggle_float(t_toggle *x, float f)
 {
     ebox_parameter_setvalue((t_ebox *)x, 1, (f == 0.f) ? 0.f : 1.f, 1);
     toggle_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
 static void toggle_set(t_toggle *x, float f)
 {
     ebox_parameter_setvalue((t_ebox *)x, 1, (f == 0.f) ? 0.f : 1.f, 0);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -52,11 +52,11 @@ static void toggle_bang(t_toggle *x)
     const float f = ebox_parameter_getvalue((t_ebox *)x, 1);
     ebox_parameter_setvalue((t_ebox *)x, 1, (f == 0.f) ? 1.f : 0.f, 1);
     toggle_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void toggle_getdrawparams(t_toggle *x, t_object *patcherview, t_edrawparams *params)
+static void toggle_getdrawparams(t_toggle *x, t_object *view, t_edrawparams *params)
 {
 	params->d_borderthickness   = 2;
 	params->d_cornersize        = 2;
@@ -76,13 +76,13 @@ static t_pd_err toggle_notify(t_toggle *x, t_symbol *s, t_symbol *msg, void *sen
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_crcolor)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
 		}
 	}
     else if(msg == cream_sym_value_changed)
     {
         toggle_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 	return 0;
@@ -92,24 +92,24 @@ static void toggle_paint(t_toggle *x, t_object *view)
 {
     t_elayer *g;
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
-    g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
+    g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect.width, rect.height);
     if(g)
     {
         const char state = ebox_parameter_getvalue((t_ebox *)x, 1);
         if(state)
         {
-            egraphics_set_color_rgba(g, &x->f_color_cross);
-            egraphics_set_line_width(g, 2);
-            egraphics_line_fast(g, 2.f, 2.f, rect.width - 2.f, rect.height - 2.f);
-            egraphics_line_fast(g, 2.f, rect.height - 2.f, rect.width - 2.f, 2.f);
+            elayer_set_color_rgba(g, &x->f_color_cross);
+            elayer_set_line_width(g, 2);
+            elayer_line_fast(g, 2.f, 2.f, rect.width - 2.f, rect.height - 2.f);
+            elayer_line_fast(g, 2.f, rect.height - 2.f, rect.width - 2.f, 2.f);
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
-static void toggle_mousedown(t_toggle *x, t_object *patcherview, t_pt pt, long modifiers)
+static void toggle_mousedown(t_toggle *x, t_object *view, t_pt pt, long modifiers)
 {
     ebox_parameter_begin_changes((t_ebox *)x, 1);
     toggle_bang(x);
@@ -121,19 +121,19 @@ static void toggle_setter_t(t_toggle *x, int index, char const* text)
     if(!strcmp(text, "on"))
     {
         ebox_parameter_setvalue((t_ebox *)x, 1, 1.f, 0);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
     else if(!strcmp(text, "off"))
     {
         ebox_parameter_setvalue((t_ebox *)x, 1, 1.f, 0);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
     else if(isdigit(text[0]))
     {
         ebox_parameter_setvalue((t_ebox *)x, 1, (atof(text) == 0.f) ? 0.f : 1.f, 0);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -166,7 +166,7 @@ static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
                                             (t_param_getter_t)toggle_getter_t);
         
         x->f_outlet = outlet_new((t_object *)x, &s_float);
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         
         return x;
@@ -177,20 +177,19 @@ static void *toggle_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2etoggle(void)
 {
-    t_eclass *c = eclass_new("c.toggle", (method)toggle_new, (method)ebox_free, (short)sizeof(t_toggle), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.toggle", (t_method)toggle_new, (t_method)ebox_free, sizeof(t_toggle), CLASS_DEFAULT, A_GIMME, 0);
     if(c)
     {
         eclass_guiinit(c, 0);
-        eclass_addmethod(c, (method) toggle_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) toggle_notify,          "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) toggle_getdrawparams,   "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) toggle_oksize,          "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) toggle_float,           "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) toggle_set,             "set",              A_FLOAT,0);
-        eclass_addmethod(c, (method) toggle_bang,            "bang",             A_NULL, 0);
-        eclass_addmethod(c, (method) toggle_mousedown,       "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) toggle_paint,           "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) toggle_notify,          "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) toggle_getdrawparams,   "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) toggle_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) toggle_float,           "float",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) toggle_set,             "set",              A_FLOAT,0);
+        eclass_addmethod(c, (t_method) toggle_bang,            "bang",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) toggle_mousedown,       "mousedown",        A_NULL, 0);
     
-        
         CLASS_ATTR_DEFAULT              (c, "size", 0, "15. 15.");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_toggle, f_color_background);

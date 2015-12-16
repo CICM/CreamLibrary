@@ -29,8 +29,8 @@ static void *cream_new(t_symbol *s)
 
 extern "C" void cream_setup(void)
 {
-    cream_class = eclass_new("cream", (method)cream_new, (method)eobj_free, (short)sizeof(t_eobj), CLASS_PD, A_NULL, 0);
-    cream_class = eclass_new("Cream", (method)cream_new, (method)eobj_free, (short)sizeof(t_eobj), CLASS_PD, A_NULL, 0);
+    cream_class = eclass_new("cream", (t_method)cream_new, (t_method)eobj_free, (short)sizeof(t_eobj), CLASS_PD, A_NULL, 0);
+    cream_class = eclass_new("Cream", (t_method)cream_new, (t_method)eobj_free, (short)sizeof(t_eobj), CLASS_PD, A_NULL, 0);
     t_eobj* obj = (t_eobj *)cream_new(NULL);
     if(!obj)
     {
@@ -70,7 +70,6 @@ extern "C" void cream_setup(void)
 #ifdef __APPLE__
     setup_c0x2ekeyboard();
     setup_c0x2ecamomile();
-    setup_c0x2ewavesel();
 #endif
     
     // Deprecated
@@ -93,4 +92,61 @@ extern "C" void Cream_setup(void)
 {
 	cream_setup();
 }
+
+float pd_wrap(float f, const float min, const float max)
+{
+    if(min < max)
+    {
+        const float ratio = max - min;
+        while(f < min){f += ratio;}
+        while(f > max){f -= ratio;}
+        return f;
+    }
+    else
+    {
+        const float ratio = min - max;
+        while(f < max){f += ratio;}
+        while(f > min){f -= ratio;}
+        return f;
+    }
+}
+
+float pd_clip(const float f, const float min, const float max)
+{
+    return (f < min) ? min : ((f > max) ? max : f);
+}
+
+float pd_clip_min(const float f, const float min)
+{
+    return (f < min) ? min : f;
+}
+
+float pd_clip_max(const float f, const float max)
+{
+    return (f > max) ? max : f;
+}
+
+float pd_ordinate(const float radius, const float angle)
+{
+    return radius * sinf(angle);
+}
+
+float pd_abscissa(const float radius, const float angle)
+{
+    return radius * cosf(angle);
+}
+
+float pd_radius(const float x, const float y)
+{
+    return sqrtf(x*x + y*y);
+}
+
+float pd_angle(const float x, const float y)
+{
+    return atan2f(y, x);
+}
+
+
+
+
 

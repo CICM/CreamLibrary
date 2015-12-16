@@ -68,13 +68,13 @@ static t_pd_err incdec_notify(t_incdec *x, t_symbol *s, t_symbol *msg, void *sen
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_arcolor)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
 		}
 	}
 	return 0;
 }
 
-static void incdec_getdrawparams(t_incdec *x, t_object *patcherview, t_edrawparams *params)
+static void incdec_getdrawparams(t_incdec *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -91,59 +91,59 @@ static void incdec_oksize(t_incdec *x, t_rect *newrect)
 static void incdec_paint(t_incdec *x, t_object *view)
 {
 	t_rect rect;
-	ebox_get_rect_for_view((t_ebox *)x, &rect);
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect.width, rect.height);
+	ebox_getdrawbounds((t_ebox *)x, view, &rect);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect.width, rect.height);
     if (g)
     {
-        egraphics_set_color_rgba(g, &x->f_color_arrow);
+        elayer_set_color_rgba(g, &x->f_color_arrow);
         if(x->f_mouse_down)
         {
             if(x->f_mouse_down == 1)
             {
-                egraphics_rectangle(g, 0.f, 0.f, rect.width, rect.height * 0.5f);
+                elayer_rectangle(g, 0.f, 0.f, rect.width, rect.height * 0.5f);
             }
             else
             {
-                egraphics_rectangle(g, 0.f, rect.height * 0.5f, rect.width, rect.height);
+                elayer_rectangle(g, 0.f, rect.height * 0.5f, rect.width, rect.height);
             }
-            egraphics_fill(g);
+            elayer_fill(g);
         }
         
         if(x->f_mouse_down == 1)
         {
-            egraphics_set_color_rgba(g, &x->f_color_background);
+            elayer_set_color_rgba(g, &x->f_color_background);
         }
-        egraphics_move_to(g, 2.f, rect.height * 0.5f - 3.f);
-        egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f - 3.f);
-        egraphics_line_to(g, rect.width * 0.5f, 2.f);
-        egraphics_fill(g);
+        elayer_move_to(g, 2.f, rect.height * 0.5f - 3.f);
+        elayer_line_to(g, rect.width - 2.f, rect.height * 0.5f - 3.f);
+        elayer_line_to(g, rect.width * 0.5f, 2.f);
+        elayer_fill(g);
         
         if(x->f_mouse_down == -1)
         {
-            egraphics_set_color_rgba(g, &x->f_color_background);
+            elayer_set_color_rgba(g, &x->f_color_background);
         }
         else
         {
-            egraphics_set_color_rgba(g, &x->f_color_arrow);
+            elayer_set_color_rgba(g, &x->f_color_arrow);
         }
-        egraphics_move_to(g, 2.f, rect.height * 0.5f + 3.f);
-        egraphics_line_to(g, rect.width - 2.f, rect.height * 0.5f + 3.f);
-        egraphics_line_to(g, rect.width * 0.5f, rect.height - 2.f);
-        egraphics_fill(g);
+        elayer_move_to(g, 2.f, rect.height * 0.5f + 3.f);
+        elayer_line_to(g, rect.width - 2.f, rect.height * 0.5f + 3.f);
+        elayer_line_to(g, rect.width * 0.5f, rect.height - 2.f);
+        elayer_fill(g);
         
-        egraphics_set_color_rgba(g, &x->f_color_border);
-        egraphics_set_line_width(g, 2.f);
-        egraphics_line_fast(g, 0., rect.height * 0.5f, rect.width, rect.height * 0.5f);
+        elayer_set_color_rgba(g, &x->f_color_border);
+        elayer_set_line_width(g, 2.f);
+        elayer_line_fast(g, 0., rect.height * 0.5f, rect.width, rect.height * 0.5f);
         
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
     }
-    ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
-static void incdec_mousedown(t_incdec *x, t_object *patcherview, t_pt pt, long modifiers)
+static void incdec_mousedown(t_incdec *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view, &rect);
     if(pt.y - 2.f < rect.height * 0.5f)
     {
         incdec_inc(x);
@@ -155,15 +155,15 @@ static void incdec_mousedown(t_incdec *x, t_object *patcherview, t_pt pt, long m
         x->f_mouse_down = -1;
     }
     clock_delay(x->f_clock, 250.);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void incdec_mouseup(t_incdec *x, t_object *patcherview, t_pt pt, long modifiers)
+static void incdec_mouseup(t_incdec *x, t_object *view, t_pt pt, long modifiers)
 {
     x->f_mouse_down = 0;
     clock_unset(x->f_clock);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -199,7 +199,7 @@ static void *incdec_new(t_symbol *s, int argc, t_atom *argv)
         x->f_value = 0.;
         x->f_mouse_down = 0;
         x->f_out = outlet_new((t_object *)x, &s_float);
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
     }
     
@@ -210,20 +210,20 @@ extern "C" void setup_c0x2eincdec(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.incdec", (method)incdec_new, (method)incdec_free, (short)sizeof(t_incdec), 0L, A_GIMME, 0);
+    c = eclass_new("c.incdec", (t_method)incdec_new, (t_method)incdec_free, (short)sizeof(t_incdec), 0L, A_GIMME, 0);
     
     eclass_guiinit(c, 0);
-    eclass_addmethod(c, (method) incdec_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) incdec_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) incdec_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) incdec_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) incdec_set,             "set",              A_FLOAT,0);
-    eclass_addmethod(c, (method) incdec_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) incdec_output,          "bang",             A_NULL, 0);
-    eclass_addmethod(c, (method) incdec_inc,             "inc",              A_NULL, 0);
-    eclass_addmethod(c, (method) incdec_dec,             "dec",              A_NULL, 0);
-    eclass_addmethod(c, (method) incdec_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) incdec_mouseup,         "mouseup",          A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_set,             "set",              A_FLOAT,0);
+    eclass_addmethod(c, (t_method) incdec_float,           "float",            A_FLOAT,0);
+    eclass_addmethod(c, (t_method) incdec_output,          "bang",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_inc,             "inc",              A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_dec,             "dec",              A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) incdec_mouseup,         "mouseup",          A_NULL, 0);
     
     CLASS_ATTR_DEFAULT              (c, "size", 0, "13 20");
     

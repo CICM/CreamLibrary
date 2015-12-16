@@ -53,7 +53,7 @@ static void gain_set(t_gain *x, float f)
     x->f_amp_step = (float)(x->f_amp - x->f_amp_old) / (float)x->f_ramp_sample;
     x->f_counter  = 0;
     
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -66,7 +66,7 @@ static void gain_float(t_gain *x, float f)
     x->f_counter  = 0;
     
     gain_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -79,7 +79,7 @@ static void gain_linear(t_gain *x, float f)
     x->f_counter  = 0;
     
     gain_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_knob_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -121,7 +121,7 @@ static void gain_dsp(t_gain *x, t_object *dsp, short *count, double samplerate, 
 {
     x->f_sample_rate = pd_clip_min((float)samplerate, 1);
     x->f_ramp_sample = pd_clip_min(x->f_ramp * x->f_sample_rate / 1000.f, 1.f);
-    object_method(dsp, gensym("dsp_add"), x, (method)gain_perform, 0, NULL);
+    mess4((t_pd *)dsp, gensym("dsp_add"), x, (void *)gain_perform, 0, NULL);
 }
 
 static t_pd_err gain_notify(t_gain *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
@@ -130,8 +130,8 @@ static t_pd_err gain_notify(t_gain *x, t_symbol *s, t_symbol *msg, void *sender,
 	{
 		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_kncolor)
 		{
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_knob_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
 		}
 	}
     else if(msg == cream_sym_value_changed)
@@ -141,13 +141,13 @@ static t_pd_err gain_notify(t_gain *x, t_symbol *s, t_symbol *msg, void *sender,
         x->f_amp_step = (float)(x->f_amp - x->f_amp_old) / (float)x->f_ramp_sample;
         x->f_counter  = 0;
         gain_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
     return 0;
 }
 
-static void gain_getdrawparams(t_gain *x, t_object *patcherview, t_edrawparams *params)
+static void gain_getdrawparams(t_gain *x, t_object *view, t_edrawparams *params)
 {
     params->d_borderthickness   = 2;
     params->d_cornersize        = 2;
@@ -173,76 +173,76 @@ static void gain_oksize(t_gain *x, t_rect *newrect)
 
 static void draw_background(t_gain *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
 	if(g)
 	{
-        egraphics_set_line_width(g, 2.f);
-        egraphics_set_color_rgba(g, &x->f_color_border);
+        elayer_set_line_width(g, 2.f);
+        elayer_set_color_rgba(g, &x->f_color_border);
         if(x->f_direction)
         {
-            egraphics_line(g, (1.f - 0.16666666f) * rect->width, 0.f, (1.f - 0.16666666f) * rect->width, rect->height);
-            egraphics_stroke(g);
-            egraphics_line(g, (1.f - 0.35185185f) * rect->width, rect->height * 0.65f, (1.f - 0.35185185f) * rect->width, rect->height);
-            egraphics_stroke(g);
-            egraphics_line(g, (1.f - 0.537037037f) * rect->width, rect->height * 0.65f, (1.f - 0.537037037f) * rect->width, rect->height);
-            egraphics_stroke(g);
-            egraphics_line(g, (1.f - 0.722222222f) * rect->width, rect->height * 0.65f, (1.f - 0.722222222f) * rect->width, rect->height);
-            egraphics_stroke(g);
-            egraphics_line(g, (1.f -0.907407407f) * rect->width, rect->height * 0.65f, (1.f -0.907407407f) * rect->width, rect->height);
-            egraphics_stroke(g);
+            elayer_line(g, (1.f - 0.16666666f) * rect->width, 0.f, (1.f - 0.16666666f) * rect->width, rect->height);
+            elayer_stroke(g);
+            elayer_line(g, (1.f - 0.35185185f) * rect->width, rect->height * 0.65f, (1.f - 0.35185185f) * rect->width, rect->height);
+            elayer_stroke(g);
+            elayer_line(g, (1.f - 0.537037037f) * rect->width, rect->height * 0.65f, (1.f - 0.537037037f) * rect->width, rect->height);
+            elayer_stroke(g);
+            elayer_line(g, (1.f - 0.722222222f) * rect->width, rect->height * 0.65f, (1.f - 0.722222222f) * rect->width, rect->height);
+            elayer_stroke(g);
+            elayer_line(g, (1.f -0.907407407f) * rect->width, rect->height * 0.65f, (1.f -0.907407407f) * rect->width, rect->height);
+            elayer_stroke(g);
         }
         else
         {
-            egraphics_line(g, 0.f, 0.16666666f * rect->height, rect->width, 0.16666666f * rect->height);
-            egraphics_stroke(g);
-            egraphics_line(g, rect->width * 0.65f, 0.35185185f * rect->height, rect->width, 0.35185185f * rect->height);
-            egraphics_stroke(g);
-            egraphics_line(g, rect->width * 0.65f, 0.537037037f * rect->height, rect->width, 0.537037037f * rect->height);
-            egraphics_stroke(g);
-            egraphics_line(g, rect->width * 0.65f, 0.722222222f * rect->height, rect->width, 0.722222222f * rect->height);
-            egraphics_stroke(g);
-            egraphics_line(g, rect->width * 0.65f, 0.907407407f * rect->height, rect->width, 0.907407407f * rect->height);
-            egraphics_stroke(g);
+            elayer_line(g, 0.f, 0.16666666f * rect->height, rect->width, 0.16666666f * rect->height);
+            elayer_stroke(g);
+            elayer_line(g, rect->width * 0.65f, 0.35185185f * rect->height, rect->width, 0.35185185f * rect->height);
+            elayer_stroke(g);
+            elayer_line(g, rect->width * 0.65f, 0.537037037f * rect->height, rect->width, 0.537037037f * rect->height);
+            elayer_stroke(g);
+            elayer_line(g, rect->width * 0.65f, 0.722222222f * rect->height, rect->width, 0.722222222f * rect->height);
+            elayer_stroke(g);
+            elayer_line(g, rect->width * 0.65f, 0.907407407f * rect->height, rect->width, 0.907407407f * rect->height);
+            elayer_stroke(g);
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
 static void draw_knob(t_gain *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_knob_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_knob_layer, rect->width, rect->height);
 	if (g)
 	{
-        egraphics_set_line_width(g, 4.f);
-        egraphics_set_color_rgba(g, &x->f_color_knob);
+        elayer_set_line_width(g, 4.f);
+        elayer_set_color_rgba(g, &x->f_color_knob);
         if(x->f_direction)
         {
             const float val = (ebox_parameter_getvalue((t_ebox *)x, 1) + 90.f) / 108.f * rect->width;
-            egraphics_line_fast(g, val, 0.f, val, rect->height);
+            elayer_line_fast(g, val, 0.f, val, rect->height);
         }
         else
         {
             const float val = (1.f - (ebox_parameter_getvalue((t_ebox *)x, 1) + 90.f) / 108.f) * rect->height;
-            egraphics_line_fast(g, 0.f, val, rect->width, val);
+            elayer_line_fast(g, 0.f, val, rect->width, val);
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_knob_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_knob_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_knob_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_knob_layer, 0., 0.);
 }
 
 static void gain_paint(t_gain *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_background(x, view, &rect);
     draw_knob(x, view, &rect);
 }
 
-static void gain_mousedown(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
+static void gain_mousedown(t_gain *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     ebox_parameter_begin_changes((t_ebox *)x, 1);
     if(modifiers == EMOD_SHIFT)
     {
@@ -279,15 +279,15 @@ static void gain_mousedown(t_gain *x, t_object *patcherview, t_pt pt, long modif
         x->f_counter  = 0;
         
         gain_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_knob_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
 
-static void gain_mousedrag(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
+static void gain_mousedrag(t_gain *x, t_object *view, t_pt pt, long modifiers)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     if(x->f_modifier == EMOD_SHIFT)
     {
         const float newval = x->f_direction ? pt.x / rect.width * 108.f - 90.f : (rect.height - pt.y) / rect.height * 108.f - 90.f;
@@ -305,7 +305,7 @@ static void gain_mousedrag(t_gain *x, t_object *patcherview, t_pt pt, long modif
         x->f_counter  = 0;
         
         gain_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_knob_layer);
         ebox_redraw((t_ebox *)x);
     }
     else if(x->f_modifier == EMOD_NONE)
@@ -325,23 +325,23 @@ static void gain_mousedrag(t_gain *x, t_object *patcherview, t_pt pt, long modif
         x->f_counter  = 0;
         
         gain_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_knob_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
 
-static void gain_mouseup(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
+static void gain_mouseup(t_gain *x, t_object *view, t_pt pt, long modifiers)
 {
     ebox_parameter_end_changes((t_ebox *)x, 1);
 }
 
-static void gain_dblclick(t_gain *x, t_object *patcherview, t_pt pt, long modifiers)
+static void gain_dblclick(t_gain *x, t_object *view, t_pt pt, long modifiers)
 {
     if(x->f_modifier == EMOD_CTRL)
     {
         ebox_parameter_setvalue((t_ebox *)x, 1, 0.f, 1);
         gain_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_knob_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_knob_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
@@ -375,7 +375,7 @@ static void *gain_new(t_symbol *s, int argc, t_atom *argv)
         x->f_counter = 0;
         x->f_sample_rate = sys_getsr();
         
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         
         return (x);
@@ -388,27 +388,27 @@ extern "C"  void setup_c0x2egain_tilde(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.gain~", (method)gain_new, (method)ebox_free, (short)sizeof(t_gain), 0L, A_GIMME, 0);
+    c = eclass_new("c.gain~", (t_method)gain_new, (t_method)ebox_free, (short)sizeof(t_gain), 0L, A_GIMME, 0);
     
     eclass_dspinit(c);
     eclass_guiinit(c, 0);
     
     
-    eclass_addmethod(c, (method) gain_dsp,             "dsp",              A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_dsp,             "dsp",              A_NULL, 0);
     
-    eclass_addmethod(c, (method) gain_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) gain_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) gain_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) gain_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) gain_set,             "set",              A_FLOAT,0);
-    eclass_addmethod(c, (method) gain_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) gain_linear,          "linear",           A_FLOAT,0);
-    eclass_addmethod(c, (method) gain_bang,            "bang",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_set,             "set",              A_FLOAT,0);
+    eclass_addmethod(c, (t_method) gain_float,           "float",            A_FLOAT,0);
+    eclass_addmethod(c, (t_method) gain_linear,          "linear",           A_FLOAT,0);
+    eclass_addmethod(c, (t_method) gain_bang,            "bang",             A_NULL, 0);
     
-    eclass_addmethod(c, (method) gain_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) gain_mousedrag,       "mousedrag",        A_NULL, 0);
-    eclass_addmethod(c, (method) gain_mouseup,         "mouseup",          A_NULL, 0);
-    eclass_addmethod(c, (method) gain_dblclick,        "dblclick",         A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_mousedrag,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_mouseup,         "mouseup",          A_NULL, 0);
+    eclass_addmethod(c, (t_method) gain_dblclick,        "dblclick",         A_NULL, 0);
     
     CLASS_ATTR_DEFAULT              (c, "size", 0, "13 85");
     
