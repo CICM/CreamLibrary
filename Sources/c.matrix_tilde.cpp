@@ -13,9 +13,11 @@
 #include <utility>
 #include "../c.library.hpp"
 
-using std::pair<long, long> = pair_index;
-using std::make_pair<long, long> = make_pair_index;
-using std::unordered_map<pair_index> = t_map;
+using std::string;
+using std::to_string;
+using pair_index = std::pair<long, long>;
+using std::make_pair;
+using t_map = std::unordered_map<string, pair_index>;
 
 typedef struct  _matrix_tilde
 {
@@ -30,12 +32,12 @@ static void matrix_tilde_change_connexion(t_matrix_tilde *x, long input, long ou
     auto key = to_string(input) + ", " + to_string(output);
     if(connect)
     {
-        if(!x->connexion.find(key))
-            x->connexion[key] = make_pair_index(input, output);
+        if(x->connexion.find(key) == x->connexion.end())
+            x->connexion[key] = make_pair(input, output);
     }
     else
     {
-        if(x->connexion.find(key)) x->connexion.erase(key);
+        if(x->connexion.find(key) != x->connexion.end()) x->connexion.erase(key);
     }
 }
 
@@ -43,7 +45,7 @@ static void matrix_tilde_set(t_matrix_tilde *x, t_symbol *s, int ac, t_atom *av)
 {
     if (ac % 3 == 0)
     {
-        for(int index = 0; i < ac; i+=3)
+        for(int i = 0; i < ac; i+=3)
         {
             matrix_tilde_change_connexion(x, atom_getlong(av+i),
                     atom_getlong(av+i+1), atom_getlong(av+i+2));
@@ -55,8 +57,8 @@ static void matrix_tilde_perform(t_matrix_tilde *x, t_object *dsp, t_sample **in
 {
     auto samples_size = (size_t)nsamples * sizeof(t_sample);
 
-    for(auto & i : connexion){
-        memcpy(outs[i.second], ins[i.first], samples_size);
+    for(auto & i : x->connexion){
+        memcpy(outs[i.second.second], ins[i.second.first], samples_size);
     }
 }
 

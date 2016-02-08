@@ -26,47 +26,47 @@ static void *cream_new(t_symbol *s)
 }
 
 /*
-static void epd_add_lib(const char* name)
-{
-    char path[MAXPDSTRING];
-    t_namelist* var = sys_searchpath;
-    while (var)
-    {
-        sprintf(path, "%s/%s",var->nl_string, name);
-        if(strncmp(var->nl_string, name, strlen(name)) == 0)
-        {
-            //post(var->nl_string);
-            sys_vgui((char *)"set creammenu .menubar.help\n $creammenu insert 3 command -label [_ \"Cream\"] -command {pdsend {pd open cream-help.pd %s}}\n", var->nl_string);
-            return;
-        }
-        else if(access(path, O_RDONLY) != -1)
-        {
-            //post(path);
-            sys_vgui((char *)"set creammenu .menubar.help\n $creammenu insert 3 command -label [_ \"Cream\"] -command {pdsend {pd open cream-help.pd %s}}\n", path);
-            return;
-        }
-        var = var->nl_next;
-    }
-    var = sys_staticpath;
-    while (var)
-    {
-        sprintf(path, "%s/%s",var->nl_string, name);
-        if(strncmp(var->nl_string, name, strlen(name)) == 0)
-        {
-            //post(var->nl_string);
-            sys_vgui((char *)"set creammenu .menubar.help\n $creammenu insert 3 command -label [_ \"Cream\"] -command {pdsend {pd open cream-help.pd %s}}\n", var->nl_string);
-            return;
-        }
-        else if(access(path, O_RDONLY) != -1)
-        {
-            //post(path);
-            sys_vgui((char *)"set creammenu .menubar.help\n $creammenu insert 3 command -label [_ \"Cream\"] -command {pdsend {pd open cream-help.pd %s}}\n", path);
-            return;
-        }
-        var = var->nl_next;
-    }
+   static void epd_add_lib(const char* name)
+   {
+   char path[MAXPDSTRING];
+   t_namelist* var = sys_searchpath;
+   while (var)
+   {
+   sprintf(path, "%s/%s",var->nl_string, name);
+   if(strncmp(var->nl_string, name, strlen(name)) == 0)
+   {
+//post(var->nl_string);
+sys_vgui((char *)"set creammenu .menubar.help\n $creammenu insert 3 command -label [_ \"Cream\"] -command {pdsend {pd open cream-help.pd %s}}\n", var->nl_string);
+return;
 }
- */
+else if(access(path, O_RDONLY) != -1)
+{
+//post(path);
+sys_vgui((char *)"set creammenu .menubar.help\n $creammenu insert 3 command -label [_ \"Cream\"] -command {pdsend {pd open cream-help.pd %s}}\n", path);
+return;
+}
+var = var->nl_next;
+}
+var = sys_staticpath;
+while (var)
+{
+sprintf(path, "%s/%s",var->nl_string, name);
+if(strncmp(var->nl_string, name, strlen(name)) == 0)
+{
+//post(var->nl_string);
+sys_vgui((char *)"set creammenu .menubar.help\n $creammenu insert 3 command -label [_ \"Cream\"] -command {pdsend {pd open cream-help.pd %s}}\n", var->nl_string);
+return;
+}
+else if(access(path, O_RDONLY) != -1)
+{
+//post(path);
+sys_vgui((char *)"set creammenu .menubar.help\n $creammenu insert 3 command -label [_ \"Cream\"] -command {pdsend {pd open cream-help.pd %s}}\n", path);
+return;
+}
+var = var->nl_next;
+}
+}
+*/
 
 extern "C" void cream_setup(void)
 {
@@ -79,7 +79,7 @@ extern "C" void cream_setup(void)
         eobj_free(obj);
     }
     //epd_add_lib("cream");
-    
+
     setup_c0x2ebang();
     setup_c0x2eblackboard();
     setup_c0x2ebreakpoints();
@@ -89,6 +89,7 @@ extern "C" void cream_setup(void)
     setup_c0x2eincdec();
     setup_c0x2eknob();
     setup_c0x2ematrix();
+    setup_c0x2ematrix_tilde();
     setup_c0x2emenu();
     setup_c0x2emeter_tilde();
     setup_c0x2enumber();
@@ -101,13 +102,13 @@ extern "C" void cream_setup(void)
     setup_c0x2eslider();
     setup_c0x2etab();
     setup_c0x2etoggle();
-    
+
 #ifdef __APPLE__
     setup_c0x2ekeyboard();
     setup_c0x2ecamomile();
     setup_c0x2ewavesel();
 #endif
-    
+
     // Deprecated
     setup_c0x2econvolve_tilde();
     setup_c0x2efreeverb_tilde();
@@ -117,7 +118,7 @@ extern "C" void cream_setup(void)
     setup_c0x2epatchermess();
     setup_c0x2eloadmess();
     setup_c0x2eprepend();
-    
+
     epd_add_folder("Cream", "misc");
     epd_add_folder("Cream", "helps");
 }
@@ -126,6 +127,6 @@ typedef t_object *(*t_returnnewmethod)(t_symbol *s);
 
 extern "C" void Cream_setup(void)
 {
-	cream_setup();
+    cream_setup();
 }
 

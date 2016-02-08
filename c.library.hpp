@@ -27,6 +27,7 @@ extern "C" void setup_c0x2egain_tilde(void);
 extern "C" void setup_c0x2eincdec(void);
 extern "C" void setup_c0x2eknob(void);
 extern "C" void setup_c0x2ematrix(void);
+extern "C" void setup_c0x2ematrix_tilde(void);
 extern "C" void setup_c0x2emenu(void);
 extern "C" void setup_c0x2emeter_tilde(void);
 extern "C" void setup_c0x2enumber(void);
