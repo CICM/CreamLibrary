@@ -106,7 +106,7 @@ extern "C" void setup_c0x2ebang(void)
     // patchable object or CLASS_NOINLET if you don't want a default first inlet, CLASS_PD should be used for no patchable object).
     // Sixth argument is the kind parameters you creation method is excepting (for GUI, you should always use A_GIMME to be able
     // to parse attributes. The last argument is dummy and should always be zero for the moment.
-    t_eclass *c = eclass_new("c.bang", (method)bang_new, (method)bang_free, (short)sizeof(t_bang), CLASS_DEFAULT, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.bang", (t_method)bang_new, (t_method)bang_free, sizeof(t_bang), CLASS_DEFAULT, A_GIMME, 0);
     if(c)
     {
         // We initialize the defaults attributes and methods for the GUI.
@@ -116,22 +116,17 @@ extern "C" void setup_c0x2ebang(void)
         // are for the graphical methods ("getdrawparams" and "oksize" are optional but facilitates the setting of GUI.
         // The "mousedown" and "mouseup" are for the mouse interraction.
         // The other are the default message that a native Pd object can receive through an inlet.
-        eclass_addmethod(c, (method) bang_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) bang_getdrawparams,   "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) bang_oksize,          "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) bang_anything,        "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) bang_anything,        "bang",             A_NULL, 0);
-        eclass_addmethod(c, (method) bang_anything,        "list",             A_GIMME,0);
-        eclass_addmethod(c, (method) bang_anything,        "anything",         A_GIMME,0);
-        eclass_addmethod(c, (method) bang_mousedown,       "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) bang_mouseup,         "mouseup",          A_NULL, 0);
+        eclass_addmethod(c, (t_method) bang_paint,           "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) bang_getdrawparams,   "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) bang_oksize,          "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) bang_anything,        "float",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) bang_anything,        "bang",             A_NULL, 0);
+        eclass_addmethod(c, (t_method) bang_anything,        "list",             A_GIMME,0);
+        eclass_addmethod(c, (t_method) bang_anything,        "anything",         A_GIMME,0);
+        eclass_addmethod(c, (t_method) bang_mousedown,       "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) bang_mouseup,         "mouseup",          A_NULL, 0);
         
         // We intialize the attribute of the t_bang.
-        // All the GUI classes has font attributes but we don't need them for the bang classe so we mark them invisible.
-        CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
         // All the GUI classes has a size attribute, we just set up the default value.
         CLASS_ATTR_DEFAULT              (c, "size", 0, "16. 16.");
         // We create a new t_rgba attribute that refers to the b_color_background member of the t_bang and that will match to
@@ -155,7 +150,7 @@ extern "C" void setup_c0x2ebang(void)
         CLASS_ATTR_RGBA                 (c, "bacolor", 0, t_bang, b_color_bang);
         CLASS_ATTR_LABEL                (c, "bacolor", 0, "Bang Color");
         CLASS_ATTR_ORDER                (c, "bacolor", 0, "3");
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bacolor", 0, "0. 0. 0. 1.");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bacolor", 0, "0.5 0.5 0.5 1.");
         CLASS_ATTR_STYLE                (c, "bacolor", 0, "color");
         
         // We register the class. This function is important it will set up some dsp members if needs and the properties window
@@ -207,7 +202,7 @@ static void *bang_new(t_symbol *s, int argc, t_atom *argv)
         x->b_clock          = clock_new(x,(t_method)bang_deactivate);
         // We parse the t_binbuf to initialize the values of the attributes. You can also use ebox_attrprocess_viatoms but you
         // should prefer this method.
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         // Indicates that the t_ebox can be drawn.
         ebox_ready((t_ebox *)x);
     }
@@ -256,7 +251,7 @@ static void bang_getdrawparams(t_bang *x, t_object *view, t_edrawparams *params)
     params->d_bordercolor       = x->b_color_border;
     // We define the background color with our border attribute color. The background color will be used when the
     // t_bang is inactive to draw the circle.
-    params->d_boxfillcolor      = x->b_color_border;
+    params->d_boxfillcolor      = x->b_color_background;
 }
 
 // Defines and validates the size of a GUI.
@@ -273,11 +268,6 @@ static void bang_oksize(t_bang *x, t_rect *newrect)
     // We defines a minimum height and width of 15 px.
     newrect->width = pd_clip_min(newrect->width, 15.);
     newrect->height = pd_clip_min(newrect->height, 15.);
-    // We defines that the width and the height can't be an even number (to center the bang circle).
-    if((int)newrect->width % 2 == 0)
-        newrect->width++;
-    if((int)newrect->height % 2 == 0)
-        newrect->height++;
 }
 
 // Paints the t_ebox.
@@ -293,39 +283,43 @@ static void bang_oksize(t_bang *x, t_rect *newrect)
  */
 static void bang_paint(t_bang *x, t_object *view)
 {
-    float size;
     t_rect rect;
     // We defines a initialize a t_rect with the size of the t_ebox.
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     // We ask to retrieves the background t_elayer with a that has the size of the t_ebox. This layer will be binded to the t_ebox
     // with the t_symbol bang_sym_background_layer aka \"background_layer\". You should always prefer to use static t_symbol to
     // avoid to call gensym function.
-    t_elayer *g = ebox_start_layer((t_ebox *)x, bang_sym_background_layer, rect.width, rect.height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, bang_sym_background_layer, rect.width, rect.height);
     // If it is a new t_elayer or if the layer has been ivalidated we can draw something in it, otherwise the pointer is NULL.
     if(g)
     {
         
-        size = rect.width * 0.5;
-        // We set up the bang color is the t_bang is currently active.
-        // Otherwise we use the background color.
+        const float size = rect.width * 0.5;
+        // If is the t_bang is currently active.
         if(x->b_active)
         {
-            egraphics_set_color_rgba(g, &x->b_color_bang);
+            // We change the color.
+            elayer_set_color_rgba(g, &x->b_color_bang);
+            // We add a circle at the center the t_elayer.
+            elayer_circle(g, size, size, (size - 4.f));
+            // We fill the t_elayer with the drawing.
+            elayer_fill(g);
         }
-        else
-        {
-            egraphics_set_color_rgba(g, &x->b_color_background);
-        }
+        
+        // We change the color.
+        elayer_set_color_rgba(g, &x->b_color_border);
+        // We change the color.
+        elayer_set_line_width(g, 2.f);
         // We add a circle at the center the t_elayer.
-        egraphics_circle(g, floor(size + 0.5), floor(size + 0.5), size * 0.9);
-        // We fill the t_elayer with the drawing.
-        egraphics_fill(g);
+        elayer_circle(g, size, size, (size - 2.f));
+        // We stroke the t_elayer with the drawing.
+        elayer_stroke(g);
         // We mark the layer as ready to be painted.
-        ebox_end_layer((t_ebox*)x, bang_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, bang_sym_background_layer);
     }
     // We tell the t_ebox to painted the \"background_layer\" layer at the 0 0 position. If the t_elayer was invalid or new
     // that means that we have drawn something new in it, otherwise t_ebox paint the t_elayer like it was before.
-    ebox_paint_layer((t_ebox *)x, bang_sym_background_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, bang_sym_background_layer, 0., 0.);
 }
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -358,7 +352,7 @@ static void bang_activate(t_bang *x)
     }
     
     // We invalidate the background layer.
-    ebox_invalidate_layer((t_ebox *)x, bang_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, bang_sym_background_layer);
     // We aks the t_ebox to redraw the object.
     ebox_redraw((t_ebox *)x);
 }
@@ -376,7 +370,7 @@ static void bang_deactivate(t_bang *x)
     // We mark the bang as inactive.
     x->b_active = 0;
     // We invalidate the background layer.
-    ebox_invalidate_layer((t_ebox *)x, bang_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, bang_sym_background_layer);
     // We aks the t_ebox to redraw the object.
     ebox_redraw((t_ebox *)x);
 }

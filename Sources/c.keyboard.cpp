@@ -54,14 +54,14 @@ static long keyboard_count_whitekey(long down, long up)
 
 static void keyboard_output(t_keyboard *x)
 {
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
     //outlet_float(x->f_out, (float)x->f_active);
     //if(ebox_getsender((t_ebox *) x))
     //    pd_float(ebox_getsender((t_ebox *) x), (float)x->f_active);
 }
 
-static void keyboard_getdrawparams(t_keyboard *x, t_object *patcherview, t_edrawparams *params)
+static void keyboard_getdrawparams(t_keyboard *x, t_object *view, t_edrawparams *params)
 {
 	params->d_borderthickness   = 2;
 	params->d_cornersize        = 2;
@@ -82,7 +82,7 @@ static void keyboard_oksize(t_keyboard *x, t_rect *newrect)
 static void keyboard_set(t_keyboard *x, float f)
 {
 
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -105,11 +105,11 @@ static t_pd_err keyboard_notify(t_keyboard *x, t_symbol *s, t_symbol *msg, void 
 	{
 		if(s == cream_sym_wkeycolor || s == cream_sym_bkeycolor)
 		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
 		}
         else if(s == cream_sym_skeycolor)
         {
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_selection_layer);
         }
 	}
 	return 0;
@@ -117,57 +117,57 @@ static t_pd_err keyboard_notify(t_keyboard *x, t_symbol *s, t_symbol *msg, void 
 
 static void draw_background(t_keyboard *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
 	if(g)
 	{
         const float width = rect->width / (float)x->f_nwhite_keys;
         for(long i = 0; i < x->f_nwhite_keys; i++)
         {
-            egraphics_rectangle(g, (float)i * width, 0., width, rect->height);
-            egraphics_set_color_rgba(g, &x->f_color_border);
-            egraphics_stroke_preserve(g);
-            egraphics_set_color_rgba(g, &x->f_color_wkeys);
-            egraphics_fill(g);
+            elayer_rectangle(g, (float)i * width, 0., width, rect->height);
+            elayer_set_color_rgba(g, &x->f_color_border);
+            elayer_stroke_preserve(g);
+            elayer_set_color_rgba(g, &x->f_color_wkeys);
+            elayer_fill(g);
         }
         const float bwidth = pd_clip_max(width * 0.9f, width - 2.f);
         for(long i = x->f_low_key, j = 0; i <= x->f_high_key; i++)
         {
             if(keyboard_is_blackkey(i))
             {
-                egraphics_rectangle(g, (float)j * width - bwidth * 0.5, 0., bwidth, rect->height * 0.5);
-                egraphics_set_color_rgba(g, &x->f_color_border);
-                egraphics_stroke_preserve(g);
-                egraphics_set_color_rgba(g, &x->f_color_bkeys);
-                egraphics_fill(g);
+                elayer_rectangle(g, (float)j * width - bwidth * 0.5, 0., bwidth, rect->height * 0.5);
+                elayer_set_color_rgba(g, &x->f_color_border);
+                elayer_stroke_preserve(g);
+                elayer_set_color_rgba(g, &x->f_color_bkeys);
+                elayer_fill(g);
             }
             else
             {
                 j++;
             }
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
 static void keyboard_paint(t_keyboard *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_background(x, view, &rect);
 }
 
-static void keyboard_mousedown(t_keyboard *x, t_object *patcherview, t_pt pt, long modifiers)
+static void keyboard_mousedown(t_keyboard *x, t_object *view, t_pt pt, long modifiers)
 {
     keyboard_bang(x);
 }
 
-static void keyboard_mousedrag(t_keyboard *x, t_object *patcherview, t_pt pt, long modifiers)
+static void keyboard_mousedrag(t_keyboard *x, t_object *view, t_pt pt, long modifiers)
 {
     keyboard_bang(x);
 }
 
-static void keyboard_mouseup(t_keyboard *x, t_object *patcherview, t_pt pt, long modifiers)
+static void keyboard_mouseup(t_keyboard *x, t_object *view, t_pt pt, long modifiers)
 {
     keyboard_bang(x);
 }
@@ -195,8 +195,8 @@ static t_pd_err keyboard_lowkey_set(t_keyboard *x, t_object *attr, int ac, t_ato
             x->f_high_key++;
         }
         x->f_nwhite_keys = keyboard_count_whitekey(x->f_low_key, x->f_high_key);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_selection_layer);
     }
     return 0;
 }
@@ -231,7 +231,7 @@ static t_pd_err keyboard_mode_set(t_keyboard *x, t_object *attr, int ac, t_atom 
                 x->f_mode = gensym("monophonic");
             }
         }
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_selection_layer);
     }
     return 0;
 }
@@ -246,8 +246,8 @@ static t_pd_err keyboard_highkey_set(t_keyboard *x, t_object *attr, int ac, t_at
             x->f_high_key++;
         }
         x->f_nwhite_keys = keyboard_count_whitekey(x->f_low_key, x->f_high_key);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_selection_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_selection_layer);
     }
     return 0;
 }
@@ -262,7 +262,7 @@ static void *keyboard_new(t_symbol *s, int argc, t_atom *argv)
         ebox_new((t_ebox *)x, 0 | EBOX_GROWINDI);
         x->f_out_note = outlet_new((t_object *)x, &s_float);
         x->f_out_velo = outlet_new((t_object *)x, &s_float);
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
     }
     
@@ -273,25 +273,21 @@ extern "C" void setup_c0x2ekeyboard(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.keyboard", (method)keyboard_new, (method)ebox_free, (short)sizeof(t_keyboard), 0L, A_GIMME, 0);
+    c = eclass_new("c.keyboard", (t_method)keyboard_new, (t_method)ebox_free, (short)sizeof(t_keyboard), 0L, A_GIMME, 0);
     
     eclass_guiinit(c, 0);
-    eclass_addmethod(c, (method) keyboard_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) keyboard_notify,          "notify",           A_NULL, 0);
-    eclass_addmethod(c, (method) keyboard_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) keyboard_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) keyboard_float,           "float",            A_FLOAT,0);
-    eclass_addmethod(c, (method) keyboard_set,             "set",              A_FLOAT,0);
-    eclass_addmethod(c, (method) keyboard_bang,            "bang",             A_NULL, 0);
-    eclass_addmethod(c, (method) keyboard_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) keyboard_mousedrag,       "mousedrag",        A_NULL, 0);
-    eclass_addmethod(c, (method) keyboard_mouseup,         "mouseup",          A_NULL, 0);
-    eclass_addmethod(c, (method) keyboard_preset,          "preset",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_notify,          "notify",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_float,           "float",            A_FLOAT,0);
+    eclass_addmethod(c, (t_method) keyboard_set,             "set",              A_FLOAT,0);
+    eclass_addmethod(c, (t_method) keyboard_bang,            "bang",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_mousedrag,       "mousedrag",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_mouseup,         "mouseup",          A_NULL, 0);
+    eclass_addmethod(c, (t_method) keyboard_preset,          "preset",           A_NULL, 0);
     
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "300. 50.");
     
     CLASS_ATTR_RGBA                 (c, "bdcolor", 0, t_keyboard, f_color_border);

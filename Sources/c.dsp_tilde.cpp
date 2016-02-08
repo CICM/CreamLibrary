@@ -10,14 +10,6 @@
 
 #include "../c.library.hpp"
 
-#if (_MSC_VER >= 1800)
-static double round(double val)
-{
-	return floor(val + 0.5);
-}
-#endif
-
-
 typedef struct  _dsp_tilde
 {
 	t_ebox      j_box;
@@ -33,20 +25,15 @@ t_eclass *dsp_tildeclass;
 
 static void *dsp_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
-    long flags;
 	t_dsp_tilde *x  = (t_dsp_tilde *)eobj_new(dsp_tildeclass);
     t_binbuf* d     = binbuf_via_atoms(argc,argv);
 
     if(x && d)
     {
-        flags = 0
-        | EBOX_GROWLINK
-        ;
-        
-        ebox_new((t_ebox *)x, flags);
+        ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
         eobj_proxynew(x);
         x->f_init = 0;
-        ebox_attrprocess_viabinbuf(x, d);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         pd_bind((t_pd *)x, gensym("pd"));
         return x;
@@ -55,7 +42,7 @@ static void *dsp_tilde_new(t_symbol *s, int argc, t_atom *argv)
 	return NULL;
 }
 
-static void dsp_tilde_getdrawparams(t_dsp_tilde *x, t_object *patcherview, t_edrawparams *params)
+static void dsp_tilde_getdrawparams(t_dsp_tilde *x, t_object *view, t_edrawparams *params)
 {
 	params->d_borderthickness   = 2.;
 	params->d_cornersize        = 2.;
@@ -77,32 +64,32 @@ static void dsp_tilde_free(t_dsp_tilde *x)
 
 static void draw_background(t_dsp_tilde *x,  t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
  
 	if (g)
 	{
         if(x->f_state)
         {
-            egraphics_set_color_rgba(g, &x->f_color_logo);
+            elayer_set_color_rgba(g, &x->f_color_logo);
         }
         else
         {
-            egraphics_set_color_rgba(g, &x->f_color_border);
+            elayer_set_color_rgba(g, &x->f_color_border);
         }
         
-        egraphics_circle(g, round(rect->width * 0.5f - 0.5f), round(rect->width * 0.5f - 0.5f), round(rect->width * 0.15f - 0.5f));
-        egraphics_fill(g);
+        elayer_circle(g, rect->width * 0.5f - 0.5f, rect->width * 0.5f - 0.5f, rect->width * 0.15f - 0.5f);
+        elayer_fill(g);
         
-        egraphics_set_line_width(g, 2.);
-        egraphics_arc(g, round(rect->width * 0.5f - 0.5f), round(rect->width * 0.5f - 0.5f), round(rect->width * 0.25f - 0.5f), EPD_PI, EPD_2PI);
-        egraphics_stroke(g);
+        elayer_set_line_width(g, 2.);
+        elayer_arc(g, rect->width * 0.5f - 0.5f, rect->width * 0.5f - 0.5f, rect->width * 0.25f - 0.5f, EPD_PI, EPD_2PI);
+        elayer_stroke(g);
         
-        egraphics_arc(g, round(rect->width * 0.5f - 0.5f), round(rect->width * 0.5f - 0.5f), round(rect->width * 0.35f - 0.5f), EPD_PI, EPD_2PI);
-        egraphics_stroke(g);
+        elayer_arc(g, rect->width * 0.5f - 0.5f, rect->width * 0.5f - 0.5f, rect->width * 0.35f - 0.5f, EPD_PI, EPD_2PI);
+        elayer_stroke(g);
         
-		ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+		ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0.f, 0.f);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0.f, 0.f);
 }
 
 static void dsp_tilde_paint(t_dsp_tilde *x, t_object *view)
@@ -114,7 +101,7 @@ static void dsp_tilde_paint(t_dsp_tilde *x, t_object *view)
         x->f_init = 1;
     }
     
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     draw_background(x, view, &rect);
 }
 
@@ -123,14 +110,22 @@ static void dsp_tilde_anything(t_dsp_tilde *x, t_symbol* s, int argc, t_atom *ar
     if(s == gensym("dsp") && argc && atom_gettype(argv) == A_FLOAT)
     {
         x->f_state = atom_getfloat(argv);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
         ebox_redraw((t_ebox *)x);
     }
 }
 
+static void dsp_tilde_dsp(t_dsp_tilde *x, t_object *dsp, short *count, double samplerate, long maxvectorsize, long flags)
+{
+    x->f_state = 1;
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+    ebox_redraw((t_ebox *)x);
+}
+
+
 static void dsp_tilde_open(t_dsp_tilde *x)
 {
-    sys_gui((char *)"pdsend \"pd audio-properties\"\n");
+    pd_typedmess(gensym("pd")->s_thing, gensym("audio-properties"), 0, NULL);
 }
 
 static void dsp_tilde_start(t_dsp_tilde *x)
@@ -138,8 +133,12 @@ static void dsp_tilde_start(t_dsp_tilde *x)
     t_atom av;
     atom_setfloat(&av, 1);
     pd_typedmess((t_pd *)gensym("pd")->s_thing, gensym("dsp"), 1, &av);
+    if(eobj_getid(x)->s_thing)
+    {
+        pd_typedmess((t_pd *)eobj_getid(x)->s_thing, gensym("dsp"), 1, &av);
+    }
     x->f_state = 1;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
@@ -149,12 +148,16 @@ static void dsp_tilde_stop(t_dsp_tilde *x)
     t_atom av;
     atom_setfloat(&av, 0);
     pd_typedmess((t_pd *)gensym("pd")->s_thing, gensym("dsp"), 1, &av);
+    if(eobj_getid(x)->s_thing)
+    {
+        pd_typedmess((t_pd *)eobj_getid(x)->s_thing, gensym("dsp"), 1, &av);
+    }
     x->f_state = 0;
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void dsp_tilde_mousedown(t_dsp_tilde *x, t_object *patcherview, t_pt pt, long modifiers)
+static void dsp_tilde_mousedown(t_dsp_tilde *x, t_object *view, t_pt pt, long modifiers)
 {
     if(canvas_dspstate)
     {
@@ -170,23 +173,20 @@ extern "C" void setup_c0x2edsp_tilde(void)
 {
     t_eclass *c;
     
-    c = eclass_new("c.dsp~", (method)dsp_tilde_new, (method)dsp_tilde_free, (short)sizeof(t_dsp_tilde), CLASS_NOINLET, A_GIMME, 0);
+    c = eclass_new("c.dsp~", (t_method)dsp_tilde_new, (t_method)dsp_tilde_free, (short)sizeof(t_dsp_tilde), CLASS_NOINLET, A_GIMME, 0);
     
     eclass_guiinit(c, 0);
 
-    eclass_addmethod(c, (method) dsp_tilde_paint,           "paint",            A_NULL, 0);
-    eclass_addmethod(c, (method) dsp_tilde_getdrawparams,   "getdrawparams",    A_NULL, 0);
-    eclass_addmethod(c, (method) dsp_tilde_oksize,          "oksize",           A_NULL, 0);
-    eclass_addmethod(c, (method) dsp_tilde_mousedown,       "mousedown",        A_NULL, 0);
-    eclass_addmethod(c, (method) dsp_tilde_anything,        "anything",         A_GIMME, 0);
-    eclass_addmethod(c, (method) dsp_tilde_open,            "settings",         A_NULL, 0);
-    eclass_addmethod(c, (method) dsp_tilde_start,           "start",            A_NULL, 0);
-    eclass_addmethod(c, (method) dsp_tilde_stop,            "stop",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_paint,           "paint",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_getdrawparams,   "getdrawparams",    A_NULL, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_oksize,          "oksize",           A_NULL, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_mousedown,       "mousedown",        A_NULL, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_anything,        "anything",         A_GIMME, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_open,            "settings",         A_NULL, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_start,           "start",            A_NULL, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_stop,            "stop",             A_NULL, 0);
+    eclass_addmethod(c, (t_method) dsp_tilde_dsp,             "dsp",              A_NULL, 0);
     
-    CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-    CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
     CLASS_ATTR_DEFAULT              (c, "size", 0, "30 30");
     
     CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_dsp_tilde, f_color_background);

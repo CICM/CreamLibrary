@@ -40,12 +40,11 @@ extern "C" void setup_c0x2escope_tilde(void);
 extern "C" void setup_c0x2eslider(void);
 extern "C" void setup_c0x2etab(void);
 extern "C" void setup_c0x2etoggle(void);
+extern "C" void setup_c0x2ecomment(void);
 
 #ifdef __APPLE__
 extern "C" void setup_c0x2ekeyboard(void);
 extern "C" void setup_c0x2ecamomile(void);
-
-extern "C" void setup_c0x2ewavesel(void);
 #endif
 
 // Deprecated
@@ -65,6 +64,7 @@ static t_symbol* cream_sym_delete               = gensym("delete");
 static t_symbol* cream_sym_past                 = gensym("paste");
 
 static t_symbol* cream_sym_attr_modified        = gensym("attr_modified");
+static t_symbol* cream_sym_value_changed        = gensym("value_changed");
 
 static t_symbol* cream_sym_background_layer     = gensym("background_layer");
 static t_symbol* cream_sym_text_layer           = gensym("text_layer");
@@ -76,7 +76,11 @@ static t_symbol* cream_sym_signal_layer         = gensym("signal_layer");
 static t_symbol* cream_sym_leds_layer           = gensym("leds_layer");
 static t_symbol* cream_sym_items_layer          = gensym("items_layer");
 static t_symbol* cream_sym_needle_layer         = gensym("needle_layer");
+static t_symbol* cream_sym_picked_layer         = gensym("picked_layer");
+static t_symbol* cream_sym_hover_layer          = gensym("hover_layer");
 
+static t_symbol* cream_sym_accolor              = gensym("accolor");
+static t_symbol* cream_sym_arcolor              = gensym("arcolor");
 static t_symbol* cream_sym_bacolor              = gensym("bacolor");
 static t_symbol* cream_sym_bgcolor              = gensym("bgcolor");
 static t_symbol* cream_sym_bdcolor 				= gensym("bdcolor");
@@ -98,7 +102,11 @@ static t_symbol* cream_sym_itcolor              = gensym("itcolor");
 static t_symbol* cream_sym_secolor              = gensym("secolor");
 static t_symbol* cream_sym_hocolor              = gensym("hocolor");
 static t_symbol* cream_sym_necolor              = gensym("necolor");
+static t_symbol* cream_sym_font                 = gensym("font");
+static t_symbol* cream_sym_checklist            = gensym("checklist");
 
+static t_symbol* cream_sym_name                 = gensym("name");
+static t_symbol* cream_sym_bdsize               = gensym("bdsize");
 static t_symbol* cream_sym_fontsize             = gensym("fontsize");
 static t_symbol* cream_sym_fontname             = gensym("fontname");
 static t_symbol* cream_sym_fontweight           = gensym("fontweight");
@@ -122,9 +130,21 @@ static t_symbol* cream_sym_items                = gensym("items");
 static t_symbol* cream_sym_orientation          = gensym("orientation");
 static t_symbol* cream_sym_lowkey               = gensym("lowkey");
 static t_symbol* cream_sym_highkey              = gensym("highkey");
+static t_symbol* cream_sym_decimal              = gensym("decimal");
 
 static t_symbol* cream_sym_nothing              = gensym("''");
 static t_symbol* cream_sym_left_bracket         = gensym("[");
 static t_symbol* cream_sym_right_bracket        = gensym("]");
+
+static t_symbol* cream_sym_state                = gensym("state");
+
+float pd_wrap(float f, const float min, const float max);
+float pd_clip(const float f, const float min, const float max);
+float pd_clip_min(const float f, const float min);
+float pd_clip_max(const float f, const float max);
+float pd_ordinate(const float radius, const float angle);
+float pd_abscissa(const float radius, const float angle);
+float pd_radius(const float x, const float y);
+float pd_angle(const float x, const float y);
 
 #endif

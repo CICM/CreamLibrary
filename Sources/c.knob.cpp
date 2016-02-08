@@ -9,22 +9,20 @@
  */
 
 #include "../c.library.hpp"
+#include <float.h>
 
 typedef struct _knob
 {
 	t_ebox      j_box;
-    
-    t_outlet*   f_out;
+    t_outlet*   f_outlet;
+    int         f_bdsize;
 	t_rgba		f_color_background;
 	t_rgba		f_color_border;
 	t_rgba		f_color_needle;
-    long        f_endless;
-    long        f_mode;
-    float       f_value;
-    float       f_min;
-    float       f_max;
-    float       f_ref_y;
-    float       f_ref_value;
+    char        f_endless;
+    char        f_circular;
+    float       f_reference;
+    void*       f_dummy;
 } t_knob;
 
 static t_eclass *knob_class;
@@ -32,321 +30,288 @@ static t_eclass *knob_class;
 static void knob_output(t_knob *x)
 {
     t_pd* send = ebox_getsender((t_ebox *) x);
-    outlet_float((t_outlet*)x->f_out, x->f_value);
+    const float val = ebox_parameter_getvalue((t_ebox *)x, 1);
+    outlet_float(x->f_outlet, val);
     if(send)
     {
-        pd_float(send, x->f_value);
+        pd_float(send, val);
     }
+}
+
+static void knob_float(t_knob *x, float f)
+{
+    if(x->f_endless)
+    {
+        const float min = ebox_parameter_getmin((t_ebox *)x, 1);
+        const float max = ebox_parameter_getmax((t_ebox *)x, 1);
+        f = pd_wrap(f, min, max);
+    }
+    
+    ebox_parameter_setvalue((t_ebox *)x, 1, f, 1);
+    knob_output(x);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
+    ebox_redraw((t_ebox *)x);
 }
 
 static void knob_set(t_knob *x, float f)
 {
     if(x->f_endless)
     {
-        x->f_value = (x->f_min < x->f_max) ? fmodf(f + x->f_max - x->f_min, x->f_max - x->f_min) : fmodf(f + x->f_min - x->f_max, x->f_min - x->f_max);
+        const float min = ebox_parameter_getmin((t_ebox *)x, 1);
+        const float max = ebox_parameter_getmax((t_ebox *)x, 1);
+        f = pd_wrap(f, min, max);
     }
-    else
-    {
-        x->f_value = (x->f_min < x->f_max) ? pd_clip_minmax(f, x->f_min, x->f_max) : pd_clip_minmax(f, x->f_max, x->f_min);
-    }
-    
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+    ebox_parameter_setvalue((t_ebox *)x, 1, f, 0);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void knob_float(t_knob *x, float f)
+static void knob_bang(t_knob *x, float f)
 {
-    knob_set(x, f);
+    ebox_parameter_notify_changes((t_ebox *)x, 1);
     knob_output(x);
 }
 
-static t_pd_err knob_notify(t_knob *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+static void knob_getdrawparams(t_knob *x, t_object *view, t_edrawparams *params)
 {
-	if(msg == cream_sym_attr_modified)
-	{
-		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor || s == cream_sym_necolor || s == cream_sym_endless)
-		{
-			ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
-            ebox_invalidate_layer((t_ebox *)x, cream_sym_background_layer);
-		}
-	}
-	return 0;
-}
-
-static void knob_getdrawparams(t_knob *x, t_object *patcherview, t_edrawparams *params)
-{
-    params->d_borderthickness   = 2;
-    params->d_cornersize        = 2;
+    params->d_borderthickness   = x->f_bdsize;
+    params->d_cornersize        = 2.f;
     params->d_bordercolor       = x->f_color_border;
     params->d_boxfillcolor      = x->f_color_background;
 }
 
 static void knob_oksize(t_knob *x, t_rect *newrect)
 {
-    newrect->width = pd_clip_min(newrect->width, 25.);
-    newrect->height = pd_clip_min(newrect->height, 25.);
+    newrect->width = pd_clip_min(newrect->width, 20.f);
+    newrect->height = pd_clip_min(newrect->height, 20.f);
+}
+
+static t_pd_err knob_notify(t_knob *x, t_symbol *s, t_symbol *msg, void *sender, void *data)
+{
+	if(msg == cream_sym_attr_modified)
+	{
+		if(s == cream_sym_bgcolor || s == cream_sym_bdcolor ||
+           s == cream_sym_necolor || s == cream_sym_endless || s == cream_sym_bdsize)
+		{
+			ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
+            ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+		}
+	}
+    else if(msg == cream_sym_value_changed)
+    {
+        knob_output(x);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_background_layer);
+        ebox_redraw((t_ebox *)x);
+    }
+	return 0;
 }
 
 static void draw_background(t_knob *x, t_object *view, t_rect *rect)
 {
-	t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_background_layer, rect->width, rect->height);
+	t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_background_layer, rect->width, rect->height);
 	if (g)
 	{
         const float size = rect->width * 0.5f;
+        elayer_set_color_rgba(g, &x->f_color_needle);
+        elayer_set_line_width(g, x->f_bdsize);
+        elayer_circle(g, size, size, size - 2.f);
+        elayer_stroke(g);
         
-        egraphics_set_color_rgba(g, &x->f_color_border);
-        egraphics_rectangle(g, 0.f, 0.f, rect->width, rect->height);
-        egraphics_fill(g);
-        
-        egraphics_set_color_rgba(g, &x->f_color_background);
-        egraphics_circle(g, rect->width * 0.5, rect->height * 0.5, size * 0.9);
-        egraphics_fill(g);
-        
-        if(!x->f_endless)
-        {
-            const float hsize = pd_clip_min(size * 0.15f, 2.f);
-            const float alpha = rect->height - hsize;
-            egraphics_set_color_rgba(g, &x->f_color_border);
-            
-            egraphics_move_to(g, rect->width * 0.5f, rect->height * 0.5f + hsize);
-            egraphics_line_to(g, rect->height * 0.5f - alpha * 0.5f, rect->height);
-            egraphics_line_to(g, rect->height * 0.5f + alpha * 0.5f, rect->height);
-            egraphics_fill(g);
-            egraphics_set_color_rgba(g, &x->f_color_background);
-            egraphics_circle(g, rect->width * 0.5f, rect->height * 0.5f, pd_clip_min(size * 0.3f, 3.f));
-            egraphics_fill(g);
-        }
-        
-        egraphics_set_color_rgba(g, &x->f_color_needle);
-        egraphics_circle(g, rect->width * 0.5f, rect->height * 0.5f, pd_clip_min(size * 0.2f, 2.f));
-        egraphics_fill(g);
-        
-        ebox_end_layer((t_ebox*)x, cream_sym_background_layer);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_background_layer);
 	}
-	ebox_paint_layer((t_ebox *)x, cream_sym_background_layer, 0., 0.);
+	ebox_paint_layer((t_ebox *)x, view, cream_sym_background_layer, 0., 0.);
 }
 
 static void draw_needle(t_knob *x, t_object *view, t_rect *rect)
 {
-    t_elayer *g = ebox_start_layer((t_ebox *)x, cream_sym_needle_layer, rect->width, rect->height);
+    t_elayer *g = ebox_start_layer((t_ebox *)x, view, cream_sym_needle_layer, rect->width, rect->height);
     
     if(g)
 	{
-        egraphics_set_line_width(g, 2);
-        egraphics_set_color_rgba(g, &x->f_color_needle);
-        const float size = rect->width * 0.5f;
-        
-        if(x->f_endless)
+        const float size    = rect->width * 0.5f;
+        elayer_set_color_rgba(g, &x->f_color_needle);
+        elayer_set_line_width(g, x->f_bdsize);
+        if(ebox_parameter_isinverted((t_ebox *)x, 1))
         {
-            const float value = (x->f_min < x->f_max) ? fmodf(x->f_value + x->f_max - x->f_min, x->f_max - x->f_min) : fmodf(x->f_value + x->f_min - x->f_max, x->f_min - x->f_max);
-            const float pimul = EPD_2PI;
-            const float pimin = EPD_PI2;
-            if(x->f_min < x->f_max)
-            {
-                const float abs =  pd_abscissa(size * 0.9f, (value - x->f_min) / (x->f_max - x->f_min) * pimul + pimin);
-                const float ord =  pd_ordinate(size * 0.9f, (value - x->f_min) / (x->f_max - x->f_min) * pimul + pimin);
-                egraphics_line_fast(g, size, size, abs + size, ord + size);
-                
-            }
-            else
-            {
-                const float abs =  pd_abscissa(size * 0.9f, -(value - x->f_max) / (x->f_min - x->f_max) * pimul + pimin);
-                const float ord =  pd_ordinate(size * 0.9f, -(value - x->f_max) / (x->f_min - x->f_max) * pimul + pimin);
-                egraphics_line_fast(g, size, size, abs + size, ord + size);
-            }
+            const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
+            const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
+            const float angle   = (1.f - ebox_parameter_getvalue_normalized((t_ebox *)x, 1)) * ratio1 + ratio2;
             
+            elayer_line(g,
+                           pd_abscissa(size - 10.f, angle) + size,
+                           pd_ordinate(size - 10.f, angle) + size,
+                           pd_abscissa(size - 2.f, angle) + size,
+                           pd_ordinate(size - 2.f, angle) + size);
         }
         else
         {
-            const float pimul = 1.5f * EPD_PI;
-            if(x->f_min < x->f_max)
-            {
-                const float pimin = 1.5 * EPD_PI2;
-                const float value = pd_clip_minmax(x->f_value, x->f_min, x->f_max);
-                const float abs =  pd_abscissa(size * 0.9 - 1, (value - x->f_min) / (x->f_max - x->f_min) * pimul + pimin);
-                const float ord =  pd_ordinate(size * 0.9 - 1, (value - x->f_min) / (x->f_max - x->f_min) * pimul + pimin);
-                egraphics_line_fast(g, size, size, abs + size, ord + size);
-            }
-            else
-            {
-                const float pimin = 0.5 * EPD_PI2;
-                const float value = pd_clip_minmax(x->f_value, x->f_max, x->f_min);
-                const float abs =  pd_abscissa(size * 0.9 - 1, -(value - x->f_max) / (x->f_min - x->f_max) * pimul + pimin);
-                const float ord =  pd_ordinate(size * 0.9 - 1, -(value - x->f_max) / (x->f_min - x->f_max) * pimul + pimin);
-                egraphics_line_fast(g, size, size, abs + size, ord + size);
-            }
+            const float ratio1  = x->f_endless ? (float)(EPD_2PI) : (float)(EPD_PI + EPD_PI2);
+            const float ratio2  = x->f_endless ? (float)(EPD_PI2) : (float)(EPD_PI2 + EPD_PI4);
+            const float angle   = ebox_parameter_getvalue_normalized((t_ebox *)x, 1) * ratio1 + ratio2;
+            
+            elayer_line(g,
+                           pd_abscissa(size - 10.f, angle) + size,
+                           pd_ordinate(size - 10.f, angle) + size,
+                           pd_abscissa(size - 2.f, angle) + size,
+                           pd_ordinate(size - 2.f, angle) + size);
         }
-        ebox_end_layer((t_ebox*)x, cream_sym_needle_layer);
+        
+        
+        elayer_stroke(g);
+        ebox_end_layer((t_ebox*)x, view, cream_sym_needle_layer);
     }
    
-    ebox_paint_layer((t_ebox *)x, cream_sym_needle_layer, 0., 0.);
+    ebox_paint_layer((t_ebox *)x, view, cream_sym_needle_layer, 0., 0.);
 
 }
 
 static void knob_paint(t_knob *x, t_object *view)
 {
     t_rect rect;
-    ebox_get_rect_for_view((t_ebox *)x, &rect);
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
     
     draw_background(x, view, &rect);
     draw_needle(x, view, &rect);
 }
 
-static void knob_mousedown(t_knob *x, t_object *patcherview, t_pt pt, long modifiers)
+
+static void knob_mousedown(t_knob *x, t_object *view, t_pt pt, long modifiers)
 {
-    float angle = pd_angle(pt.x - x->j_box.b_rect.width * 0.5, (x->j_box.b_rect.height * 0.5 - pt.y)) / EPD_2PI;
-    if(x->f_mode)
+    t_rect rect;
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
+    ebox_parameter_begin_changes((t_ebox *)x, 1);
+    if(modifiers == EMOD_SHIFT)
     {
+        x->f_circular = 1;
+        const float size  = rect.width * 0.5f;
+        const float angle = pd_angle(pt.x - size, -(size - pt.y));
         if(x->f_endless)
         {
-            if(x->f_min < x->f_max)
+            const float value = pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f);
+            if(ebox_parameter_isinverted((t_ebox *)x, 1))
             {
-                angle = -angle;
-                angle -= 0.25;
-                while (angle < 0.)
-                    angle += 1.;
-                while (angle > 1.)
-                    angle -= 1.;
-                x->f_value = angle * (x->f_max - x->f_min) + x->f_min;
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 1);
             }
             else
             {
-                angle += 0.25;
-                while (angle < 0.)
-                    angle += 1.;
-                while (angle > 1.)
-                    angle -= 1.;
-                x->f_value = angle * (x->f_min - x->f_max) + x->f_max;
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 1);
             }
+            
         }
         else
         {
-            if(x->f_min < x->f_max)
+            const float value = (pd_clip(pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f), 0.125f, 0.875f) - 0.125f) / 0.75f;
+            if(ebox_parameter_isinverted((t_ebox *)x, 1))
             {
-                angle = -angle;
-                angle -= 0.25;
-                while (angle < 0.)
-                    angle += 1.;
-                while (angle > 1.)
-                    angle -= 1.;
-                angle = pd_clip_minmax(angle, 0.125, 0.875);
-                angle -= 0.125;
-                angle *= 0.75;
-                x->f_value = angle * (x->f_max - x->f_min) + x->f_min;
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 1);
             }
             else
             {
-                angle += 0.25;
-                while (angle < 0.)
-                    angle += 1.;
-                while (angle > 1.)
-                    angle -= 1.;
-                angle = pd_clip_minmax(angle, 0.125, 0.875);
-                angle -= 0.125;
-                angle *= 0.75;
-                x->f_value = angle * (x->f_min - x->f_max) + x->f_max;
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 1);
             }
         }
+        
         knob_output(x);
-        ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
         ebox_redraw((t_ebox *)x);
     }
     else
     {
-        x->f_ref_y = pt.y;
-        x->f_ref_value = x->f_value;
+        x->f_circular = 0;
+        x->f_reference = pt.y;
     }
 }
 
-static void knob_mousedrag(t_knob *x, t_object *patcherview, t_pt pt, long modifiers)
+static void knob_mousedrag(t_knob *x, t_object *view, t_pt pt, long modifiers)
 {
-    float angle = pd_angle(pt.x - x->j_box.b_rect.width * 0.5, (x->j_box.b_rect.height * 0.5 - pt.y)) / EPD_2PI;
-    if(x->f_mode)
+    t_rect rect;
+    ebox_getdrawbounds((t_ebox *)x, view,  &rect);
+    if(x->f_circular)
     {
+        const float size  = rect.width * 0.5f;
+        const float angle = pd_angle(pt.x - size, -(size - pt.y));
         if(x->f_endless)
         {
-            if(x->f_min < x->f_max)
+            const float value = pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f);
+            if(ebox_parameter_isinverted((t_ebox *)x, 1))
             {
-                angle = -angle;
-                angle -= 0.25;
-                while (angle < 0.)
-                    angle += 1.;
-                while (angle > 1.)
-                    angle -= 1.;
-                x->f_value = angle * (x->f_max - x->f_min) + x->f_min;
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 1);
             }
             else
             {
-                angle += 0.25;
-                while (angle < 0.)
-                    angle += 1.;
-                while (angle > 1.)
-                    angle -= 1.;
-                x->f_value = angle * (x->f_min - x->f_max) + x->f_max;
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 1);
             }
         }
         else
         {
-            if(x->f_min < x->f_max)
+            const float value = (pd_clip(pd_wrap((angle - EPD_PI2) / EPD_2PI, 0.f, 1.f), 0.125f, 0.875f) - 0.125f) / 0.75f;
+            if(ebox_parameter_isinverted((t_ebox *)x, 1))
             {
-                angle = -angle;
-                angle -= 0.25;
-                while (angle < 0.)
-                    angle += 1.;
-                while (angle > 1.)
-                    angle -= 1.;
-                angle = pd_clip_minmax(angle, 0.125, 0.875);
-                angle -= 0.125;
-                angle *= 1. / 0.75;
-                x->f_value = angle * (x->f_max - x->f_min) + x->f_min;
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, 1.f - value, 1);
             }
-        
             else
             {
-                angle += 0.25;
-                while (angle < 0.)
-                    angle += 1.;
-                while (angle > 1.)
-                    angle -= 1.;
-                angle = pd_clip_minmax(angle, 0.125, 0.875);
-                angle -= 0.125;
-                angle *= 1. / 0.75;
-                x->f_value = angle * (x->f_min - x->f_max) + x->f_max;
+                ebox_parameter_setvalue_normalized((t_ebox *)x, 1, value, 1);
             }
         }
+        
+        knob_output(x);
+        ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
+        ebox_redraw((t_ebox *)x);
     }
     else
     {
-        float diff = x->f_ref_y - pt.y;
-        if(diff == 0xffffffff)
-            return;
-        if(x->f_min < x->f_max)
+        const float current = ebox_parameter_getvalue_normalized((t_ebox *)x, 1);
+        const float diff    = (x->f_reference - pt.y) / (rect.width) * (ebox_parameter_isinverted((t_ebox *)x, 1) ? -1.f : 1.f);
+        if(x->f_endless)
         {
-            if(x->f_endless)
-            {
-                x->f_value = fmodf(diff / 50. * (x->f_max - x->f_min) + x->f_ref_value + x->f_max - x->f_min, x->f_max - x->f_min);
-            }
-            else
-                x->f_value = pd_clip_minmax(diff / 50. * (x->f_max - x->f_min) + x->f_ref_value, x->f_min, x->f_max);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_wrap(current + diff, 0.f, 1.f), 1);
         }
         else
         {
-            if(x->f_endless)
-            {
-                x->f_value = fmodf(diff / 50. * (x->f_min - x->f_max) + x->f_ref_value + x->f_min - x->f_max, x->f_min - x->f_max);
-            }
-            else
-                x->f_value = pd_clip_minmax(diff / 50. * (x->f_min - x->f_max) + x->f_ref_value, x->f_max, x->f_min);
+            ebox_parameter_setvalue_normalized((t_ebox *)x, 1, pd_clip(current + diff, 0.f, 1.f), 1);
         }
+        x->f_reference      = pt.y;
     }
     knob_output(x);
-    ebox_invalidate_layer((t_ebox *)x, cream_sym_needle_layer);
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
     ebox_redraw((t_ebox *)x);
 }
 
-static void knob_preset(t_knob *x, t_binbuf *b)
+static void knob_mouseup(t_knob *x, t_object *view, t_pt pt, long modifiers)
 {
-    binbuf_addv(b, (char *)"sf", &s_float, (float)x->f_value);
+    ebox_parameter_end_changes((t_ebox *)x, 1);
+}
+
+static t_pd_err knob_minmax_set(t_knob *x, t_object *attr, int ac, t_atom *av)
+{
+    if(ac && av)
+    {
+        const float min = pd_clip((atom_gettype(av) == A_FLOAT) ? atom_getfloat(av) : ebox_parameter_getmin((t_ebox *)x, 1), -FLT_MAX, FLT_MAX);
+        const float max = pd_clip((ac > 1  && atom_gettype(av+1) == A_FLOAT) ? atom_getfloat(av+1) : ebox_parameter_getmax((t_ebox *)x, 1), -FLT_MAX, FLT_MAX);
+        ebox_parameter_setminmax((t_ebox *)x, 1, min, max);
+    }
+    
+    ebox_invalidate_layer((t_ebox *)x, NULL, cream_sym_needle_layer);
+    ebox_redraw((t_ebox *)x);
+    return 0;
+}
+
+
+static t_pd_err knob_minmax_get(t_knob *x, t_object *attr, int* ac, t_atom **av)
+{
+    *ac = 2;
+    *av = (t_atom *)malloc(2 * sizeof(t_atom));
+    if(*av)
+    {
+        atom_setfloat(*av, ebox_parameter_getmin((t_ebox *)x, 1));
+        atom_setfloat(*av+1, ebox_parameter_getmax((t_ebox *)x, 1));
+    }
+    else
+    {
+        *ac = 0;
+    }
+    return 0;
 }
 
 static void *knob_new(t_symbol *s, int argc, t_atom *argv)
@@ -357,9 +322,9 @@ static void *knob_new(t_symbol *s, int argc, t_atom *argv)
     if(x && d)
     {
         ebox_new((t_ebox *)x, 0 | EBOX_GROWLINK);
-        x->f_out = outlet_new((t_object *)x, &s_float);
-        x->f_value = 0;
-        ebox_attrprocess_viabinbuf(x, d);
+        ebox_parameter_create((t_ebox *)x, 1);
+        x->f_outlet = outlet_new((t_object *)x, &s_float);
+        eobj_attr_read(x, d);
         ebox_ready((t_ebox *)x);
         
         return x;
@@ -370,56 +335,48 @@ static void *knob_new(t_symbol *s, int argc, t_atom *argv)
 
 extern "C" void setup_c0x2eknob(void)
 {
-    t_eclass *c = eclass_new("c.knob", (method)knob_new, (method)ebox_free, (short)sizeof(t_knob), 0L, A_GIMME, 0);
+    t_eclass *c = eclass_new("c.knob", (t_method)knob_new, (t_method)ebox_free, (short)sizeof(t_knob), 0L, A_GIMME, 0);
     
     if(c)
     {
         eclass_guiinit(c, 0);
         
-        eclass_addmethod(c, (method) knob_paint,           "paint",            A_NULL, 0);
-        eclass_addmethod(c, (method) knob_notify,          "notify",           A_NULL, 0);
-        eclass_addmethod(c, (method) knob_getdrawparams,   "getdrawparams",    A_NULL, 0);
-        eclass_addmethod(c, (method) knob_oksize,          "oksize",           A_NULL, 0);
-        eclass_addmethod(c, (method) knob_set,             "set",              A_FLOAT,0);
-        eclass_addmethod(c, (method) knob_float,           "float",            A_FLOAT,0);
-        eclass_addmethod(c, (method) knob_output,          "bang",             A_NULL, 0);
-        eclass_addmethod(c, (method) knob_mousedown,       "mousedown",        A_NULL, 0);
-        eclass_addmethod(c, (method) knob_mousedrag,       "mousedrag",        A_NULL, 0);
-        eclass_addmethod(c, (method) knob_preset,          "preset",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_paint,            "paint",            A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_notify,           "notify",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_getdrawparams,    "getdrawparams",    A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_oksize,           "oksize",           A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_set,              "set",              A_FLOAT,0);
+        eclass_addmethod(c, (t_method) knob_float,            "float",            A_FLOAT,0);
+        eclass_addmethod(c, (t_method) knob_bang,             "bang",             A_NULL, 0);
         
-        CLASS_ATTR_INVISIBLE            (c, "fontname", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontweight", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontslant", 1);
-        CLASS_ATTR_INVISIBLE            (c, "fontsize", 1);
+        eclass_addmethod(c, (t_method) knob_mousedown,        "mousedown",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_mousedrag,        "mousedrag",        A_NULL, 0);
+        eclass_addmethod(c, (t_method) knob_mouseup,          "mouseup",          A_NULL, 0);
+        
         CLASS_ATTR_DEFAULT              (c, "size", 0, "50. 50.");
         
-        CLASS_ATTR_LONG                 (c, "endless", 0, t_knob, f_endless);
+        CLASS_ATTR_CHAR                 (c, "endless", 0, t_knob, f_endless);
         CLASS_ATTR_LABEL                (c, "endless", 0, "Endless Mode");
         CLASS_ATTR_ORDER                (c, "endless", 0, "1");
         CLASS_ATTR_FILTER_CLIP          (c, "endless", 0, 1);
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "endless", 0, "0");
+        CLASS_ATTR_DEFAULT              (c, "endless", 0, "0");
+        CLASS_ATTR_SAVE                 (c, "endless", 0);
         CLASS_ATTR_STYLE                (c, "endless", 0, "onoff");
+        CLASS_ATTR_PAINT                (c, "endless", 0);
         
-        CLASS_ATTR_LONG                 (c, "mode", 0, t_knob, f_mode);
-        CLASS_ATTR_LABEL                (c, "mode", 0, "Circular Mode");
-        CLASS_ATTR_ORDER                (c, "mode", 0, "1");
-        CLASS_ATTR_FILTER_CLIP          (c, "mode", 0, 1);
-        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "mode", 0, "0");
-        CLASS_ATTR_STYLE                (c, "mode", 0, "onoff");
+        CLASS_ATTR_FLOAT_ARRAY          (c, "minmax", 0, t_knob, f_dummy, 2);
+        CLASS_ATTR_ORDER                (c, "minmax", 0, "3");
+        CLASS_ATTR_LABEL                (c, "minmax", 0, "Min/Max Values");
+        CLASS_ATTR_DEFAULT              (c, "minmax", 0, "0 1");
+        CLASS_ATTR_ACCESSORS            (c, "minmax", knob_minmax_get, knob_minmax_set);
+        CLASS_ATTR_SAVE                 (c, "minmax", 1);
         
-        CLASS_ATTR_FLOAT                (c, "min", 0, t_knob, f_min);
-        CLASS_ATTR_LABEL                (c, "min", 0, "Minimum Value");
-        CLASS_ATTR_ORDER                (c, "min", 0, "1");
-        CLASS_ATTR_DEFAULT              (c, "min", 0, "0.");
-        CLASS_ATTR_SAVE                 (c, "min", 1);
-        CLASS_ATTR_STYLE                (c, "min", 0, "number");
-        
-        CLASS_ATTR_FLOAT                (c, "max", 0, t_knob, f_max);
-        CLASS_ATTR_LABEL                (c, "max", 0, "Maximum Value");
-        CLASS_ATTR_ORDER                (c, "max", 0, "1");
-        CLASS_ATTR_DEFAULT              (c, "max", 0, "1.");
-        CLASS_ATTR_SAVE                 (c, "max", 1);
-        CLASS_ATTR_STYLE                (c, "max", 0, "number");
+        CLASS_ATTR_INT                  (c, "bdsize", 0, t_knob, f_bdsize);
+        CLASS_ATTR_LABEL                (c, "bdsize", 0, "Border Size");
+        CLASS_ATTR_ORDER                (c, "bdsize", 0, "1");
+        CLASS_ATTR_DEFAULT_SAVE_PAINT   (c, "bdsize", 0, "2");
+        CLASS_ATTR_FILTER_CLIP          (c, "bdsize", 0, 4);
+        CLASS_ATTR_STYLE                (c, "bdsize", 0, "number");
         
         CLASS_ATTR_RGBA                 (c, "bgcolor", 0, t_knob, f_color_background);
         CLASS_ATTR_LABEL                (c, "bgcolor", 0, "Background Color");
